@@ -1,0 +1,9 @@
+/*
+ * Utility classes for imported components.
+ *
+ * `@tailwind base` is intentionally absent: preflight is disabled in
+ * tailwind.config.ts because the ported Elementor reset already sets the base
+ * element styles this page depends on.
+ */
+@tailwind components;
+@tailwind utilities;

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Instrument_Sans } from 'next/font/google';
+import './tailwind.css';
 
 /**
  * Instrument Sans replaces Inter across the page. The ported stylesheets
