@@ -206,20 +206,20 @@
   fill: #2f6bff;
 }
 
-.ice-waterline-caption {
-  font-family: 'Inter', sans-serif;
-  font-size: 15px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-/* Callout labels rendered as HTML inside the drawing. */
+/* Callout labels rendered as HTML inside the drawing. The badge is 52px tall,
+   which is what the connector's elbow is aimed at (LABEL_MID in the
+   component). Changing badge padding means updating that constant. */
 .ice-callout-box {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 10px;
   font-family: 'Inter', sans-serif;
+}
+
+.ice-callout-box .badge-camino {
+  height: 52px;
+  box-sizing: border-box;
 }
 
 .ice-callout-detail {
@@ -254,8 +254,7 @@
 }
 
 @media (max-width: 900px) {
-  .mce-iceberg-svg .ice-callout,
-  .mce-iceberg-svg .ice-waterline-caption {
+  .mce-iceberg-svg .ice-callout {
     display: none;
   }
 

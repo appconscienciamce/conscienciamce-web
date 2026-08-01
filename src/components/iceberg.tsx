@@ -17,14 +17,22 @@
  * inherits page typography instead of being baked into the drawing.
  */
 
+/**
+ * The ice is drawn in its own coordinates and shifted down by ICE_OFFSET_Y so
+ * the peak has headroom. Anchor points are measured against the ice silhouette
+ * at each stratum's height, so connectors leave the ice where it actually is
+ * rather than from a fixed column.
+ */
+const ICE_OFFSET_Y = 30;
+
 type Stratum = {
   id: string;
   label: string;
   detail: string;
-  /** y of the label bar's top edge, in viewBox units. */
-  y: number;
-  /** y where the connector meets the ice. */
+  /** y where the connector leaves the ice (already includes the offset). */
   anchorY: number;
+  /** x of the ice's right edge at that height. */
+  anchorX: number;
 };
 
 const STRATA: Stratum[] = [
@@ -32,48 +40,50 @@ const STRATA: Stratum[] = [
     id: 'visible',
     label: 'Lo visible',
     detail: 'Negocio, dinero, relaciones, cuerpo, impacto',
-    y: 60,
-    anchorY: 150,
+    anchorX: 368,
+    anchorY: 135 + ICE_OFFSET_Y,
   },
   {
     id: 'accion',
     label: 'Acción',
     detail: 'Decisiones, hábitos y sistemas que sostienen el resultado',
-    y: 330,
-    anchorY: 420,
+    anchorX: 353,
+    anchorY: 370 + ICE_OFFSET_Y,
   },
   {
     id: 'identidad',
     label: 'Identidad',
     detail: 'Quién creés que sos, qué merecés y qué podés sostener',
-    y: 470,
-    anchorY: 560,
+    anchorX: 375,
+    anchorY: 460 + ICE_OFFSET_Y,
   },
   {
     id: 'consciencia',
     label: 'Consciencia',
     detail: 'Paradigmas, estándares y principios desde los que operás',
-    y: 610,
-    anchorY: 700,
+    anchorX: 290,
+    anchorY: 550 + ICE_OFFSET_Y,
   },
   {
     id: 'esencia',
     label: 'Esencia',
     detail: 'Mente, cuerpo y espíritu alineados: la expansión como naturaleza',
-    y: 750,
-    anchorY: 830,
+    anchorX: 236,
+    anchorY: 630 + ICE_OFFSET_Y,
   },
 ];
 
+/** Where every connector turns to run into its label. */
 const LABEL_X = 470;
-const CONNECTOR_X = 430;
+/** Vertical centre of a label box, relative to its top edge. */
+const LABEL_MID = 26;
 
 export function Iceberg() {
   return (
     <figure className="mce-iceberg-figure">
       <svg
         className="mce-iceberg-svg"
-        viewBox="0 0 1040 900"
+        viewBox="0 0 1040 740"
         role="img"
         aria-labelledby="iceberg-title iceberg-desc"
         preserveAspectRatio="xMidYMid meet"
@@ -94,10 +104,22 @@ export function Iceberg() {
             <stop offset="100%" stopColor="#6f6f6f" />
           </linearGradient>
 
+          {/* Water fades out on all sides so it has no visible hard edge. */}
           <linearGradient id="water-veil" x1="0.5" y1="0" x2="0.5" y2="1">
-            <stop offset="0%" stopColor="rgb(47 107 255 / 0.14)" />
-            <stop offset="100%" stopColor="rgb(47 107 255 / 0.02)" />
+            <stop offset="0%" stopColor="rgb(47 107 255 / 0.16)" />
+            <stop offset="100%" stopColor="rgb(47 107 255 / 0)" />
           </linearGradient>
+
+          <linearGradient id="water-sides" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor="#000" stopOpacity="0" />
+            <stop offset="14%" stopColor="#fff" stopOpacity="1" />
+            <stop offset="72%" stopColor="#fff" stopOpacity="1" />
+            <stop offset="100%" stopColor="#000" stopOpacity="0" />
+          </linearGradient>
+
+          <mask id="water-mask">
+            <rect x="0" y="300" width="560" height="440" fill="url(#water-sides)" />
+          </mask>
 
           <linearGradient id="waterline-fade" x1="0" y1="0" x2="1" y2="0">
             <stop offset="0%" stopColor="rgb(47 107 255 / 0)" />
@@ -107,17 +129,18 @@ export function Iceberg() {
           </linearGradient>
         </defs>
 
-        {/* Submerged water field. */}
+        {/* Submerged water field, faded at every edge. */}
         <rect
           className="ice-water"
           x="0"
-          y="270"
-          width="430"
-          height="630"
+          y="300"
+          width="560"
+          height="440"
           fill="url(#water-veil)"
+          mask="url(#water-mask)"
         />
 
-        <g id="mce-iceberg-scenery">
+        <g id="mce-iceberg-scenery" transform={`translate(0 ${ICE_OFFSET_Y})`}>
           {/* ── Tip: the visible facets ──────────────────────────────── */}
           <g className="ice-tip">
             <polygon
@@ -143,7 +166,7 @@ export function Iceberg() {
             className="ice-waterline"
             x1="0"
             y1="270"
-            x2="430"
+            x2="520"
             y2="270"
             stroke="url(#waterline-fade)"
             strokeWidth="2"
@@ -175,23 +198,24 @@ export function Iceberg() {
         {/* ── Strata callouts ───────────────────────────────────────── */}
         {STRATA.map((stratum) => (
           <g key={stratum.id} className="ice-callout" data-stratum={stratum.id}>
-            {/* Connector from the ice to the label bar. */}
+            {/* Elbow connector: out from the ice, then across to the label. */}
             <path
               className="ice-connector"
-              d={`M${CONNECTOR_X},${stratum.anchorY} L${LABEL_X - 8},${stratum.y + 26}`}
-              stroke="rgb(47 107 255 / 0.55)"
-              strokeWidth="2"
-              strokeDasharray="6 7"
+              d={`M${stratum.anchorX},${stratum.anchorY} H${LABEL_X - 34} V${stratum.anchorY - LABEL_MID} H${LABEL_X - 10}`}
+              stroke="rgb(47 107 255 / 0.5)"
+              strokeWidth="1.5"
+              strokeDasharray="5 6"
               strokeLinecap="round"
+              strokeLinejoin="round"
               fill="none"
             />
-            <circle cx={CONNECTOR_X} cy={stratum.anchorY} r="4" className="ice-node" />
+            <circle cx={stratum.anchorX} cy={stratum.anchorY} r="4" className="ice-node" />
 
             <foreignObject
               x={LABEL_X}
-              y={stratum.y}
+              y={stratum.anchorY - LABEL_MID * 2}
               width={1040 - LABEL_X - 10}
-              height="130"
+              height="120"
             >
               <div className="ice-callout-box">
                 <span className="badge-camino">{stratum.label}</span>
@@ -201,15 +225,6 @@ export function Iceberg() {
           </g>
         ))}
 
-        {/* Waterline caption sits with the drawing, not the strata. */}
-        <text
-          className="ice-waterline-caption"
-          x="0"
-          y="296"
-          fill="rgb(255 255 255 / 0.5)"
-        >
-          Lo que el mundo ve
-        </text>
       </svg>
 
       {/* Shown instead of the in-drawing callouts on narrow screens, where
