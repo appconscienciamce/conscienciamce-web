@@ -5,41 +5,107 @@
  * are ours. Loaded after the original stylesheets.
  */
 
+/* ── Content width ────────────────────────────────────────────────────────
+ * Elementor's kit already caps boxed containers at 1140px. These rules extend
+ * the same measure to full-width sections and to the blocks added in this
+ * revision, so every section lines up on one grid.
+ */
+:root {
+  --mce-content-width: 1140px;
+}
+
+.mce-single-column,
+.mce-club .mce-club-intro,
+.mce-club .mce-club-list,
+.mce-iceberg {
+  width: min(var(--mce-content-width), 100%);
+  margin-inline: auto;
+}
+
 /* ── Hero without VSL ─────────────────────────────────────────────────────
  * The original hero was sized for a video that sat below the copy, and the
  * text block was click-through (`pointer-events:none`) because only the play
- * button underneath was interactive. With the VSL gone the hero collapses to
- * its content and the CTA has to be clickable again.
+ * button underneath was interactive. With the VSL gone the hero is a fixed
+ * ~700px stage holding the Spline backdrop, and the CTA must be clickable.
  */
 .gb-widget--no-vsl {
-  min-height: auto;
-  padding-block: clamp(56px, 9vh, 120px) clamp(64px, 10vh, 140px);
+  position: relative;
+  min-height: 700px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  isolation: isolate;
 }
 
 .gb-widget--no-vsl .gb-hero {
   position: relative;
+  z-index: 2;
   top: auto;
   left: auto;
   transform: none;
   pointer-events: auto;
-}
-
-/* The star backdrop was faded in by the VSL script, which no longer runs. */
-.gb-widget--no-vsl .gb-star {
-  opacity: 0.55;
+  width: min(var(--mce-content-width), 100%);
+  margin-inline: auto;
+  padding-inline: 20px;
 }
 
 .gb-hero-cta {
   margin-top: clamp(28px, 4vh, 48px);
 }
 
-/* ── Qualifying list: single column ───────────────────────────────────────
- * The original list sat in one of two side-by-side "caminos" columns. As a
- * single full-width list the rows read better centred and capped.
+/* ── Spline backdrop ──────────────────────────────────────────────────────
+ * Sits behind the hero copy. The iframe is inert: it must never intercept
+ * scroll or clicks meant for the CTA.
  */
-.mce-single-column {
-  width: min(880px, 100%);
-  margin-inline: auto;
+.spline-container {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.spline-container iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  pointer-events: none;
+}
+
+/* Spline scenes render on a dark canvas; a soft vignette blends the seam
+   into the page background instead of ending on a hard edge. */
+.gb-widget--no-vsl::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgb(0 0 0 / 0.35) 0%,
+    transparent 28%,
+    transparent 62%,
+    rgb(0 0 0 / 0.85) 100%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spline-container {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .gb-widget--no-vsl {
+    min-height: 560px;
+  }
+}
+
+/* Rows span the full measure, but their prose stays readable. */
+.mce-single-column .list .item .content .text {
+  max-width: 72ch;
 }
 
 /* ── Section-level CTA ──────────────────────────────────────────────────── */
@@ -51,11 +117,16 @@
 
 /* ── Club section ─────────────────────────────────────────────────────────
  * Reuses the page's icon-box and list widgets; only layout is added here.
+ * Containers run the full 1140px measure, but running prose is capped so
+ * lines stay readable.
  */
 .mce-club .mce-club-intro {
-  width: min(760px, 100%);
-  margin-inline: auto;
   text-align: center;
+}
+
+.mce-club .mce-club-intro .text {
+  max-width: 68ch;
+  margin-inline: auto;
 }
 
 .mce-club .mce-club-intro .text + .text {
@@ -63,19 +134,13 @@
 }
 
 .mce-iceberg {
-  width: min(760px, 100%);
-  margin: clamp(36px, 6vh, 72px) auto;
+  margin-block: clamp(36px, 6vh, 72px);
 }
 
 .mce-iceberg img {
   width: 100%;
   height: auto;
   display: block;
-}
-
-.mce-club-list {
-  width: min(680px, 100%);
-  margin-inline: auto;
 }
 
 /* ── Upcoming events: two cards side by side ──────────────────────────────
