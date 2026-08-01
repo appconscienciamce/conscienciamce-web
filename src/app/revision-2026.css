@@ -81,28 +81,22 @@ h4,
 /* ── Hero without VSL ─────────────────────────────────────────────────────
  * The original hero was sized for a video that sat below the copy, and the
  * text block was click-through (`pointer-events:none`) because only the play
- * button underneath was interactive. With the VSL gone the hero is a fixed
- * ~700px stage holding the Spline backdrop, and the CTA must be clickable.
+ * button underneath was interactive. With the VSL gone the hero sizes to its
+ * own content, and the CTA has to be clickable again.
+ *
+ * The padding is load-bearing: the Spline backdrop is absolutely positioned,
+ * so it contributes no height. Without this the hero would collapse to the
+ * height of the copy alone.
  */
-.gb-widget {
-  height: 700px;
-  min-height: 700px;
-}
-
 .gb-widget--no-vsl {
   position: relative;
+  min-height: auto;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-block: clamp(56px, 9vh, 120px) clamp(64px, 10vh, 140px);
   overflow: hidden;
   isolation: isolate;
-}
-
-/* Pull the photo scene up under the hero so the two sections overlap. */
-.gb-scene {
-  margin-top: -150px;
-  position: relative;
-  z-index: 2;
 }
 
 .gb-widget--no-vsl .gb-hero {
@@ -164,16 +158,6 @@ h4,
   }
 }
 
-@media (max-width: 767px) {
-  .gb-widget {
-    height: 560px;
-    min-height: 560px;
-  }
-
-  .gb-scene {
-    margin-top: -80px;
-  }
-}
 
 /* Rows span the full measure, but their prose stays readable. */
 .mce-single-column .list .item .content .text {
