@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './elementor-inline.css';
+import './revision-2026.css';
 
 /**
  * Faithful port of the original WordPress/Elementor page.

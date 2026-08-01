@@ -1,7 +1,77 @@
-// Ported verbatim from the original Elementor build (section 23e1682).
-// Markup is intentionally kept as-is; edit copy in place.
+// Ported from the original Elementor build (section 23e1682).
+//
+// 2026 revision: the two-column "dos caminos" split was replaced by a single
+// qualifying list. Markup classes are kept from the original list widget so the
+// existing styles apply unchanged.
 
-const html = "<div class=\"elementor-element elementor-element-23e1682 e-flex e-con-boxed e-con e-parent\" data-id=\"23e1682\" data-element_type=\"container\" data-e-type=\"container\">\n\t\t\t\t\t<div class=\"e-con-inner\">\n\t\t\t\t<div class=\"elementor-element elementor-element-3846697 elementor-widget__width-initial elementor-widget-mobile__width-inherit elementor-widget elementor-widget-icon-box\" data-id=\"3846697\" data-element_type=\"widget\" data-e-type=\"widget\" data-widget_type=\"icon-box.default\">\n\t\t\t\t\t\t\t<div class=\"elementor-icon-box-wrapper\">\n\n\t\t\t\n\t\t\t\t\t\t<div class=\"elementor-icon-box-content\">\n\n\t\t\t\t\t\t\t\t\t<h3 class=\"elementor-icon-box-title\">\n\t\t\t\t\t\t<span  >\n\t\t\t\t\t\t\t<span class=\"titulo-premium\">¿Para quien es esto?</span>\t\t\t\t\t\t</span>\n\t\t\t\t\t</h3>\n\t\t\t\t\n\t\t\t\t\t\t\t\t\t<p class=\"elementor-icon-box-description\">\n\t\t\t\t\t\t<span class=\"remarcado\">Existen dos caminos,</span> y ambos te llevan al mismo destino: Éxito Integral, Liderazgo, Impacto, Abundancia, Propósito y Libertad.\t\t\t\t\t</p>\n\t\t\t\t\n\t\t\t</div>\n\t\t\t\n\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t<div class=\"elementor-element elementor-element-7239509 e-con-full e-flex e-con e-child\" data-id=\"7239509\" data-element_type=\"container\" data-e-type=\"container\" style=\"content-visibility: auto;contain-intrinsic-size: auto 800px;\">\n\t\t<div class=\"elementor-element elementor-element-52da3d8 e-con-full e-flex e-con e-child\" data-id=\"52da3d8\" data-element_type=\"container\" data-e-type=\"container\">\n\t\t\t\t<div class=\"elementor-element elementor-element-d308a96 elementor-widget elementor-widget-icon-box\" data-id=\"d308a96\" data-element_type=\"widget\" data-e-type=\"widget\" data-widget_type=\"icon-box.default\">\n\t\t\t\t\t\t\t<div class=\"elementor-icon-box-wrapper\">\n\n\t\t\t\n\t\t\t\t\t\t<div class=\"elementor-icon-box-content\">\n\n\t\t\t\t\t\t\t\t\t<h3 class=\"elementor-icon-box-title\">\n\t\t\t\t\t\t<span  >\n\t\t\t\t\t\t\t<span class=\"titulo-premium\">EMPRENDEDOR / OPERADOR</span>\t\t\t\t\t\t</span>\n\t\t\t\t\t</h3>\n\t\t\t\t\n\t\t\t\t\t\t\t\t\t<p class=\"elementor-icon-box-description\">\n\t\t\t\t\t\t<span class=\"badge-camino\">CAMINO 1</span>\t\t\t\t\t</p>\n\t\t\t\t\n\t\t\t</div>\n\t\t\t\n\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t<div class=\"elementor-element elementor-element-0885e8e elementor-widget elementor-widget-html\" data-id=\"0885e8e\" data-element_type=\"widget\" data-e-type=\"widget\" data-widget_type=\"html.default\">\n\t\t\t\t\t<ul class=\"list\">\r\n  <li class=\"item\">\r\n    <div class=\"img-wrap\">\r\n      <img decoding=\"async\" src=\"/wp-content/uploads/2026/03/item-1.webp\" alt=\"Item 1\" loading=\"eager\" width=\"600\" height=\"400\" fetchpriority=\"high\">\r\n    </div>\r\n    <div class=\"content\">\r\n      <p class=\"text\">Aún no lográs superar los <strong>$10–20K/mes</strong> de manera sostenible y en balance con tu vida personal.</p>\r\n    </div>\r\n  </li>\r\n  <li class=\"item\">\r\n    <div class=\"img-wrap\">\r\n      <img decoding=\"async\" src=\"/wp-content/uploads/2026/03/item-2.webp\" alt=\"Item 2\" loading=\"lazy\" width=\"600\" height=\"400\" fetchpriority=\"low\" srcset=\"/wp-content/uploads/2026/03/item-2.webp 600w, /wp-content/uploads/2026/03/item-2-300x200.webp 300w\" sizes=\"auto\">\r\n    </div>\r\n    <div class=\"content\">\r\n      <p class=\"text\">Sentís que estás operando muy por debajo de tu <strong>potencial</strong>. Siempre sentiste que has venido al mundo a lograr algo grande.</p>\r\n    </div>\r\n  </li>\r\n  <li class=\"item\">\r\n    <div class=\"img-wrap\">\r\n      <img decoding=\"async\" src=\"/wp-content/uploads/2026/03/item-3.webp\" alt=\"Item 3\" loading=\"lazy\" width=\"600\" height=\"400\" fetchpriority=\"low\" srcset=\"/wp-content/uploads/2026/03/item-3.webp 600w, /wp-content/uploads/2026/03/item-3-300x200.webp 300w\" sizes=\"auto\">\r\n    </div>\r\n    <div class=\"content\">\r\n      <p class=\"text\">Ya sos consciente de que <strong>no es información</strong> lo que necesitás, sino reprogramar tu identidad para sostener resultados diferentes.</p>\r\n    </div>\r\n  </li>\r\n  <li class=\"item\">\r\n    <div class=\"img-wrap\">\r\n      <img decoding=\"async\" src=\"/wp-content/uploads/2026/03/item-4.webp\" alt=\"Item 4\" loading=\"lazy\" width=\"600\" height=\"400\" fetchpriority=\"low\" srcset=\"/wp-content/uploads/2026/03/item-4.webp 600w, /wp-content/uploads/2026/03/item-4-300x200.webp 300w\" sizes=\"auto\">\r\n    </div>\r\n    <div class=\"content\">\r\n      <p class=\"text\">Por más logros externos y dinero que generes. <strong>Te sentís vacío y desconectado</strong> de\r\n       tu cuerpo, del amor o tu propósito.</p>\r\n    </div>\r\n  </li>\r\n</ul>\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"elementor-element elementor-element-64a1db8 elementor-widget elementor-widget-html\" data-id=\"64a1db8\" data-element_type=\"widget\" data-e-type=\"widget\" data-widget_type=\"html.default\">\n\t\t\t\t\t<div style=\"\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: stretch;\r\n  width: 100%;\r\n  height: 100%;\r\n  min-height: 100%;\r\n\">\r\n  <div style=\"\r\n    width: 3px;\r\n    height: 100%;\r\n    background-image: radial-gradient(circle, #ccc 2px, transparent 2px);\r\n    background-size: 2px 10px;\r\n    background-repeat: repeat-y;\r\n    background-position: center top;\r\n    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 8%, #000 92%, transparent 100%);\r\n    mask-image: linear-gradient(to bottom, transparent 0%, #000 8%, #000 92%, transparent 100%);\r\n    filter: drop-shadow(0 0 4px rgba(255, 77, 46, 0.5));\r\n    animation: dotflow 2s linear infinite;\r\n  \"></div>\r\n</div>\r\n\r\n\t\t\t\t</div>\n\t\t<div class=\"elementor-element elementor-element-66e341e e-con-full e-flex e-con e-child\" data-id=\"66e341e\" data-element_type=\"container\" data-e-type=\"container\">\n\t\t\t\t<div class=\"elementor-element elementor-element-4edee37 elementor-widget elementor-widget-icon-box\" data-id=\"4edee37\" data-element_type=\"widget\" data-e-type=\"widget\" data-widget_type=\"icon-box.default\">\n\t\t\t\t\t\t\t<div class=\"elementor-icon-box-wrapper\">\n\n\t\t\t\n\t\t\t\t\t\t<div class=\"elementor-icon-box-content\">\n\n\t\t\t\t\t\t\t\t\t<h3 class=\"elementor-icon-box-title\">\n\t\t\t\t\t\t<span  >\n\t\t\t\t\t\t\t<span class=\"titulo-premium\">CREADOR / INFOPRODUCTOR </span>\t\t\t\t\t\t</span>\n\t\t\t\t\t</h3>\n\t\t\t\t\n\t\t\t\t\t\t\t\t\t<p class=\"elementor-icon-box-description\">\n\t\t\t\t\t\t<span class=\"badge-camino\">CAMINO 2</span>\t\t\t\t\t</p>\n\t\t\t\t\n\t\t\t</div>\n\t\t\t\n\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t<div class=\"elementor-element elementor-element-69107b0 elementor-widget elementor-widget-html\" data-id=\"69107b0\" data-element_type=\"widget\" data-e-type=\"widget\" data-widget_type=\"html.default\">\n\t\t\t\t\t<ul class=\"list\">\r\n  <li class=\"item\">\r\n    <div class=\"img-wrap\">\r\n      <img decoding=\"async\" src=\"/wp-content/uploads/2026/03/item-5.webp\" alt=\"Item 1\" loading=\"eager\" width=\"600\" height=\"400\" fetchpriority=\"high\">\r\n    </div>\r\n    <div class=\"content\">\r\n      <p class=\"text\">Te gustaría posicionarte como <strong>referente en tu industria</strong> y sostener un negocio simple y coherente de <strong>+20-50K/mes</strong>.</p>\r\n    </div>\r\n  </li>\r\n  <li class=\"item\">\r\n    <div class=\"img-wrap\">\r\n      <img decoding=\"async\" src=\"/wp-content/uploads/2026/03/item-6.webp\" alt=\"Item 2\" loading=\"lazy\" width=\"600\" height=\"400\" fetchpriority=\"low\" srcset=\"/wp-content/uploads/2026/03/item-6.webp 600w, /wp-content/uploads/2026/03/item-6-300x200.webp 300w\" sizes=\"auto\">\r\n    </div>\r\n    <div class=\"content\">\r\n      <p class=\"text\">Querés crear y lanzar tu <strong>infoproducto de 5/6 cifras</strong>.</p>\r\n    </div>\r\n  </li>\r\n  <li class=\"item\">\r\n    <div class=\"img-wrap\">\r\n      <img decoding=\"async\" src=\"/wp-content/uploads/2026/03/item-7.webp\" alt=\"Item 3\" loading=\"lazy\" width=\"600\" height=\"400\" fetchpriority=\"low\" srcset=\"/wp-content/uploads/2026/03/item-7.webp 600w, /wp-content/uploads/2026/03/item-7-300x200.webp 300w\" sizes=\"auto\">\r\n    </div>\r\n    <div class=\"content\">\r\n      <p class=\"text\">Buscás <strong>personalización 1 a 1</strong> y acceso a perspectiva con liderazgo y experiencia para recibir claridad y un roadmap preciso.</p>\r\n    </div>\r\n  </li>\r\n  <li class=\"item\">\r\n    <div class=\"img-wrap\">\r\n      <img decoding=\"async\" src=\"/wp-content/uploads/2026/03/item-8.webp\" alt=\"Item 4\" loading=\"lazy\" width=\"600\" height=\"400\" fetchpriority=\"low\" srcset=\"/wp-content/uploads/2026/03/item-8.webp 600w, /wp-content/uploads/2026/03/item-8-300x200.webp 300w\" sizes=\"auto\">\r\n    </div>\r\n    <div class=\"content\">\r\n      <p class=\"text\">Querés desbloquear tus <strong>Bloqueos Invisibles</strong> para vivir la vida en libertad que hace rato deberías estar viviendo.</p>\r\n    </div>\r\n  </li>\r\n</ul>\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>";
+const html = `<div class="elementor-element elementor-element-23e1682 e-flex e-con-boxed e-con e-parent" data-id="23e1682" data-element_type="container" data-e-type="container">
+\t\t\t\t\t<div class="e-con-inner">
+\t\t\t\t<div class="elementor-element elementor-element-3846697 elementor-widget__width-initial elementor-widget-mobile__width-inherit elementor-widget elementor-widget-icon-box" data-id="3846697" data-element_type="widget" data-e-type="widget" data-widget_type="icon-box.default">
+\t\t\t\t\t\t\t<div class="elementor-icon-box-wrapper">
+\t\t\t\t\t\t<div class="elementor-icon-box-content">
+\t\t\t\t\t\t\t\t\t<h3 class="elementor-icon-box-title">
+\t\t\t\t\t\t<span  >
+\t\t\t\t\t\t\t<span class="titulo-premium">¿Para quién es esto?</span>\t\t\t\t\t\t</span>
+\t\t\t\t\t</h3>
+\t\t\t</div>
+\t\t</div>
+\t\t\t\t\t\t</div>
+\t\t<div class="elementor-element elementor-element-7239509 e-con-full e-flex e-con e-child mce-single-column" data-id="7239509" data-element_type="container" data-e-type="container">
+\t\t\t\t<div class="elementor-element elementor-element-0885e8e elementor-widget elementor-widget-html" data-id="0885e8e" data-element_type="widget" data-e-type="widget" data-widget_type="html.default">
+\t\t\t\t\t<ul class="list">
+  <li class="item">
+    <div class="img-wrap">
+      <img decoding="async" src="/wp-content/uploads/2026/03/item-1.webp" alt="" loading="eager" width="600" height="400" fetchpriority="high">
+    </div>
+    <div class="content">
+      <p class="text">Sabes que tienes <strong>más potencial del que hoy estás expresando</strong> en tu negocio y en tu vida, pero todavía no consigues llevarlo a resultados de forma consistente.</p>
+    </div>
+  </li>
+  <li class="item">
+    <div class="img-wrap">
+      <img decoding="async" src="/wp-content/uploads/2026/03/item-2.webp" alt="" loading="lazy" width="600" height="400">
+    </div>
+    <div class="content">
+      <p class="text">Has consumido desarrollo personal, espiritualidad o consciencia, entiendes muchas cosas a nivel teórico, pero <strong>tu realidad todavía no refleja todo lo que sabes</strong>.</p>
+    </div>
+  </li>
+  <li class="item">
+    <div class="img-wrap">
+      <img decoding="async" src="/wp-content/uploads/2026/03/item-3.webp" alt="" loading="lazy" width="600" height="400">
+    </div>
+    <div class="content">
+      <p class="text">Has conseguido resultados, pero <strong>te cuesta sostenerlos</strong> sin volver a caer en los mismos patrones, perder claridad o desconectarte de tu visión.</p>
+    </div>
+  </li>
+  <li class="item">
+    <div class="img-wrap">
+      <img decoding="async" src="/wp-content/uploads/2026/03/item-4.webp" alt="" loading="lazy" width="600" height="400">
+    </div>
+    <div class="content">
+      <p class="text">Quieres construir un negocio con propósito <strong>sin tener que elegir entre expansión material y desarrollo espiritual</strong>, integrando ambos en una misma forma de vivir y operar.</p>
+    </div>
+  </li>
+  <li class="item">
+    <div class="img-wrap">
+      <img decoding="async" src="/wp-content/uploads/2026/03/item-5.webp" alt="" loading="lazy" width="600" height="400">
+    </div>
+    <div class="content">
+      <p class="text">Sientes que tu siguiente nivel no depende de aprender otra estrategia, sino de <strong>elevar tus estándares, transformar tu identidad</strong> y convertirte en la persona capaz de sostener una realidad más grande.</p>
+    </div>
+  </li>
+</ul>
+\t\t\t\t</div>
+\t\t</div>
+\t\t<div class="mce-section-cta">
+\t\t\t<a class="orb-btn" href="#formulario">
+\t\t\t\t<div class="orb orb-1"></div>
+\t\t\t\t<div class="orb orb-2"></div>
+\t\t\t\t<div class="orb orb-3"></div>
+\t\t\t\t<span class="btn-label">QUIERO SER PARTE</span>
+\t\t\t</a>
+\t\t</div>
+\t\t\t\t\t</div>
+\t\t\t\t</div>`;
 
 export function Paths() {
   return <div dangerouslySetInnerHTML={{ __html: html }} />;

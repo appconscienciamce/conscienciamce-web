@@ -8,20 +8,19 @@ import Script from 'next/script';
  * scope (they ran inline in the original document), so they must not execute
  * before the markup exists.
  */
+// three.js, Draggable and imagesLoaded were dropped with the wave and VSL —
+// nothing left on the page references them.
 const VENDOR = [
   'lenis.min.js',
   'gsap.min.js',
   'ScrollTrigger.min.js',
-  'Draggable.min.js',
-  'three.min.js',
   'particles.min.js',
-  'imagesloaded.pkgd.min.js',
 ];
 
+// section-00 (VSL player) and section-01 (Three.js wave) were dropped along
+// with the markup they drove.
 const SECTION_SCRIPTS = [
   'lenis-init.js',
-  'section-00.js',
-  'section-01.js',
   'section-02.js',
   'section-03.js',
   'section-04.js',

@@ -1,0 +1,100 @@
+/*
+ * Adjustments for the 2026 landing revision.
+ *
+ * Kept separate from the ported Elementor CSS so it stays obvious which rules
+ * are ours. Loaded after the original stylesheets.
+ */
+
+/* ── Hero without VSL ─────────────────────────────────────────────────────
+ * The original hero was sized for a video that sat below the copy, and the
+ * text block was click-through (`pointer-events:none`) because only the play
+ * button underneath was interactive. With the VSL gone the hero collapses to
+ * its content and the CTA has to be clickable again.
+ */
+.gb-widget--no-vsl {
+  min-height: auto;
+  padding-block: clamp(56px, 9vh, 120px) clamp(64px, 10vh, 140px);
+}
+
+.gb-widget--no-vsl .gb-hero {
+  position: relative;
+  top: auto;
+  left: auto;
+  transform: none;
+  pointer-events: auto;
+}
+
+/* The star backdrop was faded in by the VSL script, which no longer runs. */
+.gb-widget--no-vsl .gb-star {
+  opacity: 0.55;
+}
+
+.gb-hero-cta {
+  margin-top: clamp(28px, 4vh, 48px);
+}
+
+/* ── Qualifying list: single column ───────────────────────────────────────
+ * The original list sat in one of two side-by-side "caminos" columns. As a
+ * single full-width list the rows read better centred and capped.
+ */
+.mce-single-column {
+  width: min(880px, 100%);
+  margin-inline: auto;
+}
+
+/* ── Section-level CTA ──────────────────────────────────────────────────── */
+.mce-section-cta {
+  display: flex;
+  justify-content: center;
+  margin-top: clamp(40px, 6vh, 72px);
+}
+
+/* ── Club section ─────────────────────────────────────────────────────────
+ * Reuses the page's icon-box and list widgets; only layout is added here.
+ */
+.mce-club .mce-club-intro {
+  width: min(760px, 100%);
+  margin-inline: auto;
+  text-align: center;
+}
+
+.mce-club .mce-club-intro .text + .text {
+  margin-top: 1.25em;
+}
+
+.mce-iceberg {
+  width: min(760px, 100%);
+  margin: clamp(36px, 6vh, 72px) auto;
+}
+
+.mce-iceberg img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.mce-club-list {
+  width: min(680px, 100%);
+  margin-inline: auto;
+}
+
+/* ── Upcoming events: two cards side by side ──────────────────────────────
+ * The original block held a single card; two need a grid that collapses on
+ * narrow viewports.
+ */
+.mce-eventos-grid {
+  display: grid;
+  gap: clamp(20px, 3vw, 32px);
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  align-items: stretch;
+}
+
+.mce-eventos-grid .mce-glass-card {
+  height: 100%;
+}
+
+/* Flag emoji stands in for the country SVGs, which only exist for México. */
+.mce-eventos-grid .mce-flag {
+  font-size: 34px;
+  line-height: 1;
+}
