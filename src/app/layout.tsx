@@ -1,7 +1,5 @@
 import type { Metadata } from 'next';
 import { Instrument_Sans } from 'next/font/google';
-import './elementor-inline.css';
-import './revision-2026.css';
 
 /**
  * Instrument Sans replaces Inter across the page. The ported stylesheets
@@ -38,6 +36,13 @@ const STYLESHEETS = [
   'lenis.css',
 ];
 
+/**
+ * Our own styles, loaded after everything above so they can override the
+ * ported Elementor rules. Served from /public rather than imported — see the
+ * note in the head below.
+ */
+const OVERRIDES = ['elementor-inline.css', 'revision-2026.css'];
+
 const BODY_CLASS = [
   'wp-singular page-template page-template-elementor_canvas page page-id-1000',
   'wp-embed-responsive wp-theme-hello-elementor hello-elementor-default',
@@ -73,6 +78,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             rel="stylesheet"
             href={`/wp-content/cache/flying-press/${file}`}
           />
+        ))}
+
+        {/* Our styles are served from /public and linked here, after the
+            ported ones, so they win the cascade. Importing them as modules
+            does NOT work: Next hoists imported CSS above anything rendered
+            in <head>, which put these first and let Elementor override
+            every rule. */}
+        {OVERRIDES.map((file) => (
+          <link key={file} rel="stylesheet" href={`/css/${file}`} />
         ))}
       </head>
       <body className={BODY_CLASS}>{children}</body>
