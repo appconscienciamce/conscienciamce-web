@@ -25,6 +25,7 @@ const SECTION_SCRIPTS = [
   'section-03.js',
   'section-04.js',
   'section-05.js',
+  'iceberg.js',
 ];
 
 export function PageScripts() {

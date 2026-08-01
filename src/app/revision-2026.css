@@ -177,10 +177,6 @@
 }
 
 .mce-iceberg-figure {
-  display: grid;
-  grid-template-columns: minmax(260px, 0.9fr) minmax(280px, 1.1fr);
-  gap: clamp(24px, 4vw, 56px);
-  align-items: center;
   margin: 0;
 }
 
@@ -191,75 +187,116 @@
   overflow: visible;
 }
 
-/* A slow drift keeps the drawing from reading as a flat diagram. */
-.ice-tip,
-.ice-mass {
+/* A slow drift keeps the ice from reading as a flat diagram. */
+#mce-iceberg-scenery .ice-tip,
+#mce-iceberg-scenery .ice-mass {
   animation: mce-ice-drift 14s ease-in-out infinite;
-  transform-origin: 360px 360px;
 }
 
-.ice-mass {
+#mce-iceberg-scenery .ice-mass {
   animation-delay: -3s;
 }
 
 @keyframes mce-ice-drift {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
+  50% { transform: translateY(-7px); }
 }
 
 .ice-node {
   fill: #2f6bff;
-  opacity: 0.9;
 }
 
-.mce-iceberg-labels {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(14px, 2vh, 22px);
-  text-align: left;
+.ice-waterline-caption {
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
 
-.mce-ice-label {
+/* Callout labels rendered as HTML inside the drawing. */
+.ice-callout-box {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 8px;
-  margin: 0;
+  gap: 10px;
+  font-family: 'Inter', sans-serif;
 }
 
-.mce-ice-label-text {
-  max-width: 42ch;
+.ice-callout-detail {
+  font-size: 17px;
   line-height: 1.5;
+  color: rgb(255 255 255 / 0.72);
 }
 
-/* The waterline row is a divider, not a stratum. */
-.mce-ice-label--waterline {
-  border-block: 1px solid rgb(47 107 255 / 0.28);
-  padding-block: 10px;
+/* Callouts fade in as the section scrolls into view; the script adds
+   .is-revealed. Without JS they stay visible. */
+.mce-iceberg-svg.is-armed .ice-callout {
+  opacity: 0;
+  transform: translateX(28px);
 }
 
-.mce-ice-waterline-text {
-  font-size: 13px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: rgb(255 255 255 / 0.55);
+.mce-iceberg-svg .ice-callout {
+  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.mce-iceberg-svg.is-armed .ice-callout.is-revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ── Narrow screens ───────────────────────────────────────────────────────
+ * foreignObject text scales with the drawing, so below this width the labels
+ * would become unreadable. The callouts are dropped from the SVG and the same
+ * content is rendered as a plain list beneath it.
+ */
+.mce-iceberg-fallback {
+  display: none;
 }
 
 @media (max-width: 900px) {
-  .mce-iceberg-figure {
-    grid-template-columns: 1fr;
+  .mce-iceberg-svg .ice-callout,
+  .mce-iceberg-svg .ice-waterline-caption {
+    display: none;
   }
 
   .mce-iceberg-svg {
     max-width: 420px;
     margin-inline: auto;
   }
+
+  .mce-iceberg-fallback {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(16px, 2.5vh, 24px);
+    margin-top: clamp(28px, 4vh, 44px);
+  }
+
+  .mce-iceberg-fallback li {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    list-style: none;
+  }
+
+  .mce-iceberg-fallback .ice-callout-detail {
+    font-size: 15px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ice-tip,
-  .ice-mass {
+  #mce-iceberg-scenery .ice-tip,
+  #mce-iceberg-scenery .ice-mass {
     animation: none;
+  }
+
+  .mce-iceberg-svg .ice-callout {
+    transition: none;
+  }
+
+  .mce-iceberg-svg.is-armed .ice-callout {
+    opacity: 1;
+    transform: none;
   }
 }
 
