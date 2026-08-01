@@ -375,3 +375,31 @@ h4,
   font-size: 34px;
   line-height: 1;
 }
+
+/* ── Ripple backdrop behind the section heading ───────────────────────────
+ * BackgroundRippleEffect is absolutely positioned, so it needs a positioned
+ * block to fill. The component picks its colours from --cell-* variables it
+ * sets from Tailwind's dark palette behind a `dark:` variant; this page has
+ * no dark class, so the values are supplied here in the MCE accent instead.
+ */
+.mce-club-heading {
+  position: relative;
+  isolation: isolate;
+  padding-block: clamp(40px, 6vh, 80px);
+  overflow: hidden;
+
+  --cell-border-color: rgb(255 255 255 / 0.08);
+  --cell-fill-color: rgb(47 107 255 / 0.28);
+  --cell-shadow-color: rgb(47 107 255 / 0.45);
+}
+
+.mce-club-heading-content {
+  position: relative;
+  z-index: 4;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mce-club-heading > div:first-child {
+    display: none;
+  }
+}

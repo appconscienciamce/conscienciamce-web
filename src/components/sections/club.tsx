@@ -1,4 +1,5 @@
 import { Iceberg } from '@/components/iceberg';
+import { BackgroundRippleEffect } from '@/components/ui/background-ripple-effect';
 
 /**
  * "¿Qué es Consciencia MCE?" — new in the 2026 revision.
@@ -30,16 +31,22 @@ export function Club() {
       data-element_type="container"
     >
       <div className="e-con-inner">
-        <div className="elementor-element elementor-widget elementor-widget-icon-box">
-          <div className="elementor-icon-box-wrapper">
-            <div className="elementor-icon-box-content">
-              <h2 className="elementor-icon-box-title mce-section-title">
-                <span className="titulo-premium">¿Qué es Consciencia MCE?</span>
-              </h2>
-              <p className="elementor-icon-box-description">
-                De Consciencia MCE nace <span className="remarcado">el Club</span>: la base y los
-                fundamentos sobre los que se construye todo lo demás.
-              </p>
+        {/* The ripple grid is a backdrop: it fills this block and the heading
+            sits above it. */}
+        <div className="mce-club-heading">
+          <BackgroundRippleEffect rows={6} cols={27} cellSize={56} />
+
+          <div className="elementor-element elementor-widget elementor-widget-icon-box mce-club-heading-content">
+            <div className="elementor-icon-box-wrapper">
+              <div className="elementor-icon-box-content">
+                <h2 className="elementor-icon-box-title mce-section-title">
+                  <span className="titulo-premium">¿Qué es Consciencia MCE?</span>
+                </h2>
+                <p className="elementor-icon-box-description">
+                  De Consciencia MCE nace <span className="remarcado">el Club</span>: la base y los
+                  fundamentos sobre los que se construye todo lo demás.
+                </p>
+              </div>
             </div>
           </div>
         </div>
