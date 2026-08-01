@@ -1,6 +1,18 @@
 import type { Metadata } from 'next';
+import { Instrument_Sans } from 'next/font/google';
 import './elementor-inline.css';
 import './revision-2026.css';
+
+/**
+ * Instrument Sans replaces Inter across the page. The ported stylesheets
+ * declare Inter in 26 places, so rather than editing each one the family is
+ * exposed as a variable and overridden in revision-2026.css.
+ */
+const instrumentSans = Instrument_Sans({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-instrument-sans',
+});
 
 /**
  * Faithful port of the original WordPress/Elementor page.
@@ -53,7 +65,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es">
+    <html lang="es" className={instrumentSans.variable}>
       <head>
         {STYLESHEETS.map((file) => (
           <link

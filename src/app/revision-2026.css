@@ -12,6 +12,62 @@
  */
 :root {
   --mce-content-width: 1140px;
+
+  /* Text colours: titles pure white, body a light grey-white. */
+  --mce-title: #ffffff;
+  --mce-body: rgb(255 255 255 / 0.72);
+}
+
+/* ── Typeface ─────────────────────────────────────────────────────────────
+ * The ported stylesheets hardcode Inter in 26 places. Rather than editing each
+ * one, Instrument Sans is substituted wherever Inter is declared. Bebas Neue
+ * is left alone — it is a display face used deliberately.
+ */
+body,
+body button,
+body input,
+body select,
+body textarea,
+body .elementor-widget,
+body .elementor-heading-title,
+body .elementor-icon-box-title,
+body .elementor-icon-box-description,
+body .mce-section-title,
+body .gb-hero,
+body .gb-promise,
+body .gb-description,
+body .badge-camino,
+body .btn-label,
+body .list .item .content .text,
+body .mce-club-intro .text,
+body .ice-callout-box,
+body .mce-glass-card,
+body .mce-evento-label,
+body .mce-evento-value,
+body .mce-evento-sublabel {
+  font-family: var(--font-instrument-sans), 'Instrument Sans', sans-serif;
+}
+
+/* ── Text colour ──────────────────────────────────────────────────────────
+ * Headings read pure white; descriptions and running copy sit a step back.
+ */
+h1,
+h2,
+h3,
+h4,
+.elementor-heading-title,
+.elementor-icon-box-title,
+.mce-section-title,
+.gb-promise {
+  color: var(--mce-title);
+}
+
+.elementor-icon-box-description,
+.gb-description,
+.list .item .content .text,
+.mce-club-intro .text,
+.ice-callout-detail {
+  color: var(--mce-body);
 }
 
 .mce-single-column,
@@ -28,14 +84,25 @@
  * button underneath was interactive. With the VSL gone the hero is a fixed
  * ~700px stage holding the Spline backdrop, and the CTA must be clickable.
  */
+.gb-widget {
+  height: 700px;
+  min-height: 700px;
+}
+
 .gb-widget--no-vsl {
   position: relative;
-  min-height: 700px;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   isolation: isolate;
+}
+
+/* Pull the photo scene up under the hero so the two sections overlap. */
+.gb-scene {
+  margin-top: -150px;
+  position: relative;
+  z-index: 2;
 }
 
 .gb-widget--no-vsl .gb-hero {
@@ -98,8 +165,13 @@
 }
 
 @media (max-width: 767px) {
-  .gb-widget--no-vsl {
+  .gb-widget {
+    height: 560px;
     min-height: 560px;
+  }
+
+  .gb-scene {
+    margin-top: -80px;
   }
 }
 
