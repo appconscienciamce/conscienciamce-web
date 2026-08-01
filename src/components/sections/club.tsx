@@ -1,6 +1,5 @@
 import { Iceberg } from '@/components/iceberg';
 import { BackgroundRippleEffect } from '@/components/ui/background-ripple-effect';
-import { Narrative } from '@/components/narrative';
 
 /**
  * "¿Qué es Consciencia MCE?" — new in the 2026 revision.
@@ -77,7 +76,13 @@ export function Club() {
           </div>
         </div>
 
-        <Narrative phrases={WHAT_IS_MCE} className="mce-narrative" />
+        <div className="mce-narrative">
+          {WHAT_IS_MCE.map((phrase) => (
+            <p key={phrase} className="mce-narrative-line">
+              {phrase}
+            </p>
+          ))}
+        </div>
 
         <div className="mce-chain">
           <p className="mce-chain-lead">La filosofía de MCE parte de una idea central:</p>
@@ -95,16 +100,34 @@ export function Club() {
               <span>Materia</span>
             </li>
           </ol>
-          <Narrative phrases={CHAIN_NOTES} className="mce-narrative" />
+          <div className="mce-narrative">
+          {CHAIN_NOTES.map((phrase) => (
+            <p key={phrase} className="mce-narrative-line">
+              {phrase}
+            </p>
+          ))}
+        </div>
         </div>
 
-        <Narrative phrases={ICEBERG_COPY} className="mce-narrative" />
+        <div className="mce-narrative">
+          {ICEBERG_COPY.map((phrase) => (
+            <p key={phrase} className="mce-narrative-line">
+              {phrase}
+            </p>
+          ))}
+        </div>
 
         <div className="mce-iceberg">
           <Iceberg />
         </div>
 
-        <Narrative phrases={CLUB_INTRO} className="mce-narrative" />
+        <div className="mce-narrative">
+          {CLUB_INTRO.map((phrase) => (
+            <p key={phrase} className="mce-narrative-line">
+              {phrase}
+            </p>
+          ))}
+        </div>
 
         <div className="elementor-element elementor-widget elementor-widget-icon-box">
           <div className="elementor-icon-box-wrapper">

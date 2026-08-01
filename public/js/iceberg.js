@@ -24,12 +24,10 @@
 
   svg.classList.add('is-armed');
 
+  // Each callout carries its own --i, so the stagger lives in CSS; the script
+  // only decides when the sequence starts.
   var reveal = function () {
-    Array.prototype.forEach.call(callouts, function (callout, index) {
-      window.setTimeout(function () {
-        callout.classList.add('is-revealed');
-      }, index * 220);
-    });
+    svg.classList.add('is-revealed');
   };
 
   if (window.gsap && window.ScrollTrigger) {
