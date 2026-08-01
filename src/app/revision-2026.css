@@ -115,6 +115,41 @@
   margin-top: clamp(40px, 6vh, 72px);
 }
 
+/* ── Section titles ───────────────────────────────────────────────────────
+ * The original styles the section headings per Elementor element id, so a new
+ * section inherits none of it. This restates the same token — Inter 36/700 at
+ * -1px tracking, scaling to 4vw on tablet and 6vw on mobile — so headings
+ * added in this revision match the ones that were ported.
+ */
+.mce-section-title,
+.mce-section-title a {
+  font-family: 'Inter', Sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -1px;
+  color: #fff;
+  margin-block-end: 10px;
+}
+
+.mce-section-title--sub,
+.mce-section-title--sub a {
+  font-size: 28px;
+}
+
+@media (max-width: 1024px) {
+  .mce-section-title,
+  .mce-section-title a {
+    font-size: 4vw;
+  }
+}
+
+@media (max-width: 767px) {
+  .mce-section-title,
+  .mce-section-title a {
+    font-size: 6vw;
+  }
+}
+
 /* ── Club section ─────────────────────────────────────────────────────────
  * Reuses the page's icon-box and list widgets; only layout is added here.
  * Containers run the full 1140px measure, but running prose is capped so
@@ -133,14 +168,99 @@
   margin-top: 1.25em;
 }
 
+/* ── Iceberg ──────────────────────────────────────────────────────────────
+ * Drawing and labels sit side by side on desktop and stack on narrow screens.
+ * The labels are ordered top-to-bottom to match the strata they name.
+ */
 .mce-iceberg {
   margin-block: clamp(36px, 6vh, 72px);
 }
 
-.mce-iceberg img {
+.mce-iceberg-figure {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.9fr) minmax(280px, 1.1fr);
+  gap: clamp(24px, 4vw, 56px);
+  align-items: center;
+  margin: 0;
+}
+
+.mce-iceberg-svg {
   width: 100%;
   height: auto;
   display: block;
+  overflow: visible;
+}
+
+/* A slow drift keeps the drawing from reading as a flat diagram. */
+.ice-tip,
+.ice-mass {
+  animation: mce-ice-drift 14s ease-in-out infinite;
+  transform-origin: 360px 360px;
+}
+
+.ice-mass {
+  animation-delay: -3s;
+}
+
+@keyframes mce-ice-drift {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.ice-node {
+  fill: #2f6bff;
+  opacity: 0.9;
+}
+
+.mce-iceberg-labels {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(14px, 2vh, 22px);
+  text-align: left;
+}
+
+.mce-ice-label {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 0;
+}
+
+.mce-ice-label-text {
+  max-width: 42ch;
+  line-height: 1.5;
+}
+
+/* The waterline row is a divider, not a stratum. */
+.mce-ice-label--waterline {
+  border-block: 1px solid rgb(47 107 255 / 0.28);
+  padding-block: 10px;
+}
+
+.mce-ice-waterline-text {
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.55);
+}
+
+@media (max-width: 900px) {
+  .mce-iceberg-figure {
+    grid-template-columns: 1fr;
+  }
+
+  .mce-iceberg-svg {
+    max-width: 420px;
+    margin-inline: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ice-tip,
+  .ice-mass {
+    animation: none;
+  }
 }
 
 /* ── Upcoming events: two cards side by side ──────────────────────────────
