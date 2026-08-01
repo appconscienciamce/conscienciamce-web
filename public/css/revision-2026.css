@@ -493,3 +493,101 @@ h4,
     flex-direction: column;
   }
 }
+
+/* ── Narrative reveal ─────────────────────────────────────────────────────
+ * TextGenerateEffect ships with `text-black dark:text-white`; this page has
+ * no `dark` class, so the copy would render black on black. The colour is
+ * forced here rather than by editing the vendored component.
+ */
+.mce-narrative {
+  max-width: 68ch;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.mce-narrative-line,
+.mce-narrative-line span,
+.mce-narrative-line div {
+  color: var(--mce-body) !important;
+  font-family: var(--font-instrument-sans), 'Instrument Sans', sans-serif;
+  font-weight: 400;
+  font-size: clamp(16px, 1.5vw, 18px);
+  line-height: 1.6;
+  letter-spacing: normal;
+}
+
+/* The vendored component adds its own top margin and bold weight. */
+.mce-narrative-line > div {
+  margin-top: 0;
+}
+
+.mce-narrative-line + .mce-narrative-line {
+  margin-top: 1.1em;
+}
+
+/* Shown before the reveal begins, to hold the layout. */
+.mce-narrative-line.is-pending {
+  opacity: 0;
+}
+
+/* ── Pure white emphasis ──────────────────────────────────────────────────
+ * The ported `remarcado` treatment is a white block with black text. Plain
+ * white type reads better against the dark page.
+ */
+.remarcado {
+  background: none !important;
+  color: #fff !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  font-weight: 600;
+}
+
+/* The chain lead-in reads as white, not muted. */
+.mce-chain-lead {
+  color: #fff;
+}
+
+/* ── Promise typography ───────────────────────────────────────────────────
+ * Match the family used across the rest of the page.
+ */
+.gb-promise {
+  font-family: var(--font-instrument-sans), 'Instrument Sans', sans-serif;
+}
+
+/* ── Section titles carry the promise's animated fill ─────────────────────
+ * The promise uses `titulo-premium-2` (premium-reflection); section headings
+ * used the plainer `titulo-premium` shimmer. This gives headings the same
+ * treatment so the page reads as one system.
+ */
+.mce-section-title .titulo-premium,
+.elementor-icon-box-title .titulo-premium,
+.elementor-heading-title .titulo-premium {
+  background: linear-gradient(
+    115deg,
+    #6f6f6f 0%,
+    #f4f8ff 16%,
+    #ffffff 28%,
+    #dbe7ff 40%,
+    #6392ea 50%,
+    #f7faff 60%,
+    #c9dbff 72%,
+    #ffffff 84%,
+    #6f6f6f 100%
+  );
+  background-size: 220% 220%;
+  background-position: 0% 50%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: premium-reflection 7s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mce-section-title .titulo-premium,
+  .elementor-icon-box-title .titulo-premium,
+  .elementor-heading-title .titulo-premium {
+    animation: none;
+  }
+}
