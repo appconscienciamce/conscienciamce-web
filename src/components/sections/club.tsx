@@ -1,5 +1,6 @@
 import { Iceberg } from '@/components/iceberg';
 import { ClubGrid } from '@/components/club-grid';
+import FlyingPosters from '@/components/ui/flying-posters';
 import { BackgroundRippleEffect } from '@/components/ui/background-ripple-effect';
 
 /**
@@ -14,6 +15,23 @@ import { BackgroundRippleEffect } from '@/components/ui/background-ripple-effect
  * (Inter 36/700, -1px tracking, shimmer fill), which the original applied per
  * element id and therefore does not reach a new section on its own.
  */
+
+/** Photos for the flanking columns, split so the two sides never repeat. */
+const POSTERS_LEFT = [
+  '/wp-content/uploads/2026/03/img2.webp',
+  '/wp-content/uploads/2026/03/img5.webp',
+  '/wp-content/uploads/2026/03/img7.webp',
+  '/wp-content/uploads/2026/03/img10.webp',
+  '/wp-content/uploads/2026/03/img13.webp',
+];
+
+const POSTERS_RIGHT = [
+  '/wp-content/uploads/2026/03/img20.webp',
+  '/wp-content/uploads/2026/03/img21.webp',
+  '/wp-content/uploads/2026/03/img22.webp',
+  '/wp-content/uploads/2026/03/img24.webp',
+  '/wp-content/uploads/2026/03/img16.webp',
+];
 
 /** What MCE is, as phrases — revealed one at a time. */
 const WHAT_IS_MCE = [
@@ -47,6 +65,15 @@ export function Club() {
       className="elementor-element e-flex e-con-boxed e-con e-parent mce-club"
       data-element_type="container"
     >
+      {/* Photo columns flanking the passage, drifting as the reader scrolls.
+          Hidden on narrow screens, where there is no room beside the text. */}
+      <div className="mce-posters mce-posters--left">
+        <FlyingPosters items={POSTERS_LEFT} planeWidth={260} planeHeight={320} opacity={0.5} />
+      </div>
+      <div className="mce-posters mce-posters--right">
+        <FlyingPosters items={POSTERS_RIGHT} planeWidth={260} planeHeight={320} opacity={0.5} />
+      </div>
+
       <div className="e-con-inner">
         {/* The ripple grid is a backdrop: it fills this block and the heading
             sits above it. */}
