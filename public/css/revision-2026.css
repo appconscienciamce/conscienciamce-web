@@ -223,7 +223,8 @@ h4,
 .mce-club .mce-club-intro .text + .text {
   margin-top: 1.25em;
 }
-/* ── Iceberg ──────────────────────────────────────────────────────────────
+
+/* ── Iceberg ──────────────────────────────────────────────────────────────
  * The ice sits centred with callouts alternating sides, so the composition
  * stays balanced around it.
  */
@@ -1232,7 +1233,7 @@ h4,
  * Everything below follows it up, so the page keeps its rhythm.
  */
 .gb-scene {
-  margin-top: -100px;
+  margin-top: -70px;
   position: relative;
   z-index: 2;
 }
@@ -1364,110 +1365,13 @@ h4,
   margin-top: clamp(32px, 4.5vh, 52px);
 }
 
-/* ── Instrument Serif in place of Inter ───────────────────────────────────
- * The ported CSS declares Inter throughout. Everywhere it does, the serif is
- * substituted instead. Bebas Neue is left alone — it is a display face the
- * original chose deliberately.
- */
-body,
-body .elementor-widget,
-body .elementor-heading-title,
-body .elementor-icon-box-title,
-body .elementor-icon-box-description,
-body .mce-section-title,
-body .gb-hero,
-body .gb-promise,
-body .gb-description,
-body .mce-narrative-line,
-body .mce-chain-lead,
-body .mce-chain-steps li span,
-body .mce-club-bridge,
-body .ice-callout-box,
-body .ice-callout-detail,
-body .fp-heading,
-body .fp-description,
-body .mce-glass-card,
-body .mce-evento-label,
-body .mce-evento-value,
-body .mce-evento-sublabel,
-body .mce-paths .grid > div > p {
-  font-family: var(--font-instrument-serif), 'Instrument Serif', Georgia, serif;
-}
 
-.mce-section-title,
-.mce-section-title a {
-  font-family: var(--font-instrument-serif), 'Instrument Serif', Georgia, serif;
-}
 
-/* Serif renders optically smaller than sans at the same size. */
+/* Back to 32px: the bump to 36 was to compensate for the serif, now reverted. */
 .elementor-1000 .elementor-icon-box-title,
 .elementor-1000 .elementor-heading-title,
 .mce-section-title,
 .mce-section-title--sub {
-  font-size: 36px;
-  letter-spacing: -0.5px;
-}
-
-/* ── FlyingPosters (React Bits) ───────────────────────────────────────────
- * Component CSS, plus the columns that flank the Consciencia MCE passage.
- */
-.posters-container {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  position: relative;
-}
-
-.posters-canvas {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-.mce-club {
-  position: relative;
-}
-
-.mce-posters {
-  position: absolute;
-  top: 0;
-  /* Stop at the iceberg rather than running the whole section. */
-  height: 78%;
-  width: clamp(180px, 17vw, 280px);
-  z-index: 0;
-  pointer-events: none;
-  /* Fade at every edge so the columns sit in the page, not on top of it. */
-  mask-image: linear-gradient(180deg, transparent, #000 18%, #000 76%, transparent),
-    linear-gradient(90deg, #000, #000);
-  -webkit-mask-image: linear-gradient(180deg, transparent, #000 18%, #000 76%, transparent),
-    linear-gradient(90deg, #000, #000);
-  mask-composite: intersect;
-  -webkit-mask-composite: source-in;
-}
-
-.mce-posters--left {
-  left: 0;
-}
-
-.mce-posters--right {
-  right: 0;
-}
-
-/* The passage keeps clear of the columns. */
-.mce-club > .e-con-inner {
-  position: relative;
-  z-index: 1;
-}
-
-/* No room beside the text below this width. */
-@media (max-width: 1279px) {
-  .mce-posters {
-    display: none;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .mce-posters {
-    display: none;
-  }
+  font-size: 32px;
+  letter-spacing: -1px;
 }
