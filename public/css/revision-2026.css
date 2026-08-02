@@ -1144,3 +1144,9 @@ h4,
   stroke: rgba(218, 240, 255, 0.85);
   stroke-width: 1.7;
 }
+
+/* The reference wrapper is a fixed 1140px but relies on its parent to centre
+   it; Elementor's container does not, so it is centred here. */
+.mce-club-access .fp-benefits-wrapper {
+  margin-inline: auto;
+}
