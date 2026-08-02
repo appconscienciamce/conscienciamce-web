@@ -1150,3 +1150,35 @@ h4,
 .mce-club-access .fp-benefits-wrapper {
   margin-inline: auto;
 }
+
+/* ── "¿Para quién es esto?" grid ──────────────────────────────────────────
+ * The demo grid is capped at max-w-7xl; hold it to the page measure instead.
+ * With five cards a four-column grid leaves one stranded, so the last row is
+ * balanced at three columns from the medium breakpoint up.
+ */
+.mce-paths .py-20 {
+  padding-block: clamp(36px, 6vh, 72px);
+}
+
+.mce-paths .max-w-7xl {
+  max-width: var(--mce-content-width);
+}
+
+@media (min-width: 768px) {
+  .mce-paths .grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  /* Three across, then two centred underneath. */
+  .mce-paths .grid > div {
+    grid-column: span 2;
+  }
+
+  .mce-paths .grid > div:nth-child(4) {
+    grid-column: 2 / span 2;
+  }
+
+  .mce-paths .grid > div:nth-child(5) {
+    grid-column: 4 / span 2;
+  }
+}
