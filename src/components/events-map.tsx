@@ -6,12 +6,13 @@ import WorldMap from '@/components/ui/world-map';
 /**
  * Upcoming events on a world map.
  *
- * WorldMap draws a pulsing dot at both ends of every arc, so routing both
- * events out of a shared origin would stack two dots on the same spot. The arc
- * runs Bariloche → Egypt instead: one dot per destination, no duplicates.
+ * Pin placement is given in percentages of the map box rather than lat/lng.
+ * The rendered map is a 1056x495 image inside a 2:1 container, so its drawing
+ * does not line up with a plain equirectangular projection — positions measured
+ * against what is actually on screen are the reliable ones.
  *
- * The component has no notion of interaction, so the markers are a layer on
- * top of it, positioned with the same projection it uses internally.
+ * The arc is then derived from those same percentages, so the line always
+ * lands on the pins instead of drifting from them.
  */
 
 type EventPin = {
@@ -20,8 +21,9 @@ type EventPin = {
   date: string;
   blurb: string;
   image: string;
-  lat: number;
-  lng: number;
+  /** Position within the map box, in percent. */
+  x: number;
+  y: number;
   /** Which side the card opens towards, to stay inside the map. */
   align: 'left' | 'right';
 };
@@ -33,8 +35,8 @@ const EVENTS: EventPin[] = [
     date: 'Fecha a confirmar',
     blurb: 'Un encuentro entre montaña y lago, para bajar a tierra lo trabajado.',
     image: '/bariloche.jpg',
-    lat: -41.1335,
-    lng: -71.3103,
+    x: 34,
+    y: 90,
     align: 'right',
   },
   {
@@ -43,26 +45,29 @@ const EVENTS: EventPin[] = [
     date: 'Fecha a confirmar',
     blurb: 'Un viaje a los orígenes, donde la consciencia y la materia se cruzan.',
     image: '/egipto.jpg',
-    lat: 26.8206,
-    lng: 30.8025,
+    x: 55,
+    y: 42,
     align: 'left',
   },
 ];
 
-/** Same projection WorldMap applies to its own points. */
-const project = (lat: number, lng: number) => ({
-  x: ((lng + 180) / 360) * 100,
-  y: ((90 - lat) / 180) * 100,
+/**
+ * WorldMap takes lat/lng and projects with x = (lng+180)*(800/360),
+ * y = (90-lat)*(400/180) over an 800x400 viewBox. Inverting that lets a
+ * measured percentage drive the arc.
+ */
+const toLatLng = (xPct: number, yPct: number) => ({
+  lng: (xPct / 100) * 360 - 180,
+  lat: 90 - (yPct / 100) * 180,
 });
 
 function Pin({ event }: { event: EventPin }) {
   const [open, setOpen] = useState(false);
-  const { x, y } = project(event.lat, event.lng);
 
   return (
     <div
       className={`mce-map-pin mce-map-pin--${event.align}${open ? ' is-open' : ''}`}
-      style={{ left: `${x}%`, top: `${y}%` }}
+      style={{ left: `${event.x}%`, top: `${event.y}%` }}
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
     >
@@ -94,16 +99,36 @@ function Pin({ event }: { event: EventPin }) {
   );
 }
 
+function EventDetails({ event }: { event: EventPin }) {
+  return (
+    <>
+      <div className="mce-map-card-media">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={event.image} alt="" loading="lazy" />
+      </div>
+      <div className="mce-map-card-body">
+        <p className="mce-map-card-place">{event.place}</p>
+        <p className="mce-map-card-date">{event.date}</p>
+        <p className="mce-map-card-blurb">{event.blurb}</p>
+      </div>
+    </>
+  );
+}
+
 export function EventsMap() {
   return (
     <div className="mce-map">
+      <p className="mce-map-hint">
+        Pasá el mouse o tocá los puntos de destino
+      </p>
+
       <div className="mce-map-canvas">
         <WorldMap
           lineColor="#2f6bff"
           dots={[
             {
-              start: { lat: EVENTS[0].lat, lng: EVENTS[0].lng },
-              end: { lat: EVENTS[1].lat, lng: EVENTS[1].lng },
+              start: toLatLng(EVENTS[0].x, EVENTS[0].y),
+              end: toLatLng(EVENTS[1].x, EVENTS[1].y),
             },
           ]}
         />
@@ -117,15 +142,7 @@ export function EventsMap() {
       <ul className="mce-map-list">
         {EVENTS.map((event) => (
           <li key={event.id}>
-            <div className="mce-map-card-media">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={event.image} alt="" loading="lazy" />
-            </div>
-            <div className="mce-map-card-body">
-              <p className="mce-map-card-place">{event.place}</p>
-              <p className="mce-map-card-date">{event.date}</p>
-              <p className="mce-map-card-blurb">{event.blurb}</p>
-            </div>
+            <EventDetails event={event} />
           </li>
         ))}
       </ul>

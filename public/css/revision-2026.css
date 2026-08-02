@@ -1551,6 +1551,7 @@ h4,
 .mce-map {
   width: min(var(--mce-content-width), 100%);
   margin: 0 auto clamp(32px, 5vh, 56px);
+  margin-top: -50px;
 }
 
 .mce-map-canvas {
@@ -1773,4 +1774,88 @@ h4,
 .mce-map-card-body {
   margin-top: -6px;
   position: relative;
+}
+
+/* ── Map hint ─────────────────────────────────────────────────────────────
+ * Tells the reader the dots are interactive; on narrow screens the pins are
+ * replaced by a list, so it is hidden there.
+ */
+.mce-map-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 auto clamp(14px, 2vh, 22px);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.6);
+  background: rgb(255 255 255 / 0.04);
+  border: 1px solid rgb(255 255 255 / 0.1);
+}
+
+.mce-map {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mce-map-canvas {
+  width: 100%;
+}
+
+/* ── Mobile ───────────────────────────────────────────────────────────────
+ * The map stays as a backdrop but stops being the interface; the events read
+ * as cards underneath it.
+ */
+@media (max-width: 900px) {
+  .mce-map-hint {
+    display: none;
+  }
+
+  .mce-map-canvas {
+    opacity: 0.55;
+  }
+
+  .mce-map-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    width: 100%;
+  }
+
+  .mce-map-list li {
+    display: block;
+  }
+
+  .mce-map-list .mce-map-card-media {
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+  }
+
+  .mce-map-list .mce-map-card-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .mce-map-list .mce-map-card-media::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 45%, rgb(12 12 16 / 0.95) 100%);
+  }
+
+  .mce-map-list .mce-map-card-body {
+    padding: 14px 16px 18px;
+    margin-top: -6px;
+  }
+}
+
+@media (max-width: 560px) {
+  .mce-map-canvas {
+    opacity: 0.4;
+  }
 }
