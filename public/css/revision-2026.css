@@ -1691,3 +1691,86 @@ h4,
     border: 1px solid rgb(255 255 255 / 0.1);
   }
 }
+
+/* ── Events map: sit close under the intro copy ───────────────────────────
+ * The map carries its own dark falloff, so it reads as a continuation of the
+ * paragraph above rather than a separate block.
+ */
+.mce-map {
+  margin-top: 0;
+  margin-bottom: clamp(24px, 4vh, 44px);
+}
+
+/* Badge beside each dot. */
+.mce-map-hit {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: auto;
+  height: auto;
+  padding: 4px;
+}
+
+.mce-map-badge {
+  padding: 3px 9px;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #dce7ff;
+  background: rgb(12 12 16 / 0.72);
+  border: 1px solid rgb(47 107 255 / 0.3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.mce-map-pin.is-open .mce-map-badge {
+  color: #fff;
+  border-color: rgb(47 107 255 / 0.6);
+}
+
+/* The badge trails the dot on the left-aligned pin. */
+.mce-map-pin--left .mce-map-hit {
+  flex-direction: row-reverse;
+}
+
+/* Cards open away from the map edge. */
+.mce-map-pin--right .mce-map-card {
+  left: 0;
+  transform: translate(0, 6px);
+}
+
+.mce-map-pin--right.is-open .mce-map-card {
+  transform: translate(0, 0);
+}
+
+.mce-map-pin--left .mce-map-card {
+  left: auto;
+  right: 0;
+  transform: translate(0, 6px);
+}
+
+.mce-map-pin--left.is-open .mce-map-card {
+  transform: translate(0, 0);
+}
+
+/* The photo fades into the card body rather than cutting against it. */
+.mce-map-card-media {
+  position: relative;
+}
+
+.mce-map-card-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent 45%, rgb(12 12 16 / 0.95) 100%);
+}
+
+.mce-map-card-body {
+  margin-top: -6px;
+  position: relative;
+}

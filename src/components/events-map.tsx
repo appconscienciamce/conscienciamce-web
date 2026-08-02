@@ -6,107 +6,114 @@ import WorldMap from '@/components/ui/world-map';
 /**
  * Upcoming events on a world map.
  *
- * WorldMap draws the arcs and their pulsing endpoints but has no notion of
- * interaction, so the clickable markers are a layer on top of it, positioned
- * with the same projection the component uses internally. The map is left
- * untouched.
+ * WorldMap draws a pulsing dot at both ends of every arc, so routing both
+ * events out of a shared origin would stack two dots on the same spot. The arc
+ * runs Bariloche → Egypt instead: one dot per destination, no duplicates.
+ *
+ * The component has no notion of interaction, so the markers are a layer on
+ * top of it, positioned with the same projection it uses internally.
  */
 
 type EventPin = {
   id: string;
   place: string;
-  country: string;
   date: string;
   blurb: string;
   image: string;
   lat: number;
   lng: number;
+  /** Which side the card opens towards, to stay inside the map. */
+  align: 'left' | 'right';
 };
-
-/** Buenos Aires — where the arcs start. */
-const ORIGIN = { lat: -34.6037, lng: -58.3816 };
 
 const EVENTS: EventPin[] = [
   {
     id: 'bariloche',
     place: 'Bariloche',
-    country: 'Argentina',
     date: 'Fecha a confirmar',
     blurb: 'Un encuentro entre montaña y lago, para bajar a tierra lo trabajado.',
-    image: '/wp-content/uploads/2026/03/img13.webp',
+    image: '/bariloche.jpg',
     lat: -41.1335,
     lng: -71.3103,
+    align: 'right',
   },
   {
     id: 'egipto',
     place: 'Egipto',
-    country: 'Egipto',
     date: 'Fecha a confirmar',
     blurb: 'Un viaje a los orígenes, donde la consciencia y la materia se cruzan.',
-    image: '/wp-content/uploads/2026/03/img20.webp',
+    image: '/egipto.jpg',
     lat: 26.8206,
     lng: 30.8025,
+    align: 'left',
   },
 ];
 
 /** Same projection WorldMap applies to its own points. */
 const project = (lat: number, lng: number) => ({
-  x: ((lng + 180) * (800 / 360) * 100) / 800,
-  y: ((90 - lat) * (400 / 180) * 100) / 400,
+  x: ((lng + 180) / 360) * 100,
+  y: ((90 - lat) / 180) * 100,
 });
 
-export function EventsMap() {
-  const [active, setActive] = useState<string | null>(null);
+function Pin({ event }: { event: EventPin }) {
+  const [open, setOpen] = useState(false);
+  const { x, y } = project(event.lat, event.lng);
 
+  return (
+    <div
+      className={`mce-map-pin mce-map-pin--${event.align}${open ? ' is-open' : ''}`}
+      style={{ left: `${x}%`, top: `${y}%` }}
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+    >
+      <button
+        type="button"
+        className="mce-map-hit"
+        aria-expanded={open}
+        aria-label={`Ver el evento en ${event.place}`}
+        onFocus={() => setOpen(true)}
+        onBlur={() => setOpen(false)}
+        onClick={() => setOpen((v) => !v)}
+      >
+        <span className="mce-map-hit-dot" aria-hidden="true" />
+        <span className="mce-map-badge">{event.place}</span>
+      </button>
+
+      <div className="mce-map-card" role="dialog" aria-label={event.place}>
+        <div className="mce-map-card-media">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={event.image} alt="" loading="lazy" />
+        </div>
+        <div className="mce-map-card-body">
+          <p className="mce-map-card-place">{event.place}</p>
+          <p className="mce-map-card-date">{event.date}</p>
+          <p className="mce-map-card-blurb">{event.blurb}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function EventsMap() {
   return (
     <div className="mce-map">
       <div className="mce-map-canvas">
         <WorldMap
           lineColor="#2f6bff"
-          dots={EVENTS.map((event) => ({
-            start: ORIGIN,
-            end: { lat: event.lat, lng: event.lng },
-          }))}
+          dots={[
+            {
+              start: { lat: EVENTS[0].lat, lng: EVENTS[0].lng },
+              end: { lat: EVENTS[1].lat, lng: EVENTS[1].lng },
+            },
+          ]}
         />
 
-        {EVENTS.map((event) => {
-          const { x, y } = project(event.lat, event.lng);
-          const isOpen = active === event.id;
-
-          return (
-            <div
-              key={event.id}
-              className={`mce-map-pin${isOpen ? ' is-open' : ''}`}
-              style={{ left: `${x}%`, top: `${y}%` }}
-            >
-              <button
-                type="button"
-                className="mce-map-hit"
-                aria-expanded={isOpen}
-                aria-label={`Ver el evento en ${event.place}`}
-                onClick={() => setActive(isOpen ? null : event.id)}
-              >
-                <span className="mce-map-hit-dot" aria-hidden="true" />
-              </button>
-
-              <div className="mce-map-card" role="dialog" aria-label={event.place}>
-                <div className="mce-map-card-media">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={event.image} alt="" loading="lazy" />
-                </div>
-                <div className="mce-map-card-body">
-                  <p className="mce-map-card-place">{event.place}</p>
-                  <p className="mce-map-card-date">{event.date}</p>
-                  <p className="mce-map-card-blurb">{event.blurb}</p>
-                </div>
-              </div>
-            </div>
-          );
-        })}
+        {EVENTS.map((event) => (
+          <Pin event={event} key={event.id} />
+        ))}
       </div>
 
-      {/* On narrow screens the pins are too small to hit, so the same
-          information is listed below the map. */}
+      {/* Below the map on narrow screens, where the pins are too small to hit. */}
       <ul className="mce-map-list">
         {EVENTS.map((event) => (
           <li key={event.id}>
