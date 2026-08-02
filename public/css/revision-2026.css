@@ -1531,3 +1531,185 @@ h4,
     height: 50px;
   }
 }
+
+/* ── Testimonial poster and play button ───────────────────────────────────
+ * The frame shows grey while the Drive thumbnail loads or if it fails, rather
+ * than whatever the browser paints behind a broken image.
+ */
+.mce-testimonial-play {
+  background: linear-gradient(180deg, #1a1a1f, #101014);
+}
+
+.mce-testimonial-play img {
+  background: #16161a;
+}
+
+/* Glass play button. */
+.mce-testimonial-icon {
+  background: rgb(255 255 255 / 0.12);
+  border: 1px solid rgb(255 255 255 / 0.28);
+  backdrop-filter: blur(14px) saturate(1.4);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.3),
+    inset 0 -1px 0 rgb(255 255 255 / 0.08),
+    0 10px 28px rgb(0 0 0 / 0.45);
+}
+
+.mce-testimonial-play:hover .mce-testimonial-icon {
+  background: rgb(255 255 255 / 0.2);
+  transform: translate(-50%, -50%) scale(1.08);
+}
+
+/* More air above the section. */
+.mce-testimonials {
+  padding-block: clamp(72px, 10vh, 128px) clamp(48px, 7vh, 88px);
+}
+
+/* ── Events map ───────────────────────────────────────────────────────────
+ * WorldMap draws the arcs; the pins on top of it are ours, positioned with
+ * the same projection so they land on the arc endpoints.
+ */
+.mce-map {
+  width: min(var(--mce-content-width), 100%);
+  margin: 0 auto clamp(32px, 5vh, 56px);
+}
+
+.mce-map-canvas {
+  position: relative;
+  width: 100%;
+}
+
+.mce-map-pin {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+}
+
+.mce-map-hit {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+}
+
+.mce-map-hit-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #2f6bff;
+  box-shadow: 0 0 0 4px rgb(47 107 255 / 0.22), 0 0 16px rgb(47 107 255 / 0.7);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.mce-map-hit:hover .mce-map-hit-dot,
+.mce-map-pin.is-open .mce-map-hit-dot {
+  transform: scale(1.25);
+  box-shadow: 0 0 0 6px rgb(47 107 255 / 0.28), 0 0 22px rgb(47 107 255 / 0.9);
+}
+
+.mce-map-hit:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+/* The card sits above its pin, revealed on click. */
+.mce-map-card {
+  position: absolute;
+  bottom: calc(100% + 14px);
+  left: 50%;
+  width: 244px;
+  transform: translate(-50%, 6px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgb(12 12 16 / 0.92);
+  border: 1px solid rgb(47 107 255 / 0.3);
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  box-shadow: 0 20px 44px rgb(0 0 0 / 0.55);
+  transition: opacity 0.28s ease, transform 0.28s ease, visibility 0.28s;
+}
+
+.mce-map-pin.is-open .mce-map-card {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate(-50%, 0);
+}
+
+.mce-map-card-media {
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.mce-map-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.mce-map-card-body {
+  padding: 14px 16px 16px;
+}
+
+.mce-map-card-place {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.mce-map-card-date {
+  margin: 4px 0 0;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #2f6bff;
+}
+
+.mce-map-card-blurb {
+  margin: 10px 0 0;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--mce-body);
+}
+
+/* ── Narrow screens ───────────────────────────────────────────────────────
+ * The pins are too small to hit reliably, so the same content is listed
+ * below the map instead.
+ */
+.mce-map-list {
+  display: none;
+  margin: clamp(24px, 4vh, 40px) 0 0;
+  padding: 0;
+  list-style: none;
+  gap: 16px;
+}
+
+@media (max-width: 900px) {
+  .mce-map-pin {
+    display: none;
+  }
+
+  .mce-map-list {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .mce-map-list li {
+    list-style: none;
+    border-radius: 14px;
+    overflow: hidden;
+    background: rgb(255 255 255 / 0.03);
+    border: 1px solid rgb(255 255 255 / 0.1);
+  }
+}
