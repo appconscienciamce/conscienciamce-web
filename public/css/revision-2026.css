@@ -2016,3 +2016,194 @@ h4,
   height: 1px;
   background: rgb(255 255 255 / 0.12);
 }
+
+/* ── Map pin button ───────────────────────────────────────────────────────
+ * The ported reset styles every <button> with a #c36 border and text colour,
+ * which showed as a pink pill behind the dot.
+ */
+.mce-map-hit,
+.mce-map-hit:hover,
+.mce-map-hit:focus {
+  background: none;
+  border: 0;
+  border-radius: 0;
+  color: inherit;
+  box-shadow: none;
+}
+
+/* CTA letters back to their natural spacing. */
+.orb-btn .btn-label {
+  letter-spacing: normal;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MOBILE
+   Sizes are in vw so type scales with the device rather than stepping between
+   fixed breakpoints.
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 767px) {
+  /* Every section keeps the same gutter. */
+  .mce-club > .e-con-inner,
+  .mce-club-heading,
+  .mce-paths > .e-con-inner,
+  .mce-testimonials > .e-con-inner,
+  .mce-about {
+    padding-inline: 10px;
+  }
+
+  /* One size for every section heading. */
+  .elementor-1000 .elementor-icon-box-title,
+  .elementor-1000 .elementor-heading-title,
+  .mce-section-title,
+  .mce-section-title--sub {
+    font-size: 6vw;
+    line-height: 1.2;
+  }
+
+  /* ── Hero ───────────────────────────────────────────────────────────── */
+  .gb-hero .gb-promise {
+    font-size: 7vw;
+  }
+
+  .gb-hero .gb-description {
+    font-size: 4vw;
+  }
+
+  /* Even rhythm between logo, promise and description; the CTA sits further. */
+  .gb-widget--no-vsl .gb-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .gb-hero .gb-logo,
+  .gb-hero .gb-promise,
+  .gb-hero .gb-description {
+    margin: 0;
+  }
+
+  .gb-hero-cta {
+    margin-top: 12px;
+    width: 100%;
+  }
+
+  .gb-hero-cta .orb-btn {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* ── ¿Qué es Consciencia MCE? ───────────────────────────────────────── */
+  .mce-narrative,
+  .mce-narrative-line {
+    text-align: left;
+  }
+
+  .mce-club-intro,
+  .mce-club .mce-club-intro .text {
+    text-align: left;
+  }
+
+  /* The chain stays centred: it is a diagram, not running copy. */
+  .mce-chain,
+  .mce-chain-lead,
+  .mce-chain .mce-narrative,
+  .mce-chain .mce-narrative-line {
+    text-align: center;
+  }
+
+  /* ── Iceberg ────────────────────────────────────────────────────────── */
+  .mce-iceberg-figure {
+    display: grid;
+    grid-template-columns: minmax(96px, 34%) 1fr;
+    gap: 14px;
+    align-items: center;
+  }
+
+  .mce-iceberg-svg {
+    max-width: none;
+    margin: 0;
+  }
+
+  .mce-iceberg-fallback {
+    margin-top: 0;
+    gap: 14px;
+  }
+
+  .mce-iceberg-fallback .ice-badge {
+    font-size: 3vw;
+    padding: 4px 8px;
+  }
+
+  .mce-iceberg-fallback .ice-callout-detail {
+    font-size: 4vw;
+    line-height: 1.4;
+  }
+
+  /* ── ¿Para quién es esto? ───────────────────────────────────────────── */
+  .mce-paths .grid {
+    gap: 12px;
+  }
+
+  .mce-paths .grid > div {
+    padding: 18px;
+  }
+
+  .mce-paths .grid > div > p:first-of-type {
+    font-size: 5vw;
+  }
+
+  .mce-paths .grid > div > p:last-of-type {
+    font-size: 4vw;
+  }
+
+  /* ── Quién es Santiago Gómez ────────────────────────────────────────── */
+  .mce-about-grid {
+    border: 0;
+    border-radius: 0;
+    gap: 20px;
+  }
+
+  .mce-about-panel {
+    padding: 0;
+  }
+
+  .mce-about-panel--copy {
+    border-top: 0;
+  }
+
+  /* All four photos per row visible at once, rather than running off-screen. */
+  .mce-about-panel--photos > div {
+    padding: 0;
+    gap: 10px;
+  }
+
+  .mce-about-panel--photos .flex-row {
+    margin-left: 0;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .mce-about-panel--photos .flex-row > div {
+    margin-right: 0;
+    margin-top: 0;
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .mce-about-panel--photos img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+  }
+
+  .mce-about-text {
+    font-size: 4vw;
+  }
+
+  /* ── Testimonials ───────────────────────────────────────────────────── */
+  .mce-testimonial-name {
+    font-size: 4vw;
+  }
+}
