@@ -1375,3 +1375,159 @@ h4,
   font-size: 32px;
   letter-spacing: -1px;
 }
+
+/* ── "¿Para quién es esto?" card titles ───────────────────────────────────
+ * Same treatment as the Club benefit cards: 21px, weight 500, left aligned.
+ */
+.mce-paths .grid > div > p:first-of-type {
+  font-size: 21px;
+  font-weight: 500;
+  line-height: 1.3;
+  text-align: start;
+  color: #fff;
+}
+
+/* Tighter tracking on the CTA labels. */
+.orb-btn .btn-label {
+  letter-spacing: -1px;
+}
+
+/* ── Testimonials ─────────────────────────────────────────────────────────
+ * Three across within the page measure, stacking to one column on mobile.
+ * Videos are horizontal, so each frame holds a 16:9 box.
+ */
+.mce-testimonials {
+  padding-block: clamp(48px, 7vh, 88px);
+}
+
+.mce-testimonial-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(18px, 2.2vw, 28px);
+  width: min(var(--mce-content-width), 100%);
+  margin: clamp(28px, 4vh, 48px) auto 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mce-testimonial {
+  list-style: none;
+}
+
+.mce-testimonial-frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #08080b;
+  border: 1px solid rgb(255 255 255 / 0.1);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.06),
+    0 18px 40px rgb(0 0 0 / 0.45);
+  transition: border-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease;
+}
+
+.mce-testimonial-frame:hover {
+  border-color: rgb(47 107 255 / 0.45);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.1),
+    0 22px 48px rgb(0 0 0 / 0.5),
+    0 0 0 1px rgb(47 107 255 / 0.18);
+  transform: translateY(-2px);
+}
+
+.mce-testimonial-frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+/* Poster state, shown until the reader presses play. */
+.mce-testimonial-play {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  display: block;
+}
+
+.mce-testimonial-play img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  opacity: 0.82;
+  transition: opacity 0.35s ease, transform 0.6s ease;
+}
+
+.mce-testimonial-play:hover img {
+  opacity: 1;
+  transform: scale(1.03);
+}
+
+.mce-testimonial-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  color: #fff;
+  background: rgb(47 107 255 / 0.85);
+  border: 1px solid rgb(255 255 255 / 0.25);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow: 0 10px 28px rgb(0 0 0 / 0.45);
+  transition: transform 0.35s ease, background-color 0.35s ease;
+}
+
+/* The triangle reads centred when nudged right of true centre. */
+.mce-testimonial-icon svg {
+  margin-left: 3px;
+}
+
+.mce-testimonial-play:hover .mce-testimonial-icon {
+  transform: translate(-50%, -50%) scale(1.08);
+  background: rgb(47 107 255);
+}
+
+.mce-testimonial-play:focus-visible .mce-testimonial-icon {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+.mce-testimonial-name {
+  margin: 14px 0 0;
+  font-size: 17px;
+  font-weight: 600;
+  color: #fff;
+  text-align: center;
+}
+
+@media (max-width: 1024px) {
+  .mce-testimonial-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .mce-testimonial-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mce-testimonial-icon {
+    width: 50px;
+    height: 50px;
+  }
+}

@@ -3,6 +3,7 @@ import { Gallery } from '@/components/sections/gallery';
 import { Club } from '@/components/sections/club';
 import { Paths } from '@/components/sections/paths';
 import { About } from '@/components/sections/about';
+import { Testimonials } from '@/components/sections/testimonials';
 import { ExperiencesIntro } from '@/components/sections/experiences-intro';
 import { Experiences } from '@/components/sections/experiences';
 import { Footer } from '@/components/sections/footer';
@@ -31,6 +32,7 @@ export default function HomePage() {
         <Club />
         <Paths />
         <About />
+        <Testimonials />
         <ExperiencesIntro />
         <Experiences />
         <Footer />
