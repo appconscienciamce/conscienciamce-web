@@ -2207,3 +2207,114 @@ h4,
     font-size: 4vw;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MOBILE — overrides
+   The ported stylesheet marks its own mobile type !important (.gb-promise is
+   8vw!important, .gb-description 3.8vw!important), so these have to match that
+   weight to take effect. Everything else here is plain.
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 767px) {
+  .gb-hero .gb-promise {
+    font-size: 7vw !important;
+  }
+
+  .gb-hero .gb-description {
+    font-size: 4vw !important;
+  }
+
+  /* Section headings: the ported CSS sets these per element id at 6vw, but
+     our earlier 32px rule was overriding it at every width. */
+  .elementor-1000 .elementor-icon-box-title,
+  .elementor-1000 .elementor-heading-title,
+  .mce-section-title,
+  .mce-section-title--sub {
+    font-size: 6vw !important;
+    line-height: 1.2;
+  }
+
+  /* The footer line is a heading in the markup but reads as fine print. */
+  .elementor-1000 .elementor-element-76acd47 .elementor-heading-title {
+    font-size: 3.4vw !important;
+  }
+
+  /* Even rhythm in the hero; the CTA sits a little further out. */
+  .gb-widget--no-vsl .gb-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    padding-inline: 20px;
+  }
+
+  .gb-hero .gb-logo,
+  .gb-hero .gb-promise,
+  .gb-hero .gb-description {
+    margin: 0 !important;
+  }
+
+  .gb-hero-cta {
+    margin-top: 10px !important;
+    width: 100%;
+  }
+
+  .gb-hero-cta .orb-btn {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* One gutter for every section. */
+  .mce-club > .e-con-inner,
+  .mce-club-heading,
+  .mce-paths > .e-con-inner,
+  .mce-testimonials > .e-con-inner,
+  .mce-about,
+  .mce-map {
+    padding-inline: 20px;
+  }
+
+  /* Running copy reads left; the chain stays centred as a diagram. */
+  .mce-narrative,
+  .mce-narrative-line,
+  .mce-club-intro,
+  .mce-club .mce-club-intro .text,
+  .mce-club-bridge {
+    text-align: left !important;
+  }
+
+  .mce-chain,
+  .mce-chain-lead,
+  .mce-chain .mce-narrative,
+  .mce-chain .mce-narrative-line {
+    text-align: center !important;
+  }
+
+  /* Iceberg strata. */
+  .mce-iceberg-fallback .ice-badge {
+    font-size: 3vw !important;
+    padding: 4px 8px;
+  }
+
+  .mce-iceberg-fallback .ice-callout-detail {
+    font-size: 4vw !important;
+    line-height: 1.4;
+  }
+
+  /* Qualifying cards. */
+  .mce-paths .grid > div > p:first-of-type {
+    font-size: 5vw !important;
+  }
+
+  .mce-paths .grid > div > p:last-of-type {
+    font-size: 4vw !important;
+  }
+
+  .mce-about-text {
+    font-size: 4vw !important;
+  }
+
+  .mce-testimonial-name {
+    font-size: 4vw !important;
+  }
+}
