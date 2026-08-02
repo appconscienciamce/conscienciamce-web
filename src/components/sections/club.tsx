@@ -1,4 +1,5 @@
 import { Iceberg } from '@/components/iceberg';
+import { ClubGrid } from '@/components/club-grid';
 import { BackgroundRippleEffect } from '@/components/ui/background-ripple-effect';
 
 /**
@@ -39,15 +40,6 @@ const ICEBERG_COPY = [
  * Bridge into the Club. Set larger and in white — it carries the reader from
  * the philosophy into what the Club actually is.
  */
-
-const clubList = `<ul class="list mce-club-list">
-  <li class="item"><div class="content"><p class="text"><strong>La app</strong></p></div></li>
-  <li class="item"><div class="content"><p class="text"><strong>2 mentorías semanales</strong></p></div></li>
-  <li class="item"><div class="content"><p class="text">La <strong>filosofía, tecnología, principios y valores</strong> de MCE</p></div></li>
-  <li class="item"><div class="content"><p class="text"><strong>Protocolos prácticos</strong></p></div></li>
-  <li class="item"><div class="content"><p class="text">Comunidad de <strong>líderes y emprendedores conscientes</strong></p></div></li>
-  <li class="item"><div class="content"><p class="text">Acceso a nuestros <strong>eventos privados</strong></p></div></li>
-</ul>`;
 
 export function Club() {
   return (
@@ -154,10 +146,9 @@ export function Club() {
             </div>
           </div>
 
-          <div
-            className="elementor-element elementor-widget elementor-widget-html mce-club-access-list"
-            dangerouslySetInnerHTML={{ __html: clubList }}
-          />
+          <div className="mce-club-access-list">
+            <ClubGrid />
+          </div>
         </div>
       </div>
     </div>
