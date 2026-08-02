@@ -1242,3 +1242,50 @@ h4,
     margin-top: -50px;
   }
 }
+
+/* ── One size for every section title ─────────────────────────────────────
+ * The ported CSS sets each heading per Elementor element id — 36px here,
+ * 28px there — so they never line up on their own. This states the size once
+ * for all of them, ported and added alike.
+ */
+.elementor-1000 .elementor-icon-box-title,
+.elementor-1000 .elementor-heading-title,
+.mce-section-title,
+.mce-section-title--sub {
+  font-size: 32px;
+  line-height: 1.2;
+}
+
+@media (max-width: 1024px) {
+  .elementor-1000 .elementor-icon-box-title,
+  .elementor-1000 .elementor-heading-title,
+  .mce-section-title,
+  .mce-section-title--sub {
+    font-size: 4vw;
+  }
+}
+
+@media (max-width: 767px) {
+  .elementor-1000 .elementor-icon-box-title,
+  .elementor-1000 .elementor-heading-title,
+  .mce-section-title,
+  .mce-section-title--sub {
+    font-size: 6vw;
+  }
+}
+
+/* Close the gap between "¿Para quién es esto?" and its cards. */
+.mce-paths .py-20 {
+  padding-block: 0 clamp(32px, 4.5vh, 48px);
+}
+
+/* More room above the Club heading so it centres in the arc behind it. */
+.mce-club-access-heading {
+  margin-top: 56px;
+}
+
+@media (max-width: 900px) {
+  .mce-club-access-heading {
+    margin-top: 36px;
+  }
+}
