@@ -1289,3 +1289,59 @@ h4,
     margin-top: 36px;
   }
 }
+
+/* ── Hero CTA above the overlapping scene ─────────────────────────────────
+ * .gb-scene is pulled up over the hero at z-index 2, so the CTA needs to sit
+ * above it. It stays below the page's dot pattern, which is layered higher.
+ */
+.gb-hero-cta {
+  position: relative;
+  z-index: 20;
+  margin-top: 0;
+}
+
+.gb-widget--no-vsl .gb-hero {
+  z-index: 20;
+}
+
+/* ── Section CTA ──────────────────────────────────────────────────────────
+ * The spacing moves below the button, separating it from the next section
+ * rather than from its own content.
+ */
+.mce-section-cta {
+  margin-top: 0;
+  margin-bottom: clamp(40px, 6vh, 72px);
+}
+
+/* ── GradualBlur (React Bits) ─────────────────────────────────────────────
+ * Component CSS, kept here rather than injected at runtime so it ships with
+ * the stylesheet instead of appearing after hydration.
+ */
+.gradual-blur {
+  isolation: isolate;
+  pointer-events: none;
+  transition: opacity 0.3s ease-out;
+}
+
+.gradual-blur-parent {
+  overflow: hidden;
+}
+
+.gradual-blur-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.gradual-blur-inner > div {
+  -webkit-backdrop-filter: inherit;
+  backdrop-filter: inherit;
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .gradual-blur-inner > div {
+    background: rgb(0 0 0 / 0.3);
+    opacity: 0.5;
+  }
+}

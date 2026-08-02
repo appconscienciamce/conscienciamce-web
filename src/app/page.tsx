@@ -8,6 +8,7 @@ import { ExperiencesIntro } from '@/components/sections/experiences-intro';
 import { Experiences } from '@/components/sections/experiences';
 import { Footer } from '@/components/sections/footer';
 import { PageScripts } from '@/components/page-scripts';
+import GradualBlur from '@/components/ui/gradual-blur';
 
 /**
  * Section order follows the 2026 landing revision:
@@ -35,6 +36,18 @@ export default function HomePage() {
         <Experiences />
         <Footer />
       </div>
+      {/* Fixed blur along the bottom edge of the viewport. */}
+      <GradualBlur
+        target="page"
+        position="bottom"
+        height="56px"
+        strength={2}
+        divCount={5}
+        curve="bezier"
+        exponential
+        opacity={1}
+      />
+
       <PageScripts />
     </>
   );
