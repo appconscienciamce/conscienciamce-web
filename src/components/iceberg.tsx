@@ -208,25 +208,6 @@ export function Iceberg() {
             <path d="M293,270 L277,571" stroke="rgb(255 255 255 / 0.07)" strokeWidth="1" fill="none" />
           </g>
 
-          {/* Light travelling the full silhouette, tip then mass. */}
-          <g className="ice-trace" filter="url(#ice-bloom)" aria-hidden="true">
-            <polygon
-              className="ice-trace-path"
-              points="8,146 80,66 138,95 192,1 293,100 351,108 391,171 351,270 26,270 0,233"
-              fill="none"
-              stroke="#2f6bff"
-              strokeWidth="2"
-              strokeLinejoin="round"
-            />
-            <polygon
-              className="ice-trace-path ice-trace-path--mass"
-              points="27,270 80,456 107,427 126,561 212,665 277,571 321,498 398,444 352,368 398,320 352,270"
-              fill="none"
-              stroke="#2f6bff"
-              strokeWidth="2"
-              strokeLinejoin="round"
-            />
-          </g>
         </g>
 
         {/* ── Strata callouts, alternating sides ────────────────────────── */}

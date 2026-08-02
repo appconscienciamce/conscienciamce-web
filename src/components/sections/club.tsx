@@ -35,10 +35,10 @@ const ICEBERG_COPY = [
   'Lo que ves afuera es solamente la punta del iceberg. Debajo están tu nivel de consciencia, tu identidad, tus paradigmas, tus estándares, tus principios y la manera desde la que operás cada día.',
 ];
 
-/** How the Club follows from the philosophy. */
-const CLUB_INTRO = [
-  'De ahí nace el Club: la base y los fundamentos de Consciencia MCE. Un entrenamiento práctico de 90 días para reprogramar tu identidad y desarrollar tu potencial.',
-];
+/**
+ * Bridge into the Club. Set larger and in white — it carries the reader from
+ * the philosophy into what the Club actually is.
+ */
 
 const clubList = `<ul class="list mce-club-list">
   <li class="item"><div class="content"><p class="text"><strong>La app</strong></p></div></li>
@@ -67,21 +67,19 @@ export function Club() {
                 <h2 className="elementor-icon-box-title mce-section-title">
                   <span className="titulo-premium">¿Qué es Consciencia MCE?</span>
                 </h2>
-                <p className="elementor-icon-box-description">
-                  Integrar consciencia y materia: dos mundos que casi siempre se presentan
-                  como opuestos.
-                </p>
               </div>
             </div>
           </div>
-        </div>
 
-        <div className="mce-narrative">
-          {WHAT_IS_MCE.map((phrase) => (
-            <p key={phrase} className="mce-narrative-line">
-              {phrase}
-            </p>
-          ))}
+          {/* The opening line belongs with the narrative, not set apart under
+              the heading, so it reads as one continuous passage. */}
+          <div className="mce-narrative mce-club-heading-content">
+            {WHAT_IS_MCE.map((phrase) => (
+              <p key={phrase} className="mce-narrative-line">
+                {phrase}
+              </p>
+            ))}
+          </div>
         </div>
 
         <div className="mce-chain">
@@ -121,13 +119,11 @@ export function Club() {
           <Iceberg />
         </div>
 
-        <div className="mce-narrative">
-          {CLUB_INTRO.map((phrase) => (
-            <p key={phrase} className="mce-narrative-line">
-              {phrase}
-            </p>
-          ))}
-        </div>
+        <p className="mce-club-bridge">
+          De ahí nace <em>el Club</em>: la base y los fundamentos de Consciencia MCE. Un
+          entrenamiento práctico de <em>90 días</em> para reprogramar tu identidad y
+          desarrollar tu potencial.
+        </p>
 
         <div className="elementor-element elementor-widget elementor-widget-icon-box">
           <div className="elementor-icon-box-wrapper">

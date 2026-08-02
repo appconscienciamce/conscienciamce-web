@@ -257,30 +257,6 @@ h4,
   50% { transform: translateY(-7px); }
 }
 
-/* ── Travelling edge light ────────────────────────────────────────────────
- * A short lit segment runs the silhouette continuously. Both outlines are
- * dashed with one visible run, and the offset animates the run around them.
- */
-.ice-trace {
-  opacity: 0.9;
-}
-
-.ice-trace-path {
-  stroke-dasharray: 130 1500;
-  stroke-dashoffset: 0;
-  animation: mce-ice-trace 9s linear infinite;
-}
-
-.ice-trace-path--mass {
-  stroke-dasharray: 150 1700;
-  animation-duration: 11s;
-  animation-delay: -4s;
-}
-
-@keyframes mce-ice-trace {
-  to { stroke-dashoffset: -1630; }
-}
-
 /* ── Callouts ─────────────────────────────────────────────────────────────
  * Connectors draw themselves in and labels fade up when the drawing is
  * reached; --i staggers each stratum.
@@ -384,7 +360,7 @@ h4,
 }
 
 .ice-callout-detail {
-  font-size: 18px;
+  font-size: 17px;
   line-height: 1.45;
   color: var(--mce-body);
 }
@@ -431,13 +407,8 @@ h4,
 @media (prefers-reduced-motion: reduce) {
   #mce-iceberg-scenery .ice-tip,
   #mce-iceberg-scenery .ice-mass,
-  .ice-trace-path,
   .ice-node-ring {
     animation: none;
-  }
-
-  .ice-trace {
-    display: none;
   }
 
   .ice-connector {
@@ -685,4 +656,32 @@ h4,
   .elementor-heading-title .titulo-premium {
     animation: none;
   }
+}
+
+/* ── Bridge into the Club ─────────────────────────────────────────────────
+ * Carries the reader from the philosophy into what the Club is, so it sits
+ * larger and in white with generous room on both sides.
+ */
+.mce-club-bridge {
+  max-width: 60ch;
+  margin: clamp(56px, 8vh, 104px) auto clamp(64px, 9vh, 120px);
+  text-align: center;
+  font-family: var(--font-instrument-sans), 'Instrument Sans', sans-serif;
+  font-size: clamp(19px, 1.9vw, 22px);
+  line-height: 1.5;
+  color: #fff;
+  text-wrap: balance;
+}
+
+/* Serif italic marks the phrases worth slowing down on. */
+.mce-club-bridge em {
+  font-family: var(--font-instrument-serif), 'Instrument Serif', Georgia, serif;
+  font-style: italic;
+  font-size: 1.14em;
+  color: #fff;
+}
+
+/* Heading and its opening passage share one block. */
+.mce-club-heading .mce-narrative {
+  margin-top: clamp(20px, 3vh, 32px);
 }
