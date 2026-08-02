@@ -26,6 +26,7 @@ const SECTION_SCRIPTS = [
   'section-04.js',
   'section-05.js',
   'iceberg.js',
+  'scroll-reveal.js',
 ];
 
 export function PageScripts() {

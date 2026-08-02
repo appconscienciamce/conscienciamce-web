@@ -442,33 +442,6 @@ h4,
   line-height: 1;
 }
 
-/* ── Ripple backdrop behind the section heading ───────────────────────────
- * BackgroundRippleEffect is absolutely positioned, so it needs a positioned
- * block to fill. The component picks its colours from --cell-* variables it
- * sets from Tailwind's dark palette behind a `dark:` variant; this page has
- * no dark class, so the values are supplied here in the MCE accent instead.
- */
-.mce-club-heading {
-  position: relative;
-  isolation: isolate;
-  padding-block: clamp(40px, 6vh, 80px);
-  overflow: hidden;
-
-  --cell-border-color: rgb(255 255 255 / 0.08);
-  --cell-fill-color: rgb(47 107 255 / 0.28);
-  --cell-shadow-color: rgb(47 107 255 / 0.45);
-}
-
-.mce-club-heading-content {
-  position: relative;
-  z-index: 4;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .mce-club-heading > div:first-child {
-    display: none;
-  }
-}
 
 /* ── The MCE chain: Consciencia → Identidad → Acción → Materia ────────────
  * The organising idea of the philosophy, set apart from the running copy.
@@ -684,4 +657,120 @@ h4,
 /* Heading and its opening passage share one block. */
 .mce-club-heading .mce-narrative {
   margin-top: clamp(20px, 3vh, 32px);
+}
+
+/* ── Rhythm inside the Consciencia MCE section ────────────────────────────
+ * Everything here is one continuous argument, so the gaps between blocks stay
+ * even. Only the bridge into the Club breaks the rhythm, deliberately.
+ */
+.mce-club {
+  --mce-block-gap: clamp(28px, 4vh, 44px);
+}
+
+.mce-club-heading {
+  position: relative;
+  isolation: isolate;
+  padding-block: clamp(40px, 6vh, 72px) 0;
+  overflow: hidden;
+}
+
+/* Air between the question and the passage that answers it. */
+.mce-club-heading .mce-narrative {
+  margin-top: 24px;
+}
+
+.mce-club-heading-content {
+  position: relative;
+  z-index: 4;
+}
+
+/* The chain follows on from the passage above it, not as a new section. */
+.mce-chain {
+  margin-block: var(--mce-block-gap);
+}
+
+.mce-chain-lead {
+  margin-bottom: 18px;
+}
+
+.mce-chain-steps {
+  margin-bottom: var(--mce-block-gap);
+}
+
+.mce-chain .mce-narrative {
+  margin-top: var(--mce-block-gap);
+}
+
+/* Iceberg copy and drawing keep the same rhythm. */
+.mce-club .mce-narrative + .mce-iceberg {
+  margin-top: var(--mce-block-gap);
+}
+
+/* Serif italic, matching the bridge, for emphasis in the lead-in. */
+.mce-chain-lead em {
+  font-family: var(--font-instrument-serif), 'Instrument Serif', Georgia, serif;
+  font-style: italic;
+  font-size: 1.12em;
+  color: #fff;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+/* ── Dot pattern ──────────────────────────────────────────────────────────
+ * Carried over from the reference landing, which uses a 5px radial-gradient
+ * grid at overlay blend.
+ */
+.mce-dots {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgb(255 255 255) 1px, transparent 0);
+  background-size: 5px 5px;
+  mix-blend-mode: overlay;
+  opacity: 0.6;
+  /* Fade at the edges so the pattern has no hard boundary. */
+  mask-image: radial-gradient(ellipse at center, #000 30%, transparent 72%);
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 30%, transparent 72%);
+}
+
+/* ── Club access block ────────────────────────────────────────────────────
+ * The heading and its list are one unit, lit from behind by the arc.
+ */
+.mce-club-access {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: clamp(56px, 8vh, 96px);
+}
+
+/* Light arc, reproduced from the reference landing. */
+.mce-lightarc {
+  width: 800px;
+  max-width: 100%;
+  height: auto;
+  mix-blend-mode: screen;
+  margin-bottom: -210px;
+  pointer-events: none;
+  user-select: none;
+}
+
+.mce-club-access-heading,
+.mce-club-access-list {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+}
+
+.mce-club-access-list {
+  margin-top: clamp(24px, 3.5vh, 40px);
+}
+
+@media (max-width: 900px) {
+  .mce-lightarc {
+    width: 500px;
+    margin-bottom: -140px;
+  }
 }

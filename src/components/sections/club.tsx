@@ -1,5 +1,4 @@
 import { Iceberg } from '@/components/iceberg';
-import { BackgroundRippleEffect } from '@/components/ui/background-ripple-effect';
 
 /**
  * "¿Qué es Consciencia MCE?" — new in the 2026 revision.
@@ -56,10 +55,9 @@ export function Club() {
       data-element_type="container"
     >
       <div className="e-con-inner">
-        {/* The ripple grid is a backdrop: it fills this block and the heading
-            sits above it. */}
+        {/* Dot pattern backdrop, carried over from the reference landing. */}
         <div className="mce-club-heading">
-          <BackgroundRippleEffect rows={6} cols={27} cellSize={56} />
+          <span className="mce-dots" aria-hidden="true" />
 
           <div className="elementor-element elementor-widget elementor-widget-icon-box mce-club-heading-content">
             <div className="elementor-icon-box-wrapper">
@@ -83,7 +81,9 @@ export function Club() {
         </div>
 
         <div className="mce-chain">
-          <p className="mce-chain-lead">La filosofía de MCE parte de una idea central:</p>
+          <p className="mce-chain-lead">
+            La filosofía de MCE parte de una <em>idea central</em>:
+          </p>
           <ol className="mce-chain-steps">
             <li>
               <span>Consciencia</span>
@@ -125,20 +125,35 @@ export function Club() {
           desarrollar tu potencial.
         </p>
 
-        <div className="elementor-element elementor-widget elementor-widget-icon-box">
-          <div className="elementor-icon-box-wrapper">
-            <div className="elementor-icon-box-content">
-              <h3 className="elementor-icon-box-title mce-section-title mce-section-title--sub">
-                <span className="titulo-premium">Dentro del Club accedés a</span>
-              </h3>
+        {/* Light arc behind the heading, carried over from the reference
+            landing along with its scroll-in animation. */}
+        <div className="mce-club-access">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            className="mce-lightarc scroll-bottom2"
+            src="/media/LIGHT2.webp"
+            alt=""
+            aria-hidden="true"
+            width="800"
+            height="400"
+            loading="lazy"
+          />
+
+          <div className="elementor-element elementor-widget elementor-widget-icon-box mce-club-access-heading">
+            <div className="elementor-icon-box-wrapper">
+              <div className="elementor-icon-box-content">
+                <h3 className="elementor-icon-box-title mce-section-title mce-section-title--sub">
+                  <span className="titulo-premium">Dentro del Club accedés a</span>
+                </h3>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div
-          className="elementor-element elementor-widget elementor-widget-html"
-          dangerouslySetInnerHTML={{ __html: clubList }}
-        />
+          <div
+            className="elementor-element elementor-widget elementor-widget-html mce-club-access-list"
+            dangerouslySetInnerHTML={{ __html: clubList }}
+          />
+        </div>
       </div>
     </div>
   );
