@@ -3,7 +3,6 @@ import { Gallery } from '@/components/sections/gallery';
 import { Club } from '@/components/sections/club';
 import { Paths } from '@/components/sections/paths';
 import { About } from '@/components/sections/about';
-import { Testimonials } from '@/components/sections/testimonials';
 import { ExperiencesIntro } from '@/components/sections/experiences-intro';
 import { Experiences } from '@/components/sections/experiences';
 import { Footer } from '@/components/sections/footer';
@@ -13,10 +12,11 @@ import GradualBlur from '@/components/ui/gradual-blur';
 /**
  * Section order follows the 2026 landing revision:
  *   promise → Santi photos + CTA → what MCE/Club is → who it's for + CTA
- *   → who Santi is → testimonials → CTA + upcoming events
+ *   → who Santi is → CTA + upcoming events
  *
  * Retired in this revision: the "Statement" break line (the growing Consciencia
- * MCE logo) and the "System" trabajo interno/externo block.
+ * MCE logo), the "System" trabajo interno/externo block, and "Testimonios",
+ * which is being rebuilt.
  */
 export default function HomePage() {
   return (
@@ -31,7 +31,6 @@ export default function HomePage() {
         <Club />
         <Paths />
         <About />
-        <Testimonials />
         <ExperiencesIntro />
         <Experiences />
         <Footer />

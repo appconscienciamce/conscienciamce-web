@@ -33,18 +33,13 @@ const instrumentSerif = Instrument_Serif({
  * list must not be reordered or de-duplicated.
  */
 const STYLESHEETS = [
-  'a3377ace0428.style.min.css',
   'af4b9638d699.reset.css',
-  'a480d2bf8c52.theme.css',
-  '86dbb47955bb.header-footer.css',
   '4fb5f7fc5e41.frontend.min.css',
   'e80e71f82b32.post-7.css',
   'c3be9e612baf.widget-heading.min.css',
   '12045858d487.widget-image.min.css',
   'c5fd583e176f.widget-icon-box.min.css',
   'f2dfb34b671e.post-1000.css',
-  '7b8218e935ec.03ee56d594bf.google-font.css',
-  '661b80147a10.3071dd56f341.google-font.css',
   '8b4e2067e557.ecf151c7e125.google-font.css',
   'lenis.css',
 ];
