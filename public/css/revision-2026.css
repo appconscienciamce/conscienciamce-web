@@ -422,28 +422,6 @@ h4,
   }
 }
 
-/* ── Upcoming events: two cards side by side ──────────────────────────────
- * The original block held a single card; two need a grid that collapses on
- * narrow viewports.
- */
-.mce-eventos-grid {
-  display: grid;
-  gap: clamp(20px, 3vw, 32px);
-  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
-  align-items: stretch;
-}
-
-.mce-eventos-grid .mce-glass-card {
-  height: 100%;
-}
-
-/* Flag emoji stands in for the country SVGs, which only exist for México. */
-.mce-eventos-grid .mce-flag {
-  font-size: 34px;
-  line-height: 1;
-}
-
-
 /* ── The MCE chain: Consciencia → Identidad → Acción → Materia ────────────
  * The organising idea of the philosophy, set apart from the running copy.
  */
