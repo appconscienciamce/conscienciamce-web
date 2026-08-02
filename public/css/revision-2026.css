@@ -774,3 +774,31 @@ h4,
     margin-bottom: -140px;
   }
 }
+
+/* ── Ripple backdrop behind the Consciencia MCE heading ───────────────────
+ * BackgroundRippleEffect is absolutely positioned, so it needs a positioned
+ * block to fill. The component picks its colours from --cell-* variables it
+ * sets behind a `dark:` variant; this page has no dark class, so the values
+ * are supplied here in the MCE accent instead.
+ */
+.mce-club-heading {
+  --cell-border-color: rgb(255 255 255 / 0.08);
+  --cell-fill-color: rgb(47 107 255 / 0.28);
+  --cell-shadow-color: rgb(47 107 255 / 0.45);
+}
+
+/* The dot pattern belongs to the Club access block, behind its light arc. */
+.mce-club-access .mce-dots {
+  z-index: 0;
+}
+
+.mce-club-access .mce-lightarc {
+  position: relative;
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mce-club-heading > div:first-child {
+    display: none;
+  }
+}

@@ -1,4 +1,5 @@
 import { Iceberg } from '@/components/iceberg';
+import { BackgroundRippleEffect } from '@/components/ui/background-ripple-effect';
 
 /**
  * "¿Qué es Consciencia MCE?" — new in the 2026 revision.
@@ -55,9 +56,10 @@ export function Club() {
       data-element_type="container"
     >
       <div className="e-con-inner">
-        {/* Dot pattern backdrop, carried over from the reference landing. */}
+        {/* The ripple grid is a backdrop: it fills this block and the heading
+            sits above it. */}
         <div className="mce-club-heading">
-          <span className="mce-dots" aria-hidden="true" />
+          <BackgroundRippleEffect rows={6} cols={27} cellSize={56} />
 
           <div className="elementor-element elementor-widget elementor-widget-icon-box mce-club-heading-content">
             <div className="elementor-icon-box-wrapper">
@@ -128,6 +130,9 @@ export function Club() {
         {/* Light arc behind the heading, carried over from the reference
             landing along with its scroll-in animation. */}
         <div className="mce-club-access">
+          {/* Dot pattern backdrop, carried over from the reference landing. */}
+          <span className="mce-dots" aria-hidden="true" />
+
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             className="mce-lightarc scroll-bottom2"
