@@ -1859,3 +1859,60 @@ h4,
     opacity: 0.4;
   }
 }
+
+/* ── "¿Quién es Santiago Gómez?" ──────────────────────────────────────────
+ * Photo mosaic on the left, copy on the right, stacking on narrow screens.
+ */
+.mce-about {
+  width: min(var(--mce-content-width), 100%);
+  margin-inline: auto;
+  padding-block: clamp(48px, 7vh, 96px);
+}
+
+.mce-about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(24px, 3vw, 48px);
+  align-items: center;
+  border: 1px solid rgb(255 255 255 / 0.08);
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.mce-about-panel {
+  padding: clamp(20px, 2.4vw, 34px);
+}
+
+.mce-about-panel--photos {
+  padding-inline: 0;
+}
+
+.mce-about-panel--copy {
+  border-left: 1px solid rgb(255 255 255 / 0.08);
+}
+
+.mce-about-panel--copy .mce-section-title {
+  margin-bottom: clamp(16px, 2vh, 24px);
+}
+
+.mce-about-text {
+  margin: 0 0 1em;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--mce-body);
+}
+
+.mce-about-text:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 900px) {
+  .mce-about-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mce-about-panel--copy {
+    border-left: 0;
+    border-top: 1px solid rgb(255 255 255 / 0.08);
+  }
+}

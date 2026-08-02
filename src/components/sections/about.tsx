@@ -1,8 +1,125 @@
-// Ported verbatim from the original Elementor build (section 36ac4c1).
-// Markup is intentionally kept as-is; edit copy in place.
+'use client';
 
-const html = "<div class=\"elementor-element elementor-element-36ac4c1 e-con-full e-flex e-con e-parent\" data-id=\"36ac4c1\" data-element_type=\"container\" data-e-type=\"container\" style=\"content-visibility: auto;contain-intrinsic-size: auto 1789px;\">\n\t\t\t\t<div class=\"elementor-element elementor-element-37d0c05 elementor-widget elementor-widget-image\" data-id=\"37d0c05\" data-element_type=\"widget\" data-e-type=\"widget\" data-widget_type=\"image.default\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<img decoding=\"async\" width=\"664\" height=\"642\" src=\"/wp-content/uploads/2026/03/mce-logo.webp\" class=\"attachment-large size-large wp-image-532\" alt=\"\" srcset=\"/wp-content/uploads/2026/03/mce-logo.webp 664w, /wp-content/uploads/2026/03/mce-logo-300x290.webp 300w\" sizes=\"auto\"  loading=\"lazy\" fetchpriority=\"low\"/>\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\n\t\t<div class=\"elementor-element elementor-element-a5b0744 e-flex e-con-boxed e-con e-child\" data-id=\"a5b0744\" data-element_type=\"container\" data-e-type=\"container\">\n\t\t\t\t\t<div class=\"e-con-inner\">\n\t\t\t\t<div class=\"elementor-element elementor-element-12f4e02 elementor-widget__width-inherit titulo-premium elementor-widget-mobile__width-inherit elementor-widget elementor-widget-heading\" data-id=\"12f4e02\" data-element_type=\"widget\" data-e-type=\"widget\" data-widget_type=\"heading.default\">\n\t\t\t\t\t<h2 class=\"elementor-heading-title elementor-size-default\">Tengo la visión de cambiar el mundo creando una red de emprendedores y lideres conscientes.</h2>\t\t\t\t</div>\n\t\t\t\t<div class=\"elementor-element elementor-element-f73683a elementor-widget__width-inherit elementor-widget-mobile__width-inherit elementor-widget elementor-widget-heading\" data-id=\"f73683a\" data-element_type=\"widget\" data-e-type=\"widget\" data-widget_type=\"heading.default\">\n\t\t\t\t\t<h2 class=\"elementor-heading-title elementor-size-default\">Durante los últimos 2 años me dediqué a crear proyectos educativos junto a grandes referentes, impactando en miles de alumnos y en millones de personas a través de su contenido.\n\n<br><br>\n\nHe ayudado a creadores a monetizar <span class=\"remarcado\">meses de $100K, $150K y hasta $250K</span>, expandiendo marcas personales con propósito que hoy influyen en millones de vidas.\n\n<br><br>\n\nEn el proceso de trabajar con más de 30 creadores, entendí algo clave:<br><br>\n<span class=\"remarcado\">El negocio siempre es un reflejo de la identidad del CEO o founder.</span>  \nY ese es, casi siempre, el verdadero cuello de botella.\n\n<br><br>\n\nPor eso hoy me dedico a ayudar a líderes y empresarios a <span class=\"remarcado\">trascender sus bloqueos invisibles</span> y crear una nueva realidad donde sus vidas y sus negocios sean prósperos y sostenibles.</h2>\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t</div>";
+import { motion } from 'motion/react';
+
+/**
+ * "¿Quién es Santiago Gómez?"
+ *
+ * Built from Aceternity's features-section-demo-3, reduced to the two panels
+ * that matter here and with their order swapped: the photo mosaic on the left,
+ * the copy on the right. The demo's heading, globe and YouTube panels are not
+ * used.
+ *
+ * The demo rotates each photo by Math.random() during render, which produces
+ * different markup on the server and the client and breaks hydration. Fixed
+ * angles are used instead.
+ */
+
+const TOP_ROW = [
+  { src: '/wp-content/uploads/2026/03/santiago-daniel.webp', rotate: -7 },
+  { src: '/wp-content/uploads/2026/03/santiago-cris.webp', rotate: 5 },
+  { src: '/wp-content/uploads/2026/03/santi-aida.webp', rotate: -3 },
+  { src: '/wp-content/uploads/2026/03/santiago-lucas.webp', rotate: 8 },
+  { src: '/wp-content/uploads/2026/03/santi-daniviola.webp', rotate: -5 },
+];
+
+const BOTTOM_ROW = [
+  { src: '/wp-content/uploads/2026/03/img5.webp', rotate: 6 },
+  { src: '/wp-content/uploads/2026/03/img13.webp', rotate: -8 },
+  { src: '/wp-content/uploads/2026/03/img21.webp', rotate: 4 },
+  { src: '/wp-content/uploads/2026/03/img7.webp', rotate: -6 },
+  { src: '/wp-content/uploads/2026/03/img24.webp', rotate: 7 },
+];
+
+/** Emphasis is marked with `**` and rendered as the page's `remarcado`. */
+const PARAGRAPHS = [
+  'Tengo la visión de cambiar el mundo creando una red de emprendedores y líderes conscientes.',
+  'Durante los últimos 2 años me dediqué a crear proyectos educativos junto a grandes referentes, impactando en miles de alumnos y en millones de personas a través de su contenido.',
+  'He ayudado a creadores a monetizar **meses de $100K, $150K y hasta $250K**, expandiendo marcas personales con propósito que hoy influyen en millones de vidas.',
+  'En el proceso de trabajar con más de 30 creadores, entendí algo clave: **el negocio siempre es un reflejo de la identidad del CEO o founder.** Y ese es, casi siempre, el verdadero cuello de botella.',
+  'Por eso hoy me dedico a ayudar a líderes y empresarios a **trascender sus bloqueos invisibles** y crear una nueva realidad donde sus vidas y sus negocios sean prósperos y sostenibles.',
+];
+
+function Emphasised({ text }: { text: string }) {
+  return (
+    <>
+      {text.split(/(\*\*[^*]+\*\*)/g).map((part, index) =>
+        part.startsWith('**') && part.endsWith('**') ? (
+          <span className="remarcado" key={index}>
+            {part.slice(2, -2)}
+          </span>
+        ) : (
+          <span key={index}>{part}</span>
+        )
+      )}
+    </>
+  );
+}
+
+const imageVariants = {
+  whileHover: { scale: 1.1, rotate: 0, zIndex: 100 },
+  whileTap: { scale: 1.1, rotate: 0, zIndex: 100 },
+};
+
+function PhotoRow({
+  photos,
+  offset,
+}: {
+  photos: typeof TOP_ROW;
+  offset?: boolean;
+}) {
+  return (
+    <div className={`flex flex-row ${offset ? '-ml-20' : ''}`}>
+      {photos.map((photo, idx) => (
+        <motion.div
+          key={photo.src + idx}
+          variants={imageVariants}
+          style={{ rotate: photo.rotate }}
+          whileHover="whileHover"
+          whileTap="whileTap"
+          className="mt-4 -mr-4 shrink-0 overflow-hidden rounded-xl border border-neutral-700 bg-neutral-800 p-1"
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={photo.src}
+            alt=""
+            width="500"
+            height="500"
+            loading="lazy"
+            className="h-20 w-20 shrink-0 rounded-lg object-cover md:h-40 md:w-40"
+          />
+        </motion.div>
+      ))}
+    </div>
+  );
+}
 
 export function About() {
-  return <div dangerouslySetInnerHTML={{ __html: html }} />;
+  return (
+    <div className="mce-about" data-element_type="container">
+      <div className="mce-about-grid">
+        <div className="mce-about-panel mce-about-panel--photos">
+          <div className="relative flex h-full flex-col items-start justify-center gap-8 overflow-hidden py-8">
+            <PhotoRow photos={TOP_ROW} offset />
+            <PhotoRow photos={BOTTOM_ROW} />
+
+            <div className="pointer-events-none absolute inset-y-0 left-0 z-[100] h-full w-20 bg-gradient-to-r from-black to-transparent" />
+            <div className="pointer-events-none absolute inset-y-0 right-0 z-[100] h-full w-20 bg-gradient-to-l from-black to-transparent" />
+          </div>
+        </div>
+
+        <div className="mce-about-panel mce-about-panel--copy">
+          <h3 className="elementor-icon-box-title mce-section-title">
+            <span className="titulo-premium">¿Quién es Santiago Gómez?</span>
+          </h3>
+
+          {PARAGRAPHS.map((paragraph) => (
+            <p className="mce-about-text" key={paragraph}>
+              <Emphasised text={paragraph} />
+            </p>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
 }
