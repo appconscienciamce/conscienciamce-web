@@ -16,19 +16,17 @@ import { motion } from 'motion/react';
  */
 
 const TOP_ROW = [
-  { src: '/wp-content/uploads/2026/03/santiago-daniel.webp', rotate: -7 },
-  { src: '/wp-content/uploads/2026/03/santiago-cris.webp', rotate: 5 },
-  { src: '/wp-content/uploads/2026/03/santi-aida.webp', rotate: -3 },
-  { src: '/wp-content/uploads/2026/03/santiago-lucas.webp', rotate: 8 },
-  { src: '/wp-content/uploads/2026/03/santi-daniviola.webp', rotate: -5 },
+  { src: '/wp-content/uploads/2026/03/img24.webp', rotate: -7 },
+  { src: '/wp-content/uploads/2026/03/img7.webp', rotate: 5 },
+  { src: '/wp-content/uploads/2026/03/img10.webp', rotate: -3 },
+  { src: '/wp-content/uploads/2026/03/img2.webp', rotate: 8 },
 ];
 
 const BOTTOM_ROW = [
-  { src: '/wp-content/uploads/2026/03/img5.webp', rotate: 6 },
-  { src: '/wp-content/uploads/2026/03/img13.webp', rotate: -8 },
-  { src: '/wp-content/uploads/2026/03/img21.webp', rotate: 4 },
-  { src: '/wp-content/uploads/2026/03/img7.webp', rotate: -6 },
-  { src: '/wp-content/uploads/2026/03/img24.webp', rotate: 7 },
+  { src: '/wp-content/uploads/2026/03/img9.webp', rotate: 6 },
+  { src: '/wp-content/uploads/2026/03/img8.webp', rotate: -8 },
+  { src: '/wp-content/uploads/2026/03/img6.webp', rotate: 4 },
+  { src: '/wp-content/uploads/2026/03/img5.webp', rotate: -6 },
 ];
 
 /** Emphasis is marked with `**` and rendered as the page's `remarcado`. */
