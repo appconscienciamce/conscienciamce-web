@@ -2318,3 +2318,109 @@ h4,
     font-size: 4vw !important;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MOBILE — gutters and alignment
+   Elementor forces `.e-con > .e-con-inner { padding-inline: 0 }`, which beat
+   the earlier single-class rules. These match that specificity.
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 767px) {
+  .e-con.mce-club > .e-con-inner,
+  .e-con.mce-paths > .e-con-inner,
+  .e-con.mce-testimonials > .e-con-inner,
+  .e-con.elementor-element-6263192 {
+    padding-inline: 20px !important;
+  }
+
+  /* Blocks that sit outside a .e-con-inner. */
+  .mce-club-heading,
+  .mce-about,
+  .mce-map,
+  .mce-club-bridge,
+  .mce-chain,
+  .mce-iceberg {
+    padding-inline: 20px;
+  }
+
+  /* The chain lead stays centred but off the edge. */
+  .mce-chain-lead {
+    padding-inline: 4px;
+  }
+
+  /* Narrative copy reads left, with the same gutter. */
+  .mce-narrative {
+    padding-inline: 0;
+  }
+
+  .mce-narrative-line {
+    text-align: left !important;
+  }
+
+  /* The bridge into the Club is a statement, so it stays centred. */
+  .mce-club-bridge {
+    text-align: center !important;
+  }
+
+  /* ── Club heading and cards ─────────────────────────────────────────── */
+  .mce-club-access-heading {
+    margin-top: 20px;
+  }
+
+  .mce-club-access-list {
+    padding-inline: 20px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .mce-club-access .fp-benefits-wrapper {
+    width: 100%;
+  }
+
+  .mce-club-access .fp-row {
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  /* ── Qualifying cards: no trailing gap before the CTA ───────────────── */
+  .mce-paths .py-20 {
+    padding-block: 0 !important;
+  }
+
+  /* ── Testimonials ───────────────────────────────────────────────────── */
+  .mce-testimonial-grid {
+    width: 100%;
+    padding-inline: 0;
+    box-sizing: border-box;
+  }
+
+  /* ── Iceberg: drawing above, strata below ───────────────────────────── */
+  .mce-iceberg-figure {
+    display: block;
+  }
+
+  .mce-iceberg-svg {
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+    display: block;
+  }
+
+  .mce-iceberg-fallback {
+    margin-top: 22px;
+    gap: 14px;
+  }
+
+  .mce-iceberg-fallback li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: start;
+    gap: 10px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgb(255 255 255 / 0.07);
+  }
+
+  .mce-iceberg-fallback li:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+}
