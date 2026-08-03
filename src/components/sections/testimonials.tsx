@@ -62,8 +62,11 @@ function TestimonialCard({ item }: { item: Testimonial }) {
             </span>
           </button>
         )}
+
+        {/* The name sits inside the frame, over a shadow that keeps it legible
+            against whatever the still happens to show. */}
+        {playing ? null : <p className="mce-testimonial-name">{item.name}</p>}
       </div>
-      <p className="mce-testimonial-name">{item.name}</p>
     </li>
   );
 }

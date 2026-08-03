@@ -83,6 +83,17 @@ const LABEL_MID = 24;
 export function Iceberg() {
   return (
     <figure className="mce-iceberg-figure">
+      {/* Shown instead of the in-drawing callouts on narrow screens, where
+          foreignObject text would scale down past legibility.
+          "Lo visible" is what sits above the waterline, so on narrow screens
+          it reads above the drawing and the rest below it. */}
+      <ul className="mce-iceberg-fallback mce-iceberg-fallback--above">
+        <li key={STRATA[0].id}>
+          <span className="ice-badge">{STRATA[0].label}</span>
+          <span className="ice-callout-detail">{STRATA[0].detail}</span>
+        </li>
+      </ul>
+
       <svg
         className="mce-iceberg-svg"
         viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
@@ -269,9 +280,12 @@ export function Iceberg() {
       </svg>
 
       {/* Shown instead of the in-drawing callouts on narrow screens, where
-          foreignObject text would scale down past legibility. */}
-      <ul className="mce-iceberg-fallback">
-        {STRATA.map((stratum) => (
+          foreignObject text would scale down past legibility.
+          "Lo visible" is what sits above the waterline, so on narrow screens
+          it reads above the drawing and the rest below it. */}
+
+      <ul className="mce-iceberg-fallback mce-iceberg-fallback--below">
+        {STRATA.slice(1).map((stratum) => (
           <li key={stratum.id}>
             <span className="ice-badge">{stratum.label}</span>
             <span className="ice-callout-detail">{stratum.detail}</span>

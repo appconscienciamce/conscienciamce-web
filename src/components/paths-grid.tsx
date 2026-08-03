@@ -1,6 +1,4 @@
-'use client';
-
-import React, { useId } from 'react';
+import React from 'react';
 
 /**
  * "¿Para quién es esto?" as Aceternity's features grid.
@@ -80,12 +78,12 @@ export function PathsGrid() {
   return (
     <div className="py-20 lg:py-40">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 md:gap-2 max-w-7xl mx-auto">
-        {grid.map((feature) => (
+        {grid.map((feature, index) => (
           <div
             key={feature.title}
             className="relative bg-gradient-to-b from-neutral-900 to-neutral-950 p-6 rounded-3xl overflow-hidden"
           >
-            <Grid size={20} pattern={feature.pattern} />
+            <Grid size={20} pattern={feature.pattern} patternKey={index} />
             <p className="text-base font-bold text-white relative z-20">{feature.title}</p>
             <p className="text-neutral-400 mt-4 text-base font-normal relative z-20">
               {feature.description}
@@ -100,9 +98,11 @@ export function PathsGrid() {
 export const Grid = ({
   pattern,
   size,
+  patternKey,
 }: {
   pattern?: number[][];
   size?: number;
+  patternKey: string | number;
 }) => {
   const p = pattern ?? [
     [8, 1],
@@ -121,6 +121,7 @@ export const Grid = ({
           x="-12"
           y="4"
           squares={p}
+          patternKey={patternKey}
           className="absolute inset-0 h-full w-full mix-blend-overlay fill-white/10 stroke-white/10"
         />
       </div>
@@ -134,6 +135,7 @@ export function GridPattern({
   x,
   y,
   squares,
+  patternKey,
   ...props
 }: {
   width: number;
@@ -141,9 +143,11 @@ export function GridPattern({
   x: string;
   y: string;
   squares?: number[][];
+  /** Stable id source, so the pattern needs no client-side hook. */
+  patternKey: string | number;
   [key: string]: unknown;
 }) {
-  const patternId = useId();
+  const patternId = `mce-grid-${patternKey}`;
 
   return (
     <svg aria-hidden="true" {...props}>
