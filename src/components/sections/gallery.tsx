@@ -1,8 +1,56 @@
-// Ported verbatim from the original Elementor build (section 904c20b).
-// Markup is intentionally kept as-is; edit copy in place.
+/**
+ * Rotating photo carousel beneath the hero.
+ *
+ * Rewritten from the ported Elementor markup: the container scaffolding is
+ * gone, leaving the gb-scene / gb-a3d / gb-card structure the ported
+ * stylesheet animates. The rotation is pure CSS, driven by two custom
+ * properties: --n on the stage (how many cards) and --i per card (its place
+ * in the ring). Both have to stay.
+ */
 
-const html = "<div class=\"elementor-element elementor-element-904c20b e-con-full e-flex e-con e-parent\" data-id=\"904c20b\" data-element_type=\"container\" data-e-type=\"container\">\n\t\t\t\t<div class=\"elementor-element elementor-element-6814fd5 elementor-widget elementor-widget-html\" data-id=\"6814fd5\" data-element_type=\"widget\" data-e-type=\"widget\" data-widget_type=\"html.default\">\n\t\t\t\t\t<div class=\"gb-scene\"> \r\n  <div class=\"gb-a3d\" style=\"--n: 16\"> \r\n    <img decoding=\"async\" class=\"gb-card\" src=\"/wp-content/uploads/2026/03/santiago-daniel.webp\" style=\"--i: 0\"  alt=\"foto\" width=\"350\" height=\"600\" loading=\"eager\" fetchpriority=\"high\"> \r\n    <img decoding=\"async\" class=\"gb-card\" src=\"/wp-content/uploads/2026/03/img10.webp\" style=\"--i: 1\"  alt=\"foto\" width=\"400\" height=\"600\" loading=\"eager\" fetchpriority=\"high\"> \r\n    <img decoding=\"async\" class=\"gb-card\" src=\"/wp-content/uploads/2026/03/img5.webp\"  style=\"--i: 2\"  alt=\"foto\" width=\"400\" height=\"600\" loading=\"eager\" fetchpriority=\"high\"> \r\n    <img decoding=\"async\" class=\"gb-card\" src=\"/wp-content/uploads/2026/03/img2.webp\"  style=\"--i: 3\"  alt=\"foto\" width=\"400\" height=\"600\" loading=\"eager\" fetchpriority=\"high\"> \r\n    <img decoding=\"async\" class=\"gb-card\" src=\"/wp-content/uploads/2026/03/img8.webp\"  style=\"--i: 4\"  alt=\"foto\" width=\"400\" height=\"600\" loading=\"eager\" fetchpriority=\"high\"> \r\n    <img decoding=\"async\" class=\"gb-card\" src=\"/wp-content/uploads/2026/03/img20.webp\" style=\"--i: 5\"  alt=\"foto\" width=\"400\" height=\"600\" loading=\"eager\" fetchpriority=\"high\"> \r\n    <img decoding=\"async\" class=\"gb-card\" src=\"/wp-content/uploads/2026/03/img21.webp\" style=\"--i: 6\"  alt=\"foto\" width=\"400\" height=\"600\" loading=\"eager\" fetchpriority=\"high\"> \r\n    <img decoding=\"async\" class=\"gb-card\" src=\"/wp-content/uploads/2026/03/img24.webp\" style=\"--i: 7\"  alt=\"foto\" width=\"400\" height=\"600\" loading=\"eager\" fetchpriority=\"high\"> \r\n    <img decoding=\"async\" class=\"gb-card\" src=\"/wp-content/uploads/2026/03/img4.webp\"  style=\"--i: 8\"  alt=\"foto\" width=\"400\" height=\"600\" loading=\"eager\" fetchpriority=\"high\"> \r\n    <img decoding=\"async\" class=\"gb-card\" src=\"/wp-content/uploads/2026/03/img6.webp\"  style=\"--i: 9\"  alt=\"foto\" width=\"400\" height=\"600\" loading=\"eager\" fetchpriority=\"high\"> \r\n    <img decoding=\"async\" class=\"gb-card\" src=\"/wp-content/uploads/2026/03/img13.webp\" style=\"--i: 10\" alt=\"foto\" width=\"400\" height=\"600\" loading=\"eager\" fetchpriority=\"high\"> \r\n    <img decoding=\"async\" class=\"gb-card\" src=\"/wp-content/uploads/2026/03/img7.webp\"  style=\"--i: 11\" alt=\"foto\" width=\"400\" height=\"600\" loading=\"eager\" fetchpriority=\"high\"> \r\n    <img decoding=\"async\" class=\"gb-card\" src=\"/wp-content/uploads/2026/03/img22.webp\" style=\"--i: 12\" alt=\"foto\" width=\"400\" height=\"600\" loading=\"eager\" fetchpriority=\"high\"> \r\n    <img decoding=\"async\" class=\"gb-card\" src=\"/wp-content/uploads/2026/03/img16.webp\" style=\"--i: 13\" alt=\"foto\" width=\"400\" height=\"600\" loading=\"eager\" fetchpriority=\"high\"> \r\n    <img decoding=\"async\" class=\"gb-card\" src=\"/wp-content/uploads/2026/03/img-23.jpg\" style=\"--i: 14\" alt=\"foto\" width=\"239\" height=\"600\" loading=\"eager\" fetchpriority=\"high\"> \r\n    <img decoding=\"async\" class=\"gb-card\" src=\"/wp-content/uploads/2026/03/img9.webp\"  style=\"--i: 15\" alt=\"foto\" width=\"400\" height=\"600\" loading=\"eager\" fetchpriority=\"high\"> \r\n  </div> \r\n</div>\t\t\t\t</div>\n\t\t\t\t</div>";
+const PHOTOS = [
+  'santiago-daniel.webp',
+  'img10.webp',
+  'img5.webp',
+  'img2.webp',
+  'img8.webp',
+  'img20.webp',
+  'img21.webp',
+  'img24.webp',
+  'img4.webp',
+  'img6.webp',
+  'img13.webp',
+  'img7.webp',
+  'img22.webp',
+  'img16.webp',
+  'img-23.jpg',
+  'img9.webp',
+];
 
 export function Gallery() {
-  return <div dangerouslySetInnerHTML={{ __html: html }} />;
+  return (
+    <section className="mce-gallery" aria-hidden="true">
+      <div className="gb-scene">
+        <div
+          className="gb-a3d"
+          style={{ ['--n' as string]: PHOTOS.length }}
+        >
+          {PHOTOS.map((photo, index) => (
+            /* eslint-disable-next-line @next/next/no-img-element */
+            <img
+              key={photo}
+              className="gb-card"
+              src={`/wp-content/uploads/2026/03/${photo}`}
+              style={{ ['--i' as string]: index }}
+              alt=""
+              width="350"
+              height="600"
+              loading={index === 0 ? 'eager' : 'lazy'}
+              fetchPriority={index === 0 ? 'high' : 'low'}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
 }

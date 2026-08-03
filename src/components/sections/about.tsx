@@ -107,7 +107,7 @@ export function About() {
         </div>
 
         <div className="mce-about-panel mce-about-panel--copy">
-          <h3 className="elementor-icon-box-title mce-section-title">
+          <h3 className="mce-section-title">
             <span className="titulo-premium">¿Quién es Santiago Gómez?</span>
           </h3>
 

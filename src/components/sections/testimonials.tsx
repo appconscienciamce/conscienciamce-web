@@ -70,20 +70,11 @@ function TestimonialCard({ item }: { item: Testimonial }) {
 
 export function Testimonials() {
   return (
-    <div
-      className="elementor-element e-flex e-con-boxed e-con e-parent mce-testimonials"
-      data-element_type="container"
-    >
-      <div className="e-con-inner">
-        <div className="elementor-element elementor-widget elementor-widget-icon-box">
-          <div className="elementor-icon-box-wrapper">
-            <div className="elementor-icon-box-content">
-              <h3 className="elementor-icon-box-title mce-section-title">
-                <span className="titulo-premium">Testimonios</span>
-              </h3>
-            </div>
-          </div>
-        </div>
+    <section className="mce-testimonials">
+      <div className="mce-testimonials-inner">
+        <h3 className="mce-section-title">
+          <span className="titulo-premium">Testimonios</span>
+        </h3>
 
         <ul className="mce-testimonial-grid">
           {TESTIMONIALS.map((item) => (
@@ -91,6 +82,6 @@ export function Testimonials() {
           ))}
         </ul>
       </div>
-    </div>
+    </section>
   );
 }

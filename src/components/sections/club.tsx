@@ -43,24 +43,17 @@ const ICEBERG_COPY = [
 
 export function Club() {
   return (
-    <div
-      className="elementor-element e-flex e-con-boxed e-con e-parent mce-club"
-      data-element_type="container"
-    >
-      <div className="e-con-inner">
+    <section className="mce-club">
+      <div className="mce-club-inner">
         {/* The ripple grid is a backdrop: it fills this block and the heading
             sits above it. */}
         <div className="mce-club-heading">
           <BackgroundRippleEffect rows={6} cols={27} cellSize={56} />
 
-          <div className="elementor-element elementor-widget elementor-widget-icon-box mce-club-heading-content">
-            <div className="elementor-icon-box-wrapper">
-              <div className="elementor-icon-box-content">
-                <h2 className="elementor-icon-box-title mce-section-title">
-                  <span className="titulo-premium">¿Qué es Consciencia MCE?</span>
-                </h2>
-              </div>
-            </div>
+          <div className="mce-club-heading-content">
+            <h2 className="mce-section-title">
+              <span className="titulo-premium">¿Qué es Consciencia MCE?</span>
+            </h2>
           </div>
 
           {/* The opening line belongs with the narrative, not set apart under
@@ -136,14 +129,10 @@ export function Club() {
             loading="lazy"
           />
 
-          <div className="elementor-element elementor-widget elementor-widget-icon-box mce-club-access-heading">
-            <div className="elementor-icon-box-wrapper">
-              <div className="elementor-icon-box-content">
-                <h3 className="elementor-icon-box-title mce-section-title mce-section-title--sub">
-                  <span className="titulo-premium">Dentro del Club accedés a</span>
-                </h3>
-              </div>
-            </div>
+          <div className="mce-club-access-heading">
+            <h3 className="mce-section-title mce-section-title--sub">
+              <span className="titulo-premium">Dentro del Club accedés a</span>
+            </h3>
           </div>
 
           <div className="mce-club-access-list">
@@ -151,6 +140,6 @@ export function Club() {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
