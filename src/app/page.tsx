@@ -4,7 +4,6 @@ import { Club } from '@/components/sections/club';
 import { Paths } from '@/components/sections/paths';
 import { About } from '@/components/sections/about';
 import { Testimonials } from '@/components/sections/testimonials';
-import { ExperiencesIntro } from '@/components/sections/experiences-intro';
 import { Experiences } from '@/components/sections/experiences';
 import { Footer } from '@/components/sections/footer';
 import { PageScripts } from '@/components/page-scripts';
@@ -33,7 +32,6 @@ export default function HomePage() {
         <Paths />
         <About />
         <Testimonials />
-        <ExperiencesIntro />
         <Experiences />
         <Footer />
       </div>

@@ -1,28 +1,38 @@
 /*
- * Adjustments for the 2026 landing revision.
+ * Consciencia MCE — site styles.
  *
- * Kept separate from the ported Elementor CSS so it stays obvious which rules
- * are ours. Loaded after the original stylesheets.
+ * Loaded after the ported Elementor stylesheets, so plain declarations here
+ * win on equal specificity. `!important` appears only where the ported CSS
+ * uses it too, and each of those is marked with why.
+ *
+ * Structure:
+ *   1. tokens
+ *   2. base type and colour
+ *   3. sections, in page order
+ *   4. one mobile block at the end
+ *
+ * One declaration per selector. If a rule needs changing, change it in place
+ * rather than appending an override.
  */
 
-/* ── Content width ────────────────────────────────────────────────────────
- * Elementor's kit already caps boxed containers at 1140px. These rules extend
- * the same measure to full-width sections and to the blocks added in this
- * revision, so every section lines up on one grid.
- */
+/* ═══════════════════════════ 1. TOKENS ═══════════════════════════ */
+
 :root {
   --mce-content-width: 1140px;
+  --mce-gutter: 20px;
+  --mce-block-gap: clamp(28px, 4vh, 44px);
 
-  /* Text colours: titles pure white, body a light grey-white. */
   --mce-title: #ffffff;
   --mce-body: rgb(255 255 255 / 0.72);
+  --mce-accent: rgb(47 107 255);
+
+  --mce-sans: var(--font-instrument-sans), 'Instrument Sans', sans-serif;
+  --mce-serif: var(--font-instrument-serif), 'Instrument Serif', Georgia, serif;
 }
 
-/* ── Typeface ─────────────────────────────────────────────────────────────
- * The ported stylesheets hardcode Inter in 26 places. Rather than editing each
- * one, Instrument Sans is substituted wherever Inter is declared. Bebas Neue
- * is left alone — it is a display face used deliberately.
- */
+/* ═══════════════════════ 2. BASE TYPE & COLOUR ═══════════════════ */
+
+/* The ported CSS names Inter throughout; substitute the loaded face. */
 body,
 body button,
 body input,
@@ -38,56 +48,103 @@ body .gb-promise,
 body .gb-description,
 body .badge-camino,
 body .btn-label,
-body .list .item .content .text,
-body .mce-club-intro .text,
 body .ice-callout-box,
-body .mce-glass-card,
-body .mce-evento-label,
-body .mce-evento-value,
-body .mce-evento-sublabel {
-  font-family: var(--font-instrument-sans), 'Instrument Sans', sans-serif;
+body .fp-heading,
+body .fp-description,
+body .mce-narrative-line,
+body .mce-about-text,
+body .mce-map-card-place,
+body .mce-map-card-blurb {
+  font-family: var(--mce-sans);
 }
 
-/* ── Text colour ──────────────────────────────────────────────────────────
- * Headings read pure white; descriptions and running copy sit a step back.
- */
 h1,
 h2,
 h3,
 h4,
 .elementor-heading-title,
 .elementor-icon-box-title,
-.mce-section-title,
-.gb-promise {
+.mce-section-title {
   color: var(--mce-title);
 }
 
 .elementor-icon-box-description,
 .gb-description,
-.list .item .content .text,
-.mce-club-intro .text,
-.ice-callout-detail {
+.mce-narrative-line,
+.ice-callout-detail,
+.mce-about-text {
   color: var(--mce-body);
 }
 
-.mce-single-column,
-.mce-club .mce-club-intro,
-.mce-club .mce-club-list,
-.mce-iceberg {
-  width: min(var(--mce-content-width), 100%);
-  margin-inline: auto;
+/* Section headings, stated once for ported and added sections alike. */
+.elementor-1000 .elementor-icon-box-title,
+.elementor-1000 .elementor-heading-title,
+.mce-section-title,
+.mce-section-title--sub {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -1px;
+  margin-block-end: 10px;
 }
 
-/* ── Hero without VSL ─────────────────────────────────────────────────────
- * The original hero was sized for a video that sat below the copy, and the
- * text block was click-through (`pointer-events:none`) because only the play
- * button underneath was interactive. With the VSL gone the hero sizes to its
- * own content, and the CTA has to be clickable again.
- *
- * The padding is load-bearing: the Spline backdrop is absolutely positioned,
- * so it contributes no height. Without this the hero would collapse to the
- * height of the copy alone.
+/* The promise's animated fill, carried onto every heading. */
+.mce-section-title .titulo-premium,
+.elementor-icon-box-title .titulo-premium,
+.elementor-heading-title .titulo-premium {
+  background: linear-gradient(
+    115deg,
+    #6f6f6f 0%,
+    #f4f8ff 16%,
+    #ffffff 28%,
+    #dbe7ff 40%,
+    #6392ea 50%,
+    #f7faff 60%,
+    #c9dbff 72%,
+    #ffffff 84%,
+    #6f6f6f 100%
+  );
+  background-size: 220% 220%;
+  background-position: 0% 50%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: premium-reflection 7s ease-in-out infinite;
+}
+
+/* Plain white emphasis, replacing the ported white-block treatment. */
+.remarcado {
+  background: none;
+  color: #fff;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  font-weight: 600;
+}
+
+/* Serif italic marks phrases worth slowing down on. */
+.mce-club-bridge em,
+.mce-chain-lead em {
+  font-family: var(--mce-serif);
+  font-style: italic;
+  font-size: 1.12em;
+  color: #fff;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+/* ═════════════════════════ 3. SECTIONS ═══════════════════════════ */
+
+/* ── Hero ─────────────────────────────────────────────────────────
+ * The Spline backdrop is absolutely positioned and adds no height, so the
+ * padding here is what gives the hero its size.
  */
+.elementor-element-5c563a5 {
+  position: relative;
+  z-index: 30;
+}
+
 .gb-widget--no-vsl {
   position: relative;
   min-height: auto;
@@ -95,30 +152,36 @@ h4,
   align-items: center;
   justify-content: center;
   padding-block: clamp(56px, 9vh, 120px) clamp(64px, 10vh, 140px);
-  overflow: hidden;
+  overflow: visible;
   isolation: isolate;
 }
 
 .gb-widget--no-vsl .gb-hero {
   position: relative;
-  z-index: 2;
+  z-index: 20;
   top: auto;
   left: auto;
   transform: none;
   pointer-events: auto;
   width: min(var(--mce-content-width), 100%);
   margin-inline: auto;
-  padding-inline: 20px;
+  padding-inline: var(--mce-gutter);
+}
+
+.gb-promise {
+  font-family: var(--mce-sans);
 }
 
 .gb-hero-cta {
-  margin-top: clamp(28px, 4vh, 48px);
+  position: relative;
+  z-index: 20;
+  margin-top: clamp(32px, 4.5vh, 52px);
 }
 
-/* ── Spline backdrop ──────────────────────────────────────────────────────
- * Sits behind the hero copy. The iframe is inert: it must never intercept
- * scroll or clicks meant for the CTA.
- */
+.orb-btn .btn-label {
+  letter-spacing: normal;
+}
+
 .spline-container {
   position: absolute;
   inset: 0;
@@ -135,8 +198,6 @@ h4,
   pointer-events: none;
 }
 
-/* Spline scenes render on a dark canvas; a soft vignette blends the seam
-   into the page background instead of ending on a hard edge. */
 .gb-widget--no-vsl::after {
   content: "";
   position: absolute;
@@ -152,84 +213,117 @@ h4,
   );
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .spline-container {
-    display: none;
-  }
+/* ── Photo scene ──────────────────────────────────────────────── */
+.gb-scene {
+  margin-top: -100px;
+  position: relative;
+  z-index: 2;
 }
 
-
-/* Rows span the full measure, but their prose stays readable. */
-.mce-single-column .list .item .content .text {
-  max-width: 72ch;
+/* ── Consciencia MCE ──────────────────────────────────────────── */
+.mce-club {
+  position: relative;
 }
 
-/* ── Section-level CTA ──────────────────────────────────────────────────── */
-.mce-section-cta {
-  display: flex;
-  justify-content: center;
-  margin-top: clamp(40px, 6vh, 72px);
+.mce-club-heading {
+  position: relative;
+  isolation: isolate;
+  padding-block: clamp(40px, 6vh, 72px) 0;
+  overflow: hidden;
+
+  /* BackgroundRippleEffect reads these; it sets them behind a `dark:`
+     variant this page never matches. */
+  --cell-border-color: rgb(255 255 255 / 0.08);
+  --cell-fill-color: rgb(47 107 255 / 0.28);
+  --cell-shadow-color: rgb(47 107 255 / 0.45);
 }
 
-/* ── Section titles ───────────────────────────────────────────────────────
- * The original styles the section headings per Elementor element id, so a new
- * section inherits none of it. This restates the same token — Inter 36/700 at
- * -1px tracking, scaling to 4vw on tablet and 6vw on mobile — so headings
- * added in this revision match the ones that were ported.
- */
-.mce-section-title,
-.mce-section-title a {
-  font-family: 'Inter', Sans-serif;
-  font-size: 36px;
-  font-weight: 700;
-  letter-spacing: -1px;
-  color: #fff;
-  margin-block-end: 10px;
+.mce-club-heading-content {
+  position: relative;
+  z-index: 4;
 }
 
-.mce-section-title--sub,
-.mce-section-title--sub a {
-  font-size: 28px;
+.mce-club-heading .mce-narrative {
+  margin-top: 24px;
 }
 
-@media (max-width: 1024px) {
-  .mce-section-title,
-  .mce-section-title a {
-    font-size: 4vw;
-  }
-}
-
-@media (max-width: 767px) {
-  .mce-section-title,
-  .mce-section-title a {
-    font-size: 6vw;
-  }
-}
-
-/* ── Club section ─────────────────────────────────────────────────────────
- * Reuses the page's icon-box and list widgets; only layout is added here.
- * Containers run the full 1140px measure, but running prose is capped so
- * lines stay readable.
- */
-.mce-club .mce-club-intro {
+.mce-narrative {
+  max-width: 68ch;
+  margin-inline: auto;
   text-align: center;
 }
 
-.mce-club .mce-club-intro .text {
-  max-width: 68ch;
-  margin-inline: auto;
+.mce-narrative-line {
+  font-size: clamp(16px, 1.5vw, 18px);
+  font-weight: 400;
+  line-height: 1.6;
 }
 
-.mce-club .mce-club-intro .text + .text {
-  margin-top: 1.25em;
+.mce-narrative-line + .mce-narrative-line {
+  margin-top: 1.1em;
 }
 
-/* ── Iceberg ──────────────────────────────────────────────────────────────
- * The ice sits centred with callouts alternating sides, so the composition
- * stays balanced around it.
- */
+/* ── The MCE chain ────────────────────────────────────────────── */
+.mce-chain {
+  margin-block: var(--mce-block-gap);
+  text-align: center;
+}
+
+.mce-chain-lead {
+  margin-bottom: 18px;
+  font-size: 15px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.mce-chain-steps {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(10px, 1.6vw, 18px);
+  margin: 0 0 var(--mce-block-gap);
+  padding: 0;
+  list-style: none;
+}
+
+.mce-chain-steps li {
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 1.6vw, 18px);
+}
+
+.mce-chain-steps li span {
+  display: inline-flex;
+  align-items: center;
+  padding: 12px 24px;
+  border-radius: 999px;
+  font-size: clamp(15px, 1.5vw, 19px);
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.1) 0%, rgb(47 107 255 / 0.08) 100%);
+  border: 1px solid rgb(47 107 255 / 0.32);
+  backdrop-filter: blur(14px) saturate(1.4);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.16), 0 8px 24px rgb(0 0 0 / 0.25);
+}
+
+.mce-chain-steps li:not(:last-child)::after {
+  content: "";
+  width: clamp(16px, 2.4vw, 30px);
+  height: 1px;
+  background: linear-gradient(90deg, rgb(47 107 255 / 0.6), rgb(47 107 255 / 0.15));
+}
+
+.mce-chain .mce-narrative {
+  margin-top: var(--mce-block-gap);
+}
+
+/* ── Iceberg ──────────────────────────────────────────────────── */
 .mce-iceberg {
-  margin-block: clamp(36px, 6vh, 72px);
+  width: min(var(--mce-content-width), 100%);
+  margin: var(--mce-block-gap) auto;
 }
 
 .mce-iceberg-figure {
@@ -243,7 +337,6 @@ h4,
   overflow: visible;
 }
 
-/* A slow drift keeps the ice from reading as a flat diagram. */
 #mce-iceberg-scenery .ice-tip,
 #mce-iceberg-scenery .ice-mass {
   animation: mce-ice-drift 14s ease-in-out infinite;
@@ -258,10 +351,6 @@ h4,
   50% { transform: translateY(-7px); }
 }
 
-/* ── Callouts ─────────────────────────────────────────────────────────────
- * Connectors draw themselves in and labels fade up when the drawing is
- * reached; --i staggers each stratum.
- */
 .ice-callout {
   --i: 0;
 }
@@ -296,16 +385,13 @@ h4,
   to { opacity: 1; }
 }
 
-/* ── Activation nodes ─────────────────────────────────────────────────────
- * Expanding rings marking where each stratum meets the ice.
- */
 .ice-node {
-  fill: #2f6bff;
+  fill: var(--mce-accent);
 }
 
 .ice-node-ring {
   fill: none;
-  stroke: #2f6bff;
+  stroke: var(--mce-accent);
   stroke-width: 1.5;
   transform-box: fill-box;
   transform-origin: center;
@@ -323,14 +409,10 @@ h4,
   100% { transform: scale(4.4); opacity: 0; }
 }
 
-/* ── Callout labels ───────────────────────────────────────────────────────
- * Compact badges: smaller, squarer and tighter than the page's badge-camino.
- */
 .ice-callout-box {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  font-family: var(--font-instrument-sans), 'Instrument Sans', sans-serif;
 }
 
 .ice-callout-box--right {
@@ -352,7 +434,7 @@ h4,
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #2f6bff;
+  color: var(--mce-accent);
   background: linear-gradient(180deg, rgb(255 255 255 / 0.08) 0%, rgb(47 107 255 / 0.06) 100%);
   border: 1px solid rgb(47 107 255 / 0.3);
   backdrop-filter: blur(10px) saturate(1.3);
@@ -363,360 +445,28 @@ h4,
 .ice-callout-detail {
   font-size: 17px;
   line-height: 1.45;
-  color: var(--mce-body);
 }
 
-/* ── Narrow screens ───────────────────────────────────────────────────────
- * foreignObject text scales with the drawing, so below this width the
- * callouts are dropped and the same content renders as a plain list.
- */
 .mce-iceberg-fallback {
   display: none;
-}
-
-@media (max-width: 900px) {
-  .mce-iceberg-svg .ice-callout {
-    display: none;
-  }
-
-  .mce-iceberg-svg {
-    max-width: 420px;
-    margin-inline: auto;
-  }
-
-  .mce-iceberg-fallback {
-    display: flex;
-    flex-direction: column;
-    gap: clamp(16px, 2.5vh, 24px);
-    margin-top: clamp(28px, 4vh, 44px);
-    padding: 0;
-  }
-
-  .mce-iceberg-fallback li {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-    list-style: none;
-  }
-
-  .mce-iceberg-fallback .ice-callout-detail {
-    font-size: 16px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  #mce-iceberg-scenery .ice-tip,
-  #mce-iceberg-scenery .ice-mass,
-  .ice-node-ring {
-    animation: none;
-  }
-
-  .ice-connector {
-    stroke-dashoffset: 0;
-  }
-
-  .mce-iceberg-svg.is-armed .ice-callout foreignObject,
-  .mce-iceberg-svg.is-armed .ice-node-group {
-    opacity: 1;
-  }
-}
-
-/* ── The MCE chain: Consciencia → Identidad → Acción → Materia ────────────
- * The organising idea of the philosophy, set apart from the running copy.
- */
-.mce-chain {
-  margin-block: clamp(36px, 6vh, 72px);
-  text-align: center;
-}
-
-.mce-chain-lead {
-  font-size: 15px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: rgb(255 255 255 / 0.45);
-  margin-bottom: clamp(20px, 3vh, 32px);
-}
-
-.mce-chain-steps {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(10px, 1.6vw, 18px);
-  margin: 0 0 clamp(28px, 4vh, 44px);
+  margin: 0;
   padding: 0;
   list-style: none;
-  counter-reset: chain;
 }
 
-.mce-chain-steps li {
-  display: flex;
-  align-items: center;
-  gap: clamp(10px, 1.6vw, 18px);
-}
-
-.mce-chain-steps li span {
-  display: inline-flex;
-  align-items: center;
-  padding: 12px 24px;
-  border-radius: 999px;
-  font-size: clamp(15px, 1.5vw, 19px);
-  font-weight: 600;
-  color: #fff;
-  background: linear-gradient(180deg, rgb(255 255 255 / 0.10) 0%, rgb(47 107 255 / 0.08) 100%);
-  border: 1px solid rgb(47 107 255 / 0.32);
-  backdrop-filter: blur(14px) saturate(1.4);
-  -webkit-backdrop-filter: blur(14px) saturate(1.4);
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.16),
-    0 8px 24px rgb(0 0 0 / 0.25);
-}
-
-/* Arrow between steps, drawn rather than typed so it never wraps alone. */
-.mce-chain-steps li:not(:last-child)::after {
-  content: "";
-  width: clamp(16px, 2.4vw, 30px);
-  height: 1px;
-  background: linear-gradient(90deg, rgb(47 107 255 / 0.6), rgb(47 107 255 / 0.15));
-  position: relative;
-}
-
-.mce-chain-note {
-  max-width: 68ch;
-  margin-inline: auto;
-}
-
-.mce-chain-note + .mce-chain-note {
-  margin-top: 1.25em;
-}
-
-/* Paragraph rhythm inside the explanatory blocks. */
-.mce-club-intro .text + .text {
-  margin-top: 1.25em;
-}
-
-@media (max-width: 600px) {
-  .mce-chain-steps {
-    flex-direction: column;
-  }
-
-  .mce-chain-steps li:not(:last-child)::after {
-    width: 1px;
-    height: 16px;
-    background: linear-gradient(180deg, rgb(47 107 255 / 0.6), rgb(47 107 255 / 0.15));
-  }
-
-  .mce-chain-steps li {
-    flex-direction: column;
-  }
-}
-
-/* ── Narrative reveal ─────────────────────────────────────────────────────
- * TextGenerateEffect ships with `text-black dark:text-white`; this page has
- * no `dark` class, so the copy would render black on black. The colour is
- * forced here rather than by editing the vendored component.
- */
-.mce-narrative {
-  max-width: 68ch;
-  margin-inline: auto;
-  text-align: center;
-}
-
-.mce-narrative-line,
-.mce-narrative-line span,
-.mce-narrative-line div {
-  color: var(--mce-body) !important;
-  font-family: var(--font-instrument-sans), 'Instrument Sans', sans-serif;
-  font-weight: 400;
-  font-size: clamp(16px, 1.5vw, 18px);
-  line-height: 1.6;
-  letter-spacing: normal;
-}
-
-/* The vendored component adds its own top margin and bold weight. */
-.mce-narrative-line > div {
-  margin-top: 0;
-}
-
-.mce-narrative-line + .mce-narrative-line {
-  margin-top: 1.1em;
-}
-
-/* Shown before the reveal begins, to hold the layout. */
-.mce-narrative-line.is-pending {
-  opacity: 0;
-}
-
-/* ── Pure white emphasis ──────────────────────────────────────────────────
- * The ported `remarcado` treatment is a white block with black text. Plain
- * white type reads better against the dark page.
- */
-.remarcado {
-  background: none !important;
-  color: #fff !important;
-  padding: 0 !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  font-weight: 600;
-}
-
-/* The chain lead-in reads as white, not muted. */
-.mce-chain-lead {
-  color: #fff;
-}
-
-/* ── Promise typography ───────────────────────────────────────────────────
- * Match the family used across the rest of the page.
- */
-.gb-promise {
-  font-family: var(--font-instrument-sans), 'Instrument Sans', sans-serif;
-}
-
-/* ── Section titles carry the promise's animated fill ─────────────────────
- * The promise uses `titulo-premium-2` (premium-reflection); section headings
- * used the plainer `titulo-premium` shimmer. This gives headings the same
- * treatment so the page reads as one system.
- */
-.mce-section-title .titulo-premium,
-.elementor-icon-box-title .titulo-premium,
-.elementor-heading-title .titulo-premium {
-  background: linear-gradient(
-    115deg,
-    #6f6f6f 0%,
-    #f4f8ff 16%,
-    #ffffff 28%,
-    #dbe7ff 40%,
-    #6392ea 50%,
-    #f7faff 60%,
-    #c9dbff 72%,
-    #ffffff 84%,
-    #6f6f6f 100%
-  );
-  background-size: 220% 220%;
-  background-position: 0% 50%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: premium-reflection 7s ease-in-out infinite;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .mce-section-title .titulo-premium,
-  .elementor-icon-box-title .titulo-premium,
-  .elementor-heading-title .titulo-premium {
-    animation: none;
-  }
-}
-
-/* ── Bridge into the Club ─────────────────────────────────────────────────
- * Carries the reader from the philosophy into what the Club is, so it sits
- * larger and in white with generous room on both sides.
- */
+/* ── Bridge into the Club ─────────────────────────────────────── */
 .mce-club-bridge {
   max-width: 60ch;
   margin: clamp(56px, 8vh, 104px) auto clamp(64px, 9vh, 120px);
   text-align: center;
-  font-family: var(--font-instrument-sans), 'Instrument Sans', sans-serif;
+  font-family: var(--mce-sans);
   font-size: clamp(19px, 1.9vw, 22px);
   line-height: 1.5;
   color: #fff;
   text-wrap: balance;
 }
 
-/* Serif italic marks the phrases worth slowing down on. */
-.mce-club-bridge em {
-  font-family: var(--font-instrument-serif), 'Instrument Serif', Georgia, serif;
-  font-style: italic;
-  font-size: 1.14em;
-  color: #fff;
-}
-
-/* Heading and its opening passage share one block. */
-.mce-club-heading .mce-narrative {
-  margin-top: clamp(20px, 3vh, 32px);
-}
-
-/* ── Rhythm inside the Consciencia MCE section ────────────────────────────
- * Everything here is one continuous argument, so the gaps between blocks stay
- * even. Only the bridge into the Club breaks the rhythm, deliberately.
- */
-.mce-club {
-  --mce-block-gap: clamp(28px, 4vh, 44px);
-}
-
-.mce-club-heading {
-  position: relative;
-  isolation: isolate;
-  padding-block: clamp(40px, 6vh, 72px) 0;
-  overflow: hidden;
-}
-
-/* Air between the question and the passage that answers it. */
-.mce-club-heading .mce-narrative {
-  margin-top: 24px;
-}
-
-.mce-club-heading-content {
-  position: relative;
-  z-index: 4;
-}
-
-/* The chain follows on from the passage above it, not as a new section. */
-.mce-chain {
-  margin-block: var(--mce-block-gap);
-}
-
-.mce-chain-lead {
-  margin-bottom: 18px;
-}
-
-.mce-chain-steps {
-  margin-bottom: var(--mce-block-gap);
-}
-
-.mce-chain .mce-narrative {
-  margin-top: var(--mce-block-gap);
-}
-
-/* Iceberg copy and drawing keep the same rhythm. */
-.mce-club .mce-narrative + .mce-iceberg {
-  margin-top: var(--mce-block-gap);
-}
-
-/* Serif italic, matching the bridge, for emphasis in the lead-in. */
-.mce-chain-lead em {
-  font-family: var(--font-instrument-serif), 'Instrument Serif', Georgia, serif;
-  font-style: italic;
-  font-size: 1.12em;
-  color: #fff;
-  text-transform: none;
-  letter-spacing: normal;
-}
-
-/* ── Dot pattern ──────────────────────────────────────────────────────────
- * Carried over from the reference landing, which uses a 5px radial-gradient
- * grid at overlay blend.
- */
-.mce-dots {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  /* No blend mode: `overlay` lifts a milky haze over a flat dark background.
-     The reference landing gets away with it because it sits over imagery. */
-  background-image: radial-gradient(rgb(255 255 255 / 0.22) 1px, transparent 0);
-  background-size: 5px 5px;
-  opacity: 0.5;
-  /* Fade at the edges so the pattern has no hard boundary. */
-  mask-image: radial-gradient(ellipse at center, #000 30%, transparent 72%);
-  -webkit-mask-image: radial-gradient(ellipse at center, #000 30%, transparent 72%);
-}
-
-/* ── Club access block ────────────────────────────────────────────────────
- * The heading and its list are one unit, lit from behind by the arc.
- */
+/* ── Dentro del Club accedés a ────────────────────────────────── */
 .mce-club-access {
   position: relative;
   isolation: isolate;
@@ -726,8 +476,21 @@ h4,
   margin-bottom: clamp(56px, 8vh, 96px);
 }
 
-/* Light arc, reproduced from the reference landing. */
+.mce-dots {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgb(255 255 255 / 0.22) 1px, transparent 0);
+  background-size: 5px 5px;
+  opacity: 0.5;
+  mask-image: radial-gradient(ellipse at center, #000 30%, transparent 72%);
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 30%, transparent 72%);
+}
+
 .mce-lightarc {
+  position: relative;
+  z-index: 1;
   width: 800px;
   max-width: 100%;
   height: auto;
@@ -744,46 +507,555 @@ h4,
   width: 100%;
 }
 
+.mce-club-access-heading {
+  margin-top: 56px;
+}
+
 .mce-club-access-list {
   margin-top: clamp(24px, 3.5vh, 40px);
 }
 
-@media (max-width: 900px) {
-  .mce-lightarc {
-    width: 500px;
-    margin-bottom: -140px;
-  }
+.mce-club-access .fp-benefits-wrapper {
+  margin-inline: auto;
 }
 
-/* ── Ripple backdrop behind the Consciencia MCE heading ───────────────────
- * BackgroundRippleEffect is absolutely positioned, so it needs a positioned
- * block to fill. The component picks its colours from --cell-* variables it
- * sets behind a `dark:` variant; this page has no dark class, so the values
- * are supplied here in the MCE accent instead.
- */
-.mce-club-heading {
-  --cell-border-color: rgb(255 255 255 / 0.08);
-  --cell-fill-color: rgb(47 107 255 / 0.28);
-  --cell-shadow-color: rgb(47 107 255 / 0.45);
+.mce-club-access .fp-heading {
+  font-size: 20px;
+  line-height: 1.3;
 }
 
-/* The dot pattern belongs to the Club access block, behind its light arc. */
-.mce-club-access .mce-dots {
-  z-index: 0;
+.mce-club-access .fp-description {
+  font-size: 16px;
+  line-height: 1.5;
 }
 
-.mce-club-access .mce-lightarc {
+/* lucide draws with strokes; the reference icons were solid fills. */
+.fp-icon-fa .mce-fp-icon {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: rgb(218 240 255 / 0.85);
+  stroke-width: 1.7;
+}
+
+/* ── ¿Para quién es esto? ─────────────────────────────────────── */
+.mce-paths > .e-con-inner {
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .mce-club-heading > div:first-child {
-    display: none;
+.mce-paths .py-20 {
+  padding-block: 0 clamp(32px, 4.5vh, 48px);
+}
+
+.mce-paths .max-w-7xl {
+  max-width: var(--mce-content-width);
+}
+
+.mce-paths .elementor-icon-box-title {
+  margin-block-end: 0;
+}
+
+.mce-paths .grid > div > p:first-of-type {
+  font-size: 21px;
+  font-weight: 500;
+  line-height: 1.3;
+  text-align: start;
+  color: #fff;
+}
+
+.mce-paths .grid > div > p:last-of-type {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+@media (min-width: 768px) {
+  .mce-paths .grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  .mce-paths .grid > div:nth-child(-n + 3) {
+    grid-column: span 2;
+  }
+
+  .mce-paths .grid > div:nth-child(4),
+  .mce-paths .grid > div:nth-child(5) {
+    grid-column: span 3;
   }
 }
 
+.mce-section-cta {
+  display: flex;
+  justify-content: center;
+  margin-bottom: clamp(40px, 6vh, 72px);
+}
 
+/* ── ¿Quién es Santiago Gómez? ────────────────────────────────── */
+.mce-about {
+  width: min(var(--mce-content-width), 100%);
+  margin-inline: auto;
+  padding-block: clamp(48px, 7vh, 96px);
+}
+
+.mce-about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(24px, 3vw, 48px);
+  align-items: center;
+  border: 1px solid rgb(255 255 255 / 0.08);
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.mce-about-panel {
+  padding: clamp(20px, 2.4vw, 34px);
+}
+
+.mce-about-panel--photos {
+  padding-inline: 0;
+}
+
+.mce-about-panel--copy {
+  border-left: 1px solid rgb(255 255 255 / 0.08);
+}
+
+.mce-about-panel--copy .mce-section-title {
+  margin-bottom: clamp(16px, 2vh, 24px);
+}
+
+.mce-about-text {
+  margin: 0 0 1em;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.mce-about-text:last-child {
+  margin-bottom: 0;
+}
+
+/* ── Testimonials ─────────────────────────────────────────────── */
+.mce-testimonials {
+  padding-block: clamp(72px, 10vh, 128px) clamp(48px, 7vh, 88px);
+}
+
+.mce-testimonial-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(18px, 2.2vw, 28px);
+  width: min(var(--mce-content-width), 100%);
+  margin: clamp(28px, 4vh, 48px) auto 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mce-testimonial {
+  list-style: none;
+}
+
+.mce-testimonial-frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #08080b;
+  border: 1px solid rgb(255 255 255 / 0.1);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.06), 0 18px 40px rgb(0 0 0 / 0.45);
+  transition: border-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease;
+}
+
+.mce-testimonial-frame:hover {
+  border-color: rgb(255 255 255 / 0.22);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.1), 0 22px 48px rgb(0 0 0 / 0.5);
+  transform: translateY(-2px);
+}
+
+.mce-testimonial-frame::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  opacity: 0;
+  background: conic-gradient(
+    from var(--sweep, 0deg),
+    transparent 0deg,
+    rgb(255 255 255 / 0.65) 24deg,
+    transparent 60deg,
+    transparent 360deg
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  transition: opacity 0.35s ease;
+}
+
+.mce-testimonial-frame:hover::after {
+  opacity: 1;
+  animation: mce-border-sweep 2.6s linear infinite;
+}
+
+@property --sweep {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes mce-border-sweep {
+  to { --sweep: 360deg; }
+}
+
+.mce-testimonial-frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+.mce-testimonial-play {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: linear-gradient(180deg, #1a1a1f, #101014);
+  cursor: pointer;
+  display: block;
+}
+
+.mce-testimonial-play img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  background: #16161a;
+  opacity: 0.82;
+  transition: opacity 0.35s ease, transform 0.6s ease;
+}
+
+.mce-testimonial-play:hover img {
+  opacity: 1;
+  transform: scale(1.03);
+}
+
+.mce-testimonial-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  color: #fff;
+  background: rgb(255 255 255 / 0.12);
+  border: 1px solid rgb(255 255 255 / 0.28);
+  backdrop-filter: blur(14px) saturate(1.4);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.3),
+    inset 0 -1px 0 rgb(255 255 255 / 0.08),
+    0 10px 28px rgb(0 0 0 / 0.45);
+  transition: transform 0.35s ease, background-color 0.35s ease;
+}
+
+.mce-testimonial-icon svg {
+  margin-left: 3px;
+}
+
+.mce-testimonial-play:hover .mce-testimonial-icon {
+  transform: translate(-50%, -50%) scale(1.08);
+  background: rgb(255 255 255 / 0.2);
+}
+
+.mce-testimonial-play:focus-visible .mce-testimonial-icon {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+.mce-testimonial-name {
+  margin: 14px 0 0;
+  font-size: 17px;
+  font-weight: 600;
+  color: #fff;
+  text-align: center;
+}
+
+/* ── Experiences and the map ──────────────────────────────────── */
+
+.mce-map {
+  width: min(var(--mce-content-width), 100%);
+  margin: 0 auto clamp(24px, 4vh, 44px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mce-map-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 auto clamp(14px, 2vh, 22px);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.6);
+  background: rgb(255 255 255 / 0.04);
+  border: 1px solid rgb(255 255 255 / 0.1);
+}
+
+.mce-map-canvas {
+  position: relative;
+  width: 100%;
+}
+
+.mce-map-pin {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+}
+
+/* The ported theme styles every <button> with a #c36 border and colour. */
+.mce-map-hit,
+.mce-map-hit:hover,
+.mce-map-hit:focus {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: auto;
+  height: auto;
+  padding: 4px;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  color: inherit;
+  box-shadow: none;
+  cursor: pointer;
+}
+
+.mce-map-pin--left .mce-map-hit {
+  flex-direction: row-reverse;
+}
+
+.mce-map-hit-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--mce-accent);
+  box-shadow: 0 0 0 4px rgb(47 107 255 / 0.22), 0 0 16px rgb(47 107 255 / 0.7);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.mce-map-hit:hover .mce-map-hit-dot,
+.mce-map-pin.is-open .mce-map-hit-dot {
+  transform: scale(1.25);
+  box-shadow: 0 0 0 6px rgb(47 107 255 / 0.28), 0 0 22px rgb(47 107 255 / 0.9);
+}
+
+.mce-map-hit:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+.mce-map-badge {
+  padding: 3px 9px;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #dce7ff;
+  background: rgb(12 12 16 / 0.72);
+  border: 1px solid rgb(47 107 255 / 0.3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.mce-map-pin.is-open .mce-map-badge {
+  color: #fff;
+  border-color: rgb(47 107 255 / 0.6);
+}
+
+.mce-map-card {
+  position: absolute;
+  bottom: calc(100% + 14px);
+  width: 244px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgb(12 12 16 / 0.92);
+  border: 1px solid rgb(47 107 255 / 0.3);
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  box-shadow: 0 20px 44px rgb(0 0 0 / 0.55);
+  transform: translateY(6px);
+  transition: opacity 0.28s ease, transform 0.28s ease, visibility 0.28s;
+}
+
+.mce-map-pin--right .mce-map-card {
+  left: 0;
+}
+
+.mce-map-pin--left .mce-map-card {
+  right: 0;
+}
+
+.mce-map-pin.is-open .mce-map-card {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.mce-map-card-media {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.mce-map-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* The photo fades into the body rather than cutting against it. */
+.mce-map-card-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent 45%, rgb(12 12 16 / 0.95) 100%);
+}
+
+.mce-map-card-body {
+  position: relative;
+  margin-top: -6px;
+  padding: 14px 16px 16px;
+}
+
+.mce-map-card-place {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.mce-map-card-date {
+  margin: 4px 0 0;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mce-accent);
+}
+
+.mce-map-card-blurb {
+  margin: 10px 0 0;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--mce-body);
+}
+
+.mce-map-list {
+  display: none;
+  margin: clamp(24px, 4vh, 40px) 0 0;
+  padding: 0;
+  list-style: none;
+  gap: 16px;
+}
+
+/* ── Footer ───────────────────────────────────────────────────── */
+.mce-footer {
+  position: relative;
+  padding-block: clamp(28px, 4vh, 48px) clamp(32px, 5vh, 56px);
+  text-align: center;
+}
+
+.mce-footer::before {
+  content: ;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(var(--mce-content-width), calc(100% - 40px));
+  height: 1px;
+  background: rgb(255 255 255 / 0.12);
+}
+
+.mce-footer-legal {
+  width: min(720px, calc(100% - 40px));
+  margin-inline: auto;
+  font-family: var(--mce-sans);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+  color: rgb(255 255 255 / 0.38);
+}
+
+/* ── Experiences ──────────────────────────────────────────────── */
+.mce-experiences {
+  padding-block: clamp(40px, 6vh, 80px) 0;
+}
+
+.mce-experiences-intro {
+  width: min(var(--mce-content-width), 100%);
+  margin-inline: auto;
+  padding-inline: var(--mce-gutter);
+  text-align: center;
+}
+
+.mce-experiences-lead {
+  max-width: 68ch;
+  margin: 0 auto;
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--mce-body);
+}
+
+/* ── GradualBlur (React Bits) ─────────────────────────────────── */
+.gradual-blur {
+  isolation: isolate;
+  pointer-events: none;
+  transition: opacity 0.3s ease-out;
+}
+
+.gradual-blur-parent {
+  overflow: hidden;
+}
+
+.gradual-blur-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.gradual-blur-inner > div {
+  -webkit-backdrop-filter: inherit;
+  backdrop-filter: inherit;
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .gradual-blur-inner > div {
+    background: rgb(0 0 0 / 0.3);
+    opacity: 0.5;
+  }
+}
 /* ── Club benefit cards ───────────────────────────────────────────────────
  * Reproduced from frontpackpro.com as published: the dots, icon rings and
  * connecting lines are all part of that structure. Only the two font
@@ -1123,375 +1395,15 @@ h4,
   stroke: rgba(218, 240, 255, 0.85);
   stroke-width: 1.7;
 }
-
-/* The reference wrapper is a fixed 1140px but relies on its parent to centre
-   it; Elementor's container does not, so it is centred here. */
-.mce-club-access .fp-benefits-wrapper {
-  margin-inline: auto;
-}
-
-/* ── "¿Para quién es esto?" grid ──────────────────────────────────────────
- * The demo grid is capped at max-w-7xl; hold it to the page measure instead.
- * With five cards a four-column grid leaves one stranded, so the last row is
- * balanced at three columns from the medium breakpoint up.
- */
-.mce-paths .py-20 {
-  padding-block: clamp(36px, 6vh, 72px);
-}
-
-.mce-paths .max-w-7xl {
-  max-width: var(--mce-content-width);
-}
-
-@media (min-width: 768px) {
-  /* Bento: three across, then two wider ones filling the same measure. */
-  .mce-paths .grid {
-    grid-template-columns: repeat(6, 1fr);
-  }
-
-  .mce-paths .grid > div:nth-child(-n+3) {
-    grid-column: span 2;
-  }
-
-  .mce-paths .grid > div:nth-child(4),
-  .mce-paths .grid > div:nth-child(5) {
-    grid-column: span 3;
-  }
-}
-
-/* ── Benefit card text ────────────────────────────────────────────────────
- * The reference stylesheet's narrow-viewport rules were winning here, leaving
- * the cards at 14/12px. Restore a readable size.
- */
-.mce-club-access .fp-heading {
-  font-size: 20px;
-  line-height: 1.3;
-}
-
-.mce-club-access .fp-description {
-  font-size: 16px;
-  line-height: 1.5;
-}
-
-/* Centre the heading within the light arc above it. */
-.mce-club-access-heading {
-  margin-top: 20px;
-}
-
-/* ── "¿Para quién es esto?" ───────────────────────────────────────────────
- * The section paints a gradient overlay through a ::before at darken blend,
- * which sits over the cards. Lift the content above it.
- */
-.mce-paths > .e-con-inner {
-  position: relative;
-  z-index: 2;
-}
-
-/* The demo's own padding left a large gap under the heading. */
-.mce-paths .py-20 {
-  padding-block: clamp(20px, 3vh, 36px) clamp(36px, 5vh, 56px);
-}
-
-.mce-paths .elementor-icon-box-title {
-  margin-block-end: 0;
-}
-
-/* Card type: titles large enough to scan, descriptions at body size. */
-.mce-paths .grid > div > p:first-of-type {
-  font-size: 20px;
-  line-height: 1.3;
-}
-
-.mce-paths .grid > div > p:last-of-type {
-  font-size: 16px;
-  line-height: 1.5;
-}
-
-/* ── Photo scene pulled up under the hero ─────────────────────────────────
- * Everything below follows it up, so the page keeps its rhythm.
- */
-.gb-scene {
-  margin-top: -80px;
-  position: relative;
-  z-index: 99;
-}
-
-@media (max-width: 767px) {
-  .gb-scene {
-    margin-top: -70px;
-  }
-}
-
-/* ── One size for every section title ─────────────────────────────────────
- * The ported CSS sets each heading per Elementor element id — 36px here,
- * 28px there — so they never line up on their own. This states the size once
- * for all of them, ported and added alike.
- */
-.elementor-1000 .elementor-icon-box-title,
-.elementor-1000 .elementor-heading-title,
-.mce-section-title,
-.mce-section-title--sub {
-  font-size: 32px;
-  line-height: 1.2;
-}
-
-@media (max-width: 1024px) {
-  .elementor-1000 .elementor-icon-box-title,
-  .elementor-1000 .elementor-heading-title,
-  .mce-section-title,
-  .mce-section-title--sub {
-    font-size: 4vw;
-  }
-}
-
-@media (max-width: 767px) {
-  .elementor-1000 .elementor-icon-box-title,
-  .elementor-1000 .elementor-heading-title,
-  .mce-section-title,
-  .mce-section-title--sub {
-    font-size: 6vw;
-  }
-}
-
-/* Close the gap between "¿Para quién es esto?" and its cards. */
-.mce-paths .py-20 {
-  padding-block: 0 clamp(32px, 4.5vh, 48px);
-}
-
-/* More room above the Club heading so it centres in the arc behind it. */
-.mce-club-access-heading {
-  margin-top: 56px;
-}
-
-@media (max-width: 900px) {
-  .mce-club-access-heading {
-    margin-top: 36px;
-  }
-}
-
-/* ── Hero CTA above the overlapping scene ─────────────────────────────────
- * .gb-scene is pulled up over the hero at z-index 2, so the CTA needs to sit
- * above it. It stays below the page's dot pattern, which is layered higher.
- */
-.gb-hero-cta {
-  position: relative;
-  z-index: 20;
-  margin-top: 0;
-}
-
-.gb-widget--no-vsl .gb-hero {
-  z-index: 20;
-}
-
-/* ── Section CTA ──────────────────────────────────────────────────────────
- * The spacing moves below the button, separating it from the next section
- * rather than from its own content.
- */
-.mce-section-cta {
-  margin-top: 0;
-  margin-bottom: clamp(40px, 6vh, 72px);
-}
-
-/* ── GradualBlur (React Bits) ─────────────────────────────────────────────
- * Component CSS, kept here rather than injected at runtime so it ships with
- * the stylesheet instead of appearing after hydration.
- */
-.gradual-blur {
-  isolation: isolate;
-  pointer-events: none;
-  transition: opacity 0.3s ease-out;
-}
-
-.gradual-blur-parent {
-  overflow: hidden;
-}
-
-.gradual-blur-inner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
-.gradual-blur-inner > div {
-  -webkit-backdrop-filter: inherit;
-  backdrop-filter: inherit;
-}
-
-@supports not (backdrop-filter: blur(1px)) {
-  .gradual-blur-inner > div {
-    background: rgb(0 0 0 / 0.3);
-    opacity: 0.5;
-  }
-}
-
-/* ── Hero CTA over the sections below ─────────────────────────────────────
- * .gb-widget--no-vsl sets `isolation: isolate`, so a z-index on the CTA only
- * competes inside the hero. Raising the hero itself is what lets the button
- * sit over the scene that follows it.
- */
-.elementor-element-5c563a5 {
-  position: relative;
-  z-index: 30;
-}
-
-.gb-widget--no-vsl {
-  overflow: visible;
-}
-
-.gb-hero-cta {
-  margin-top: clamp(32px, 4.5vh, 52px);
-}
-
-
-
-/* Back to 32px: the bump to 36 was to compensate for the serif, now reverted. */
-.elementor-1000 .elementor-icon-box-title,
-.elementor-1000 .elementor-heading-title,
-.mce-section-title,
-.mce-section-title--sub {
-  font-size: 32px;
-  letter-spacing: -1px;
-}
-
-/* ── "¿Para quién es esto?" card titles ───────────────────────────────────
- * Same treatment as the Club benefit cards: 21px, weight 500, left aligned.
- */
-.mce-paths .grid > div > p:first-of-type {
-  font-size: 21px;
-  font-weight: 500;
-  line-height: 1.3;
-  text-align: start;
-  color: #fff;
-}
-
-/* Tighter tracking on the CTA labels. */
-.orb-btn .btn-label {
-  letter-spacing: -1px;
-}
-
-/* ── Testimonials ─────────────────────────────────────────────────────────
- * Three across within the page measure, stacking to one column on mobile.
- * Videos are horizontal, so each frame holds a 16:9 box.
- */
-.mce-testimonials {
-  padding-block: clamp(48px, 7vh, 88px);
-}
-
-.mce-testimonial-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: clamp(18px, 2.2vw, 28px);
-  width: min(var(--mce-content-width), 100%);
-  margin: clamp(28px, 4vh, 48px) auto 0;
-  padding: 0;
-  list-style: none;
-}
-
-.mce-testimonial {
-  list-style: none;
-}
-
-.mce-testimonial-frame {
-  position: relative;
-  aspect-ratio: 16 / 9;
-  border-radius: 14px;
-  overflow: hidden;
-  background: #08080b;
-  border: 1px solid rgb(255 255 255 / 0.1);
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.06),
-    0 18px 40px rgb(0 0 0 / 0.45);
-  transition: border-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease;
-}
-
-.mce-testimonial-frame:hover {
-  border-color: rgb(47 107 255 / 0.45);
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.1),
-    0 22px 48px rgb(0 0 0 / 0.5),
-    0 0 0 1px rgb(47 107 255 / 0.18);
-  transform: translateY(-2px);
-}
-
-.mce-testimonial-frame iframe {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  border: 0;
-  display: block;
-}
-
-/* Poster state, shown until the reader presses play. */
-.mce-testimonial-play {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  padding: 0;
-  border: 0;
-  background: none;
-  cursor: pointer;
-  display: block;
-}
-
-.mce-testimonial-play img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  opacity: 0.82;
-  transition: opacity 0.35s ease, transform 0.6s ease;
-}
-
-.mce-testimonial-play:hover img {
-  opacity: 1;
-  transform: scale(1.03);
-}
-
-.mce-testimonial-icon {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 58px;
-  height: 58px;
-  border-radius: 50%;
-  color: #fff;
-  background: rgb(47 107 255 / 0.85);
-  border: 1px solid rgb(255 255 255 / 0.25);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  box-shadow: 0 10px 28px rgb(0 0 0 / 0.45);
-  transition: transform 0.35s ease, background-color 0.35s ease;
-}
-
-/* The triangle reads centred when nudged right of true centre. */
-.mce-testimonial-icon svg {
-  margin-left: 3px;
-}
-
-.mce-testimonial-play:hover .mce-testimonial-icon {
-  transform: translate(-50%, -50%) scale(1.08);
-  background: rgb(47 107 255);
-}
-
-.mce-testimonial-play:focus-visible .mce-testimonial-icon {
-  outline: 2px solid #fff;
-  outline-offset: 3px;
-}
-
-.mce-testimonial-name {
-  margin: 14px 0 0;
-  font-size: 17px;
-  font-weight: 600;
-  color: #fff;
-  text-align: center;
-}
+/* ═══════════════════════════ 4. RESPONSIVE ═══════════════════════
+ * Two blocks only: tablet, then phone. Type is in vw so it scales with the
+ * device instead of stepping between breakpoints.
+ *
+ * `!important` appears where the ported CSS uses it for the same property —
+ * .gb-promise is 8vw!important there, .gb-description 3.8vw!important — and
+ * where Elementor zeroes .e-con-inner's inline padding with a two-class
+ * selector.
+ * ═══════════════════════════════════════════════════════════════ */
 
 @media (max-width: 1024px) {
   .mce-testimonial-grid {
@@ -1499,317 +1411,49 @@ h4,
   }
 }
 
-@media (max-width: 700px) {
-  .mce-testimonial-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .mce-testimonial-icon {
-    width: 50px;
-    height: 50px;
-  }
-}
-
-/* ── Testimonial poster and play button ───────────────────────────────────
- * The frame shows grey while the Drive thumbnail loads or if it fails, rather
- * than whatever the browser paints behind a broken image.
- */
-.mce-testimonial-play {
-  background: linear-gradient(180deg, #1a1a1f, #101014);
-}
-
-.mce-testimonial-play img {
-  background: #16161a;
-}
-
-/* Glass play button. */
-.mce-testimonial-icon {
-  background: rgb(255 255 255 / 0.12);
-  border: 1px solid rgb(255 255 255 / 0.28);
-  backdrop-filter: blur(14px) saturate(1.4);
-  -webkit-backdrop-filter: blur(14px) saturate(1.4);
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.3),
-    inset 0 -1px 0 rgb(255 255 255 / 0.08),
-    0 10px 28px rgb(0 0 0 / 0.45);
-}
-
-.mce-testimonial-play:hover .mce-testimonial-icon {
-  background: rgb(255 255 255 / 0.2);
-  transform: translate(-50%, -50%) scale(1.08);
-}
-
-/* More air above the section. */
-.mce-testimonials {
-  padding-block: clamp(72px, 10vh, 128px) clamp(48px, 7vh, 88px);
-}
-
-/* ── Events map ───────────────────────────────────────────────────────────
- * WorldMap draws the arcs; the pins on top of it are ours, positioned with
- * the same projection so they land on the arc endpoints.
- */
-.mce-map {
-  width: min(var(--mce-content-width), 100%);
-  margin: 0 auto clamp(32px, 5vh, 56px);
-  margin-top: -70px;
-}
-
-.mce-map-canvas {
-  position: relative;
-  width: 100%;
-}
-
-.mce-map-pin {
-  position: absolute;
-  transform: translate(-50%, -50%);
-  z-index: 3;
-}
-
-.mce-map-hit {
-  display: grid;
-  place-items: center;
-  width: 34px;
-  height: 34px;
-  padding: 0;
-  border: 0;
-  border-radius: 50%;
-  background: none;
-  cursor: pointer;
-}
-
-.mce-map-hit-dot {
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-  background: #2f6bff;
-  box-shadow: 0 0 0 4px rgb(47 107 255 / 0.22), 0 0 16px rgb(47 107 255 / 0.7);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.mce-map-hit:hover .mce-map-hit-dot,
-.mce-map-pin.is-open .mce-map-hit-dot {
-  transform: scale(1.25);
-  box-shadow: 0 0 0 6px rgb(47 107 255 / 0.28), 0 0 22px rgb(47 107 255 / 0.9);
-}
-
-.mce-map-hit:focus-visible {
-  outline: 2px solid #fff;
-  outline-offset: 2px;
-}
-
-/* The card sits above its pin, revealed on click. */
-.mce-map-card {
-  position: absolute;
-  bottom: calc(100% + 14px);
-  left: 50%;
-  width: 244px;
-  transform: translate(-50%, 6px);
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  border-radius: 14px;
-  overflow: hidden;
-  background: rgb(12 12 16 / 0.92);
-  border: 1px solid rgb(47 107 255 / 0.3);
-  backdrop-filter: blur(16px) saturate(1.4);
-  -webkit-backdrop-filter: blur(16px) saturate(1.4);
-  box-shadow: 0 20px 44px rgb(0 0 0 / 0.55);
-  transition: opacity 0.28s ease, transform 0.28s ease, visibility 0.28s;
-}
-
-.mce-map-pin.is-open .mce-map-card {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-  transform: translate(-50%, 0);
-}
-
-.mce-map-card-media {
-  aspect-ratio: 16 / 9;
-  overflow: hidden;
-}
-
-.mce-map-card-media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.mce-map-card-body {
-  padding: 14px 16px 16px;
-}
-
-.mce-map-card-place {
-  margin: 0;
-  font-size: 17px;
-  font-weight: 600;
-  color: #fff;
-}
-
-.mce-map-card-date {
-  margin: 4px 0 0;
-  font-size: 13px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #2f6bff;
-}
-
-.mce-map-card-blurb {
-  margin: 10px 0 0;
-  font-size: 14px;
-  line-height: 1.45;
-  color: var(--mce-body);
-}
-
-/* ── Narrow screens ───────────────────────────────────────────────────────
- * The pins are too small to hit reliably, so the same content is listed
- * below the map instead.
- */
-.mce-map-list {
-  display: none;
-  margin: clamp(24px, 4vh, 40px) 0 0;
-  padding: 0;
-  list-style: none;
-  gap: 16px;
-}
-
 @media (max-width: 900px) {
-  .mce-map-pin {
+  /* Iceberg: the drawing sits above its strata. */
+  .mce-iceberg-svg .ice-callout {
     display: none;
   }
 
-  .mce-map-list {
+  .mce-iceberg-svg {
+    max-width: 300px;
+    margin-inline: auto;
+  }
+
+  .mce-iceberg-fallback {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 22px;
+  }
+
+  .mce-iceberg-fallback li {
     display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: start;
+    gap: 10px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgb(255 255 255 / 0.07);
+  }
+
+  .mce-iceberg-fallback li:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  /* Santiago: panels stack. */
+  .mce-about-grid {
     grid-template-columns: 1fr;
   }
 
-  .mce-map-list li {
-    list-style: none;
-    border-radius: 14px;
-    overflow: hidden;
-    background: rgb(255 255 255 / 0.03);
-    border: 1px solid rgb(255 255 255 / 0.1);
+  .mce-about-panel--copy {
+    border-left: 0;
   }
-}
 
-/* ── Events map: sit close under the intro copy ───────────────────────────
- * The map carries its own dark falloff, so it reads as a continuation of the
- * paragraph above rather than a separate block.
- */
-.mce-map {
-  margin-top: 0;
-  margin-bottom: clamp(24px, 4vh, 44px);
-}
-
-/* Badge beside each dot. */
-.mce-map-hit {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  width: auto;
-  height: auto;
-  padding: 4px;
-}
-
-.mce-map-badge {
-  padding: 3px 9px;
-  border-radius: 5px;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  color: #dce7ff;
-  background: rgb(12 12 16 / 0.72);
-  border: 1px solid rgb(47 107 255 / 0.3);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  transition: color 0.3s ease, border-color 0.3s ease;
-}
-
-.mce-map-pin.is-open .mce-map-badge {
-  color: #fff;
-  border-color: rgb(47 107 255 / 0.6);
-}
-
-/* The badge trails the dot on the left-aligned pin. */
-.mce-map-pin--left .mce-map-hit {
-  flex-direction: row-reverse;
-}
-
-/* Cards open away from the map edge. */
-.mce-map-pin--right .mce-map-card {
-  left: 0;
-  transform: translate(0, 6px);
-}
-
-.mce-map-pin--right.is-open .mce-map-card {
-  transform: translate(0, 0);
-}
-
-.mce-map-pin--left .mce-map-card {
-  left: auto;
-  right: 0;
-  transform: translate(0, 6px);
-}
-
-.mce-map-pin--left.is-open .mce-map-card {
-  transform: translate(0, 0);
-}
-
-/* The photo fades into the card body rather than cutting against it. */
-.mce-map-card-media {
-  position: relative;
-}
-
-.mce-map-card-media::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(180deg, transparent 45%, rgb(12 12 16 / 0.95) 100%);
-}
-
-.mce-map-card-body {
-  margin-top: -6px;
-  position: relative;
-}
-
-/* ── Map hint ─────────────────────────────────────────────────────────────
- * Tells the reader the dots are interactive; on narrow screens the pins are
- * replaced by a list, so it is hidden there.
- */
-.mce-map-hint {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin: 0 auto clamp(14px, 2vh, 22px);
-  padding: 6px 14px;
-  border-radius: 999px;
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgb(255 255 255 / 0.6);
-  background: rgb(255 255 255 / 0.04);
-  border: 1px solid rgb(255 255 255 / 0.1);
-}
-
-.mce-map {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.mce-map-canvas {
-  width: 100%;
-}
-
-/* ── Mobile ───────────────────────────────────────────────────────────────
- * The map stays as a backdrop but stops being the interface; the events read
- * as cards underneath it.
- */
-@media (max-width: 900px) {
+  /* Map: pins are too small to hit, so the events list below it. */
+  .mce-map-pin,
   .mce-map-hint {
     display: none;
   }
@@ -1821,255 +1465,108 @@ h4,
   .mce-map-list {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 16px;
     width: 100%;
   }
 
   .mce-map-list li {
-    display: block;
-  }
-
-  .mce-map-list .mce-map-card-media {
-    aspect-ratio: 16 / 9;
+    list-style: none;
+    border-radius: 14px;
     overflow: hidden;
+    background: rgb(255 255 255 / 0.03);
+    border: 1px solid rgb(255 255 255 / 0.1);
   }
 
-  .mce-map-list .mce-map-card-media img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  .mce-map-list .mce-map-card-media::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, transparent 45%, rgb(12 12 16 / 0.95) 100%);
-  }
-
-  .mce-map-list .mce-map-card-body {
-    padding: 14px 16px 18px;
-    margin-top: -6px;
+  .mce-lightarc {
+    width: 500px;
+    margin-bottom: -140px;
   }
 }
 
-@media (max-width: 560px) {
-  .mce-map-canvas {
-    opacity: 0.4;
-  }
-}
-
-/* ── "¿Quién es Santiago Gómez?" ──────────────────────────────────────────
- * Photo mosaic on the left, copy on the right, stacking on narrow screens.
- */
-.mce-about {
-  width: min(var(--mce-content-width), 100%);
-  margin-inline: auto;
-  padding-block: clamp(48px, 7vh, 96px);
-}
-
-.mce-about-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: clamp(24px, 3vw, 48px);
-  align-items: center;
-  border: 1px solid rgb(255 255 255 / 0.08);
-  border-radius: 18px;
-  overflow: hidden;
-}
-
-.mce-about-panel {
-  padding: clamp(20px, 2.4vw, 34px);
-}
-
-.mce-about-panel--photos {
-  padding-inline: 0;
-}
-
-.mce-about-panel--copy {
-  border-left: 1px solid rgb(255 255 255 / 0.08);
-}
-
-.mce-about-panel--copy .mce-section-title {
-  margin-bottom: clamp(16px, 2vh, 24px);
-}
-
-.mce-about-text {
-  margin: 0 0 1em;
-  font-size: 16px;
-  line-height: 1.6;
-  color: var(--mce-body);
-}
-
-.mce-about-text:last-child {
-  margin-bottom: 0;
-}
-
-@media (max-width: 900px) {
-  .mce-about-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .mce-about-panel--copy {
-    border-left: 0;
-    border-top: 1px solid rgb(255 255 255 / 0.08);
-  }
-}
-
-/* ── Testimonial card border ──────────────────────────────────────────────
- * A light sweep travels the border on hover instead of the flat blue outline.
- */
-.mce-testimonial-frame:hover {
-  border-color: rgb(255 255 255 / 0.22);
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.1),
-    0 22px 48px rgb(0 0 0 / 0.5);
-}
-
-.mce-testimonial-frame::after {
-  content: "";
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  padding: 1px;
-  pointer-events: none;
-  opacity: 0;
-  background: conic-gradient(
-    from var(--sweep, 0deg),
-    transparent 0deg,
-    rgb(255 255 255 / 0.65) 24deg,
-    transparent 60deg,
-    transparent 360deg
-  );
-  /* Mask to the border only, leaving the video untouched. */
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  mask-composite: exclude;
-  transition: opacity 0.35s ease;
-}
-
-.mce-testimonial-frame:hover::after {
-  opacity: 1;
-  animation: mce-border-sweep 2.6s linear infinite;
-}
-
-@property --sweep {
-  syntax: '<angle>';
-  inherits: false;
-  initial-value: 0deg;
-}
-
-@keyframes mce-border-sweep {
-  to { --sweep: 360deg; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .mce-testimonial-frame:hover::after {
-    animation: none;
-  }
-}
-
-/* ── Experiences: no seam before the map ──────────────────────────────────
- * The ported container paints a gradient with a top border, which cut the
- * copy off from the map below it.
- */
-.elementor-1000 .elementor-element.elementor-element-6263192 {
-  background: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-  border-top: 0;
-  border-bottom: 0;
-}
-
-/* ── Footer ───────────────────────────────────────────────────────────────
- * A divider held to the page measure rather than the full viewport, and the
- * legal text back to the size the original set — our heading rule had caught
- * it, since the footer line is an elementor-heading-title.
- */
-.elementor-1000 .elementor-element.elementor-element-76acd47 .elementor-heading-title {
-  font-family: var(--font-instrument-sans), 'Instrument Sans', sans-serif;
-  font-size: 13px;
-  font-weight: 400;
-  line-height: 1.6;
-  letter-spacing: 0.02em;
-  color: rgb(255 255 255 / 0.38);
-}
-
-.elementor-1000 .elementor-element.elementor-element-cf68764 {
-  position: relative;
-  padding-top: clamp(28px, 4vh, 48px);
-}
-
-.elementor-1000 .elementor-element.elementor-element-cf68764::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: min(var(--mce-content-width), calc(100% - 40px));
-  height: 1px;
-  background: rgb(255 255 255 / 0.12);
-}
-
-/* ── Map pin button ───────────────────────────────────────────────────────
- * The ported reset styles every <button> with a #c36 border and text colour,
- * which showed as a pink pill behind the dot.
- */
-.mce-map-hit,
-.mce-map-hit:hover,
-.mce-map-hit:focus {
-  background: none;
-  border: 0;
-  border-radius: 0;
-  color: inherit;
-  box-shadow: none;
-}
-
-/* CTA letters back to their natural spacing. */
-.orb-btn .btn-label {
-  letter-spacing: normal;
-}
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   MOBILE
-   Sizes are in vw so type scales with the device rather than stepping between
-   fixed breakpoints.
-   ═══════════════════════════════════════════════════════════════════════════ */
 @media (max-width: 767px) {
-  /* Every section keeps the same gutter. */
-  .mce-club > .e-con-inner,
+  /* ── Gutters ────────────────────────────────────────────────────
+   * Elementor sets `.e-con > .e-con-inner { padding-inline: 0 }`, so these
+   * need the extra class and the bang to land.
+   */
+  .e-con.mce-club > .e-con-inner,
+  .e-con.mce-paths > .e-con-inner,
+  .e-con.mce-testimonials > .e-con-inner,
+
   .mce-club-heading,
-  .mce-paths > .e-con-inner,
-  .mce-testimonials > .e-con-inner,
-  .mce-about {
-    padding-inline: 10px;
+  .mce-about,
+  .mce-map,
+  .mce-club-bridge,
+  .mce-chain,
+  .mce-iceberg,
+  .mce-club-access-list {
+    padding-inline: var(--mce-gutter);
   }
 
-  /* One size for every section heading. */
+  .mce-club-access-list,
+  .mce-testimonial-grid {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* ── Type ───────────────────────────────────────────────────── */
   .elementor-1000 .elementor-icon-box-title,
   .elementor-1000 .elementor-heading-title,
   .mce-section-title,
   .mce-section-title--sub {
-    font-size: 6vw;
+    font-size: 6vw !important;
     line-height: 1.2;
   }
 
-  /* ── Hero ───────────────────────────────────────────────────────────── */
+  .mce-footer-legal {
+    font-size: 3.4vw;
+  }
+
   .gb-hero .gb-promise {
-    font-size: 7vw;
+    font-size: 7vw !important;
   }
 
   .gb-hero .gb-description {
-    font-size: 4vw;
+    font-size: 4vw !important;
   }
 
-  /* Even rhythm between logo, promise and description; the CTA sits further. */
+  .mce-narrative-line,
+  .mce-about-text,
+  .mce-testimonial-name,
+  .mce-paths .grid > div > p:last-of-type {
+    font-size: 4vw !important;
+  }
+
+  .mce-paths .grid > div > p:first-of-type {
+    font-size: 5vw !important;
+  }
+
+  .mce-iceberg-fallback .ice-badge {
+    font-size: 3vw !important;
+    padding: 4px 8px;
+  }
+
+  .mce-iceberg-fallback .ice-callout-detail {
+    font-size: 4vw !important;
+    line-height: 1.4;
+  }
+
+  /* ── Alignment ──────────────────────────────────────────────────
+   * Running copy reads left; the chain and the bridge are statements and
+   * stay centred.
+   */
+  .mce-narrative,
+  .mce-narrative-line {
+    text-align: left !important;
+  }
+
+  .mce-chain,
+  .mce-chain-lead,
+  .mce-chain .mce-narrative,
+  .mce-chain .mce-narrative-line,
+  .mce-club-bridge {
+    text-align: center !important;
+  }
+
+  /* ── Hero ───────────────────────────────────────────────────── */
   .gb-widget--no-vsl .gb-hero {
     display: flex;
     flex-direction: column;
@@ -2080,11 +1577,11 @@ h4,
   .gb-hero .gb-logo,
   .gb-hero .gb-promise,
   .gb-hero .gb-description {
-    margin: 0;
+    margin: 0 !important;
   }
 
   .gb-hero-cta {
-    margin-top: 12px;
+    margin-top: 10px;
     width: 100%;
   }
 
@@ -2094,54 +1591,25 @@ h4,
     justify-content: center;
   }
 
-  /* ── ¿Qué es Consciencia MCE? ───────────────────────────────────────── */
-  .mce-narrative,
-  .mce-narrative-line {
-    text-align: left;
+  .gb-scene {
+    margin-top: -50px;
   }
 
-  .mce-club-intro,
-  .mce-club .mce-club-intro .text {
-    text-align: left;
+  /* ── Club ───────────────────────────────────────────────────── */
+  .mce-club-access-heading {
+    margin-top: 20px;
   }
 
-  /* The chain stays centred: it is a diagram, not running copy. */
-  .mce-chain,
-  .mce-chain-lead,
-  .mce-chain .mce-narrative,
-  .mce-chain .mce-narrative-line {
-    text-align: center;
-  }
-
-  /* ── Iceberg ────────────────────────────────────────────────────────── */
-  .mce-iceberg-figure {
-    display: grid;
-    grid-template-columns: minmax(96px, 34%) 1fr;
-    gap: 14px;
-    align-items: center;
-  }
-
-  .mce-iceberg-svg {
-    max-width: none;
-    margin: 0;
-  }
-
-  .mce-iceberg-fallback {
-    margin-top: 0;
+  .mce-club-access .fp-row {
+    flex-direction: column;
     gap: 14px;
   }
 
-  .mce-iceberg-fallback .ice-badge {
-    font-size: 3vw;
-    padding: 4px 8px;
+  /* ── Qualifying cards ───────────────────────────────────────── */
+  .mce-paths .py-20 {
+    padding-block: 0 !important;
   }
 
-  .mce-iceberg-fallback .ice-callout-detail {
-    font-size: 4vw;
-    line-height: 1.4;
-  }
-
-  /* ── ¿Para quién es esto? ───────────────────────────────────────────── */
   .mce-paths .grid {
     gap: 12px;
   }
@@ -2150,15 +1618,7 @@ h4,
     padding: 18px;
   }
 
-  .mce-paths .grid > div > p:first-of-type {
-    font-size: 5vw;
-  }
-
-  .mce-paths .grid > div > p:last-of-type {
-    font-size: 4vw;
-  }
-
-  /* ── Quién es Santiago Gómez ────────────────────────────────────────── */
+  /* ── Santiago: all four photos per row fit the width ────────── */
   .mce-about-grid {
     border: 0;
     border-radius: 0;
@@ -2173,7 +1633,6 @@ h4,
     border-top: 0;
   }
 
-  /* All four photos per row visible at once, rather than running off-screen. */
   .mce-about-panel--photos > div {
     padding: 0;
     gap: 10px;
@@ -2198,229 +1657,50 @@ h4,
     aspect-ratio: 1;
   }
 
-  .mce-about-text {
-    font-size: 4vw;
-  }
-
-  /* ── Testimonials ───────────────────────────────────────────────────── */
-  .mce-testimonial-name {
-    font-size: 4vw;
-  }
-}
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   MOBILE — overrides
-   The ported stylesheet marks its own mobile type !important (.gb-promise is
-   8vw!important, .gb-description 3.8vw!important), so these have to match that
-   weight to take effect. Everything else here is plain.
-   ═══════════════════════════════════════════════════════════════════════════ */
-@media (max-width: 767px) {
-  .gb-hero .gb-promise {
-    font-size: 7vw !important;
-  }
-
-  .gb-hero .gb-description {
-    font-size: 4vw !important;
-  }
-
-  /* Section headings: the ported CSS sets these per element id at 6vw, but
-     our earlier 32px rule was overriding it at every width. */
-  .elementor-1000 .elementor-icon-box-title,
-  .elementor-1000 .elementor-heading-title,
-  .mce-section-title,
-  .mce-section-title--sub {
-    font-size: 6vw !important;
-    line-height: 1.2;
-  }
-
-  /* The footer line is a heading in the markup but reads as fine print. */
-  .elementor-1000 .elementor-element-76acd47 .elementor-heading-title {
-    font-size: 3.4vw !important;
-  }
-
-  /* Even rhythm in the hero; the CTA sits a little further out. */
-  .gb-widget--no-vsl .gb-hero {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 18px;
-    padding-inline: 20px;
-  }
-
-  .gb-hero .gb-logo,
-  .gb-hero .gb-promise,
-  .gb-hero .gb-description {
-    margin: 0 !important;
-  }
-
-  .gb-hero-cta {
-    margin-top: 10px !important;
-    width: 100%;
-  }
-
-  .gb-hero-cta .orb-btn {
-    display: flex;
-    width: 100%;
-    justify-content: center;
-  }
-
-  /* One gutter for every section. */
-  .mce-club > .e-con-inner,
-  .mce-club-heading,
-  .mce-paths > .e-con-inner,
-  .mce-testimonials > .e-con-inner,
-  .mce-about,
-  .mce-map {
-    padding-inline: 20px;
-  }
-
-  /* Running copy reads left; the chain stays centred as a diagram. */
-  .mce-narrative,
-  .mce-narrative-line,
-  .mce-club-intro,
-  .mce-club .mce-club-intro .text,
-  .mce-club-bridge {
-    text-align: left !important;
-  }
-
-  .mce-chain,
-  .mce-chain-lead,
-  .mce-chain .mce-narrative,
-  .mce-chain .mce-narrative-line {
-    text-align: center !important;
-  }
-
-  /* Iceberg strata. */
-  .mce-iceberg-fallback .ice-badge {
-    font-size: 3vw !important;
-    padding: 4px 8px;
-  }
-
-  .mce-iceberg-fallback .ice-callout-detail {
-    font-size: 4vw !important;
-    line-height: 1.4;
-  }
-
-  /* Qualifying cards. */
-  .mce-paths .grid > div > p:first-of-type {
-    font-size: 5vw !important;
-  }
-
-  .mce-paths .grid > div > p:last-of-type {
-    font-size: 4vw !important;
-  }
-
-  .mce-about-text {
-    font-size: 4vw !important;
-  }
-
-  .mce-testimonial-name {
-    font-size: 4vw !important;
-  }
-}
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   MOBILE — gutters and alignment
-   Elementor forces `.e-con > .e-con-inner { padding-inline: 0 }`, which beat
-   the earlier single-class rules. These match that specificity.
-   ═══════════════════════════════════════════════════════════════════════════ */
-@media (max-width: 767px) {
-  .e-con.mce-club > .e-con-inner,
-  .e-con.mce-paths > .e-con-inner,
-  .e-con.mce-testimonials > .e-con-inner,
-  .e-con.elementor-element-6263192 {
-    padding-inline: 20px !important;
-  }
-
-  /* Blocks that sit outside a .e-con-inner. */
-  .mce-club-heading,
-  .mce-about,
-  .mce-map,
-  .mce-club-bridge,
-  .mce-chain,
-  .mce-iceberg {
-    padding-inline: 20px;
-  }
-
-  /* The chain lead stays centred but off the edge. */
-  .mce-chain-lead {
-    padding-inline: 4px;
-  }
-
-  /* Narrative copy reads left, with the same gutter. */
-  .mce-narrative {
-    padding-inline: 0;
-  }
-
-  .mce-narrative-line {
-    text-align: left !important;
-  }
-
-  /* The bridge into the Club is a statement, so it stays centred. */
-  .mce-club-bridge {
-    text-align: center !important;
-  }
-
-  /* ── Club heading and cards ─────────────────────────────────────────── */
-  .mce-club-access-heading {
-    margin-top: 20px;
-  }
-
-  .mce-club-access-list {
-    padding-inline: 20px;
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  .mce-club-access .fp-benefits-wrapper {
-    width: 100%;
-  }
-
-  .mce-club-access .fp-row {
-    flex-direction: column;
-    gap: 14px;
-  }
-
-  /* ── Qualifying cards: no trailing gap before the CTA ───────────────── */
-  .mce-paths .py-20 {
-    padding-block: 0 !important;
-  }
-
-  /* ── Testimonials ───────────────────────────────────────────────────── */
+  /* ── Testimonials ───────────────────────────────────────────── */
   .mce-testimonial-grid {
-    width: 100%;
-    padding-inline: 0;
-    box-sizing: border-box;
+    grid-template-columns: 1fr;
   }
 
-  /* ── Iceberg: drawing above, strata below ───────────────────────────── */
-  .mce-iceberg-figure {
-    display: block;
+  .mce-testimonial-icon {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@media (max-width: 560px) {
+  .mce-map-canvas {
+    opacity: 0.4;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spline-container,
+  .mce-map-pin,
+  .ice-trace {
+    animation: none;
   }
 
-  .mce-iceberg-svg {
-    width: 100%;
-    max-width: 300px;
-    margin: 0 auto;
-    display: block;
+  #mce-iceberg-scenery .ice-tip,
+  #mce-iceberg-scenery .ice-mass,
+  .ice-node-ring,
+  .mce-testimonial-frame:hover::after,
+  .mce-section-title .titulo-premium,
+  .elementor-icon-box-title .titulo-premium,
+  .elementor-heading-title .titulo-premium {
+    animation: none;
   }
 
-  .mce-iceberg-fallback {
-    margin-top: 22px;
-    gap: 14px;
+  .ice-connector {
+    stroke-dashoffset: 0;
   }
 
-  .mce-iceberg-fallback li {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    align-items: start;
-    gap: 10px;
-    padding-bottom: 14px;
-    border-bottom: 1px solid rgb(255 255 255 / 0.07);
+  .mce-iceberg-svg.is-armed .ice-callout foreignObject,
+  .mce-iceberg-svg.is-armed .ice-node-group {
+    opacity: 1;
   }
 
-  .mce-iceberg-fallback li:last-child {
-    border-bottom: 0;
-    padding-bottom: 0;
+  .spline-container {
+    display: none;
   }
 }

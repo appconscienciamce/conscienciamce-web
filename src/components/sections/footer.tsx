@@ -1,8 +1,21 @@
-// Ported verbatim from the original Elementor build (section cf68764).
-// Markup is intentionally kept as-is; edit copy in place.
-
-const html = "<div class=\"elementor-element elementor-element-cf68764 e-con-full e-flex e-con e-parent\" data-id=\"cf68764\" data-element_type=\"container\" data-e-type=\"container\" data-settings=\"{&quot;background_background&quot;:&quot;classic&quot;}\">\n\t\t\t\t<div class=\"elementor-element elementor-element-d889b88 elementor-widget elementor-widget-html\" data-id=\"d889b88\" data-element_type=\"widget\" data-e-type=\"widget\" data-widget_type=\"html.default\">\n\t\t\t\t\t\r\n\r\n\r\n\r\n\r\n\r\n\t\t\t\t</div>\n\t\t\t\t<div class=\"elementor-element elementor-element-46f9c6b elementor-widget elementor-widget-html\" data-id=\"46f9c6b\" data-element_type=\"widget\" data-e-type=\"widget\" data-widget_type=\"html.default\">\n\t\t\t\t\t<!-- particles.js container -->\r\n<div id=\"particles-js\"></div>\r\n\r\n<!-- particles.js lib - https://github.com/VincentGarreau/particles.js -->\r\n\r\n\r\n\r\n\r\n\t\t\t\t</div>\n\t\t\t\t<div class=\"elementor-element elementor-element-76acd47 elementor-widget__width-initial elementor-widget-mobile__width-inherit elementor-widget elementor-widget-heading\" data-id=\"76acd47\" data-element_type=\"widget\" data-e-type=\"widget\" data-widget_type=\"heading.default\">\n\t\t\t\t\t<p class=\"elementor-heading-title elementor-size-default\">© CONSCIENCIA MCE. 2026. ALL RIGHTS RESERVED. <br>\nLa participación en este programa es voluntaria y no garantiza resultados específicos. Toda la información compartida en esta página y durante el proceso es confidencial y está protegida por derechos de autor. \n</p>\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t</div>";
-
+/**
+ * Footer.
+ *
+ * Rewritten from the ported Elementor markup: the container scaffolding is
+ * gone, leaving the particles canvas and the legal line. particles.js mounts
+ * into #particles-js, so that id has to stay.
+ */
 export function Footer() {
-  return <div dangerouslySetInnerHTML={{ __html: html }} />;
+  return (
+    <footer className="mce-footer">
+      <div id="particles-js" aria-hidden="true" />
+
+      <p className="mce-footer-legal">
+        © CONSCIENCIA MCE. 2026. ALL RIGHTS RESERVED. La participación en este programa es
+        voluntaria y no garantiza resultados específicos. Toda la información compartida en
+        esta página y durante el proceso es confidencial y está protegida por derechos de
+        autor.
+      </p>
+    </footer>
+  );
 }
