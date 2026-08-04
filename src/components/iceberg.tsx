@@ -75,10 +75,15 @@ const STRATA: Stratum[] = [
 
 /** Horizontal room reserved for a callout on either side. */
 const CALLOUT_W = 250;
-/** Gap between the ice edge and where the connector turns. */
-const ELBOW_GAP = 34;
 /** Half the height of a label box, used to centre the connector on it. */
 const LABEL_MID = 24;
+
+/**
+ * Every connector turns at the same x on its side, so the elbows line up into
+ * a rail the strata visibly hang from rather than each floating on its own.
+ */
+const RAIL_RIGHT = 690;
+const RAIL_LEFT = 285;
 
 export function Iceberg() {
   return (
@@ -221,13 +226,39 @@ export function Iceberg() {
 
         </g>
 
+        {/* Rails the callouts hang from, drawn before them so nodes and
+            labels sit on top. */}
+        <g className="ice-rails" aria-hidden="true">
+          <line
+            className="ice-rail"
+            x1={RAIL_RIGHT}
+            y1={ICE_OFFSET_Y + 135}
+            x2={RAIL_RIGHT}
+            y2={ICE_OFFSET_Y + 630}
+          />
+          <line
+            className="ice-rail"
+            x1={RAIL_LEFT}
+            y1={ICE_OFFSET_Y + 370}
+            x2={RAIL_LEFT}
+            y2={ICE_OFFSET_Y + 550}
+          />
+          {/* Over the peak and across to the first stratum, so the visible tip
+              reads as the start of the same sequence. */}
+          <path
+            className="ice-rail ice-rail--crown"
+            d={`M${ICE_OFFSET_X + 192},${ICE_OFFSET_Y} V${ICE_OFFSET_Y - 20} H${RAIL_RIGHT} V${ICE_OFFSET_Y + 135}`}
+            fill="none"
+          />
+        </g>
+
         {/* ── Strata callouts, alternating sides ────────────────────────── */}
         {STRATA.map((stratum, index) => {
           const anchorX = ICE_OFFSET_X + stratum.edgeX;
           const anchorY = ICE_OFFSET_Y + stratum.y;
           const toRight = stratum.side === 'right';
 
-          const elbowX = toRight ? anchorX + ELBOW_GAP : anchorX - ELBOW_GAP;
+          const elbowX = toRight ? RAIL_RIGHT : RAIL_LEFT;
           const labelX = toRight ? elbowX + 14 : elbowX - 14 - CALLOUT_W;
           const labelY = anchorY - LABEL_MID * 2;
 

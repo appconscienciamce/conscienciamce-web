@@ -214,6 +214,7 @@ h4,
 /* ── Photo carousel ──────────────────────────────────────────── */
 .mce-gallery {
   position: relative;
+  z-index: 99 !important;
 }
 
 /* ── Photo scene ──────────────────────────────────────────────── */
@@ -1522,8 +1523,6 @@ h4,
   }
 
   .mce-iceberg-fallback--above li {
-    align-items: center;
-    text-align: center;
     padding-bottom: 0;
   }
 
@@ -1580,6 +1579,16 @@ h4,
   .mce-map-hit-dot {
     width: 9px;
     height: 9px;
+  }
+
+  /* The map is cropped at this width, so the pins move with it. */
+  .mce-map-pin {
+    --pin-x: var(--pin-mobile-x);
+    --pin-y: var(--pin-mobile-y);
+  }
+
+  .mce-map-list li:last-child {
+    margin-bottom: clamp(24px, 4vh, 40px);
   }
 
   .mce-map-list {
@@ -1849,4 +1858,28 @@ h4,
   .spline-container {
     display: none;
   }
+}
+
+/* ── Iceberg rails ────────────────────────────────────────────────────────
+ * The vertical lines every callout hangs from, so the strata read as one
+ * sequence rather than five separate labels.
+ */
+.ice-rail {
+  stroke: rgb(47 107 255 / 0.32);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ice-rail--crown {
+  stroke: rgb(47 107 255 / 0.22);
+  stroke-dasharray: 4 6;
+}
+
+.mce-iceberg-svg.is-armed .ice-rails {
+  opacity: 0;
+}
+
+.mce-iceberg-svg.is-revealed .ice-rails {
+  animation: mce-callout-in 0.6s ease-out forwards;
 }

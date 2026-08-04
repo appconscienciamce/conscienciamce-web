@@ -24,6 +24,9 @@ type EventPin = {
   /** Position within the map box, in percent. */
   x: number;
   y: number;
+  /** Where the pin sits on narrow screens, where the map is cropped. */
+  mobileX: number;
+  mobileY: number;
   /** Which side the card opens towards, to stay inside the map. */
   align: 'left' | 'right';
 };
@@ -37,6 +40,8 @@ const EVENTS: EventPin[] = [
     image: '/bariloche.jpg',
     x: 34,
     y: 90,
+    mobileX: 40,
+    mobileY: 90,
     align: 'right',
   },
   {
@@ -47,6 +52,8 @@ const EVENTS: EventPin[] = [
     image: '/egipto.jpg',
     x: 55,
     y: 42,
+    mobileX: 50,
+    mobileY: 45,
     align: 'left',
   },
 ];
@@ -67,7 +74,12 @@ function Pin({ event }: { event: EventPin }) {
   return (
     <div
       className={`mce-map-pin mce-map-pin--${event.align}${open ? ' is-open' : ''}`}
-      style={{ left: `${event.x}%`, top: `${event.y}%` }}
+      style={{
+        left: `var(--pin-x, ${event.x}%)`,
+        top: `var(--pin-y, ${event.y}%)`,
+        ['--pin-mobile-x' as string]: `${event.mobileX}%`,
+        ['--pin-mobile-y' as string]: `${event.mobileY}%`,
+      }}
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
     >
