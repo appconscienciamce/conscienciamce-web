@@ -12,10 +12,10 @@
  */
 
 /** The ice occupies x 0..398 in its own coordinates; centre it in the viewBox. */
-const ICE_OFFSET_X = 300;
+const ICE_OFFSET_X = 272;
 const ICE_OFFSET_Y = 30;
 
-const VIEW_W = 1000;
+const VIEW_W = 950;
 const VIEW_H = 740;
 
 type Stratum = {
@@ -74,9 +74,9 @@ const STRATA: Stratum[] = [
 ];
 
 /** Horizontal room reserved for a callout on either side. */
-const CALLOUT_W = 280;
+const CALLOUT_W = 250;
 /** Gap between the ice edge and where the connector turns. */
-const ELBOW_GAP = 46;
+const ELBOW_GAP = 34;
 /** Half the height of a label box, used to centre the connector on it. */
 const LABEL_MID = 24;
 

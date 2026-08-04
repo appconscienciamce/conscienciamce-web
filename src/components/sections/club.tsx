@@ -52,7 +52,7 @@ export function Club() {
 
           <div className="mce-club-heading-content">
             <h2 className="mce-section-title">
-              <span className="titulo-premium">¿Qué es Consciencia MCE?</span>
+              <span className="titulo-premium left-text">¿Qué es Consciencia MCE?</span>
             </h2>
           </div>
 
@@ -86,24 +86,26 @@ export function Club() {
             </li>
           </ol>
           <div className="mce-narrative">
-          {CHAIN_NOTES.map((phrase) => (
-            <p key={phrase} className="mce-narrative-line">
-              {phrase}
-            </p>
-          ))}
-        </div>
-        </div>
+            {CHAIN_NOTES.map((phrase) => (
+              <p key={phrase} className="mce-narrative-line">
+                {phrase}
+              </p>
+            ))}
+          </div>
 
-        <div className="mce-narrative">
-          {ICEBERG_COPY.map((phrase) => (
-            <p key={phrase} className="mce-narrative-line">
-              {phrase}
-            </p>
-          ))}
-        </div>
+          {/* The iceberg copy belongs to the same block as the chain, so it
+              inherits the same measure and gutters. */}
+          <div className="mce-narrative">
+            {ICEBERG_COPY.map((phrase) => (
+              <p key={phrase} className="mce-narrative-line">
+                {phrase}
+              </p>
+            ))}
+          </div>
 
-        <div className="mce-iceberg">
-          <Iceberg />
+          <div className="mce-iceberg">
+            <Iceberg />
+          </div>
         </div>
 
         <p className="mce-club-bridge">
@@ -131,7 +133,7 @@ export function Club() {
 
           <div className="mce-club-access-heading">
             <h3 className="mce-section-title mce-section-title--sub">
-              <span className="titulo-premium">Dentro del Club accedés a</span>
+              <span className="titulo-premium club-titulo">Dentro del Club accedés a</span>
             </h3>
           </div>
 

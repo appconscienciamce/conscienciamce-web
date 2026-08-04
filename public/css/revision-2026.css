@@ -103,12 +103,17 @@ h4,
   background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: premium-reflection 7s ease-in-out infinite;
+  margin-bottom: 30px;
+  margin-top: 20px;
 }
 
 /* Plain white emphasis, replacing the ported white-block treatment. */
 .remarcado {
   background: none;
-  color: #fff;
+  /* The ported rule sets color:#000!important for its white-block
+     treatment; without matching that weight the text renders black on
+     black and disappears. */
+  color: #fff !important;
   padding: 0;
   border: 0;
   border-radius: 0;
@@ -707,9 +712,14 @@ h4,
 
 .mce-testimonial-frame iframe {
   position: absolute;
-  inset: 0;
+  /* Drive's player keeps its own aspect ratio, so an exactly-sized iframe
+     letterboxes. Oversizing it and centring crops instead. */
+  top: 50%;
+  left: 50%;
   width: 100%;
   height: 100%;
+  min-height: 100%;
+  transform: translate(-50%, -50%);
   border: 0;
   display: block;
 }
@@ -994,14 +1004,14 @@ h4,
 }
 
 .mce-footer::before {
-  content: ;
+  content: "";
   position: absolute;
   top: 0;
   left: 50%;
   transform: translateX(-50%);
   width: min(var(--mce-content-width), calc(100% - 40px));
   height: 1px;
-  background: rgb(255 255 255 / 0.12);
+  background: rgb(255 255 255 / 0.18);
 }
 
 .mce-footer-legal {
@@ -1030,7 +1040,7 @@ h4,
 .mce-experiences-lead {
   max-width: 68ch;
   margin: 0 auto;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1.6;
   color: var(--mce-body);
 }
@@ -1449,15 +1459,72 @@ h4,
     margin-top: 22px;
   }
 
+  /* A rail runs down the submerged strata so they read as one sequence
+     descending from the ice, rather than as separate rows. */
+  .mce-iceberg-fallback--below {
+    position: relative;
+    padding-left: 26px;
+  }
+
+  .mce-iceberg-fallback--below::before {
+    content: ;
+    position: absolute;
+    left: 5px;
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    background: linear-gradient(
+      180deg,
+      rgb(47 107 255 / 0.6),
+      rgb(47 107 255 / 0.25) 70%,
+      transparent
+    );
+  }
+
   /* Badge above its text, so every row starts on the same left edge
      regardless of how wide the badge happens to be. */
   .mce-iceberg-fallback li {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
     padding-bottom: 16px;
-    border-bottom: 1px solid rgb(255 255 255 / 0.07);
+  }
+
+  /* Node where each stratum meets the rail. */
+  .mce-iceberg-fallback--below li::before {
+    content: ;
+    position: absolute;
+    left: -26px;
+    top: 9px;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--mce-accent);
+    box-shadow: 0 0 0 3px rgb(47 107 255 / 0.18), 0 0 12px rgb(47 107 255 / 0.6);
+  }
+
+  /* The visible tip connects down into the drawing. */
+  .mce-iceberg-fallback--above {
+    position: relative;
+    padding-bottom: 26px;
+  }
+
+  .mce-iceberg-fallback--above::after {
+    content: ;
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 1px;
+    height: 22px;
+    background: linear-gradient(180deg, rgb(47 107 255 / 0.55), transparent);
+  }
+
+  .mce-iceberg-fallback--above li {
+    align-items: center;
+    text-align: center;
+    padding-bottom: 0;
   }
 
   .mce-iceberg-fallback--below li:last-child,
@@ -1475,14 +1542,44 @@ h4,
     border-left: 0;
   }
 
-  /* Map: pins are too small to hit, so the events list below it. */
-  .mce-map-pin,
+  /* The dots are too small to tap, so the cards move below the map. The pins
+     stay, since their badges are what name the destinations. */
   .mce-map-hint {
     display: none;
   }
 
   .mce-map-canvas {
-    opacity: 0.55;
+    opacity: 1;
+  }
+
+  .mce-map {
+    width: 100%;
+    max-width: none;
+  }
+
+  /* The map reads wider than its column so the arc is legible. */
+  .mce-map-canvas {
+    width: calc(100% + 2 * var(--mce-gutter));
+    margin-inline: calc(-1 * var(--mce-gutter));
+  }
+
+  .mce-map-card {
+    display: none;
+  }
+
+  .mce-map-hit {
+    pointer-events: none;
+    padding: 2px;
+  }
+
+  .mce-map-badge {
+    font-size: 10px;
+    padding: 2px 7px;
+  }
+
+  .mce-map-hit-dot {
+    width: 9px;
+    height: 9px;
   }
 
   .mce-map-list {
@@ -1660,7 +1757,7 @@ h4,
 
   .mce-club-access .fp-row {
     flex-direction: column;
-    gap: 14px;
+    gap: 0;
   }
 
   /* ── Qualifying cards ───────────────────────────────────────── */
@@ -1692,7 +1789,6 @@ h4,
   }
 
   .mce-about-panel--photos > div {
-    padding: 0;
     gap: 10px;
   }
 
@@ -1723,12 +1819,6 @@ h4,
   .mce-testimonial-icon {
     width: 50px;
     height: 50px;
-  }
-}
-
-@media (max-width: 560px) {
-  .mce-map-canvas {
-    opacity: 0.4;
   }
 }
 
