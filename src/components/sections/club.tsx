@@ -50,7 +50,7 @@ export function Club() {
         <div className="mce-club-heading">
           <BackgroundRippleEffect rows={6} cols={27} cellSize={56} />
 
-          <div className="mce-club-heading-content">
+          <div className="mce-club-heading-content scroll-bottom">
             <h2 className="mce-section-title">
               <span className="titulo-premium left-text">¿Qué es Consciencia MCE?</span>
             </h2>
@@ -60,7 +60,7 @@ export function Club() {
               the heading, so it reads as one continuous passage. */}
           <div className="mce-narrative mce-club-heading-content">
             {WHAT_IS_MCE.map((phrase) => (
-              <p key={phrase} className="mce-narrative-line">
+              <p key={phrase} className="mce-narrative-line scroll-bottom">
                 {phrase}
               </p>
             ))}
@@ -68,26 +68,31 @@ export function Club() {
         </div>
 
         <div className="mce-chain">
-          <p className="mce-chain-lead">
+          <p className="mce-chain-lead scroll-bottom">
             La filosofía de MCE parte de una <em>idea central</em>:
           </p>
-          <ol className="mce-chain-steps">
-            <li>
+          {/* The four links arrive in sequence, which is the order the chain
+              is meant to be read in. The class goes on the li rather than the
+              span: the span's sheen is drawn by pseudo-elements at z-index
+              -1, and the reveal's `filter` on that same element would trap
+              them behind its background. */}
+          <ol className="mce-chain-steps reveal-stagger">
+            <li className="scroll-bottom">
               <span>Consciencia</span>
             </li>
-            <li>
+            <li className="scroll-bottom">
               <span>Identidad</span>
             </li>
-            <li>
+            <li className="scroll-bottom">
               <span>Acción</span>
             </li>
-            <li>
+            <li className="scroll-bottom">
               <span>Materia</span>
             </li>
           </ol>
           <div className="mce-narrative">
             {CHAIN_NOTES.map((phrase) => (
-              <p key={phrase} className="mce-narrative-line">
+              <p key={phrase} className="mce-narrative-line scroll-bottom">
                 {phrase}
               </p>
             ))}
@@ -97,18 +102,18 @@ export function Club() {
               inherits the same measure and gutters. */}
           <div className="mce-narrative">
             {ICEBERG_COPY.map((phrase) => (
-              <p key={phrase} className="mce-narrative-line">
+              <p key={phrase} className="mce-narrative-line scroll-bottom">
                 {phrase}
               </p>
             ))}
           </div>
 
-          <div className="mce-iceberg">
+          <div className="mce-iceberg scroll-bottom">
             <Iceberg />
           </div>
         </div>
 
-        <p className="mce-club-bridge">
+        <p className="mce-club-bridge scroll-bottom">
           De ahí nace <em>el Club</em>: la base y los fundamentos de Consciencia MCE. Un
           entrenamiento práctico de <em>90 días</em> para reprogramar tu identidad y
           desarrollar tu potencial.
@@ -131,7 +136,7 @@ export function Club() {
             loading="lazy"
           />
 
-          <div className="mce-club-access-heading">
+          <div className="mce-club-access-heading scroll-bottom">
             <h3 className="mce-section-title mce-section-title--sub">
               <span className="titulo-premium club-titulo">Dentro del Club accedés a</span>
             </h3>

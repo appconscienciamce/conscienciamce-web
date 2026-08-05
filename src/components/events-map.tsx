@@ -130,6 +130,9 @@ function EventDetails({ event }: { event: EventPin }) {
 export function EventsMap() {
   return (
     <div className="mce-map">
+      {/* No reveal class here: the badge's sheen is drawn by pseudo-elements
+          at z-index -1, and the reveal's `filter` would create a stacking
+          context that traps them behind the badge's own background. */}
       <p className="mce-map-hint">
         Pasá el mouse o tocá los puntos de destino
       </p>

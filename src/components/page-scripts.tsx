@@ -17,13 +17,12 @@ const VENDOR = [
   'particles.min.js',
 ];
 
-// section-00 (VSL player) and section-01 (Three.js wave) were dropped along
-// with the markup they drove.
+// section-00 (VSL player), section-01 (Three.js wave), section-02
+// (testimonials popup/carousel), section-03 (.fases-wrapper) and section-04
+// (.container/.mockup scroll timeline) were dropped along with the markup they
+// drove — the React sections replaced those trees and their selectors.
 const SECTION_SCRIPTS = [
   'lenis-init.js',
-  'section-02.js',
-  'section-03.js',
-  'section-04.js',
   'section-05.js',
   'iceberg.js',
   'scroll-reveal.js',

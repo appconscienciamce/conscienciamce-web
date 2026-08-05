@@ -6,6 +6,10 @@ import './tailwind.css';
  * Instrument Sans replaces Inter across the page. The ported stylesheets
  * declare Inter in 26 places, so rather than editing each one the family is
  * exposed as a variable and overridden in revision-2026.css.
+ *
+ * next/font self-hosts the faces, which is why the ported google-font.css was
+ * dropped: it declared Inter with @font-face URLs pointing at the production
+ * domain, so every one of them failed CORS from localhost.
  */
 const instrumentSans = Instrument_Sans({
   subsets: ['latin'],
@@ -40,7 +44,6 @@ const STYLESHEETS = [
   '12045858d487.widget-image.min.css',
   'c5fd583e176f.widget-icon-box.min.css',
   'f2dfb34b671e.post-1000.css',
-  '8b4e2067e557.ecf151c7e125.google-font.css',
   'lenis.css',
 ];
 

@@ -18,6 +18,7 @@ const ICE_OFFSET_Y = 30;
 const VIEW_W = 950;
 const VIEW_H = 740;
 
+
 type Stratum = {
   id: string;
   label: string;
@@ -79,8 +80,8 @@ const CALLOUT_W = 250;
 const LABEL_MID = 24;
 
 /**
- * Every connector turns at the same x on its side, so the elbows line up into
- * a rail the strata visibly hang from rather than each floating on its own.
+ * Every connector turns at the same x on its side, so the elbows line up
+ * into a column rather than each label floating at its own depth.
  */
 const RAIL_RIGHT = 690;
 const RAIL_LEFT = 285;
@@ -220,36 +221,8 @@ export function Iceberg() {
               points="27,270 80,456 107,427 126,561 212,665 162,545 126,388 85,394"
               fill="rgb(47 107 255 / 0.10)"
             />
-            <path d="M139,270 L212,665" stroke="rgb(255 255 255 / 0.10)" strokeWidth="1" fill="none" />
-            <path d="M293,270 L277,571" stroke="rgb(255 255 255 / 0.07)" strokeWidth="1" fill="none" />
           </g>
 
-        </g>
-
-        {/* Rails the callouts hang from, drawn before them so nodes and
-            labels sit on top. */}
-        <g className="ice-rails" aria-hidden="true">
-          <line
-            className="ice-rail"
-            x1={RAIL_RIGHT}
-            y1={ICE_OFFSET_Y + 135}
-            x2={RAIL_RIGHT}
-            y2={ICE_OFFSET_Y + 630}
-          />
-          <line
-            className="ice-rail"
-            x1={RAIL_LEFT}
-            y1={ICE_OFFSET_Y + 370}
-            x2={RAIL_LEFT}
-            y2={ICE_OFFSET_Y + 550}
-          />
-          {/* Over the peak and across to the first stratum, so the visible tip
-              reads as the start of the same sequence. */}
-          <path
-            className="ice-rail ice-rail--crown"
-            d={`M${ICE_OFFSET_X + 192},${ICE_OFFSET_Y} V${ICE_OFFSET_Y - 20} H${RAIL_RIGHT} V${ICE_OFFSET_Y + 135}`}
-            fill="none"
-          />
         </g>
 
         {/* ── Strata callouts, alternating sides ────────────────────────── */}

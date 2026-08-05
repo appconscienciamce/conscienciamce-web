@@ -10,13 +10,13 @@ export function Paths() {
   return (
     <section className="mce-paths">
       <div className="mce-paths-inner">
-        <h3 className="mce-section-title">
+        <h3 className="mce-section-title scroll-bottom">
           <span className="titulo-premium">¿Para quién es esto?</span>
         </h3>
 
         <PathsGrid />
 
-        <div className="mce-section-cta">
+        <div className="mce-section-cta scroll-bottom">
           <a className="orb-btn" href="#formulario">
             <div className="orb orb-1" />
             <div className="orb orb-2" />

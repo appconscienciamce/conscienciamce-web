@@ -77,11 +77,11 @@ const grid = [
 export function PathsGrid() {
   return (
     <div className="py-20 lg:py-40">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 md:gap-2 max-w-7xl mx-auto">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 md:gap-2 max-w-7xl mx-auto reveal-stagger">
         {grid.map((feature, index) => (
           <div
             key={feature.title}
-            className="relative bg-gradient-to-b from-neutral-900 to-neutral-950 p-6 rounded-3xl overflow-hidden"
+            className="scroll-bottom relative bg-gradient-to-b from-neutral-900 to-neutral-950 p-6 rounded-3xl overflow-hidden"
           >
             <Grid size={20} pattern={feature.pattern} patternKey={index} />
             <p className="text-base font-bold text-white relative z-20">{feature.title}</p>

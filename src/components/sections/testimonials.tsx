@@ -31,7 +31,7 @@ function TestimonialCard({ item }: { item: Testimonial }) {
   const [playing, setPlaying] = useState(false);
 
   return (
-    <li className="mce-testimonial">
+    <li className="mce-testimonial scroll-bottom">
       <div className="mce-testimonial-frame">
         {playing ? (
           <iframe
@@ -75,11 +75,11 @@ export function Testimonials() {
   return (
     <section className="mce-testimonials">
       <div className="mce-testimonials-inner">
-        <h3 className="mce-section-title">
+        <h3 className="mce-section-title scroll-bottom">
           <span className="titulo-premium">Testimonios</span>
         </h3>
 
-        <ul className="mce-testimonial-grid">
+        <ul className="mce-testimonial-grid reveal-stagger">
           {TESTIMONIALS.map((item) => (
             <TestimonialCard item={item} key={item.id} />
           ))}

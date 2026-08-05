@@ -71,7 +71,7 @@ const CARDS: Card[] = [
 
 function BenefitCard({ card }: { card: Card }) {
   return (
-    <div className="fp-card">
+    <div className="fp-card scroll-bottom">
       <div className="fp-dot1" />
       <div className="fp-dot2" />
       <div className="fp-dot3" />
@@ -98,17 +98,17 @@ function BenefitCard({ card }: { card: Card }) {
 }
 
 export function ClubGrid() {
-  const rows = [CARDS.slice(0, 3), CARDS.slice(3)];
-
   return (
     <div className="fp-benefits-wrapper">
-      {rows.map((row, index) => (
-        <div className="fp-row" key={index}>
-          {row.map((card) => (
-            <BenefitCard card={card} key={card.id} />
-          ))}
-        </div>
-      ))}
+      {/* One grid rather than two rows of three: split into rows, each row
+          sized its own track height, so cards in the top row never matched
+          the bottom one. A single grid makes every card share the tallest
+          row's height and keeps one gap under one declaration. */}
+      <div className="fp-grid reveal-stagger">
+        {CARDS.map((card) => (
+          <BenefitCard card={card} key={card.id} />
+        ))}
+      </div>
     </div>
   );
 }

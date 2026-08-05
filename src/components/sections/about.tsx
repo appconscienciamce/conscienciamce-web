@@ -25,8 +25,8 @@ const TOP_ROW = [
 const BOTTOM_ROW = [
   { src: '/wp-content/uploads/2026/03/img9.webp', rotate: 6 },
   { src: '/wp-content/uploads/2026/03/img8.webp', rotate: -8 },
-  { src: '/wp-content/uploads/2026/03/img6.webp', rotate: 4 },
-  { src: '/wp-content/uploads/2026/03/img5.webp', rotate: -6 },
+  { src: '/wp-content/uploads/2026/03/img5.webp', rotate: 4 },
+  { src: '/wp-content/uploads/2026/03/img6.webp', rotate: -6 },
 ];
 
 /** Emphasis is marked with `**` and rendered as the page's `remarcado`. */
@@ -96,7 +96,8 @@ export function About() {
   return (
     <div className="mce-about" data-element_type="container">
       <div className="mce-about-grid">
-        <div className="mce-about-panel mce-about-panel--photos">
+        {/* The two panels arrive from the side they sit on. */}
+        <div className="mce-about-panel mce-about-panel--photos scroll-left">
           <div className="relative flex h-full flex-col items-start justify-center gap-8 overflow-hidden py-8">
             <PhotoRow photos={TOP_ROW} offset />
             <PhotoRow photos={BOTTOM_ROW} />
@@ -106,7 +107,7 @@ export function About() {
           </div>
         </div>
 
-        <div className="mce-about-panel mce-about-panel--copy">
+        <div className="mce-about-panel mce-about-panel--copy scroll-right">
           <h3 className="mce-section-title">
             <span className="titulo-premium">¿Quién es Santiago Gómez?</span>
           </h3>

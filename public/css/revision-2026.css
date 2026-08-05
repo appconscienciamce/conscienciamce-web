@@ -138,9 +138,12 @@ h4,
  * The Spline backdrop is absolutely positioned and adds no height, so the
  * padding here is what gives the hero its size.
  */
+/* The hero outranks the gallery that follows it. `.gb-widget--no-vsl` below
+   isolates, so the CTA's own z-index only orders it inside the hero — what
+   decides whether the gallery covers the button is this value, not the
+   button's. The gallery sits at 99. */
 .mce-hero {
   position: relative;
-  z-index: 30;
 }
 
 .gb-widget--no-vsl {
@@ -172,7 +175,7 @@ h4,
 
 .gb-hero-cta {
   position: relative;
-  z-index: 20;
+  z-index: 99 !important;
   margin-top: clamp(32px, 4.5vh, 52px);
 }
 
@@ -219,7 +222,7 @@ h4,
 
 /* ── Photo scene ──────────────────────────────────────────────── */
 .gb-scene {
-  margin-top: -100px;
+  margin-top: -80px;
   position: relative;
   z-index: 2;
 }
@@ -298,7 +301,11 @@ h4,
   gap: clamp(10px, 1.6vw, 18px);
 }
 
+/* Same travelling-sheen treatment as .mce-map-hint — see the note there.
+   The solid background is what keeps the two pseudo-elements reading as a
+   rim and a halo instead of filling the chip. */
 .mce-chain-steps li span {
+  position: relative;
   display: inline-flex;
   align-items: center;
   padding: 12px 24px;
@@ -306,11 +313,39 @@ h4,
   font-size: clamp(15px, 1.5vw, 19px);
   font-weight: 600;
   color: #fff;
-  background: linear-gradient(180deg, rgb(255 255 255 / 0.1) 0%, rgb(47 107 255 / 0.08) 100%);
-  border: 1px solid rgb(47 107 255 / 0.32);
-  backdrop-filter: blur(14px) saturate(1.4);
-  -webkit-backdrop-filter: blur(14px) saturate(1.4);
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.16), 0 8px 24px rgb(0 0 0 / 0.25);
+  background: #0b0d18;
+  border: none;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.16);
+}
+
+.mce-chain-steps li span::before,
+.mce-chain-steps li span::after {
+  content: "";
+  position: absolute;
+  left: -2px;
+  top: -2px;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  border-radius: 999px;
+  z-index: -1;
+  background: linear-gradient(
+    45deg,
+    #0b0d18,
+    #141a2e,
+    #1f2a48,
+    #6392ea,
+    #1f2a48,
+    #141a2e,
+    #0b0d18,
+    #0b0d18
+  );
+  background-size: 400%;
+  animation: mce-hint-steam 20s linear infinite;
+}
+
+.mce-chain-steps li span::after {
+  filter: blur(14px);
+  opacity: 0.55;
 }
 
 .mce-chain-steps li:not(:last-child)::after {
@@ -434,7 +469,7 @@ h4,
   align-items: center;
   padding: 5px 12px;
   border-radius: 6px;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -447,7 +482,7 @@ h4,
 }
 
 .ice-callout-detail {
-  font-size: 17px;
+  font-size: 16px;
   line-height: 1.45;
 }
 
@@ -518,11 +553,41 @@ h4,
 }
 
 .mce-club-access-list {
-  margin-top: clamp(24px, 3.5vh, 40px);
+  margin-top: 0;
 }
 
 .mce-club-access .fp-benefits-wrapper {
   margin-inline: auto;
+}
+
+/* One grid for all six cards. Equal-height rows come from grid itself
+   (`1fr` tracks + `stretch`), so a long heading in one card lifts every card
+   in its row to match instead of only its own. No gap: the cards butt up
+   against each other and their 1px ring reads as a shared divider. */
+.mce-club-access .fp-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: stretch;
+  width: 100%;
+  gap: 0;
+}
+
+/* Hover-dim for the grid, matching the wrapper-level rule the row layout
+   used to rely on. */
+.mce-club-access .fp-grid:hover .fp-card:not(:hover) {
+  opacity: 0.15;
+}
+
+@media (max-width: 1024px) {
+  .mce-club-access .fp-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 760px) {
+  .mce-club-access .fp-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .mce-club-access .fp-heading {
@@ -535,16 +600,13 @@ h4,
   line-height: 1.5;
 }
 
-/* lucide draws with strokes; the reference icons were solid fills. */
-.fp-icon-fa .mce-fp-icon {
-  width: 24px;
-  height: 24px;
-  fill: none;
-  stroke: rgb(218 240 255 / 0.85);
-  stroke-width: 1.7;
+/* ── ¿Para quién es esto? ─────────────────────────────────────── */
+/* Extra breathing room off the Club above it, which ends on a dense card
+   grid and otherwise runs straight into this heading. */
+.mce-paths {
+  margin-top: 100px;
 }
 
-/* ── ¿Para quién es esto? ─────────────────────────────────────── */
 .mce-paths-inner {
   --paths-heading-gap: clamp(20px, 3vh, 32px);
   width: min(var(--mce-content-width), 100%);
@@ -624,8 +686,11 @@ h4,
   border-left: 1px solid rgb(255 255 255 / 0.08);
 }
 
+/* This heading sits in the copy column beside the photos, so it aligns with
+   the paragraphs under it rather than centring over its own panel. */
 .mce-about-panel--copy .mce-section-title {
   margin-bottom: clamp(16px, 2vh, 24px);
+  text-align: left;
 }
 
 .mce-about-text {
@@ -816,20 +881,73 @@ h4,
   align-items: center;
 }
 
+/* Travelling-sheen border, after Uiverse's "steam" button. Two stacked
+   pseudo-elements sit 2px outside the badge on the same oversized gradient:
+   the lower one is the visible rim, the upper one is blurred into a glow.
+   Both sit behind the badge's own background, which is what turns the pair
+   into a border rather than a fill.
+   The margin shorthand below used to follow a `margin-top … !important` and
+   silently reset it; the spacing is stated once now. */
 .mce-map-hint {
-  margin-top: clamp(20px, 3vh, 32px);
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  margin: 0 auto clamp(14px, 2vh, 22px);
+  margin: clamp(20px, 3vh, 32px) auto clamp(14px, 2vh, 22px);
   padding: 6px 14px;
   border-radius: 999px;
   font-size: 12px;
+  font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgb(255 255 255 / 0.6);
-  background: rgb(255 255 255 / 0.04);
-  border: 1px solid rgb(255 255 255 / 0.1);
+  color: rgb(255 255 255 / 0.72);
+  background: #0b0d18;
+  border: none;
+}
+
+.mce-map-hint::before,
+.mce-map-hint::after {
+  content: "";
+  position: absolute;
+  left: -2px;
+  top: -2px;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  border-radius: 999px;
+  z-index: -1;
+  background: linear-gradient(
+    45deg,
+    #0b0d18,
+    #141a2e,
+    #1f2a48,
+    #6392ea,
+    #1f2a48,
+    #141a2e,
+    #0b0d18,
+    #0b0d18
+  );
+  background-size: 400%;
+  animation: mce-hint-steam 20s linear infinite;
+}
+
+/* The blurred copy is the halo; the sharp one underneath is the rim. */
+.mce-map-hint::after {
+  filter: blur(14px);
+  opacity: 0.55;
+}
+
+@keyframes mce-hint-steam {
+  0% {
+    background-position: 0 0;
+  }
+
+  50% {
+    background-position: 400% 0;
+  }
+
+  100% {
+    background-position: 0 0;
+  }
 }
 
 .mce-map-canvas {
@@ -1002,20 +1120,80 @@ h4,
   position: relative;
   padding-block: clamp(28px, 4vh, 48px) clamp(32px, 5vh, 56px);
   text-align: center;
+  /* The glow below is drawn wider than the footer and must not widen the
+     page — it is a backdrop, not content. */
+  overflow: hidden;
+  isolation: isolate;
 }
 
+/* particles.js mounts a canvas in here. The element carried no styles of its
+   own, so it collapsed to zero height and the canvas never had a box to
+   paint into — the particles were running, just not visible. */
+.mce-footer #particles-js {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.mce-footer #particles-js canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Slow drifting white bloom behind the particles. Two offset ovals on
+   different durations, so the pair never visibly repeats a position. */
+.mce-footer::after {
+  content: "";
+  position: absolute;
+  inset: -40% -10%;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      38% 46% at 28% 42%,
+      rgb(255 255 255 / 0.16) 0%,
+      rgb(214 230 255 / 0.07) 42%,
+      transparent 72%
+    ),
+    radial-gradient(
+      34% 40% at 74% 58%,
+      rgb(47 107 255 / 0.16) 0%,
+      rgb(255 255 255 / 0.05) 46%,
+      transparent 74%
+    );
+  filter: blur(48px);
+  animation: mce-footer-bloom 22s ease-in-out infinite alternate;
+}
+
+@keyframes mce-footer-bloom {
+  from {
+    transform: translate3d(-4%, 2%, 0) scale(1);
+    opacity: 0.75;
+  }
+  to {
+    transform: translate3d(5%, -3%, 0) scale(1.14);
+    opacity: 1;
+  }
+}
+
+/* Sits above the particles and the bloom. */
 .mce-footer::before {
   content: "";
   position: absolute;
   top: 0;
   left: 50%;
   transform: translateX(-50%);
+  z-index: 2;
   width: min(var(--mce-content-width), calc(100% - 40px));
   height: 1px;
   background: rgb(255 255 255 / 0.18);
 }
 
 .mce-footer-legal {
+  position: relative;
+  z-index: 2;
   width: min(720px, calc(100% - 40px));
   margin-inline: auto;
   font-family: var(--mce-sans);
@@ -1133,16 +1311,6 @@ h4,
  position: relative;
  box-sizing: border-box;
  user-select: none;
-}
-
-.fp-row {
- align-items: stretch;
- display: flex;
- flex-direction: row;
- justify-content: center;
- width: 100%;
- position: relative;
- transition: 1s;
 }
 
 .fp-benefits-wrapper:hover .fp-card:not(:hover) {
@@ -1329,23 +1497,14 @@ h4,
 
 .fp-dot4xy { bottom: -5px; left: -5px; }
 
+/* The ported CSS stated this across two identical media queries and three
+   rules, one of them for .fp-row — a row wrapper the card grid no longer
+   uses. Consolidated into one. */
 @media (max-width: 1024px) {
-.fp-benefits-wrapper {
- width: 100%;
-}
-.fp-row {
- flex-direction: column;
- padding: 0 0px;
- }
-.fp-benefits-wrapper {
- align-items: center;
- }
-}
-
-@media(max-width: 1024px) {
-.fp-benefits-wrapper {
- width: 100%;
-}
+  .fp-benefits-wrapper {
+    width: 100%;
+    align-items: center;
+  }
 }
 
 .fp-icon-fa svg{
@@ -1417,6 +1576,75 @@ h4,
   stroke: rgba(218, 240, 255, 0.85);
   stroke-width: 1.7;
 }
+
+/* ── Scroll entrances ─────────────────────────────────────────────────────
+ * Tag an element with a direction class and scroll-reveal.js adds `.ativo`
+ * when it reaches 85% of the viewport. The offset state is scoped to
+ * `.reveal-ready`, which that script sets on <html> only once it has GSAP —
+ * without it nothing is ever hidden, so a script failure degrades to a plain
+ * page rather than a blank one.
+ */
+.reveal-ready .scroll-bottom,
+.reveal-ready .scroll-top,
+.reveal-ready .scroll-left,
+.reveal-ready .scroll-right,
+.reveal-ready .scroll-bottom2 {
+  opacity: 0;
+  transition: opacity 0.8s ease, transform 0.8s ease, filter 0.8s ease;
+  filter: blur(10px) brightness(200%);
+  -webkit-filter: blur(10px) brightness(200%);
+  will-change: transform, opacity, filter;
+}
+
+.reveal-ready .scroll-bottom,
+.reveal-ready .scroll-bottom2 {
+  transform: translateY(30px);
+}
+
+.reveal-ready .scroll-top {
+  transform: translateY(-30px);
+}
+
+.reveal-ready .scroll-left {
+  transform: translateX(-30px);
+}
+
+.reveal-ready .scroll-right {
+  transform: translateX(30px);
+}
+
+/* Revealed. `will-change` is dropped here: kept on every element for the
+   life of the page it costs memory for an animation that has already run. */
+.reveal-ready .ativo {
+  opacity: 1;
+  transform: translate(0, 0);
+  filter: blur(0) brightness(100%);
+  -webkit-filter: blur(0) brightness(100%);
+  will-change: auto;
+}
+
+/* Staggers the cards in a row so they arrive in sequence rather than as one
+   block. Depth is capped — past a handful the wait stops reading as rhythm. */
+.reveal-stagger > *:nth-child(2) {
+  transition-delay: 0.08s;
+}
+
+.reveal-stagger > *:nth-child(3) {
+  transition-delay: 0.16s;
+}
+
+.reveal-stagger > *:nth-child(4) {
+  transition-delay: 0.24s;
+}
+
+.reveal-stagger > *:nth-child(5) {
+  transition-delay: 0.32s;
+}
+
+.reveal-stagger > *:nth-child(n + 6) {
+  transition-delay: 0.4s;
+}
+
 /* ═══════════════════════════ 4. RESPONSIVE ═══════════════════════
  * Two blocks only: tablet, then phone. Type is in vw so it scales with the
  * device instead of stepping between breakpoints.
@@ -1440,9 +1668,55 @@ h4,
     display: none;
   }
 
+  /* The drawing carries this section on a phone, so it takes the full width
+     the gutters allow rather than being capped. */
+  /* The view box reserves the width either side of the ice for the callouts,
+     which are hidden at this size, so well over half of it is empty. The
+     drawing is widened past the viewport and the overflow clipped by
+     .mce-iceberg, which crops that empty width away and leaves the ice
+     filling the screen. */
   .mce-iceberg-svg {
-    max-width: 460px;
-    margin-inline: auto;
+    max-width: none;
+    width: 215%;
+    margin-inline: -57.5%;
+    position: relative;
+    z-index: 1;
+  }
+
+
+  /* One continuous rail from "Lo visible" down through the ice to the last
+     stratum. It lives on the figure — the only ancestor spanning the list
+     above, the drawing and the list below — because a line owned by any one
+     of those three could not cross the other two. Above the ice, not behind
+     it: the strata are what the section is about. */
+  /* Clips the oversized drawing above. */
+  .mce-iceberg {
+    overflow: hidden;
+  }
+
+  .mce-iceberg-figure {
+    position: relative;
+    /* How far into the gutter the rail and its nodes sit, measured from the
+       copy's left edge. Stated once so the line and the dots cannot drift
+       apart. */
+    --mce-rail-offset: 13px;
+  }
+
+  .mce-iceberg-figure::before {
+    content: "";
+    position: absolute;
+    left: calc(-1 * var(--mce-rail-offset));
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    z-index: 3;
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      rgb(47 107 255 / 0.6),
+      rgb(47 107 255 / 0.6) 70%,
+      rgb(47 107 255 / 0.25)
+    );
   }
 
   .mce-iceberg-fallback--above,
@@ -1460,26 +1734,14 @@ h4,
     margin-top: 22px;
   }
 
-  /* A rail runs down the submerged strata so they read as one sequence
-     descending from the ice, rather than as separate rows. */
+  /* No left padding: the strata line up with the section's other copy. The
+     rail and its nodes sit in the gutter to the left of that edge instead
+     of indenting the text away from it. */
+  .mce-iceberg-fallback--above,
   .mce-iceberg-fallback--below {
     position: relative;
-    padding-left: 26px;
-  }
-
-  .mce-iceberg-fallback--below::before {
-    content: ;
-    position: absolute;
-    left: 5px;
-    top: 8px;
-    bottom: 8px;
-    width: 1px;
-    background: linear-gradient(
-      180deg,
-      rgb(47 107 255 / 0.6),
-      rgb(47 107 255 / 0.25) 70%,
-      transparent
-    );
+    z-index: 4;
+    padding-left: 0;
   }
 
   /* Badge above its text, so every row starts on the same left edge
@@ -1493,33 +1755,22 @@ h4,
     padding-bottom: 16px;
   }
 
-  /* Node where each stratum meets the rail. */
-  .mce-iceberg-fallback--below li::before {
-    content: ;
+  /* Node where each stratum meets the rail — "Lo visible" included, so the
+     tip reads as the first stop on the same line rather than as a caption
+     sitting apart from it. */
+  .mce-iceberg-fallback--below li::before,
+  .mce-iceberg-fallback--above li::before {
+    content: "";
     position: absolute;
-    left: -26px;
+    /* Centred on the rail: half the node's width back from the line. */
+    left: calc(-1 * var(--mce-rail-offset) - 5px);
     top: 9px;
     width: 11px;
     height: 11px;
     border-radius: 50%;
+    z-index: 4;
     background: var(--mce-accent);
     box-shadow: 0 0 0 3px rgb(47 107 255 / 0.18), 0 0 12px rgb(47 107 255 / 0.6);
-  }
-
-  /* The visible tip connects down into the drawing. */
-  .mce-iceberg-fallback--above {
-    position: relative;
-    padding-bottom: 26px;
-  }
-
-  .mce-iceberg-fallback--above::after {
-    content: ;
-    position: absolute;
-    left: 50%;
-    bottom: 0;
-    width: 1px;
-    height: 22px;
-    background: linear-gradient(180deg, rgb(47 107 255 / 0.55), transparent);
   }
 
   .mce-iceberg-fallback--above li {
@@ -1557,6 +1808,7 @@ h4,
   }
 
   /* The map reads wider than its column so the arc is legible. */
+  /* The map reads wider than its column so the arc is legible. */
   .mce-map-canvas {
     width: calc(100% + 2 * var(--mce-gutter));
     margin-inline: calc(-1 * var(--mce-gutter));
@@ -1591,10 +1843,17 @@ h4,
     margin-bottom: clamp(24px, 4vh, 40px);
   }
 
+  /* Narrower than the column and centred, so the two destinations read as
+     cards rather than as full-width bands. */
   .mce-map-list {
     display: grid;
     grid-template-columns: 1fr;
+    justify-items: center;
     width: 100%;
+  }
+
+  .mce-map-list li {
+    width: min(300px, 100%);
   }
 
   .mce-map-list li {
@@ -1622,13 +1881,26 @@ h4,
   .mce-club-inner,
   .mce-testimonials-inner,
   .mce-paths-inner,
-  .mce-club-heading,
   .mce-about,
   .mce-map,
   .mce-club-bridge,
   .mce-chain,
   .mce-iceberg,
   .mce-club-access-list {
+    padding-inline: var(--mce-gutter);
+  }
+
+  /* The ripple grid is `absolute inset-0` inside this block, so padding on
+     an ancestor shrinks the block and clips the grid with it. The heading
+     takes the gutter back out to the full viewport width and re-applies it
+     to its own content instead, which keeps the backdrop edge-to-edge. */
+  .mce-club-heading {
+    width: calc(100% + 2 * var(--mce-gutter));
+    margin-inline: calc(-1 * var(--mce-gutter));
+    padding-inline: 0;
+  }
+
+  .mce-club-heading .mce-club-heading-content {
     padding-inline: var(--mce-gutter);
   }
 
@@ -1685,7 +1957,11 @@ h4,
   .mce-narrative,
   .mce-narrative-line,
   .mce-about-panel--copy,
-  .mce-about-text {
+  .mce-about-text,
+  /* Each stratum's detail lines up with the badge above it, both in the
+     list below the ice and in the "Lo visible" item above it. */
+  .mce-iceberg-fallback li,
+  .mce-iceberg-fallback .ice-callout-detail {
     text-align: left !important;
   }
 
@@ -1756,17 +2032,12 @@ h4,
   }
 
   .gb-scene {
-    margin-top: -50px;
+    margin-top: -80px;
   }
 
   /* ── Club ───────────────────────────────────────────────────── */
-  .mce-club-access-heading {
-    margin-top: 20px;
-  }
-
-  .mce-club-access .fp-row {
-    flex-direction: column;
-    gap: 0;
+  .mce-club-access .fp-grid {
+    grid-template-columns: 1fr;
   }
 
   /* ── Qualifying cards ───────────────────────────────────────── */
@@ -1838,10 +2109,31 @@ h4,
     animation: none;
   }
 
+  /* Entrances resolve instantly. scroll-reveal.js also reveals everything up
+     front in this case; this covers the moment before it runs. */
+  .reveal-ready .scroll-bottom,
+  .reveal-ready .scroll-top,
+  .reveal-ready .scroll-left,
+  .reveal-ready .scroll-right,
+  .reveal-ready .scroll-bottom2 {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    -webkit-filter: none;
+    transition: none;
+  }
+
+  .reveal-stagger > * {
+    transition-delay: 0s;
+  }
+
   #mce-iceberg-scenery .ice-tip,
   #mce-iceberg-scenery .ice-mass,
   .ice-node-ring,
   .mce-testimonial-frame:hover::after,
+  .mce-footer::after,
+  .mce-map-hint::before,
+  .mce-map-hint::after,
   .mce-section-title .titulo-premium {
     animation: none;
   }
@@ -1860,26 +2152,3 @@ h4,
   }
 }
 
-/* ── Iceberg rails ────────────────────────────────────────────────────────
- * The vertical lines every callout hangs from, so the strata read as one
- * sequence rather than five separate labels.
- */
-.ice-rail {
-  stroke: rgb(47 107 255 / 0.32);
-  stroke-width: 1.5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.ice-rail--crown {
-  stroke: rgb(47 107 255 / 0.22);
-  stroke-dasharray: 4 6;
-}
-
-.mce-iceberg-svg.is-armed .ice-rails {
-  opacity: 0;
-}
-
-.mce-iceberg-svg.is-revealed .ice-rails {
-  animation: mce-callout-in 0.6s ease-out forwards;
-}
