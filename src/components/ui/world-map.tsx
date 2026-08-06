@@ -45,11 +45,22 @@ export default function WorldMap({
     return `M ${start.x} ${start.y} Q ${midX} ${midY} ${end.x} ${end.y}`;
   };
 
+  // The demo's `dark:bg-black bg-white` pair never resolves to black here —
+  // this page carries no `dark` class — so the container was painting a white
+  // plate behind the map. Stated as black directly.
+  //
+  // The fade is set inline with both the prefixed and unprefixed property:
+  // Chrome on Android ignores bare `mask-image`, which left the map ending in
+  // a hard edge over that white plate.
+  const mapFade =
+    'linear-gradient(to bottom, transparent, white 10%, white 90%, transparent)';
+
   return (
-    <div className="w-full aspect-[2/1] dark:bg-black bg-white rounded-lg  relative font-sans">
+    <div className="w-full aspect-[2/1] bg-black rounded-lg relative font-sans">
       <img
         src={`data:image/svg+xml;utf8,${encodeURIComponent(svgMap)}`}
-        className="h-full w-full [mask-image:linear-gradient(to_bottom,transparent,white_10%,white_90%,transparent)] pointer-events-none select-none"
+        style={{ maskImage: mapFade, WebkitMaskImage: mapFade }}
+        className="h-full w-full pointer-events-none select-none"
         alt="world map"
         height="495"
         width="1056"

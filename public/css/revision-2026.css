@@ -138,21 +138,30 @@ h4,
  * The Spline backdrop is absolutely positioned and adds no height, so the
  * padding here is what gives the hero its size.
  */
-/* The hero outranks the gallery that follows it. `.gb-widget--no-vsl` below
-   isolates, so the CTA's own z-index only orders it inside the hero — what
-   decides whether the gallery covers the button is this value, not the
-   button's. The gallery sits at 99. */
+/* Deliberately left below the gallery.
+   `.gb-a3d` is a real 3D carousel — `transform-style: preserve-3d` with
+   `backface-visibility: hidden` on each card. Compositing a 2D layer on top
+   of that context makes the browser re-sort the cards every frame, and the
+   near-coplanar ones flicker. Raising the hero to clear the CTA caused
+   exactly that; raising the scene instead buried the button.
+   Neither is a z-index problem. The hero reserves room for the CTA below
+   (see `.gb-widget--no-vsl` padding) so the gallery's -80px pull never
+   reaches it, which lets both stay in their natural order. */
 .mce-hero {
   position: relative;
 }
 
+/* The bottom padding carries an extra 80px: that is how far `.gb-scene`
+   pulls up over this section, and the CTA has to finish above that band so
+   the gallery never covers it. Keeping them apart is what lets the hero stay
+   under the gallery and the 3D carousel composite on its own. */
 .gb-widget--no-vsl {
   position: relative;
   min-height: auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-block: clamp(56px, 9vh, 120px) clamp(64px, 10vh, 140px);
+  padding-block: clamp(56px, 9vh, 120px) calc(clamp(64px, 10vh, 140px) + 80px);
   overflow: visible;
   isolation: isolate;
 }
@@ -175,12 +184,37 @@ h4,
 
 .gb-hero-cta {
   position: relative;
-  z-index: 99 !important;
+  z-index: 9999 !important;
   margin-top: clamp(32px, 4.5vh, 52px);
 }
 
 .orb-btn .btn-label {
   letter-spacing: normal;
+}
+
+/* The travelling border is a 500px square rotating behind the button, so its
+   corners sweep much further than its sides — with a single 100°-wide flare
+   the light appears to stall along the long edges. A second flare opposite
+   the first keeps something on every side at all times, and widening both
+   evens out the pace. The square is also sized off the button rather than
+   fixed, so a full-width button on a phone stays covered. */
+.orb-btn::before {
+  width: max(500px, 180%);
+  height: max(500px, 900%);
+  background: conic-gradient(
+    from 0deg at 50% 50%,
+    transparent 0deg,
+    #002db3 25deg,
+    #0055ff 55deg,
+    #002db3 85deg,
+    transparent 130deg,
+    transparent 180deg,
+    #002db3 205deg,
+    #0055ff 235deg,
+    #002db3 265deg,
+    transparent 310deg,
+    transparent 360deg
+  );
 }
 
 .spline-container {
@@ -221,10 +255,14 @@ h4,
 }
 
 /* ── Photo scene ──────────────────────────────────────────────── */
+/* `isolation` keeps the 3D carousel inside its own stacking context, so
+   neighbouring layers cannot be interleaved with the rotating cards — that
+   interleaving is what made them flicker. */
 .gb-scene {
   margin-top: -80px;
   position: relative;
   z-index: 2;
+  isolation: isolate;
 }
 
 /* ── Consciencia MCE ──────────────────────────────────────────── */
@@ -243,6 +281,22 @@ h4,
   --cell-border-color: rgb(255 255 255 / 0.08);
   --cell-fill-color: rgb(47 107 255 / 0.28);
   --cell-shadow-color: rgb(47 107 255 / 0.45);
+}
+
+/* Fades the ripple grid out from its top edge. Replaces Tailwind's
+   mask-radial-* utilities, which emit only the unprefixed `mask-image` —
+   Chrome on Android ignores that and renders the grid with a hard cut. */
+.mce-ripple-mask {
+  -webkit-mask-image: radial-gradient(
+    ellipse 90% 80% at 50% 0%,
+    #000 20%,
+    transparent 75%
+  );
+  mask-image: radial-gradient(
+    ellipse 90% 80% at 50% 0%,
+    #000 20%,
+    transparent 75%
+  );
 }
 
 .mce-club-heading-content {
@@ -1233,6 +1287,25 @@ h4,
 
 .gradual-blur-parent {
   overflow: hidden;
+}
+
+/* Safari on iOS anchors `position: fixed` to the layout viewport, which
+   excludes the strip the retractable address bar sits over — `bottom: 0`
+   there leaves a gap under the blur. Anchoring from the top of the dynamic
+   viewport instead puts the panel against the real bottom edge on iOS while
+   behaving identically everywhere else. The component sets bottom/height
+   inline, hence the bang on each. */
+.gradual-blur-page {
+  top: auto !important;
+  bottom: 0 !important;
+  height: var(--gradual-blur-height, 56px) !important;
+}
+
+@supports (height: 100dvh) {
+  .gradual-blur-page {
+    top: calc(100dvh - var(--gradual-blur-height, 56px)) !important;
+    bottom: auto !important;
+  }
 }
 
 .gradual-blur-inner {

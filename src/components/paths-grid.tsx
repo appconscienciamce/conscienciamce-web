@@ -112,9 +112,21 @@ export const Grid = ({
     [8, 6],
   ];
 
+  // Both fades are set inline with the prefixed property alongside the plain
+  // one: Chrome on Android ignores bare `mask-image`, which leaves the square
+  // pattern ending in a hard edge instead of dissolving.
+  const fadeDown = 'linear-gradient(white, transparent)';
+  const fadeRadial = 'radial-gradient(farthest-side at top, white, transparent)';
+
   return (
-    <div className="pointer-events-none absolute left-1/2 top-0 -ml-20 -mt-2 h-full w-full [mask-image:linear-gradient(white,transparent)]">
-      <div className="absolute inset-0 bg-gradient-to-r [mask-image:radial-gradient(farthest-side_at_top,white,transparent)] from-zinc-900/30 to-zinc-900/30 opacity-100">
+    <div
+      style={{ maskImage: fadeDown, WebkitMaskImage: fadeDown }}
+      className="pointer-events-none absolute left-1/2 top-0 -ml-20 -mt-2 h-full w-full"
+    >
+      <div
+        style={{ maskImage: fadeRadial, WebkitMaskImage: fadeRadial }}
+        className="absolute inset-0 bg-gradient-to-r from-zinc-900/30 to-zinc-900/30 opacity-100"
+      >
         <GridPattern
           width={size ?? 20}
           height={size ?? 20}

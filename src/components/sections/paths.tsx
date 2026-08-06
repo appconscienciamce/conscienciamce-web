@@ -11,7 +11,7 @@ export function Paths() {
     <section className="mce-paths">
       <div className="mce-paths-inner">
         <h3 className="mce-section-title scroll-bottom">
-          <span className="titulo-premium">¿Para quién es esto?</span>
+          <span className="titulo-premium">El club es para vos si...</span>
         </h3>
 
         <PathsGrid />

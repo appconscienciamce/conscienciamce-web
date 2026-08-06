@@ -29,9 +29,14 @@ export const BackgroundRippleEffect = ({
     >
       <div className="relative h-auto w-auto overflow-hidden">
         <div className="pointer-events-none absolute inset-0 z-[2] h-full w-full overflow-hidden" />
+        {/* Tailwind's mask-radial-* utilities emit `mask-image` only, which
+            Chrome on Android ignores — the grid then ends in a hard edge
+            instead of fading out. `.mce-ripple-mask` states both the
+            prefixed and unprefixed properties. (`opacity-600` was also not a
+            real Tailwind class and did nothing.) */}
         <DivGrid
           key={`base-${rippleKey}`}
-          className="mask-radial-from-20% mask-radial-at-top opacity-600"
+          className="mce-ripple-mask"
           rows={rows}
           cols={cols}
           cellSize={cellSize}
