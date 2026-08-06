@@ -192,15 +192,18 @@ h4,
   letter-spacing: normal;
 }
 
-/* The travelling border is a 500px square rotating behind the button, so its
-   corners sweep much further than its sides — with a single 100°-wide flare
-   the light appears to stall along the long edges. A second flare opposite
-   the first keeps something on every side at all times, and widening both
-   evens out the pace. The square is also sized off the button rather than
-   fixed, so a full-width button on a phone stays covered. */
+/* The travelling border is a square rotating behind the button, masked down
+   to a rim by `::after`. With a single 100°-wide flare the light appears to
+   stall along the long edges, so a second flare opposite the first keeps
+   something on every side at all times.
+   The element must stay square: sizing width and height independently turned
+   it into a wide rectangle, which threw the gradient's sectors further out
+   horizontally than `::after` covers and leaked blue past the button's
+   sides. One length drives both. */
 .orb-btn::before {
-  width: max(500px, 180%);
-  height: max(500px, 900%);
+  width: max(500px, 150%);
+  aspect-ratio: 1;
+  height: auto;
   background: conic-gradient(
     from 0deg at 50% 50%,
     transparent 0deg,
@@ -2116,6 +2119,12 @@ h4,
   /* ── Qualifying cards ───────────────────────────────────────── */
   .mce-paths .py-20 {
     padding-block: 0 !important;
+  }
+
+  /* The grid's own bottom padding is zeroed above, so without this the CTA
+     sits flush against the last card. */
+  .mce-section-cta {
+    margin-top: 40px;
   }
 
   .mce-paths .grid {
