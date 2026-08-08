@@ -17,13 +17,14 @@ type Testimonial = {
   videoId: string;
 };
 
+/** Order is the running order on the page, not alphabetical. */
 const TESTIMONIALS: Testimonial[] = [
-  { id: 'cielo', name: 'Cielo', videoId: '4KqPW5kEa-s' },
-  { id: 'denise', name: 'Denise', videoId: 'ElEjtQWUoM4' },
-  { id: 'gonzalo', name: 'Gonzalo', videoId: 'DFetk1jh2Ac' },
-  { id: 'laureano', name: 'Laureano', videoId: 'Z9HtD4_jbUc' },
-  { id: 'lucas', name: 'Lucas', videoId: '8u1wb35RSbA' },
-  { id: 'nicolas', name: 'Nicolás', videoId: '2XxkjfUsiwE' },
+  { id: 'lucas', name: 'Lucas', videoId: '4KqPW5kEa-s' },
+  { id: 'gonzalo', name: 'Gonzalo', videoId: 'ElEjtQWUoM4' },
+  { id: 'nicolas', name: 'Nicolás', videoId: 'DFetk1jh2Ac' },
+  { id: 'denise', name: 'Denise', videoId: 'Z9HtD4_jbUc' },
+  { id: 'laureano', name: 'Laureano', videoId: '8u1wb35RSbA' },
+  { id: 'daniel', name: 'Daniel', videoId: '2XxkjfUsiwE' },
 ];
 
 function TestimonialCard({ item }: { item: Testimonial }) {
