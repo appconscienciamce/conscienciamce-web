@@ -5,26 +5,25 @@ import { useState } from 'react';
 /**
  * Testimonial videos, three across on desktop and stacked on mobile.
  *
- * The videos live on Google Drive, which only embeds through an iframe. Six
- * iframes loading at once is a lot of weight for a section most readers scroll
- * past, so each card starts as a poster with a play button and only mounts its
- * iframe once clicked.
+ * The videos are unlisted YouTube uploads. Six iframes loading at once is a
+ * lot of weight for a section most readers scroll past, so each card starts as
+ * a poster with a play button and only mounts its iframe once clicked.
  */
 
 type Testimonial = {
   id: string;
   name: string;
-  /** Google Drive file id. */
-  fileId: string;
+  /** YouTube video id. */
+  videoId: string;
 };
 
 const TESTIMONIALS: Testimonial[] = [
-  { id: 'cielo', name: 'Cielo', fileId: '1xpnpC7T2kBEl30cLhwppLa11NyLSUVt_' },
-  { id: 'denise', name: 'Denise', fileId: '1I3G0HyAjjmRBBvN9exIZzd_0iatRCCoG' },
-  { id: 'gonzalo', name: 'Gonzalo', fileId: '1hduoL_abInhiiOV0F5paUFjGuqhF30iP' },
-  { id: 'laureano', name: 'Laureano', fileId: '1d9i4hiS92YfQlOG5i5KrTN85ipsSuL8v' },
-  { id: 'lucas', name: 'Lucas', fileId: '172FjYBV1lR39QJ65Layk4K8RA-b2pihz' },
-  { id: 'nicolas', name: 'Nicolás', fileId: '1ekHqGXhFNFLt5LauJg-06LHeOEoYS-wT' },
+  { id: 'cielo', name: 'Cielo', videoId: '4KqPW5kEa-s' },
+  { id: 'denise', name: 'Denise', videoId: 'ElEjtQWUoM4' },
+  { id: 'gonzalo', name: 'Gonzalo', videoId: 'DFetk1jh2Ac' },
+  { id: 'laureano', name: 'Laureano', videoId: 'Z9HtD4_jbUc' },
+  { id: 'lucas', name: 'Lucas', videoId: '8u1wb35RSbA' },
+  { id: 'nicolas', name: 'Nicolás', videoId: '2XxkjfUsiwE' },
 ];
 
 function TestimonialCard({ item }: { item: Testimonial }) {
@@ -34,12 +33,14 @@ function TestimonialCard({ item }: { item: Testimonial }) {
     <li className="mce-testimonial scroll-bottom">
       <div className="mce-testimonial-frame">
         {playing ? (
+          /* `autoplay=1` is what makes the click that mounted this frame also
+             start the video; without it the reader has to press play twice.
+             nocookie defers YouTube's tracking cookies until playback. */
           <iframe
-            src={`https://drive.google.com/file/d/${item.fileId}/preview`}
+            src={`https://www.youtube-nocookie.com/embed/${item.videoId}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
             title={`Testimonio de ${item.name}`}
-            allow="autoplay; fullscreen"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowFullScreen
-            loading="lazy"
           />
         ) : (
           <button
@@ -48,10 +49,12 @@ function TestimonialCard({ item }: { item: Testimonial }) {
             onClick={() => setPlaying(true)}
             aria-label={`Reproducir el testimonio de ${item.name}`}
           >
-            {/* Drive serves a still for each file; it stands in until play. */}
+            {/* YouTube's own still stands in until play. hqdefault is the
+                largest size present for every upload — maxresdefault only
+                exists above 720p and 404s otherwise. */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={`https://drive.google.com/thumbnail?id=${item.fileId}&sz=w640`}
+              src={`https://i.ytimg.com/vi/${item.videoId}/hqdefault.jpg`}
               alt=""
               loading="lazy"
             />
