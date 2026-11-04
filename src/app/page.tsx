@@ -1,53 +1,56 @@
-import { Hero } from '@/components/sections/hero';
-import { Gallery } from '@/components/sections/gallery';
-import { Club } from '@/components/sections/club';
-import { Paths } from '@/components/sections/paths';
-import { About } from '@/components/sections/about';
-import { Testimonials } from '@/components/sections/testimonials';
-import { Experiences } from '@/components/sections/experiences';
-import { Footer } from '@/components/sections/footer';
-import { PageScripts } from '@/components/page-scripts';
-import GradualBlur from '@/components/ui/gradual-blur';
+import { bootcamp } from "@/content/bootcamp";
+import { BoardProvider } from "@/components/os/board-provider";
+import { DesktopShell, FlowBar, SystemBar } from "@/components/os/desktop-shell";
+import { MapWindow, ViewMapButton } from "@/components/os/map-window";
+import { BoardEdges } from "@/components/board/primitives";
+import {
+  AudienceStation,
+  HeroStation,
+  ManifestoStation,
+  OutcomesStation,
+  PilarStation,
+  TwoDaysStation,
+} from "@/components/stations/story-stations";
+import { EnrollStation, HostsStation } from "@/components/stations/closing-stations";
+import { SiteFooter } from "@/components/site-footer";
+import { ctaHref, resolvePrice } from "@/lib/offer";
 
-/**
- * Section order follows the 2026 landing revision:
- *   promise → Santi photos + CTA → what MCE/Club is → who it's for + CTA
- *   → who Santi is → CTA + upcoming events
- *
- * Retired in this revision: the "Statement" break line (the growing Consciencia
- * MCE logo), the "System" trabajo interno/externo block, and "Testimonios",
- * which is being rebuilt.
- */
-export default function HomePage() {
+export default function Page() {
+  const { chapters, cta, os } = bootcamp;
+  const price = resolvePrice();
+
   return (
-    <>
-      <div
-        data-elementor-type="wp-page"
-        data-elementor-id="1000"
-        className="elementor elementor-1000"
-      >
-        <Hero />
-        <Gallery />
-        <Club />
-        <Paths />
-        <About />
-        <Testimonials />
-        <Experiences />
-        <Footer />
-      </div>
-      {/* Fixed blur along the bottom edge of the viewport. */}
-      <GradualBlur
-        target="page"
-        position="bottom"
-        height="56px"
-        strength={2}
-        divCount={5}
-        curve="bezier"
-        exponential
-        opacity={1}
-      />
+    <BoardProvider>
+      <a href="#para-quien" className="skip-link">
+        {os.skip}
+      </a>
 
-      <PageScripts />
-    </>
+      <div className="track" data-board="track">
+        <div className="stage" data-board="stage">
+          <SystemBar />
+          <DesktopShell />
+          <div className="scrim" aria-hidden />
+
+          <MapWindow ui={os} chapters={chapters} ctaHref={ctaHref} ctaLabel={cta.shortLabel}>
+            <BoardEdges />
+            <main>
+              <HeroStation />
+              <AudienceStation />
+              <ManifestoStation />
+              <PilarStation />
+              <TwoDaysStation />
+              <OutcomesStation />
+              <HostsStation />
+              <EnrollStation />
+            </main>
+          </MapWindow>
+        </div>
+      </div>
+
+      <SiteFooter />
+
+      <ViewMapButton label={os.viewMap} />
+      <FlowBar price={price?.label ?? null} />
+    </BoardProvider>
   );
 }

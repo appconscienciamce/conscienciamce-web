@@ -29,7 +29,7 @@ export const bootcamp: BootcampContent = {
     description:
       "Dos días en vivo con Santiago Gómez y Oriana Safenreider para convertir tu conocimiento, experiencia y resultados en una posición que el mercado entienda, recuerde y pueda comprar.",
     siteName: "Creadores Conscientes",
-    url: null,
+    url: "https://bootcamp.conscienciamce.com",
     ogImage: null,
     locale: "es_AR",
   },
