@@ -1,0 +1,924 @@
+import { BOARD_QUERY, EDGES, REDUCED_MOTION_QUERY, SIDEBAR_WIDTH, STATIONS, STATION_FIRST_STOP, STOPS, WORLD } from "./layout";
+import { MAX_ZOOM, MIN_ZOOM, clamp, easeInOut, fit, lerp, mixScene, morphScene, smoother, travel, type Camera, type Scene } from "./camera";
+
+export type BoardMode = "guided" | "explore";
+
+export interface BoardState {
+  /** Spatial board active. False means the vertical editorial reading. */
+  board: boolean;
+  /** Map open over the desktop. */
+  open: boolean;
+  mode: BoardMode;
+  station: number;
+  maximized: boolean;
+  /** Small screens: explicit, full-screen map. */
+  overlay: boolean;
+}
+
+export interface BoardNodes {
+  track: HTMLElement;
+  stage: HTMLElement;
+  win: HTMLElement;
+  viewport: HTMLElement;
+  world: HTMLElement;
+}
+
+const TITLE_BAR = 40;
+const SYSTEM_BAR = 32;
+const OPEN_RANGE = 0.9; // viewport heights
+const STOP_LENGTH = 0.95; // viewport heights
+const DEFAULT_HOLD = 0.46;
+const FLIGHT_MS = 950;
+const MORPH_MS = 720;
+/** Same duration and curve as the sidebar's CSS slide, so both move as one. */
+const SIDEBAR_MS = 440;
+const MAXIMIZE_MS = 460;
+const DRAG_THRESHOLD = 4;
+
+const NO_PAN_CONTROLS = "a,button,input,textarea,select,summary,label,iframe,video,audio,[data-nopan]";
+const NO_PAN = `${NO_PAN_CONTROLS},h1,h2,h3,h4,p,li,dt,dd,blockquote,figcaption`;
+const OVERLAY_BACKGROUND = ".site-footer,.flow-bar,.view-map,.skip-link";
+
+/**
+ * The only owner of the board viewport. The document scroll is the single
+ * source of truth while guided; while exploring, the pointer is. Nothing else
+ * writes the world transform, so the two modes can never fight over the wheel.
+ */
+export class BoardEngine {
+  private state: BoardState = { board: false, open: false, mode: "guided", station: 0, maximized: false, overlay: false };
+
+  private vw = 0;
+  private vh = 0;
+  private starts: number[] = [];
+  private lengths: number[] = [];
+  private trackTop = 0;
+  private trackLength = 0;
+  private openEnd = 0;
+
+  private smoothScroll = 0;
+  private savedScroll = 0;
+  private raf = 0;
+  private lastFrame = 0;
+  private idleTimer = 0;
+  private moving = false;
+
+  private scene: Scene | null = null;
+  private maxBlend = 0;
+  /** `start` is set on the first painted frame: promoting the world can take a while, and that wait must not eat the motion. */
+  private flight: { from: Scene; start: number | null; duration: number; morph?: boolean } | null = null;
+  private camFlight: { from: Camera; to: Camera; start: number; duration: number } | null = null;
+
+  private explore: Camera = { cx: 0, cy: 0, z: 1 };
+  private pointers = new Map<number, { x: number; y: number }>();
+  private drag: { id: number; x: number; y: number; moved: boolean; viaGuided: boolean } | null = null;
+  private note: { el: HTMLElement; id: number; x: number; y: number; mx: number; my: number } | null = null;
+  private pinch: { distance: number; z: number } | null = null;
+  private suppressClick = false;
+
+  private stations: HTMLElement[] = [];
+  private edges: { el: SVGPathElement; from: number; to: number }[] = [];
+  private anchors = new Map<string, number>();
+  private query: MediaQueryList;
+  private reduced: MediaQueryList;
+  private abort = new AbortController();
+  private cameraNow: Camera = { cx: 0, cy: 0, z: 1 };
+  private sidebar = true;
+  private followFocus = true;
+
+  constructor(
+    private nodes: BoardNodes,
+    private onChange: (state: BoardState) => void,
+    private onChapter: (station: number) => void,
+    private onOpenChange: (open: boolean) => void,
+  ) {
+    this.query = window.matchMedia(BOARD_QUERY);
+    this.reduced = window.matchMedia(REDUCED_MOTION_QUERY);
+    STATIONS.forEach((s, i) => this.anchors.set(s.id, STATION_FIRST_STOP[i]));
+    STOPS.forEach((s, i) => s.anchor && this.anchors.set(s.anchor, i));
+    this.stations = Array.from(nodes.world.querySelectorAll<HTMLElement>("[data-station]"));
+    this.edges = Array.from(nodes.world.querySelectorAll<SVGPathElement>("[data-edge]")).map((el) => {
+      const edge = EDGES[Number(el.dataset.edge)];
+      return { el, from: edge.from, to: edge.to };
+    });
+    this.bind();
+    this.syncBoard();
+    const hash = window.location.hash.slice(1);
+    if (hash && this.state.board) this.goTo(hash, true);
+  }
+
+  destroy() {
+    this.abort.abort();
+    cancelAnimationFrame(this.raf);
+    window.clearTimeout(this.idleTimer);
+    this.setExploreListeners(false);
+    this.releaseOverlay();
+  }
+
+  /* ---------------- Public actions ---------------- */
+
+  /** Anchor navigation. Returns false when the id is not on the board. */
+  goTo(id: string, instant = false): boolean {
+    if (!this.state.board) return false;
+    if (id === "inicio") {
+      this.close();
+      return true;
+    }
+    const stop = this.anchors.get(id);
+    if (stop === undefined) return false;
+    this.goToStop(stop, instant);
+    this.focusAnchor(id);
+    return true;
+  }
+
+  private focusAnchor(id: string) {
+    const target = document.getElementById(id);
+    if (!target) return;
+    if (!target.hasAttribute("tabindex")) target.tabIndex = -1;
+    this.followFocus = false;
+    target.focus({ preventScroll: true });
+    this.followFocus = true;
+  }
+
+  goToStop(index: number, instant = false) {
+    const stop = clamp(index, 0, STOPS.length - 1);
+    if (this.state.mode === "explore") {
+      this.flyCamera(this.frame(stop));
+      this.setState({ station: STOPS[stop].station });
+      return;
+    }
+    this.flyToScroll(this.scrollForStop(stop), instant);
+  }
+
+  /** Advance or go back by one stop. */
+  step(direction: 1 | -1) {
+    if (!this.state.board) return;
+    const { pos } = this.position(this.smoothScroll);
+    const target = direction > 0 ? Math.floor(pos + 0.51) + 1 : Math.ceil(pos - 0.51) - 1;
+    if (target < 0) return this.close();
+    this.goToStop(target);
+  }
+
+  openMap() {
+    if (this.state.board) this.goToStop(1);
+  }
+
+  /** The index takes real width: the camera reframes around it. */
+  setSidebar(open: boolean) {
+    if (open === this.sidebar) return;
+    // Without a board there is no camera to reframe.
+    if (!this.state.board) {
+      this.sidebar = open;
+      return;
+    }
+    const from = this.currentScene();
+    this.sidebar = open;
+    if (this.state.mode === "guided") this.flight = { from, start: null, duration: SIDEBAR_MS };
+    this.wake();
+  }
+
+  close() {
+    if (!this.state.board) return;
+    if (this.state.overlay) return this.closeOverlay();
+    if (this.state.mode === "explore") this.leaveExplore();
+    this.setState({ maximized: false });
+    this.flyToScroll(0, false, true);
+  }
+
+  toggleMaximized() {
+    this.setState({ maximized: !this.state.maximized });
+    this.wake();
+  }
+
+  setMode(mode: BoardMode) {
+    if (mode === this.state.mode) return;
+    if (mode === "explore") this.enterExplore();
+    else this.resumeGuided(false);
+  }
+
+  /** Leave exploration. `nearest` continues from what is on screen. */
+  resumeGuided(nearest: boolean) {
+    if (!this.state.board || this.state.overlay) return;
+    const stop = nearest ? this.nearestStop() : null;
+    const from = this.currentScene();
+    this.leaveExplore();
+    this.flight = { from, start: null, duration: FLIGHT_MS };
+    if (stop !== null) window.scrollTo(0, this.trackTop + this.scrollForStop(stop));
+    else window.scrollTo(0, this.savedScroll);
+    this.smoothScroll = this.scrollValue();
+    this.wake();
+  }
+
+  zoomBy(factor: number) {
+    if (this.state.mode !== "explore") return;
+    const z = clamp(this.explore.z * factor, MIN_ZOOM, MAX_ZOOM);
+    this.flyCamera({ ...this.explore, z }, 220);
+  }
+
+  zoomReset() {
+    if (this.state.mode === "explore") this.flyCamera({ ...this.explore, z: 1 }, 260);
+  }
+
+  fitMap() {
+    if (!this.state.board) return;
+    if (this.state.mode !== "explore") this.enterExplore();
+    this.flyCamera(fit(WORLD, ...this.viewSize(), this.padding(1), 1));
+  }
+
+  /** Small screens: full-screen map, opened on request. */
+  openOverlay() {
+    const root = document.documentElement;
+    root.classList.add("board-on", "map-overlay");
+    this.setBackgroundInert(true);
+    this.setState({ overlay: true, board: true, open: true });
+    this.measure();
+    this.scene = null;
+    this.explore = fit(STOPS[0].rect, this.vw, this.vh - TITLE_BAR, this.padding(1));
+    this.enterExplore();
+    this.nodes.world.classList.add("is-ready");
+    this.wake();
+  }
+
+  private setBackgroundInert(inert: boolean) {
+    document.querySelectorAll<HTMLElement>(OVERLAY_BACKGROUND).forEach((el) => (el.inert = inert));
+  }
+
+  closeOverlay() {
+    this.leaveExplore();
+    this.setBackgroundInert(false);
+    this.releaseOverlay();
+    this.setState({ overlay: false, board: false, open: false });
+    this.syncBoard();
+  }
+
+  /* ---------------- Setup ---------------- */
+
+  private releaseOverlay() {
+    if (!this.state.overlay) return;
+    document.documentElement.classList.remove("map-overlay", "board-on");
+    this.clearInline();
+  }
+
+  private clearInline() {
+    const { win, world, viewport, track, stage } = this.nodes;
+    win.removeAttribute("style");
+    world.style.transform = "";
+    world.style.willChange = "";
+    world.style.opacity = "";
+    viewport.removeAttribute("style");
+    track.style.height = "";
+    stage.style.removeProperty("--open");
+    this.stations.forEach((s) => {
+      s.removeAttribute("data-active");
+      s.removeAttribute("data-sub");
+    });
+    this.edges.forEach((e) => (e.el.style.strokeDashoffset = ""));
+  }
+
+  private bind() {
+    const { signal } = this.abort;
+    window.addEventListener("scroll", this.onScroll, { passive: true, signal });
+    window.addEventListener("resize", this.syncBoard, { passive: true, signal });
+    this.query.addEventListener("change", this.syncBoard, { signal });
+    this.reduced.addEventListener("change", this.syncBoard, { signal });
+    window.addEventListener("keydown", this.onKey, { signal });
+    this.nodes.viewport.addEventListener("pointerdown", this.onPointerDown, { signal });
+    window.addEventListener("pointermove", this.onPointerMove, { signal });
+    window.addEventListener("pointerup", this.onPointerUp, { signal });
+    window.addEventListener("pointercancel", this.onPointerUp, { signal });
+    this.nodes.viewport.addEventListener("click", this.onClickCapture, { capture: true, signal });
+    this.nodes.world.addEventListener("focusin", this.onFocus, { signal });
+  }
+
+  private syncBoard = () => {
+    if (this.state.overlay) {
+      this.measure();
+      this.wake();
+      return;
+    }
+    const wanted = this.query.matches && !this.reduced.matches;
+    const root = document.documentElement;
+    if (wanted !== this.state.board) {
+      root.classList.toggle("board-on", wanted);
+      if (!wanted) {
+        if (this.state.mode === "explore") this.leaveExplore();
+        cancelAnimationFrame(this.raf);
+        this.raf = 0;
+        this.flight = null;
+        this.camFlight = null;
+        this.clearInline();
+        this.setDesktopInert(false);
+      }
+      this.setState({ board: wanted, open: false });
+    }
+    if (!wanted) return;
+    this.measure();
+    this.smoothScroll = this.scrollValue();
+    this.scene = null;
+    this.flight = null;
+    this.render(performance.now());
+    this.nodes.world.classList.add("is-ready");
+  };
+
+  private measure() {
+    this.vw = document.documentElement.clientWidth;
+    this.vh = window.innerHeight;
+    this.trackTop = this.nodes.track.offsetTop;
+    this.openEnd = OPEN_RANGE * this.vh;
+    let at = this.openEnd;
+    this.starts = [];
+    this.lengths = [];
+    for (const stop of STOPS) {
+      const length = (stop.length ?? 1) * STOP_LENGTH * this.vh;
+      this.starts.push(at);
+      this.lengths.push(length);
+      at += length;
+    }
+    const last = this.lengths.length - 1;
+    this.trackLength = this.starts[last] + this.lengths[last] * 0.6;
+    if (!this.state.overlay) this.nodes.track.style.height = `${this.trackLength + this.vh}px`;
+  }
+
+  /* ---------------- Timeline ---------------- */
+
+  private scrollValue() {
+    return clamp(window.scrollY - this.trackTop, 0, this.trackLength);
+  }
+
+  private scrollForStop(index: number) {
+    const hold = STOPS[index].hold ?? DEFAULT_HOLD;
+    return this.starts[index] + this.lengths[index] * hold * 0.55;
+  }
+
+  /** Continuous position along the stops, and the eased travel inside the current segment. */
+  private position(scroll: number) {
+    if (scroll <= this.starts[0]) return { index: 0, travel: 0, pos: 0 };
+    let index = this.starts.length - 1;
+    for (let i = 0; i < this.starts.length; i++) {
+      if (scroll < this.starts[i] + this.lengths[i]) {
+        index = i;
+        break;
+      }
+    }
+    if (index === STOPS.length - 1) return { index, travel: 0, pos: index };
+    const f = (scroll - this.starts[index]) / this.lengths[index];
+    const hold = STOPS[index].hold ?? DEFAULT_HOLD;
+    const t = smoother(clamp((f - hold) / (1 - hold), 0, 1));
+    return { index, travel: t, pos: index + t };
+  }
+
+  private viewSize(): [number, number] {
+    const scene = this.scene;
+    if (this.state.overlay) return [this.vw, this.vh - TITLE_BAR];
+    if (!scene) return [this.vw * 0.92, this.vh * 0.86 - TITLE_BAR];
+    return [scene.ww, scene.wh - TITLE_BAR];
+  }
+
+  private padding(open: number) {
+    const sidebar = this.sidebar && !this.state.overlay ? SIDEBAR_WIDTH : 0;
+    return { left: (44 + sidebar) * open, right: 44 * open, top: 30 * open, bottom: 58 * open };
+  }
+
+  /** Camera that rests on a stop, for the map window fully open. */
+  private frame(index: number, view = this.openFrame()): Camera {
+    const stop = STOPS[index];
+    const w = view.ww;
+    const h = view.wh - TITLE_BAR;
+    return fit(stop.rect, w, h, this.padding(1));
+  }
+
+  private closedFrame() {
+    const h0 = STATIONS[0].h / STATIONS[0].w;
+    const maxW = (this.vh - SYSTEM_BAR - 64 - TITLE_BAR) / h0;
+    const ww = Math.round(Math.min(this.vw * 0.56, maxW));
+    const wh = Math.round(ww * h0 + TITLE_BAR);
+    return { wx: Math.round((this.vw - ww) / 2), wy: Math.round(SYSTEM_BAR + (this.vh - SYSTEM_BAR - wh) / 2), ww, wh };
+  }
+
+  private openFrame() {
+    if (this.maxBlend >= 1) return { wx: 0, wy: SYSTEM_BAR, ww: this.vw, wh: this.vh - SYSTEM_BAR };
+    const ww = Math.round(this.vw * 0.92);
+    const wh = Math.round(this.vh * 0.86);
+    const base = { wx: Math.round((this.vw - ww) / 2), wy: Math.round(SYSTEM_BAR + (this.vh - SYSTEM_BAR - wh) / 2), ww, wh };
+    if (this.maxBlend <= 0) return base;
+    const t = easeInOut(this.maxBlend);
+    return {
+      wx: lerp(base.wx, 0, t),
+      wy: lerp(base.wy, SYSTEM_BAR, t),
+      ww: lerp(base.ww, this.vw, t),
+      wh: lerp(base.wh, this.vh - SYSTEM_BAR, t),
+    };
+  }
+
+  /** Pure function of the scroll: the same input always gives the same scene. */
+  private guidedScene(scroll: number): Scene {
+    const open = this.openFrame();
+    if (scroll < this.openEnd) {
+      const closed = this.closedFrame();
+      const t = smoother(clamp(scroll / this.openEnd, 0, 1));
+      const ww = lerp(closed.ww, open.ww, t);
+      const wh = lerp(closed.wh, open.wh, t);
+      const camera = fit(STOPS[0].rect, ww, wh - TITLE_BAR, this.padding(t));
+      return {
+        ...camera,
+        wx: lerp(closed.wx, open.wx, t),
+        wy: lerp(closed.wy, open.wy, t),
+        ww,
+        wh,
+        open: t,
+      };
+    }
+    const { index, travel: t } = this.position(scroll);
+    const a = this.frame(index, open);
+    const camera = t > 0 ? travel(a, this.frame(index + 1, open), t, open.ww) : a;
+    return { ...camera, ...open, open: 1 };
+  }
+
+  private currentScene(): Scene {
+    return this.scene ?? this.guidedScene(this.smoothScroll);
+  }
+
+  /* ---------------- Motion ---------------- */
+
+  private flyToScroll(scroll: number, instant = false, morph = false) {
+    const target = clamp(scroll, 0, this.trackLength);
+    const from = this.currentScene();
+    // Reopening onto a far chapter is the same move as closing from it.
+    const crossesWindow = target < this.openEnd !== this.smoothScroll < this.openEnd;
+    const far = Math.abs(target - this.smoothScroll) > this.vh * 2.5;
+    const useMorph = morph || (crossesWindow && far);
+    window.scrollTo(0, this.trackTop + target);
+    this.smoothScroll = target;
+    if (instant) {
+      this.flight = null;
+      this.scene = null;
+    } else {
+      this.flight = { from, start: null, duration: useMorph ? MORPH_MS : FLIGHT_MS, morph: useMorph };
+    }
+    this.wake();
+  }
+
+  private flyCamera(to: Camera, duration = 800) {
+    this.camFlight = { from: { ...this.explore }, to, start: performance.now(), duration };
+    this.wake();
+  }
+
+  private wake() {
+    if (this.raf || !this.state.board) return;
+    this.lastFrame = performance.now();
+    this.raf = requestAnimationFrame(this.tick);
+  }
+
+  private setDesktopInert(inert: boolean) {
+    const desktop = this.nodes.stage.querySelector<HTMLElement>("[data-board-desktop]");
+    if (desktop) desktop.inert = inert;
+  }
+
+  private tick = (now: number) => {
+    this.raf = 0;
+    if (!this.state.board) return;
+    const dt = Math.min(64, now - this.lastFrame);
+    this.lastFrame = now;
+    let busy = this.advanceMaximize(dt);
+
+    if (this.state.mode === "guided" && !this.state.overlay) {
+      const target = this.scrollValue();
+      const gap = target - this.smoothScroll;
+      if (Math.abs(gap) > 0.4) {
+        this.smoothScroll += gap * (1 - Math.exp(-dt / 75));
+        busy = true;
+      } else {
+        this.smoothScroll = target;
+      }
+    }
+
+    this.render(now);
+    if (this.flight || this.camFlight) busy = true;
+    if (busy) {
+      this.lastFrame = now;
+      this.raf = requestAnimationFrame(this.tick);
+    }
+  };
+
+  private advanceMaximize(dt: number) {
+    const target = this.state.maximized ? 1 : 0;
+    if (this.maxBlend === target) return false;
+    this.maxBlend = clamp(this.maxBlend + Math.sign(target - this.maxBlend) * (dt / MAXIMIZE_MS), 0, 1);
+    return true;
+  }
+
+  private render(now: number) {
+    let scene: Scene;
+
+    if (this.state.overlay) {
+      this.advanceCamera(now);
+      scene = { ...this.explore, wx: 0, wy: 0, ww: this.vw, wh: this.vh, open: 1 };
+      this.paint(scene);
+      return;
+    }
+
+    if (this.state.mode === "explore") {
+      this.advanceCamera(now);
+      const open = this.openFrame();
+      scene = { ...this.explore, ...open, open: 1 };
+    } else {
+      scene = this.guidedScene(this.smoothScroll);
+      if (this.flight) {
+        this.flight.start ??= now;
+        const raw = (now - this.flight.start) / this.flight.duration;
+        const t = easeInOut(clamp(raw, 0, 1));
+        if (raw >= 1) this.flight = null;
+        else if (this.flight.morph) scene = morphScene(this.flight.from, scene, t);
+        else scene = mixScene(this.flight.from, scene, t, scene.ww);
+      }
+    }
+    this.scene = scene;
+    this.paint(scene);
+  }
+
+  private advanceCamera(now: number) {
+    if (!this.camFlight) return;
+    const f = this.camFlight;
+    const raw = clamp((now - f.start) / f.duration, 0, 1);
+    this.explore = travel(f.from, f.to, easeInOut(raw), this.vw);
+    if (raw >= 1) this.camFlight = null;
+  }
+
+  /** The only place that writes the board to the DOM. */
+  private paint(scene: Scene) {
+    const { win, world, viewport, stage } = this.nodes;
+    const vw = scene.ww;
+    const vh = scene.wh - TITLE_BAR;
+    const x = vw / 2 - scene.cx * scene.z;
+    const y = vh / 2 - scene.cy * scene.z;
+    this.cameraNow = { cx: scene.cx, cy: scene.cy, z: scene.z };
+
+    if (!this.state.overlay) {
+      win.style.left = `${scene.wx}px`;
+      win.style.top = `${scene.wy}px`;
+      win.style.width = `${scene.ww}px`;
+      win.style.height = `${scene.wh}px`;
+      stage.style.setProperty("--open", scene.open.toFixed(3));
+    }
+
+    if (!this.moving) {
+      this.moving = true;
+      world.style.willChange = "transform";
+    }
+    window.clearTimeout(this.idleTimer);
+    // Back to crisp text once the camera rests.
+    this.idleTimer = window.setTimeout(() => {
+      this.moving = false;
+      world.style.willChange = "";
+    }, 160);
+
+    world.style.transform = `translate(${x.toFixed(2)}px, ${y.toFixed(2)}px) scale(${scene.z.toFixed(4)})`;
+    world.style.opacity = scene.fade === undefined ? "" : scene.fade.toFixed(3);
+
+    const minor = 44 * scene.z;
+    const major = minor * 5;
+    viewport.style.backgroundSize = `${major}px ${major}px, ${major}px ${major}px, ${minor}px ${minor}px, ${minor}px ${minor}px`;
+    viewport.style.backgroundPosition = `${x}px ${y}px`;
+    world.dataset.far = scene.z < 0.2 ? "true" : "false";
+
+    this.paintStory(scene);
+    this.paintHud(scene, vw, vh);
+  }
+
+  private paintStory(scene: Scene) {
+    const exploring = this.state.mode === "explore" || this.state.overlay;
+    const { index, travel: t, pos } = this.position(this.smoothScroll);
+    const stopIndex = t > 0.5 ? index + 1 : index;
+    const stop = STOPS[stopIndex];
+    const isOpen = scene.open > 0.5;
+
+    if (!exploring) {
+      this.nodes.stage.dataset.open = String(isOpen);
+      // Behind the scrim the desktop is scenery: it must not take keyboard focus.
+      this.setDesktopInert(isOpen);
+      this.setState({ station: stop.station, open: isOpen });
+      this.stations.forEach((el, i) => {
+        el.dataset.active = i === stop.station ? "true" : "false";
+        if (i === stop.station) el.dataset.sub = String(stopIndex - STATION_FIRST_STOP[i]);
+      });
+      this.edges.forEach((e) => {
+        const p = clamp((pos - e.from) / Math.max(0.001, e.to - e.from), 0, 1);
+        e.el.style.strokeDashoffset = String(1 - p);
+      });
+    } else {
+      const seen = this.nearestStationIndex();
+      if (seen !== this.state.station) this.setState({ station: seen });
+      this.stations.forEach((el) => {
+        el.dataset.active = "true";
+        el.dataset.sub = "9";
+      });
+      this.edges.forEach((e) => (e.el.style.strokeDashoffset = "0"));
+    }
+  }
+
+  private paintHud(scene: Scene, vw: number, vh: number) {
+    // Looked up on every paint: React may mount and unmount these with the UI.
+    const { win } = this.nodes;
+    const zoom = win.querySelector<HTMLElement>("[data-hud=zoom]");
+    const coords = win.querySelector<HTMLElement>("[data-hud=coords]");
+    const progress = win.querySelector<HTMLElement>("[data-hud=progress]");
+    const mini = win.querySelector<SVGRectElement>("[data-hud=mini]");
+    const rail = win.querySelector<HTMLElement>("[data-hud=rail]");
+    if (zoom) zoom.textContent = `${Math.round(scene.z * 100)}%`;
+    if (coords) coords.textContent = `X ${Math.round(scene.cx)}  Y ${Math.round(scene.cy)}`;
+    if (progress) {
+      const { pos } = this.position(this.smoothScroll);
+      progress.style.transform = `scaleX(${pos / (STOPS.length - 1)})`;
+    }
+    if (rail) rail.style.setProperty("--rail", this.railPosition().toFixed(3));
+    if (mini) {
+      const w = vw / scene.z;
+      const h = vh / scene.z;
+      mini.setAttribute("x", String(scene.cx - w / 2));
+      mini.setAttribute("y", String(scene.cy - h / 2));
+      mini.setAttribute("width", String(w));
+      mini.setAttribute("height", String(h));
+    }
+  }
+
+  /** Continuous position along the chapters, for the index rail. */
+  private railPosition() {
+    if (this.state.mode === "explore" || this.state.overlay) return this.state.station;
+    const { index, travel: t } = this.position(this.smoothScroll);
+    const next = STOPS[Math.min(index + 1, STOPS.length - 1)];
+    return lerp(STOPS[index].station, next.station, t);
+  }
+
+  private nearestStationIndex() {
+    return STOPS[this.nearestStop()].station;
+  }
+
+  private nearestStop() {
+    let best = 0;
+    let bestDistance = Infinity;
+    STOPS.forEach((s, i) => {
+      const d = Math.hypot(s.rect.x + s.rect.w / 2 - this.cameraNow.cx, s.rect.y + s.rect.h / 2 - this.cameraNow.cy);
+      if (d < bestDistance) {
+        bestDistance = d;
+        best = i;
+      }
+    });
+    return best;
+  }
+
+  /* ---------------- Explore ---------------- */
+
+  private enterExplore() {
+    if (this.state.mode === "explore" && !this.state.overlay) return;
+    if (!this.state.overlay) {
+      this.explore = { ...this.cameraNow };
+      this.savedScroll = window.scrollY;
+    }
+    this.flight = null;
+    this.setExploreListeners(true);
+    this.nodes.stage.dataset.mode = "explore";
+    this.setState({ mode: "explore" });
+    this.wake();
+  }
+
+  private leaveExplore() {
+    this.camFlight = null;
+    this.setExploreListeners(false);
+    delete this.nodes.stage.dataset.mode;
+    this.setState({ mode: "guided" });
+  }
+
+  private exploreAbort: AbortController | null = null;
+
+  private setExploreListeners(on: boolean) {
+    this.exploreAbort?.abort();
+    this.exploreAbort = null;
+    if (!on) return;
+    this.exploreAbort = new AbortController();
+    const { signal } = this.exploreAbort;
+    this.nodes.stage.addEventListener("wheel", this.onWheel, { passive: false, signal });
+    this.nodes.stage.addEventListener("gesturestart", this.onGestureStart as EventListener, { signal });
+    this.nodes.stage.addEventListener("gesturechange", this.onGestureChange as EventListener, { signal });
+  }
+
+  private zoomAt(clientX: number, clientY: number, z: number) {
+    const rect = this.nodes.viewport.getBoundingClientRect();
+    const px = clientX - rect.left - rect.width / 2;
+    const py = clientY - rect.top - rect.height / 2;
+    const next = clamp(z, MIN_ZOOM, MAX_ZOOM);
+    const c = this.explore;
+    this.explore = {
+      z: next,
+      cx: c.cx + px / c.z - px / next,
+      cy: c.cy + py / c.z - py / next,
+    };
+    this.clampExplore();
+    this.wake();
+  }
+
+  private panBy(dx: number, dy: number) {
+    this.camFlight = null;
+    this.explore = { ...this.explore, cx: this.explore.cx + dx / this.explore.z, cy: this.explore.cy + dy / this.explore.z };
+    this.clampExplore();
+    this.wake();
+  }
+
+  private clampExplore() {
+    this.explore.cx = clamp(this.explore.cx, WORLD.x, WORLD.x + WORLD.w);
+    this.explore.cy = clamp(this.explore.cy, WORLD.y, WORLD.y + WORLD.h);
+  }
+
+  private onWheel = (e: WheelEvent) => {
+    e.preventDefault();
+    this.camFlight = null;
+    if (e.ctrlKey || e.metaKey) {
+      this.zoomAt(e.clientX, e.clientY, this.explore.z * Math.exp(-e.deltaY * 0.0028));
+    } else {
+      // The map runs sideways: the wheel always moves along the path.
+      this.panBy(e.deltaX + e.deltaY, 0);
+    }
+  };
+
+  private gestureZoom = 1;
+  private onGestureStart = (e: Event) => {
+    e.preventDefault();
+    this.gestureZoom = this.explore.z;
+  };
+  private onGestureChange = (e: Event & { scale?: number; clientX?: number; clientY?: number }) => {
+    e.preventDefault();
+    this.zoomAt(e.clientX ?? this.vw / 2, e.clientY ?? this.vh / 2, this.gestureZoom * (e.scale ?? 1));
+  };
+
+  private onPointerDown = (e: PointerEvent) => {
+    if (e.button !== 0 || !this.state.board) return;
+    this.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    const target = e.target as HTMLElement;
+    const exploring = this.state.mode === "explore";
+
+    if (this.pointers.size === 2 && exploring) {
+      const [a, b] = [...this.pointers.values()];
+      this.pinch = { distance: Math.hypot(a.x - b.x, a.y - b.y), z: this.explore.z };
+      this.drag = null;
+      return;
+    }
+
+    const note = target.closest<HTMLElement>("[data-movable]");
+    if (this.state.open && note && !target.closest("a,button,summary,iframe")) {
+      const style = getComputedStyle(note);
+      this.note = {
+        el: note,
+        id: e.pointerId,
+        x: e.clientX,
+        y: e.clientY,
+        mx: parseFloat(style.getPropertyValue("--mx")) || 0,
+        my: parseFloat(style.getPropertyValue("--my")) || 0,
+      };
+      note.dataset.dragging = "true";
+      e.preventDefault();
+      return;
+    }
+
+    if (target.closest(this.state.overlay ? NO_PAN_CONTROLS : NO_PAN)) return;
+    // The chrome floating over the board is not canvas.
+    if (target.closest("[data-board-ui]")) return;
+    if (!exploring && !this.state.open) return;
+    this.drag = { id: e.pointerId, x: e.clientX, y: e.clientY, moved: false, viaGuided: !exploring };
+  };
+
+  private onPointerMove = (e: PointerEvent) => {
+    if (this.pointers.has(e.pointerId)) this.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+    if (this.pinch && this.pointers.size >= 2) {
+      const [a, b] = [...this.pointers.values()];
+      const distance = Math.hypot(a.x - b.x, a.y - b.y);
+      this.zoomAt((a.x + b.x) / 2, (a.y + b.y) / 2, this.pinch.z * (distance / this.pinch.distance));
+      return;
+    }
+
+    if (this.note && e.pointerId === this.note.id) {
+      const z = this.cameraNow.z;
+      const mx = this.note.mx + (e.clientX - this.note.x) / z;
+      const my = this.note.my + (e.clientY - this.note.y) / z;
+      this.note.el.style.setProperty("--mx", `${mx}px`);
+      this.note.el.style.setProperty("--my", `${my}px`);
+      return;
+    }
+
+    const drag = this.drag;
+    if (!drag || e.pointerId !== drag.id) return;
+    const dx = e.clientX - drag.x;
+    const dy = e.clientY - drag.y;
+    if (!drag.moved) {
+      if (Math.hypot(dx, dy) < DRAG_THRESHOLD) return;
+      drag.moved = true;
+      if (drag.viaGuided) this.enterExplore();
+      this.nodes.stage.dataset.dragging = "true";
+    }
+    drag.x = e.clientX;
+    drag.y = e.clientY;
+    this.panBy(-dx, -dy);
+  };
+
+  private onPointerUp = (e: PointerEvent) => {
+    this.pointers.delete(e.pointerId);
+    if (this.pointers.size < 2) this.pinch = null;
+    if (this.note && e.pointerId === this.note.id) {
+      delete this.note.el.dataset.dragging;
+      this.note = null;
+    }
+    if (this.drag && e.pointerId === this.drag.id) {
+      if (this.drag.moved) this.suppressClick = true;
+      this.drag = null;
+      delete this.nodes.stage.dataset.dragging;
+    }
+  };
+
+  private onClickCapture = (e: MouseEvent) => {
+    if (!this.suppressClick) return;
+    this.suppressClick = false;
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  /* ---------------- Input ---------------- */
+
+  private onScroll = () => {
+    if (!this.state.board) return;
+    if (this.state.mode === "explore" && !this.state.overlay) {
+      // Scrollbar or keyboard moved the page: the document wins, nobody gets trapped.
+      if (Math.abs(window.scrollY - this.savedScroll) > 48) {
+        const from = this.currentScene();
+        this.leaveExplore();
+        this.flight = { from, start: null, duration: 500 };
+      } else {
+        return;
+      }
+    }
+    this.wake();
+  };
+
+  private onKey = (e: KeyboardEvent) => {
+    if (!this.state.board) return;
+    const target = e.target as HTMLElement;
+    if (target.closest("input,textarea,select,[contenteditable],.sys-menus,.sys-sound")) return;
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    const exploring = this.state.mode === "explore";
+
+    if (e.key === "Escape") {
+      if (this.state.overlay) this.closeOverlay();
+      else if (exploring) this.resumeGuided(false);
+      else if (this.state.open) this.close();
+      return;
+    }
+    if (exploring) {
+      const pan = 90;
+      const keys: Record<string, () => void> = {
+        ArrowLeft: () => this.panBy(-pan, 0),
+        ArrowRight: () => this.panBy(pan, 0),
+        ArrowUp: () => this.panBy(0, -pan),
+        ArrowDown: () => this.panBy(0, pan),
+        "+": () => this.zoomBy(1.25),
+        "=": () => this.zoomBy(1.25),
+        "-": () => this.zoomBy(0.8),
+        "0": () => this.zoomReset(),
+      };
+      if (keys[e.key]) {
+        e.preventDefault();
+        keys[e.key]();
+      }
+      return;
+    }
+    if (this.state.open && e.key === "ArrowRight") {
+      e.preventDefault();
+      this.step(1);
+    } else if (this.state.open && e.key === "ArrowLeft") {
+      e.preventDefault();
+      this.step(-1);
+    }
+  };
+
+  /** Keyboard focus moved into a station that is off camera: bring it into view. */
+  private onFocus = (e: FocusEvent) => {
+    const target = e.target as HTMLElement;
+    if (!this.followFocus || !this.state.board || !target.matches(":focus-visible")) return;
+    const station = target.closest<HTMLElement>("[data-station]");
+    if (!station) return;
+    const index = this.stations.indexOf(station);
+    if (index >= 0 && index !== this.state.station) {
+      if (index === 0) this.close();
+      else this.goToStop(STATION_FIRST_STOP[index]);
+    }
+  };
+
+  private setState(patch: Partial<BoardState>) {
+    let changed = false;
+    for (const key of Object.keys(patch) as (keyof BoardState)[]) {
+      if (this.state[key] !== patch[key]) changed = true;
+    }
+    if (!changed) return;
+    const prev = this.state;
+    this.state = { ...prev, ...patch };
+    this.onChange(this.state);
+    if (this.state.station !== prev.station && this.state.board) this.onChapter(this.state.station);
+    if (this.state.open !== prev.open) this.onOpenChange(this.state.open);
+  }
+}
