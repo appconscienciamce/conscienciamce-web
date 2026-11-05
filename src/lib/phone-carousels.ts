@@ -7,7 +7,7 @@ import { isPhoneOs, motion } from "@/lib/phone-os";
  * compositor animation, so the jump back to the start cannot be seen.
  */
 
-const SELECTOR = ".fit-group ul,.tired ul,.outcome-list,.video-grid,.day ul";
+const SELECTOR = ".fit-group ul,.tired ul,.outcome-list,.video-grid";
 /** Drift, in px/s: slow enough to read a card as it goes by. */
 const SPEED = 26;
 const RESUME_MS = 5000;

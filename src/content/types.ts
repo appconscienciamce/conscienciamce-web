@@ -247,6 +247,7 @@ export interface BootcampContent {
     ownBrandClaim: ClaimId;
     ownBrandAfter: string;
     people: { name: string; image: Img; label: string }[];
+    album: Img[];
   };
   investment: {
     title: string;

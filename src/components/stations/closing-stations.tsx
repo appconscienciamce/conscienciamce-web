@@ -1,5 +1,5 @@
 import { bootcamp } from "@/content/bootcamp";
-import { ClaimText, PriceText, Print } from "@/components/editorial";
+import { ClaimText, PhotoStack, PriceText, Print } from "@/components/editorial";
 import { Piece, Station } from "@/components/board/primitives";
 import { CtaContent } from "@/components/cta-content";
 import { FaqItem } from "@/components/faq-item";
@@ -45,6 +45,10 @@ export function HostsStation() {
         </figcaption>
       </Piece>
 
+      <Piece x={700} y={470} w={462} className="hosts-album">
+        <PhotoStack photos={hosts.album} />
+      </Piece>
+
       <Piece x={700} y={470} w={462} movable className="paper-note note-tape own-brand">
         <p>
           <strong>{hosts.ownBrandLead}</strong> <ClaimText id={hosts.ownBrandClaim} />
@@ -67,7 +71,7 @@ export function HostsStation() {
         <h3 className="mono-note">{proof.galleryTitle}</h3>
         <ul>
           {proof.gallery.map((item) => (
-            <li key={item.caption}>
+            <li key={item.caption} style={{ "--ratio": `${item.image.width} / ${item.image.height}` } as React.CSSProperties}>
               <Print image={item.image} sizes="(max-width: 900px) 100vw, 110px" className="contact-photo" />
               <span>{item.caption}</span>
             </li>

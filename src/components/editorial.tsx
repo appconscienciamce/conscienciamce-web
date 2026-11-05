@@ -61,6 +61,22 @@ export function CtaButton({
    Photographic print. `src: null` renders an empty frame with initials,
    never a stand-in face.
 ----------------------------------------------------------------- */
+/** Photos held to the page with paper clips, one over the other. */
+export function PhotoStack({ photos }: { photos: Img[] }) {
+  return (
+    <ul className="photo-stack" data-count={photos.length}>
+      {photos.map((image) => (
+        <li key={image.src}>
+          <Print image={image} sizes="(max-width: 900px) 60vw, 180px" />
+          <svg className="paperclip" viewBox="0 0 24 64" aria-hidden fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
+            <path d="M8 16v32a6 6 0 0 0 12 0V12a9 9 0 0 0-18 0v38" />
+          </svg>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 export function Print({
   image,
   sizes,

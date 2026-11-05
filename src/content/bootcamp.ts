@@ -436,13 +436,17 @@ export const bootcamp: BootcampContent = {
         name: "Oriana Safenreider",
         label: "Construcción detrás de marcas",
         image: {
-          src: null,
-          alt: "Oriana Safenreider",
-          width: 2,
-          height: 3,
-          pendingLabel: "OS",
+          src: "/media/hosts/santiago-oriana.webp",
+          alt: "Santiago Gómez y Oriana Safenreider en un ascensor, con una bebé en brazos",
+          width: 400,
+          height: 600,
         },
       },
+    ],
+    album: [
+      { src: "/media/hosts/noche.webp", alt: "Santiago y Oriana de noche, con una bebé en brazos", width: 400, height: 600 },
+      { src: "/media/hosts/lago.webp", alt: "Santiago con una bebé en brazos, frente a un lago", width: 540, height: 720 },
+      { src: "/media/hosts/bosque.webp", alt: "Santiago junto a una camioneta, en el bosque", width: 400, height: 600 },
     ],
   },
 

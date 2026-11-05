@@ -233,6 +233,12 @@ export function PilarStation() {
           <p className="file-case">{casePilar.folderName}</p>
           <p className="file-tag">{casePilar.kicker}</p>
         </header>
+        <div aria-hidden className="file-clip">
+          <svg className="paper-clip" viewBox="0 0 20 54" fill="none" aria-hidden>
+            <path d="M14.5 13v28a5.5 5.5 0 0 1-11 0V9a7 7 0 0 1 14 0v31" />
+          </svg>
+          <Print image={casePilar.image} sizes="120px" className="clip-photo" />
+        </div>
         <p className="file-intro">{casePilar.intro}</p>
         <ol className="file-layers">
           {casePilar.layers.map((layer, i) => (

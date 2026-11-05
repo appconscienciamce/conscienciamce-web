@@ -1130,6 +1130,12 @@ html:not(.js) .tech-text-fallback {
   text-decoration: line-through;
   text-decoration-thickness: 1px;
   text-decoration-color: #8f8f8c;
+  transition: text-decoration-color 0.4s;
+}
+
+/* Once in order they stop being crossed out. */
+[data-sorted="true"] .strike span {
+  text-decoration-color: transparent;
 }
 
 .manifesto-board + .piece {
@@ -1405,11 +1411,30 @@ figcaption.mono-note {
   margin-bottom: 12px;
 }
 
+.decisions ol {
+  list-style: none;
+}
+
 .decisions li {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
   font-family: var(--font-display);
   font-style: italic;
   font-size: 25px;
   line-height: 1.34;
+}
+
+/* A tick, drawn with two borders. */
+.decisions li::before {
+  content: "";
+  flex: none;
+  width: 0.3em;
+  height: 0.58em;
+  margin-left: 0.1em;
+  border: solid currentColor;
+  border-width: 0 2px 2px 0;
+  transform: translateY(-0.04em) rotate(42deg);
 }
 
 /* ---------------- Outcomes ---------------- */
@@ -5596,7 +5621,13 @@ html[data-app] .phone-scroll {
 }
 
 .phone-os:not(.board-on) .contact-sheet li:nth-child(3n) .contact-photo {
-  aspect-ratio: 4 / 3;
+  aspect-ratio: var(--ratio);
+}
+
+/* Taller than the screen is wide by far: narrower, never cut. */
+.phone-os:not(.board-on) .contact-sheet li:last-child {
+  width: 76%;
+  justify-self: center;
 }
 
 /* The sorter works here too: the noise is a tap away from order. */
@@ -6032,4 +6063,156 @@ html.map-overlay body {
   .phone-os:not(.board-on) .app-bar button:focus-visible {
     outline: none;
   }
+}
+
+/* Photos held by paper clips, overlapping sideways. */
+.photo-stack {
+  position: relative;
+  aspect-ratio: 1.26;
+  margin: 26px 0 8px;
+  padding: 0;
+  list-style: none;
+}
+
+.photo-stack li {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 56%;
+  aspect-ratio: 3 / 4;
+  padding: 6px;
+  background: #f1f0ea;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.45);
+  transform: rotate(-3deg);
+}
+
+.photo-stack[data-count="3"] li:nth-child(2) {
+  top: 18px;
+  left: 22%;
+  transform: rotate(2deg);
+}
+
+.photo-stack[data-count="3"] li:nth-child(3) {
+  top: 4px;
+  left: 44%;
+  transform: rotate(-1.5deg);
+}
+
+.photo-stack .print {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+}
+
+.paperclip {
+  position: absolute;
+  top: -14px;
+  left: 20px;
+  width: 15px;
+  height: 40px;
+  color: #c9c9c4;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.5));
+}
+
+/* On a phone nothing hovers, and these are the warm ones. */
+.phone-os:not(.board-on) .photo-stack .print img {
+  filter: none;
+}
+
+.board-on .hosts-album {
+  display: none;
+}
+
+
+/* Pilar's photo, clipped to her file. */
+.file-clip {
+  display: none;
+}
+
+.phone-os:not(.board-on) .clip-print {
+  display: none;
+}
+
+.phone-os:not(.board-on) .file-doc {
+  position: relative;
+}
+
+.phone-os:not(.board-on) .file-clip {
+  position: absolute;
+  top: -16px;
+  right: 14px;
+  z-index: 2;
+  display: block;
+  width: 104px;
+  transform: rotate(3deg);
+}
+
+.phone-os:not(.board-on) .file-clip .clip-photo {
+  border-width: 5px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
+}
+
+.phone-os:not(.board-on) .file-clip .print img {
+  filter: none;
+}
+
+.phone-os:not(.board-on) .file-clip .paper-clip {
+  top: -14px;
+  left: 14px;
+  width: 16px;
+  height: 44px;
+  stroke: #8a8a86;
+}
+
+/* The tag goes under the name: the corner now belongs to the photo. */
+.phone-os:not(.board-on) .file-head {
+  grid-template-columns: 1fr;
+}
+
+.phone-os:not(.board-on) .file-tag {
+  grid-column: 1;
+  grid-row: auto;
+  justify-self: start;
+  margin-top: 10px;
+}
+
+/* The two days: each card stays under the next one as the page goes by. */
+.phone-os:not(.board-on) .day ul {
+  display: block;
+  margin-inline: 0;
+  padding: 0;
+  overflow: visible;
+  scroll-snap-type: none;
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+.phone-os:not(.board-on) .day ul > li {
+  position: sticky;
+  top: calc(56px + var(--stack, 0) * 10px);
+  width: auto;
+  min-height: 168px;
+  margin-bottom: 14px;
+  background: var(--raised);
+  box-shadow:
+    inset 0 0 0 1px var(--line),
+    0 -10px 24px rgba(0, 0, 0, 0.4);
+}
+
+.phone-os:not(.board-on) .doc-paper.day ul > li {
+  background: var(--paper);
+  box-shadow:
+    inset 0 0 0 1px rgba(21, 21, 21, 0.16),
+    0 -10px 24px rgba(0, 0, 0, 0.16);
+}
+
+.phone-os:not(.board-on) .day ul > li:nth-child(2) { --stack: 1; }
+.phone-os:not(.board-on) .day ul > li:nth-child(3) { --stack: 2; }
+.phone-os:not(.board-on) .day ul > li:nth-child(4) { --stack: 3; }
+.phone-os:not(.board-on) .day ul > li:nth-child(5) { --stack: 4; }
+.phone-os:not(.board-on) .day ul > li:nth-child(6) { --stack: 5; }
+
+.phone-os:not(.board-on) .day ul > li:last-child {
+  margin-bottom: 0;
 }
