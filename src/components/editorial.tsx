@@ -88,6 +88,7 @@ export function Print({
         alt={image.alt}
         fill
         sizes={sizes}
+        quality={90}
         priority={priority}
         style={objectPosition ? { objectPosition } : undefined}
       />

@@ -1,6 +1,6 @@
 import { bootcamp } from "@/content/bootcamp";
 import { BoardProvider } from "@/components/os/board-provider";
-import { DesktopShell, FlowBar, SystemBar } from "@/components/os/desktop-shell";
+import { DesktopShell, FlowBar, PhoneShell, SystemBar } from "@/components/os/desktop-shell";
 import { MapWindow } from "@/components/os/map-window";
 import { ChapterBar } from "@/components/os/mobile-chrome";
 import { BoardEdges } from "@/components/board/primitives";
@@ -30,6 +30,7 @@ export default function Page() {
         <div className="stage" data-board="stage">
           <SystemBar />
           <ChapterBar chapters={chapters} ui={os} />
+          <PhoneShell />
           <DesktopShell />
           <div className="scrim" aria-hidden />
 

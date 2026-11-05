@@ -57,7 +57,14 @@ export function VideoCard({
       <div className="video-frame">
         <button ref={posterRef} type="button" onClick={() => setOpen(true)} aria-label={playLabel}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={`https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`} alt="" loading="lazy" draggable={false} />
+          <img
+            src={`https://i.ytimg.com/vi/${videoId}/sddefault.jpg`}
+            srcSet={`https://i.ytimg.com/vi/${videoId}/sddefault.jpg 640w, https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg 1280w`}
+            sizes="(max-width: 900px) 80vw, 240px"
+            alt=""
+            loading="lazy"
+            draggable={false}
+          />
           <span aria-hidden className="video-play">
             <svg viewBox="0 0 24 24" fill="currentColor">
               <path d="M7 4.5v15l13-7.5z" />

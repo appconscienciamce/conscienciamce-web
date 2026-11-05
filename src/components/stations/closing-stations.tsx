@@ -63,12 +63,12 @@ export function HostsStation() {
           </li>
         ))}
       </Piece>
-      <Piece x={2110} y={36} w={340} className="contact-sheet">
+      <Piece x={2110} y={36} w={340} id="galeria" className="contact-sheet">
         <h3 className="mono-note">{proof.galleryTitle}</h3>
         <ul>
           {proof.gallery.map((item) => (
             <li key={item.caption}>
-              <Print image={item.image} sizes="110px" className="contact-photo" />
+              <Print image={item.image} sizes="(max-width: 900px) 100vw, 110px" className="contact-photo" />
               <span>{item.caption}</span>
             </li>
           ))}

@@ -17,19 +17,26 @@ export function ViewMapButton({ label }: { label: string }) {
   );
 }
 
+/** The whole board in miniature. */
+export function MapArt() {
+  return (
+    <svg viewBox={`${WORLD.x} ${WORLD.y} ${WORLD.w} ${WORLD.h}`} preserveAspectRatio="none" aria-hidden>
+      {EDGES.slice(0, STATIONS.length - 1).map((edge) => (
+        <path key={edge.d} d={edge.d} pathLength={1} />
+      ))}
+      {STATIONS.map((s) => (
+        <rect key={s.id} x={s.x} y={s.y} width={s.w} height={s.h} rx={60} />
+      ))}
+    </svg>
+  );
+}
+
 /** The map, shown as what it is: a place to walk through, not one more button. */
 export function MapCard({ title, text, cta }: { title: string; text: string; cta: string }) {
   const { engine } = useBoard();
   return (
     <button type="button" className="map-card" onClick={() => engine()?.openOverlay()}>
-      <svg viewBox={`${WORLD.x} ${WORLD.y} ${WORLD.w} ${WORLD.h}`} preserveAspectRatio="none" aria-hidden>
-        {EDGES.slice(0, STATIONS.length - 1).map((edge) => (
-          <path key={edge.d} d={edge.d} pathLength={1} />
-        ))}
-        {STATIONS.map((s) => (
-          <rect key={s.id} x={s.x} y={s.y} width={s.w} height={s.h} rx={60} />
-        ))}
-      </svg>
+      <MapArt />
       <span className="map-card-text">
         <strong>{title}</strong>
         <span>{text}</span>

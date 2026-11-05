@@ -113,6 +113,11 @@ export interface OsCopy {
   readHereLabel: string;
   mapHint: string;
   chaptersLabel: string;
+  phone: {
+    heroWindow: string;
+    next: string;
+    apps: { para: string; manifesto: string; pilar: string; file: string; days: string; outcomes: string; hosts: string; gallery: string; testimonials: string; faq: string; enroll: string };
+  };
   mapCard: { title: string; text: string; cta: string; full: string };
   skip: string;
   closeWindow: string;

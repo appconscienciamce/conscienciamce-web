@@ -163,6 +163,23 @@ export const bootcamp: BootcampContent = {
     readHereLabel: "Leer este capítulo",
     mapHint: "Arrastrá para moverte. Tocá dos veces o pellizcá para acercarte.",
     chaptersLabel: "Capítulos",
+    phone: {
+      heroWindow: "creadores.txt",
+      next: "Seguir con",
+      apps: {
+        para: "Para quién",
+        manifesto: "Manifiesto",
+        pilar: "Caso Pilar",
+        file: "Expediente",
+        days: "Dos días",
+        outcomes: "Qué te llevás",
+        hosts: "Nosotros",
+        gallery: "Galería",
+        testimonials: "Testimonios",
+        faq: "Preguntas",
+        enroll: "Inscripción",
+      },
+    },
     mapCard: {
       title: "Explorá el mapa",
       text: "Recorré los capítulos como un tablero: movete, acercate y saltá entre ideas.",

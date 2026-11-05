@@ -1,4 +1,5 @@
 import { bootcamp } from "@/content/bootcamp";
+import { AppBar } from "@/components/os/phone-home";
 import { EDGES, STATIONS } from "@/lib/board/layout";
 
 type Vars = React.CSSProperties & Record<`--${string}`, string>;
@@ -19,7 +20,9 @@ export function Station({
   children: React.ReactNode;
 }) {
   const def = STATIONS[index];
-  const chapter = bootcamp.chapters[index];
+  const { chapters, os, footer } = bootcamp;
+  const chapter = chapters[index];
+  const next = chapters[index + 1];
   const style: Vars = {
     "--x": `${def.x}px`,
     "--y": `${def.y}px`,
@@ -28,6 +31,7 @@ export function Station({
   };
   return (
     <section id={def.id} data-station={def.id} aria-labelledby={titleId} className={`st ${className}`} style={style}>
+      <AppBar title={index === 0 ? os.phone.heroWindow : chapter.label} back={os.back} />
       <p className="st-tag">
         {chapter.number} — {chapter.label}
       </p>
@@ -36,6 +40,17 @@ export function Station({
         {chapter.label}
       </span>
       {children}
+      {index > 0 &&
+        (next ? (
+          <a href={`#${next.id}`} className="app-next">
+            <small>{os.phone.next}</small>
+            {next.label}
+          </a>
+        ) : (
+          <p className="app-end">
+            © {new Date().getFullYear()} {footer.copyright}
+          </p>
+        ))}
     </section>
   );
 }

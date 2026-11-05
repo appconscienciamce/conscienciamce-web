@@ -4930,6 +4930,706 @@ button.tl:not(:disabled):active {
   border: 0;
 }
 
+/* ================================================================
+   Phone reading: a home screen, and every chapter an app over it.
+   Same sections as ever: only with JavaScript and only on small or
+   touch screens, so nothing is lost without it.
+================================================================= */
+
+.phone-home,
+.app-bar,
+.app-next,
+.app-end {
+  display: none;
+}
+
+html.phone-os:not(.board-on),
+html.phone-os:not(.board-on) body {
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+.phone-os:not(.board-on) .chapter-bar,
+.phone-os:not(.board-on) .site-footer,
+.phone-os:not(.board-on) .st-tag,
+.phone-os:not(.board-on) .st-hero .eyebrow,
+.phone-os:not(.board-on) .hero-facts,
+.phone-os:not(.board-on) .map-card,
+.phone-os:not(.board-on) .hero-cta .btn-line,
+.phone-os:not(.board-on):not([data-app]) .flow-bar {
+  display: none;
+}
+
+.phone-os:not(.board-on) .stage {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden auto;
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(rgba(245, 245, 243, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(245, 245, 243, 0.05) 1px, transparent 1px),
+    radial-gradient(120% 70% at 50% 110%, rgba(150, 150, 146, 0.28), transparent 70%),
+    linear-gradient(rgba(8, 8, 8, 0.55), rgba(8, 8, 8, 0.72)),
+    url("/media/desktop/wallpaper.webp");
+  background-size:
+    44px 44px,
+    44px 44px,
+    auto,
+    auto,
+    cover;
+  background-position: center;
+}
+
+.phone-os:not(.board-on) .map-window,
+.phone-os:not(.board-on) .board-view,
+.phone-os:not(.board-on) .world,
+.phone-os:not(.board-on) main {
+  display: contents;
+}
+
+.phone-os:not(.board-on) .sys-bar {
+  flex: none;
+  position: relative;
+}
+
+/* ---------------- The hero is a window on the home screen ---------------- */
+
+.phone-os:not(.board-on) .st-hero {
+  flex: none;
+  order: 1;
+  width: min(calc(100% - 28px), 560px);
+  margin: 12px auto 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: 16px;
+  box-shadow:
+    0 0 0 0.5px rgba(0, 0, 0, 0.5),
+    0 18px 44px rgba(0, 0, 0, 0.5);
+  animation: home-in 0.7s var(--ease-mac) both;
+}
+
+.phone-os:not(.board-on) .st-hero .piece {
+  margin-top: 0;
+  padding-inline: 18px;
+}
+
+.phone-os:not(.board-on) .hero-title {
+  padding-top: 14px;
+  font-size: clamp(30px, min(9vw, 5.2vh), 44px);
+  font-size: clamp(30px, min(9vw, 5.2dvh), 44px);
+  line-height: 1.02;
+}
+
+.phone-os:not(.board-on) .hero-promise {
+  margin-top: 8px;
+  font-size: clamp(14.5px, min(4vw, 2.2vh), 18px);
+  font-size: clamp(14.5px, min(4vw, 2.2dvh), 18px);
+  line-height: 1.32;
+}
+
+.phone-os:not(.board-on) .hero-tech {
+  height: 34px;
+  margin-top: 0;
+}
+
+.phone-os:not(.board-on) .tech-text-fallback {
+  font-size: min(4.05vw, 22px);
+}
+
+.phone-os:not(.board-on) .hero-cta {
+  padding-bottom: 16px;
+}
+
+.phone-os:not(.board-on) .hero-cta .btn {
+  width: 100%;
+  min-height: 44px;
+  padding-block: 8px;
+}
+
+/* ---------------- Apps ---------------- */
+
+.phone-os:not(.board-on) .phone-home {
+  order: 2;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: min(100%, 560px);
+  margin: 0 auto;
+  padding: 14px 14px max(10px, env(safe-area-inset-bottom, 0px));
+}
+
+.phone-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: min(2.2vh, 18px) 6px;
+  gap: min(2.2dvh, 18px) 6px;
+}
+
+.phone-app {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  width: 100%;
+  color: var(--text);
+  transition: transform 0.25s var(--ease-mac);
+}
+
+.phone-app:active {
+  transform: scale(0.92);
+}
+
+.phone-icon {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: min(15.5vw, 7.6vh, 68px);
+  width: min(15.5vw, 7.6dvh, 68px);
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 23%;
+  box-shadow:
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.18),
+    0 6px 14px rgba(0, 0, 0, 0.42);
+}
+
+.phone-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.phone-icon[data-solid] {
+  background: var(--text);
+  color: var(--ink);
+}
+
+.phone-icon svg {
+  width: 52%;
+  height: 52%;
+}
+
+.phone-icon .mac-folder {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 88px;
+  height: 70px;
+  margin: -33px 0 0 -44px;
+  transform: scale(0.56);
+}
+
+.phone-icon .mf-back path {
+  fill: #6a6a67;
+  stroke: #9c9c98;
+}
+
+.phone-icon .mf-front {
+  background: linear-gradient(#a9a9a4, #7c7c78);
+}
+
+.phone-icon-note {
+  width: 64%;
+  height: 74%;
+  border-radius: 4px;
+  background:
+    repeating-linear-gradient(transparent 0 7px, rgba(21, 21, 21, 0.2) 7px 8px) 0 14px no-repeat,
+    linear-gradient(#cfcdc6, #cfcdc6) 0 0 / 100% 10px no-repeat,
+    var(--paper);
+}
+
+.phone-icon-help {
+  font-family: var(--font-display);
+  font-size: 30px;
+  line-height: 1;
+}
+
+.phone-icon-play {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-block: 8px solid transparent;
+  border-left: 13px solid #fff;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.7));
+}
+
+.phone-label {
+  max-width: 100%;
+  overflow: hidden;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
+  white-space: nowrap;
+}
+
+.phone-grid li,
+.phone-dock li {
+  min-width: 0;
+  animation: home-in 0.6s var(--ease-mac) both;
+}
+
+.phone-grid li:nth-child(2) { animation-delay: 0.04s; }
+.phone-grid li:nth-child(3) { animation-delay: 0.08s; }
+.phone-grid li:nth-child(4) { animation-delay: 0.12s; }
+.phone-grid li:nth-child(5) { animation-delay: 0.1s; }
+.phone-grid li:nth-child(6) { animation-delay: 0.14s; }
+.phone-grid li:nth-child(7) { animation-delay: 0.18s; }
+.phone-grid li:nth-child(8) { animation-delay: 0.22s; }
+
+@keyframes home-in {
+  from {
+    opacity: 0;
+    translate: 0 16px;
+    scale: 0.96;
+  }
+}
+
+/* The board, alive on the home screen: chapters light up along the path. */
+.phone-widget {
+  flex: 1 1 0;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-content: end;
+  align-items: end;
+  gap: 2px 10px;
+  position: relative;
+  width: 100%;
+  min-height: 0;
+  max-height: 210px;
+  margin-top: min(2.4vh, 20px);
+  margin-top: min(2.4dvh, 20px);
+  padding: 14px;
+  overflow: hidden;
+  background: rgba(20, 20, 20, 0.62);
+  border-radius: 20px;
+  box-shadow:
+    inset 0 0 0 0.5px var(--glass-line),
+    0 14px 34px rgba(0, 0, 0, 0.36);
+  color: var(--text);
+  text-align: left;
+  animation: home-in 0.7s var(--ease-mac) 0.24s both;
+  transition: transform 0.25s var(--ease-mac);
+}
+
+.phone-widget:active {
+  transform: scale(0.98);
+}
+
+.phone-widget-art {
+  position: absolute;
+  inset: 14px 14px 58px;
+}
+
+.phone-widget-art svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.phone-widget-art rect {
+  fill: #5d5d5a;
+  animation: map-pulse 7s ease-in-out infinite;
+}
+
+/* Nobody is looking at it behind an open app. */
+html[data-app] .phone-widget-art rect {
+  animation-play-state: paused;
+}
+
+.phone-widget-art rect:nth-of-type(2) { animation-delay: 0.9s; }
+.phone-widget-art rect:nth-of-type(3) { animation-delay: 1.8s; }
+.phone-widget-art rect:nth-of-type(4) { animation-delay: 2.7s; }
+.phone-widget-art rect:nth-of-type(5) { animation-delay: 3.6s; }
+.phone-widget-art rect:nth-of-type(6) { animation-delay: 4.5s; }
+.phone-widget-art rect:nth-of-type(7) { animation-delay: 5.4s; }
+.phone-widget-art rect:nth-of-type(8) { animation-delay: 6.3s; }
+
+@keyframes map-pulse {
+  0%,
+  14%,
+  100% {
+    fill: #5d5d5a;
+  }
+
+  6% {
+    fill: #f5f5f3;
+  }
+}
+
+.phone-widget-art path {
+  fill: none;
+  stroke: #d8d8d5;
+  stroke-width: 1.4;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: map-draw 1.2s var(--ease-sync) 0.5s forwards;
+}
+
+.phone-widget-art path:nth-of-type(2) { animation-delay: 0.8s; }
+.phone-widget-art path:nth-of-type(3) { animation-delay: 1.1s; }
+.phone-widget-art path:nth-of-type(4) { animation-delay: 1.4s; }
+.phone-widget-art path:nth-of-type(5) { animation-delay: 1.7s; }
+.phone-widget-art path:nth-of-type(6) { animation-delay: 2s; }
+.phone-widget-art path:nth-of-type(7) { animation-delay: 2.3s; }
+
+.phone-widget-text {
+  position: relative;
+  display: grid;
+  min-width: 0;
+}
+
+.phone-widget-text strong {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+.phone-widget-text span {
+  overflow: hidden;
+  font-size: 13px;
+  line-height: 1.3;
+  color: var(--text-2);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.phone-widget > svg {
+  position: relative;
+  width: 13px;
+  height: 13px;
+  margin-bottom: 4px;
+}
+
+@media (max-height: 690px) {
+  .phone-widget {
+    display: none;
+  }
+}
+
+/* The smallest phones keep the title and the action: the promise is one tap away. */
+@media (max-height: 600px) {
+  .phone-os:not(.board-on) .hero-promise,
+  .phone-os:not(.board-on) .hero-tech {
+    display: none;
+  }
+
+  .phone-os:not(.board-on) .hero-cta {
+    padding-top: 10px;
+  }
+}
+
+.phone-dock {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  margin-top: 14px;
+  padding: 10px 6px 8px;
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  backdrop-filter: blur(20px) saturate(1.4);
+  border-radius: 24px;
+  box-shadow:
+    inset 0 0 0 0.5px var(--glass-line),
+    0 14px 34px rgba(0, 0, 0, 0.4);
+}
+
+.phone-dock .view-map {
+  display: grid;
+  min-width: 0;
+  padding: 0;
+  background: none;
+  color: var(--text);
+}
+
+.phone-dock .phone-label {
+  font-size: 11.5px;
+}
+
+/* ---------------- A chapter as an app ---------------- */
+
+.phone-os:not(.board-on) .st:not(.st-hero) {
+  display: none;
+  content-visibility: visible;
+}
+
+.phone-os:not(.board-on) .st[data-app-open] {
+  position: fixed;
+  inset: var(--sys-h) 0 0;
+  z-index: 38;
+  display: block;
+  max-width: none;
+  margin: 0;
+  padding: 0 18px calc(96px + env(safe-area-inset-bottom, 0px));
+  overflow: hidden auto;
+  overscroll-behavior: contain;
+  background: var(--os-2);
+  border: 0;
+  border-radius: 14px 14px 0 0;
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
+  transform-origin: 0 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+.phone-os:not(.board-on) .app-bar {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 10px;
+  height: 44px;
+  background: linear-gradient(#343434, #2c2c2c);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-2);
+}
+
+.phone-os:not(.board-on) .st[data-app-open] .app-bar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  margin: 0 -18px 18px;
+  padding: 0 8px 0 14px;
+  border-bottom: 1px solid #191919;
+}
+
+.app-bar .traffic {
+  gap: 6px;
+}
+
+.app-bar-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.app-bar button {
+  justify-self: end;
+  min-height: 44px;
+  padding: 0 10px;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* On the home screen the bar is only the window's title. */
+.phone-os:not(.board-on) .st-hero .app-bar {
+  height: 32px;
+  padding: 0 12px;
+  background: linear-gradient(#e9e8e2, #dddbd4);
+  color: var(--ink-2);
+  border-bottom: 1px solid rgba(21, 21, 21, 0.14);
+}
+
+.phone-os:not(.board-on) .st-hero .app-bar button,
+.app-bar-progress {
+  display: none;
+}
+
+.phone-os:not(.board-on) .st[data-app-open] .app-bar-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  display: block;
+  height: 2px;
+  background: var(--text);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+}
+
+@supports (animation-timeline: scroll()) {
+  .phone-os:not(.board-on) .st[data-app-open] .app-bar-progress {
+    animation: app-progress linear both;
+    animation-timeline: scroll(nearest);
+  }
+}
+
+@keyframes app-progress {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* A jump inside an app lands below its title bar. */
+.phone-os:not(.board-on) .st[data-app-open] [id] {
+  scroll-margin-top: 64px;
+}
+
+.phone-os:not(.board-on) .st[data-app-open] .app-next {
+  display: grid;
+  gap: 2px;
+  margin-top: 30px;
+  padding: 16px 18px;
+  background: var(--text);
+  border-radius: 14px;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 24px;
+  line-height: 1.1;
+}
+
+.app-next::after {
+  content: "→";
+  justify-self: end;
+  margin-top: -26px;
+  font-family: var(--font-body);
+}
+
+.app-next small {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--ink-2);
+}
+
+.phone-os:not(.board-on) .st[data-app-open] .app-end {
+  display: block;
+  margin-top: 28px;
+  font-size: 13px;
+  color: var(--text-3);
+}
+
+/* ---------------- Sideways, like everything else on a phone ---------------- */
+
+.phone-os:not(.board-on) .fit-group ul,
+.phone-os:not(.board-on) .tired ul,
+.phone-os:not(.board-on) .outcome-list,
+.phone-os:not(.board-on) .video-grid,
+.phone-os:not(.board-on) .day ul {
+  display: flex;
+  gap: 12px;
+  margin-inline: -18px;
+  padding: 2px 18px 10px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 18px;
+  scrollbar-width: none;
+}
+
+.phone-os:not(.board-on) .fit-group ul > li,
+.phone-os:not(.board-on) .tired ul > li,
+.phone-os:not(.board-on) .outcome-list > li,
+.phone-os:not(.board-on) .video-grid > li,
+.phone-os:not(.board-on) .day ul > li {
+  flex: 0 0 min(80%, 340px);
+  margin: 0;
+  scroll-snap-align: start;
+}
+
+.phone-os:not(.board-on) .tired ul > li,
+.phone-os:not(.board-on) .day ul > li {
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 0;
+  border-radius: 12px;
+}
+
+.phone-os:not(.board-on) .doc-paper.day ul > li {
+  background: rgba(21, 21, 21, 0.06);
+}
+
+.phone-os:not(.board-on) .outcome-list li::after {
+  display: none;
+}
+
+.phone-os:not(.board-on) .outcome {
+  height: 100%;
+}
+
+/* Sources this small stay small: a print in the hand, not a poster. */
+.phone-os:not(.board-on) .snap {
+  max-width: 66%;
+  margin-inline: auto;
+}
+
+.phone-os:not(.board-on) .contact-sheet ul {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+/* The two photos with real resolution get the room. */
+.phone-os:not(.board-on) .contact-sheet li:nth-child(3n) {
+  grid-column: 1 / -1;
+}
+
+.phone-os:not(.board-on) .contact-sheet li:nth-child(3n) .contact-photo {
+  aspect-ratio: 4 / 3;
+}
+
+/* The sorter works here too: the noise is a tap away from order. */
+.phone-os:not(.board-on) .sorted-title,
+.phone-os:not(.board-on) .sort-button {
+  display: inline-flex;
+}
+
+.phone-os:not(.board-on) .sorted-title {
+  display: none;
+}
+
+.phone-os:not(.board-on) [data-sorted="true"] .sorted-title {
+  display: block;
+  margin-top: 16px;
+  font-family: var(--font-display);
+  font-size: 22px;
+}
+
+.phone-os:not(.board-on) .strike-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.phone-os:not(.board-on) .strike {
+  margin: 0;
+  padding: 7px 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  font-size: 14.5px;
+  rotate: var(--sr, 0deg);
+  transition:
+    rotate 0.5s var(--spring),
+    background 0.3s;
+}
+
+.phone-os:not(.board-on) [data-sorted="true"] .strike {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.phone-os:not(.board-on) .sort-button {
+  margin-top: 14px;
+}
+
+@media (min-width: 620px) {
+  .phone-icon {
+    width: min(11vw, 8vh, 84px);
+    width: min(11vw, 8dvh, 84px);
+  }
+}
+
+/* A phone on its side: the home screen scrolls instead of squeezing. */
+@media (max-height: 520px) {
+  .phone-os:not(.board-on) .phone-home {
+    flex: none;
+  }
+
+  .phone-os:not(.board-on) .phone-grid {
+    grid-template-columns: repeat(8, 1fr);
+  }
+
+  .phone-icon {
+    width: min(9vw, 60px);
+  }
+}
+
 /* ---------------- Full-screen map on small screens ---------------- */
 
 html.map-overlay,
@@ -4941,6 +5641,7 @@ html.map-overlay body {
   position: fixed;
   inset: 0;
   z-index: 60;
+  height: 100vh;
   height: 100dvh;
 }
 

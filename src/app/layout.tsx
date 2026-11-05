@@ -69,7 +69,7 @@ export const viewport: Viewport = {
 // Without JS the page stays the vertical reading, with all the content.
 const bootScript = `(function(){var d=document.documentElement;d.classList.add('js');if(location.pathname==='/'&&matchMedia(${JSON.stringify(
   BOARD_QUERY,
-)}).matches&&!matchMedia(${JSON.stringify(REDUCED_MOTION_QUERY)}).matches)d.classList.add('board-on')})()`;
+)}).matches&&!matchMedia(${JSON.stringify(REDUCED_MOTION_QUERY)}).matches)d.classList.add('board-on');else if(location.pathname==='/'&&(matchMedia('(hover: none)').matches||innerWidth<900))d.classList.add('phone-os')})()`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

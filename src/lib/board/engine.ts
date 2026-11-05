@@ -1,4 +1,5 @@
 import { BOARD_QUERY, EDGES, REDUCED_MOTION_QUERY, SIDEBAR_WIDTH, STATIONS, STATION_FIRST_STOP, STOPS, WORLD } from "./layout";
+import { isPhoneOs, openApp } from "@/lib/phone-os";
 import { historyGuard } from "./history-guard";
 import { MAX_ZOOM, MIN_ZOOM, clamp, easeInOut, fit, lerp, mixScene, morphScene, smoother, travel, type Camera, type Scene } from "./camera";
 
@@ -97,6 +98,7 @@ export class BoardEngine {
   /** What the reader had in front of them, as an element: pixels stop meaning anything if the layout changes. */
   private overlayAnchor: { el: HTMLElement; top: number } | null = null;
   private overlayStop = 0;
+  private appScroll = 0;
   private overlayOpener: HTMLElement | null = null;
   private ignorePop = false;
   private glide: { vx: number; vy: number } | null = null;
@@ -259,6 +261,7 @@ export class BoardEngine {
     if (this.state.board) return;
     const root = document.documentElement;
     const station = this.readingStation();
+    this.appScroll = document.querySelector("[data-app-open]")?.scrollTop ?? 0;
     // The page leaves the flow under the map and the document collapses:
     // the place to come back to has to be kept by hand.
     const anchor = this.stations[station];
@@ -266,7 +269,7 @@ export class BoardEngine {
     this.overlayStop = STATION_FIRST_STOP[station];
     this.overlayOpener = document.activeElement as HTMLElement | null;
     window.history.scrollRestoration = "manual";
-    window.history.pushState({ ccMap: true }, "");
+    window.history.pushState({ ...window.history.state, ccMap: true }, "");
     root.classList.add("board-on", "map-overlay");
     this.setBackgroundInert(true);
     this.setState({ overlay: true, board: true, open: true, station });
@@ -280,6 +283,10 @@ export class BoardEngine {
 
   /** The chapter on screen, so the map opens where the reader already is. */
   private readingStation() {
+    if (isPhoneOs()) {
+      const app = document.querySelector<HTMLElement>("[data-app-open]");
+      return app ? Math.max(0, this.stations.indexOf(app)) : 0;
+    }
     const middle = window.innerHeight * 0.45;
     let station = 0;
     this.stations.forEach((el, i) => {
@@ -302,6 +309,7 @@ export class BoardEngine {
    */
   jumpInReading(id: string) {
     if (this.state.board) return false;
+    if (isPhoneOs()) return openApp(id);
     const target = document.getElementById(id);
     if (!target) return false;
     target.scrollIntoView({ block: "start" });
@@ -312,6 +320,14 @@ export class BoardEngine {
   /** Leaves the phone map for the reading, at that chapter. */
   readAt(id: string) {
     if (!this.state.overlay) return;
+    if (document.documentElement.classList.contains("phone-os")) {
+      // The map's history entry becomes the app: going back from it lands where the map was opened.
+      // Reading on in the app already open, there is nothing to replace it with.
+      const station = document.getElementById(id)?.closest("[data-station]");
+      this.closeOverlay(station !== document.querySelector("[data-app-open]"));
+      openApp(id, { replace: true });
+      return;
+    }
     this.closeOverlay();
     const target = document.getElementById(id);
     if (!target) return;
@@ -352,6 +368,8 @@ export class BoardEngine {
     this.overlayAnchor = null;
     // Widened past the breakpoint while open: the board is back and owns the scroll.
     if (anchor && !this.state.board) window.scrollBy(0, anchor.el.getBoundingClientRect().top - anchor.top);
+    const app = document.querySelector("[data-app-open]");
+    if (app) app.scrollTop = this.appScroll;
     // Two frames: the browser stores the remembered sizes after layout.
     requestAnimationFrame(() => requestAnimationFrame(() => root.classList.remove("measure-all")));
 

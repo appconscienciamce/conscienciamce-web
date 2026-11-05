@@ -5,6 +5,7 @@ import { DesktopFolder, DesktopSticker, DesktopWindow } from "./desktop-window";
 import { StatusGlyphs } from "./glyphs";
 import { MenuBar, type MenuGroup } from "./menu-bar";
 import { ViewMapButton } from "./mobile-chrome";
+import { PhoneHome, type PhoneApp } from "./phone-home";
 import { SoundControl } from "./sound-control";
 import { SystemClock } from "./system-clock";
 
@@ -32,6 +33,28 @@ export function SystemBar() {
       </div>
     </header>
   );
+}
+
+/** The home screen of the phone reading. */
+export function PhoneShell() {
+  const { os, casePilar, hosts, proof, desktop } = bootcamp;
+  const { apps } = os.phone;
+  const portrait = hosts.people[0].image.src!;
+  const grid: PhoneApp[] = [
+    { id: "para-quien", label: apps.para, icon: { kind: "folder" } },
+    { id: "manifiesto", label: apps.manifesto, icon: { kind: "note" } },
+    { id: "caso-pilar", label: apps.pilar, icon: { kind: "photo", src: casePilar.image.src! } },
+    { id: "expediente", label: apps.file, icon: { kind: "folder" } },
+    { id: "dos-dias", label: apps.days, icon: { kind: "folder" } },
+    { id: "que-te-llevas", label: apps.outcomes, icon: { kind: "folder" } },
+    { id: "quienes", label: apps.hosts, icon: { kind: "photo", src: portrait } },
+    { id: "galeria", label: apps.gallery, icon: { kind: "photo", src: proof.gallery[2].image.src! } },
+  ];
+  const dock: PhoneApp[] = [
+    { id: "testimonios", label: apps.testimonials, icon: { kind: "video", videoId: proof.videos[0].videoId } },
+    { id: "preguntas", label: apps.faq, icon: { kind: "help" } },
+  ];
+  return <PhoneHome apps={grid} dock={dock} mapLabel={os.viewMap} enroll={{ label: apps.enroll, src: desktop.logo.src! }} widget={os.mapCard} />;
 }
 
 /** The dark room behind the map. Only present while the board layout is active. */
