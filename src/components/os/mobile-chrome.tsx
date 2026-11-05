@@ -7,10 +7,10 @@ import { useBoard } from "./board-provider";
 import { ChevronGlyph, MapGlyph } from "./glyphs";
 
 /** Opens the full-screen map from the vertical reading. */
-export function ViewMapButton({ label }: { label: string }) {
+export function ViewMapButton({ label, className }: { label: string; className?: string }) {
   const { engine } = useBoard();
   return (
-    <button type="button" className="view-map" onClick={() => engine()?.openOverlay()}>
+    <button type="button" className={className ? `view-map ${className}` : "view-map"} onClick={(e) => engine()?.openOverlay(e.currentTarget)}>
       <MapGlyph />
       {label}
     </button>
@@ -35,7 +35,7 @@ export function MapArt() {
 export function MapCard({ title, text, cta }: { title: string; text: string; cta: string }) {
   const { engine } = useBoard();
   return (
-    <button type="button" className="map-card" onClick={() => engine()?.openOverlay()}>
+    <button type="button" className="map-card" onClick={(e) => engine()?.openOverlay(e.currentTarget)}>
       <MapArt />
       <span className="map-card-text">
         <strong>{title}</strong>

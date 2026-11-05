@@ -46,6 +46,21 @@ const DOUBLE_TAP_PX = 28;
 const GLIDE_DECAY_MS = 260;
 const GLIDE_MIN_SPEED = 0.02;
 const GLIDE_MAX_SPEED = 2.5;
+/** The map opening out of what was tapped, and the camera settling on the chapter. */
+const OVERLAY_IN_MS = 520;
+const OVERLAY_EASE = "cubic-bezier(0.32, 0.72, 0, 1)";
+const INTRO_MS = 1100;
+const INTRO_ZOOM = 0.55;
+/** Screen pixels of vertical swipe that walk one stop along the path. */
+const RAIL_STEP_PX = 240;
+/** Finger speed, in px/ms, that makes a swipe a flick. How fast the camera follows it or settles. */
+const RAIL_FLICK_SPEED = 0.2;
+const RAIL_FOLLOW_MS = 70;
+const RAIL_SETTLE_MS = 170;
+/** Past this much of a chapter's zoom the reader is looking at details: the finger pans. */
+const RAIL_MAX_ZOOM = 1.2;
+/** How much of a station has to come into view before it appears. */
+const REVEAL_MARGIN = 60;
 
 /**
  * The only owner of the board viewport. The document scroll is the single
@@ -78,7 +93,7 @@ export class BoardEngine {
 
   private explore: Camera = { cx: 0, cy: 0, z: 1 };
   private pointers = new Map<number, { x: number; y: number }>();
-  private drag: { id: number; x: number; y: number; moved: boolean; viaGuided: boolean } | null = null;
+  private drag: { id: number; x: number; y: number; moved: boolean; viaGuided: boolean; rail?: boolean } | null = null;
   private note: { el: HTMLElement; id: number; x: number; y: number; mx: number; my: number } | null = null;
   private pinch: { distance: number; z: number } | null = null;
   private suppressClick = false;
@@ -102,6 +117,11 @@ export class BoardEngine {
   private overlayOpener: HTMLElement | null = null;
   private ignorePop = false;
   private glide: { vx: number; vy: number } | null = null;
+  /** Position along the path, in stops, while a swipe walks the map. */
+  private rail: { pos: number; held: boolean } | null = null;
+  /** Rightmost point of the map reached so far: what is past it has not appeared yet. */
+  private reach = -Infinity;
+  private edgeSpans: [number, number][] = [];
   private panTrack = { t: 0, vx: 0, vy: 0 };
   private lastTap = { t: 0, x: 0, y: 0 };
   private tapStart: { id: number; x: number; y: number } | null = null;
@@ -183,7 +203,7 @@ export class BoardEngine {
   step(direction: 1 | -1) {
     if (!this.state.board) return;
     // During a flight the camera is still leaving: count from where it is going.
-    if (this.state.overlay) return this.goToStop((this.camFlight ? this.overlayStop : this.nearestStop()) + direction);
+    if (this.state.overlay) return this.goToStop((this.camFlight || this.rail ? this.overlayStop : this.nearestStop()) + direction);
     const { pos } = this.position(this.smoothScroll);
     const target = direction > 0 ? Math.floor(pos + 0.51) + 1 : Math.ceil(pos - 0.51) - 1;
     if (target < 0) return this.close();
@@ -257,9 +277,10 @@ export class BoardEngine {
   }
 
   /** Small screens: full-screen map, opened on request. */
-  openOverlay() {
+  openOverlay(origin?: HTMLElement | null) {
     if (this.state.board) return;
     const root = document.documentElement;
+    const from = origin?.getBoundingClientRect() ?? null;
     const station = this.readingStation();
     this.appScroll = document.querySelector("[data-app-open]")?.scrollTop ?? 0;
     // The page leaves the flow under the map and the document collapses:
@@ -270,15 +291,46 @@ export class BoardEngine {
     this.overlayOpener = document.activeElement as HTMLElement | null;
     window.history.scrollRestoration = "manual";
     window.history.pushState({ ...window.history.state, ccMap: true }, "");
+    // Set before the map exists on screen: stations must start hidden, not fade out.
+    this.reach = -Infinity;
+    if (!this.reduced.matches) this.stations.forEach((el) => (el.dataset.shown = "false"));
     root.classList.add("board-on", "map-overlay");
     this.setBackgroundInert(true);
     this.setState({ overlay: true, board: true, open: true, station });
     this.measure();
     this.scene = null;
-    this.explore = this.frame(STATION_FIRST_STOP[station]);
+    this.edgeSpans = this.edges.map(({ el }) => {
+      const box = el.getBBox();
+      return [box.x, box.x + box.width];
+    });
+    const target = this.frame(STATION_FIRST_STOP[station]);
+    this.explore = { ...target, z: target.z * INTRO_ZOOM };
     this.enterExplore();
     this.nodes.world.classList.add("is-ready");
-    this.wake();
+    this.flyCamera(target, INTRO_MS);
+    if (!this.reduced.matches) this.paintReveal();
+    this.openWindow(from);
+  }
+
+  private cancelWindow() {
+    this.nodes.win.getAnimations().forEach((animation) => animation.cancel());
+  }
+
+  /** The map grows out of what was tapped, the same way an app grows out of its icon. */
+  private openWindow(from: DOMRect | null) {
+    this.cancelWindow();
+    if (this.reduced.matches) return;
+    const origin = from ? "0 0" : "50% 50%";
+    const start = from
+      ? `translate(${from.left}px, ${from.top}px) scale(${from.width / window.innerWidth}, ${from.height / window.innerHeight})`
+      : "scale(0.94)";
+    this.nodes.win.animate(
+      [
+        { transform: start, transformOrigin: origin, borderRadius: "22px", opacity: 0.3 },
+        { transform: "none", transformOrigin: origin, borderRadius: "0px", opacity: 1 },
+      ],
+      { duration: OVERLAY_IN_MS, easing: OVERLAY_EASE },
+    );
   }
 
   /** The chapter on screen, so the map opens where the reader already is. */
@@ -340,6 +392,7 @@ export class BoardEngine {
   }
 
   closeOverlay(fromHistory = false) {
+    this.cancelWindow();
     this.leaveExplore();
     this.glide = null;
     this.setBackgroundInert(false);
@@ -418,6 +471,7 @@ export class BoardEngine {
     this.stations.forEach((s) => {
       s.removeAttribute("data-active");
       s.removeAttribute("data-sub");
+      s.removeAttribute("data-shown");
     });
     this.edges.forEach((e) => (e.el.style.strokeDashoffset = ""));
   }
@@ -617,6 +671,7 @@ export class BoardEngine {
 
   private flyCamera(to: Camera, duration = 800) {
     this.glide = null;
+    this.rail = null;
     this.camFlight = { from: { ...this.explore }, to, start: performance.now(), duration: this.reduced.matches ? 1 : duration };
     this.wake();
   }
@@ -639,6 +694,7 @@ export class BoardEngine {
     this.lastFrame = now;
     let busy = this.advanceMaximize(dt);
     if (this.advanceGlide(dt)) busy = true;
+    if (this.advanceRail(dt)) busy = true;
 
     if (this.state.mode === "guided" && !this.state.overlay) {
       const target = this.scrollValue();
@@ -670,6 +726,40 @@ export class BoardEngine {
     glide.vx *= decay;
     glide.vy *= decay;
     if (Math.hypot(glide.vx, glide.vy) < GLIDE_MIN_SPEED) this.glide = null;
+    return true;
+  }
+
+  /** The camera on the path: the stops, and every point between two of them. */
+  private railCamera(pos: number): Camera {
+    const index = Math.floor(pos);
+    const a = this.frame(index);
+    const b = this.frame(Math.min(index + 1, STOPS.length - 1));
+    const t = pos - index;
+    return { cx: a.cx + (b.cx - a.cx) * t, cy: a.cy + (b.cy - a.cy) * t, z: a.z + (b.z - a.z) * t };
+  }
+
+  /** Where the camera is along the path. The map is linear, so its x says it. */
+  private pathPosition() {
+    const { cx } = this.explore;
+    for (let i = 0; i < STOPS.length - 1; i++) {
+      const a = this.frame(i).cx;
+      const b = this.frame(i + 1).cx;
+      if (cx <= b) return i + clamp((cx - a) / Math.max(1, b - a), 0, 1);
+    }
+    return STOPS.length - 1;
+  }
+
+  private advanceRail(dt: number) {
+    const rail = this.rail;
+    if (!rail) return false;
+    const to = this.railCamera(rail.pos);
+    const { cx, cy, z } = this.explore;
+    const k = this.reduced.matches ? 1 : 1 - Math.exp(-dt / (rail.held ? RAIL_FOLLOW_MS : RAIL_SETTLE_MS));
+    this.explore = { cx: cx + (to.cx - cx) * k, cy: cy + (to.cy - cy) * k, z: z + (to.z - z) * k };
+    const away = Math.hypot(to.cx - this.explore.cx, to.cy - this.explore.cy) * z > 0.5 || Math.abs(to.z - this.explore.z) > 0.0005;
+    if (away) return true;
+    this.explore = to;
+    if (!rail.held) this.rail = null;
     return true;
   }
 
@@ -785,8 +875,24 @@ export class BoardEngine {
         el.dataset.active = "true";
         el.dataset.sub = "9";
       });
-      this.edges.forEach((e) => (e.el.style.strokeDashoffset = "0"));
+      if (this.state.overlay && !this.reduced.matches) this.paintReveal();
+      else this.edges.forEach((e) => (e.el.style.strokeDashoffset = "0"));
     }
+  }
+
+  /** Going forward, the line draws itself and each chapter appears when it gets there. */
+  private paintReveal() {
+    const { cx, z } = this.camFlight?.to ?? this.explore;
+    const reach = cx + this.viewSize()[0] / (2 * z);
+    if (reach <= this.reach) return;
+    this.reach = reach;
+    this.stations.forEach((el, i) => {
+      if (STATIONS[i].x + REVEAL_MARGIN < reach) el.dataset.shown = "true";
+    });
+    this.edges.forEach((e, i) => {
+      const [start, end] = this.edgeSpans[i];
+      e.el.style.strokeDashoffset = String(1 - clamp((reach - start) / Math.max(1, end - start), 0, 1));
+    });
   }
 
   private paintHud(scene: Scene, vw: number, vh: number) {
@@ -856,6 +962,7 @@ export class BoardEngine {
 
   private leaveExplore() {
     this.camFlight = null;
+    this.rail = null;
     this.setExploreListeners(false);
     delete this.nodes.stage.dataset.mode;
     this.setState({ mode: "guided" });
@@ -879,6 +986,7 @@ export class BoardEngine {
     const px = clientX - rect.left - rect.width / 2;
     const py = clientY - rect.top - rect.height / 2;
     const next = clamp(z, MIN_ZOOM, MAX_ZOOM);
+    this.rail = null;
     const c = this.explore;
     this.explore = {
       z: next,
@@ -891,6 +999,7 @@ export class BoardEngine {
 
   private panBy(dx: number, dy: number) {
     this.camFlight = null;
+    this.rail = null;
     this.explore = { ...this.explore, cx: this.explore.cx + dx / this.explore.z, cy: this.explore.cy + dy / this.explore.z };
     this.clampExplore();
     this.wake();
@@ -924,8 +1033,9 @@ export class BoardEngine {
 
   private onPointerDown = (e: PointerEvent) => {
     if (e.button !== 0 || !this.state.board) return;
-    const stoppedGlide = this.glide !== null;
+    const stoppedGlide = this.glide !== null || this.rail !== null;
     this.glide = null;
+    this.rail = null;
     this.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
     // A tap is one finger, on the map, that was not stopping it.
     const canvas = !(e.target as HTMLElement).closest(`${NO_PAN_CONTROLS},[data-board-ui]`);
@@ -991,10 +1101,21 @@ export class BoardEngine {
       drag.moved = true;
       if (drag.viaGuided) this.enterExplore();
       this.nodes.stage.dataset.dragging = "true";
+      // Up and down is the scroll of the map. Sideways, or looking closely, the finger just pans.
+      if (this.state.overlay && Math.abs(dy) > Math.abs(dx) && this.explore.z <= this.frame(this.nearestStop()).z * RAIL_MAX_ZOOM) {
+        drag.rail = true;
+        this.camFlight = null;
+        this.rail = { pos: this.pathPosition(), held: true };
+      }
     }
     drag.x = e.clientX;
     drag.y = e.clientY;
-    this.panBy(-dx, -dy);
+    if (drag.rail && this.rail) {
+      this.rail.pos = clamp(this.rail.pos - dy / RAIL_STEP_PX, 0, STOPS.length - 1);
+      this.wake();
+    } else {
+      this.panBy(-dx, -dy);
+    }
     if (this.state.overlay) {
       // Event time, not handler time: after a busy moment queued moves would all look instant.
       const elapsed = Math.max(8, e.timeStamp - this.panTrack.t);
@@ -1018,7 +1139,14 @@ export class BoardEngine {
     }
     if (this.drag && e.pointerId === this.drag.id) {
       if (this.drag.moved) this.suppressClick = true;
-      if (this.state.overlay && this.drag.moved && !this.reduced.matches && e.timeStamp - this.panTrack.t < 120) {
+      if (this.drag.rail && this.rail) {
+        // It rests on a stop. A flick goes on to the next one, however short it was.
+        const speed = e.type === "pointerup" && e.timeStamp - this.panTrack.t < 120 ? this.panTrack.vy : 0;
+        const stop = speed > RAIL_FLICK_SPEED ? Math.ceil(this.rail.pos) : speed < -RAIL_FLICK_SPEED ? Math.floor(this.rail.pos) : Math.round(this.rail.pos);
+        this.overlayStop = clamp(stop, 0, STOPS.length - 1);
+        this.rail = { pos: this.overlayStop, held: false };
+        this.wake();
+      } else if (this.state.overlay && this.drag.moved && !this.reduced.matches && e.timeStamp - this.panTrack.t < 120) {
         this.glide = { vx: this.panTrack.vx, vy: this.panTrack.vy };
         this.wake();
       }

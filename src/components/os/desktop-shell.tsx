@@ -37,7 +37,7 @@ export function SystemBar() {
 
 /** The home screen of the phone reading. */
 export function PhoneShell() {
-  const { os, casePilar, hosts, proof, desktop } = bootcamp;
+  const { os, casePilar, hosts, proof } = bootcamp;
   const { apps } = os.phone;
   const portrait = hosts.people[0].image.src!;
   const grid: PhoneApp[] = [
@@ -50,11 +50,7 @@ export function PhoneShell() {
     { id: "quienes", label: apps.hosts, icon: { kind: "photo", src: portrait } },
     { id: "galeria", label: apps.gallery, icon: { kind: "photo", src: proof.gallery[2].image.src! } },
   ];
-  const dock: PhoneApp[] = [
-    { id: "testimonios", label: apps.testimonials, icon: { kind: "video", videoId: proof.videos[0].videoId } },
-    { id: "preguntas", label: apps.faq, icon: { kind: "help" } },
-  ];
-  return <PhoneHome apps={grid} dock={dock} mapLabel={os.viewMap} enroll={{ label: apps.enroll, src: desktop.logo.src! }} widget={os.mapCard} />;
+  return <PhoneHome apps={grid} mapLabel={os.viewMap} widget={os.mapCard} />;
 }
 
 /** The dark room behind the map. Only present while the board layout is active. */
