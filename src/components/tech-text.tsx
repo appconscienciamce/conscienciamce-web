@@ -17,6 +17,8 @@ const KICK_DECAY = 0.62;
 const SPECKS = 15;
 const DASH: [number, number] = [4, 2];
 const STROKE = 1.2;
+/** On touch nobody hovers: it shows what it does, then stops spending battery. */
+const TOUCH_SWEEP_SECONDS = 5;
 
 interface Art {
   image: HTMLCanvasElement;
@@ -83,6 +85,8 @@ export function TechText({
     const paint = ctx;
 
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const touch = window.matchMedia("(hover: none)").matches;
+    let inkColor = "";
     let width = 1;
     let height = 1;
     let dpr = 1;
@@ -330,11 +334,13 @@ export function TechText({
       raf = 0;
       const dt = Math.min(0.05, Math.max(0.001, (now - last) / 1000));
       last = now;
-      const ink = getComputedStyle(container).color || "#000000";
+      // Reading computed styles on every frame forces the browser to recalculate them.
+      inkColor ||= getComputedStyle(container).color || "#000000";
+      const ink = inkColor;
       const view = ensureLayout(ink);
       const damping = 2 * Math.sqrt(SPRING) * (1 - BOUNCE * 0.96);
 
-      const sweeping = !reducedMotion && !pointer.inside && dragging < 0;
+      const sweeping = !reducedMotion && !pointer.inside && dragging < 0 && !(touch && clock > TOUCH_SWEEP_SECONDS);
       if (sweeping) clock += dt;
       pulse += dt;
       let targetX = pointer.x;
@@ -466,6 +472,7 @@ export function TechText({
       stage.width = Math.round(width * dpr);
       stage.height = Math.round(height * dpr);
       layoutKey = "";
+      inkColor = "";
       wake();
     };
 
@@ -531,12 +538,10 @@ export function TechText({
     container.addEventListener("pointerleave", onLeave, { passive: true });
 
     const resizeObserver = new ResizeObserver(resize);
-    resizeObserver.observe(container);
     const intersectionObserver = new IntersectionObserver(([entry]) => {
       visible = entry.isIntersecting;
       wake();
     });
-    intersectionObserver.observe(container);
 
     const refreshFonts = () => {
       layoutKey = "";
@@ -544,10 +549,31 @@ export function TechText({
     };
     void document.fonts.ready.then(refreshFonts, refreshFonts);
 
-    resize();
+    const begin = () => {
+      resizeObserver.observe(container);
+      intersectionObserver.observe(container);
+      resize();
+      container.dataset.ready = "true";
+    };
+    // Drawing the letters is heavy for a phone: the real line waits for the first
+    // sign of someone there. If that is a scroll past the hero, nothing gets drawn.
+    const beginOnce = () => {
+      window.removeEventListener("scroll", beginOnce);
+      window.removeEventListener("pointerdown", beginOnce);
+      begin();
+    };
+    if (touch) {
+      window.addEventListener("scroll", beginOnce, { passive: true });
+      window.addEventListener("pointerdown", beginOnce, { passive: true });
+    } else {
+      begin();
+    }
 
     return () => {
       alive = false;
+      delete container.dataset.ready;
+      window.removeEventListener("scroll", beginOnce);
+      window.removeEventListener("pointerdown", beginOnce);
       cancelAnimationFrame(raf);
       resizeObserver.disconnect();
       intersectionObserver.disconnect();

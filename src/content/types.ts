@@ -108,6 +108,12 @@ export interface OsCopy {
   fit: string;
   viewMap: string;
   closeMap: string;
+  back: string;
+  readHere: string;
+  readHereLabel: string;
+  mapHint: string;
+  chaptersLabel: string;
+  mapCard: { title: string; text: string; cta: string; full: string };
   skip: string;
   closeWindow: string;
 }

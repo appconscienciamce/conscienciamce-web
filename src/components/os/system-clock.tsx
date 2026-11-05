@@ -14,10 +14,16 @@ const format = new Intl.DateTimeFormat("es", {
 export function SystemClock() {
   const [now, setNow] = useState<Date | null>(null);
 
+  // It shows minutes: waking up every second would only spend battery.
   useEffect(() => {
-    setNow(new Date());
-    const timer = window.setInterval(() => setNow(new Date()), 1000);
-    return () => window.clearInterval(timer);
+    let timer = 0;
+    const tick = () => {
+      const date = new Date();
+      setNow(date);
+      timer = window.setTimeout(tick, 60000 - date.getSeconds() * 1000 - date.getMilliseconds());
+    };
+    tick();
+    return () => window.clearTimeout(timer);
   }, []);
 
   if (!now) return <span className="sys-clock" />;

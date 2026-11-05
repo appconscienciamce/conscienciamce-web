@@ -43,14 +43,16 @@ export function CtaButton({
   className = "",
   label = bootcamp.cta.label,
   track = "cta_click",
+  note,
 }: {
   className?: string;
   label?: string;
   track?: string;
+  note?: string;
 }) {
   return (
     <a href={ctaHref} data-track={track} className={`btn btn-solid ${className}`}>
-      <CtaContent label={label} />
+      <CtaContent label={label} note={note} />
     </a>
   );
 }

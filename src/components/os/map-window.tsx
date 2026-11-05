@@ -7,6 +7,9 @@ import { CtaContent } from "@/components/cta-content";
 import { useBoard } from "./board-provider";
 import { ChevronGlyph, CloseGlyph, FolderGlyph, MaximizeGlyph, MinimizeGlyph, RestoreGlyph, SidebarGlyph } from "./glyphs";
 
+const HINT_MS = 4500;
+const HINT_KEY = "cc:map-hint";
+
 /** Chapter 00 is the portal; chapters 01–07 are the numbered journey. */
 const LAST_CHAPTER = String(STATIONS.length - 1).padStart(2, "0");
 
@@ -27,6 +30,7 @@ export function MapWindow({
   const { open, mode, station, maximized, overlay } = state;
   const [resumeStation, setResumeStation] = useState<number | null>(null);
   const [sidebar, setSidebar] = useState(true);
+  const [hint, setHint] = useState(false);
   const openerRef = useRef<HTMLButtonElement>(null);
   const exploring = mode === "explore";
   const chapter = chapters[station];
@@ -34,6 +38,28 @@ export function MapWindow({
   useEffect(() => {
     engine()?.setSidebar(sidebar);
   }, [engine, sidebar]);
+
+  // How to move, once per visit, until the first touch or a few seconds.
+  useEffect(() => {
+    if (!overlay) {
+      setHint(false);
+      return;
+    }
+    try {
+      if (window.sessionStorage.getItem(HINT_KEY)) return;
+      window.sessionStorage.setItem(HINT_KEY, "1");
+    } catch {
+      // Storage can be blocked: the hint then shows on every opening.
+    }
+    setHint(true);
+    const hide = () => setHint(false);
+    const timer = window.setTimeout(hide, HINT_MS);
+    document.addEventListener("pointerdown", hide, { once: true });
+    return () => {
+      window.clearTimeout(timer);
+      document.removeEventListener("pointerdown", hide);
+    };
+  }, [overlay]);
 
   // "Continue" only stands for the minimize that offered it.
   useEffect(() => {
@@ -66,8 +92,7 @@ export function MapWindow({
     const active = document.activeElement;
     const focusWasInside = active === document.body || !!windowRef.current?.contains(active);
     if (overlay && !wasOverlay.current) closeRef.current?.focus({ preventScroll: true });
-    else if (!overlay && wasOverlay.current) document.querySelector<HTMLElement>(".view-map")?.focus({ preventScroll: true });
-    else if (wasOpen.current && !open && focusWasInside) openerRef.current?.focus({ preventScroll: true });
+    else if (!wasOverlay.current && wasOpen.current && !open && focusWasInside) openerRef.current?.focus({ preventScroll: true });
     wasOpen.current = open;
     wasOverlay.current = overlay;
   }, [open, overlay]);
@@ -84,37 +109,32 @@ export function MapWindow({
     >
       <div className="win-bar" data-board-ui>
         <div className="win-controls">
-          <div className="traffic" data-active={open || overlay}>
-            <button
-              ref={closeRef}
-              type="button"
-              className="tl tl-close"
-              disabled={!open && !overlay}
-              aria-label={overlay ? ui.closeMap : ui.close}
-              title={overlay ? ui.closeMap : ui.close}
-              onClick={() => closeMap(false)}
-            >
-              <CloseGlyph />
+          {overlay ? (
+            <button ref={closeRef} type="button" className="map-back" aria-label={ui.closeMap} onClick={() => closeMap(false)}>
+              <ChevronGlyph direction="left" />
+              {ui.back}
             </button>
-            {!overlay && (
-              <>
-                <button type="button" className="tl tl-min" disabled={!open} aria-label={ui.minimize} title={ui.minimize} onClick={() => closeMap(true)}>
-                  <MinimizeGlyph />
-                </button>
-                <button
-                  type="button"
-                  className="tl tl-max"
-                  disabled={!open}
-                  aria-label={maximized ? ui.restore : ui.maximize}
-                  aria-pressed={maximized}
-                  title={maximized ? ui.restore : ui.maximize}
-                  onClick={() => engine()?.toggleMaximized()}
-                >
-                  {maximized ? <RestoreGlyph /> : <MaximizeGlyph />}
-                </button>
-              </>
-            )}
-          </div>
+          ) : (
+            <div className="traffic" data-active={open}>
+              <button ref={closeRef} type="button" className="tl tl-close" disabled={!open} aria-label={ui.close} title={ui.close} onClick={() => closeMap(false)}>
+                <CloseGlyph />
+              </button>
+              <button type="button" className="tl tl-min" disabled={!open} aria-label={ui.minimize} title={ui.minimize} onClick={() => closeMap(true)}>
+                <MinimizeGlyph />
+              </button>
+              <button
+                type="button"
+                className="tl tl-max"
+                disabled={!open}
+                aria-label={maximized ? ui.restore : ui.maximize}
+                aria-pressed={maximized}
+                title={maximized ? ui.restore : ui.maximize}
+                onClick={() => engine()?.toggleMaximized()}
+              >
+                {maximized ? <RestoreGlyph /> : <MaximizeGlyph />}
+              </button>
+            </div>
+          )}
           {!overlay && (
             <button
               type="button"
@@ -132,7 +152,17 @@ export function MapWindow({
         <p className="win-title">{ui.windowTitle}</p>
         <div className="win-actions">
           {open ? (
-            <a href={ctaHref} data-track="cta_click" className="btn btn-solid win-cta">
+            <a
+              href={ctaHref}
+              data-track="cta_click"
+              className="btn btn-solid win-cta"
+              onClick={(e) => {
+                // On the phone map enrolling means going back to reading, at the ticket.
+                if (!overlay || !ctaHref.startsWith("#")) return;
+                e.preventDefault();
+                engine()?.readAt(ctaHref.slice(1));
+              }}
+            >
               <CtaContent label={ctaLabel} />
             </a>
           ) : (
@@ -160,6 +190,8 @@ export function MapWindow({
         <div className="board-ui" data-board-ui data-sidebar={sidebar}>
           <IdeaIndex ui={ui} chapters={chapters} station={station} open={sidebar} />
 
+          {hint && <p className="map-hint">{ui.mapHint}</p>}
+
           {exploring && !overlay && (
             <div className="explore-pill">
               <span>{ui.exploreHint}</span>
@@ -185,12 +217,12 @@ export function MapWindow({
             )}
 
             <div className="story-nav">
-              {!exploring && (
+              {(!exploring || overlay) && (
                 <button type="button" aria-label={ui.prev} title={ui.prev} onClick={() => engine()?.step(-1)}>
                   <ChevronGlyph direction="left" />
                 </button>
               )}
-              <p aria-live="polite">
+              <p aria-live={overlay ? undefined : "polite"}>
                 {station > 0 && (
                   <span>
                     {ui.chapter} {chapter?.number} / {LAST_CHAPTER}
@@ -198,7 +230,7 @@ export function MapWindow({
                 )}
                 <em>{chapter?.label}</em>
               </p>
-              {!exploring && (
+              {(!exploring || overlay) && (
                 <button type="button" aria-label={ui.next} title={ui.next} onClick={() => engine()?.step(1)}>
                   <ChevronGlyph direction="right" />
                 </button>
@@ -207,6 +239,12 @@ export function MapWindow({
                 <span data-hud="progress" />
               </span>
             </div>
+
+            {overlay && (
+              <button type="button" className="map-read" aria-label={ui.readHereLabel} onClick={() => chapter && engine()?.readAt(chapter.id)}>
+                {ui.readHere}
+              </button>
+            )}
 
             <div className="view-tools">
               <span className="view-coords" data-hud="coords" />
@@ -286,14 +324,3 @@ function Minimap({ ui, chapters, station }: { ui: OsCopy; chapters: Chapter[]; s
     </div>
   );
 }
-
-/** Small screens: the map is opt-in and full screen, never the default reading. */
-export function ViewMapButton({ label }: { label: string }) {
-  const { engine } = useBoard();
-  return (
-    <button type="button" className="view-map" onClick={() => engine()?.openOverlay()}>
-      {label}
-    </button>
-  );
-}
-

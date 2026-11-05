@@ -1,4 +1,5 @@
 import { BOARD_QUERY, EDGES, REDUCED_MOTION_QUERY, SIDEBAR_WIDTH, STATIONS, STATION_FIRST_STOP, STOPS, WORLD } from "./layout";
+import { historyGuard } from "./history-guard";
 import { MAX_ZOOM, MIN_ZOOM, clamp, easeInOut, fit, lerp, mixScene, morphScene, smoother, travel, type Camera, type Scene } from "./camera";
 
 export type BoardMode = "guided" | "explore";
@@ -37,7 +38,13 @@ const DRAG_THRESHOLD = 4;
 
 const NO_PAN_CONTROLS = "a,button,input,textarea,select,summary,label,iframe,video,audio,[data-nopan]";
 const NO_PAN = `${NO_PAN_CONTROLS},h1,h2,h3,h4,p,li,dt,dd,blockquote,figcaption`;
-const OVERLAY_BACKGROUND = ".site-footer,.flow-bar,.view-map,.skip-link";
+const OVERLAY_BACKGROUND = ".site-footer,.flow-bar,.skip-link";
+const OVERLAY_PADDING = { left: 12, right: 12, top: 14, bottom: 84 };
+const DOUBLE_TAP_MS = 400;
+const DOUBLE_TAP_PX = 28;
+const GLIDE_DECAY_MS = 260;
+const GLIDE_MIN_SPEED = 0.02;
+const GLIDE_MAX_SPEED = 2.5;
 
 /**
  * The only owner of the board viewport. The document scroll is the single
@@ -85,6 +92,18 @@ export class BoardEngine {
   private sidebar = true;
   private followFocus = true;
 
+  /** Height of the bar above the viewport. Taller on the phone map, measured there. */
+  private bar = TITLE_BAR;
+  /** What the reader had in front of them, as an element: pixels stop meaning anything if the layout changes. */
+  private overlayAnchor: { el: HTMLElement; top: number } | null = null;
+  private overlayStop = 0;
+  private overlayOpener: HTMLElement | null = null;
+  private ignorePop = false;
+  private glide: { vx: number; vy: number } | null = null;
+  private panTrack = { t: 0, vx: 0, vy: 0 };
+  private lastTap = { t: 0, x: 0, y: 0 };
+  private tapStart: { id: number; x: number; y: number } | null = null;
+
   constructor(
     private nodes: BoardNodes,
     private onChange: (state: BoardState) => void,
@@ -100,6 +119,12 @@ export class BoardEngine {
       const edge = EDGES[Number(el.dataset.edge)];
       return { el, from: edge.from, to: edge.to };
     });
+    // A reload with the map open lands on its history entry: the page starts clean.
+    if (window.history.state?.ccMap || window.history.state?.ccVideo) {
+      const { ccMap: _map, ccVideo: _video, ...rest } = window.history.state;
+      window.history.replaceState(rest, "");
+    }
+    window.history.scrollRestoration = "auto";
     this.bind();
     this.syncBoard();
     const hash = window.location.hash.slice(1);
@@ -112,6 +137,7 @@ export class BoardEngine {
     window.clearTimeout(this.idleTimer);
     this.setExploreListeners(false);
     this.releaseOverlay();
+    window.history.scrollRestoration = "auto";
   }
 
   /* ---------------- Public actions ---------------- */
@@ -120,7 +146,8 @@ export class BoardEngine {
   goTo(id: string, instant = false): boolean {
     if (!this.state.board) return false;
     if (id === "inicio") {
-      this.close();
+      if (this.state.overlay) this.goToStop(0);
+      else this.close();
       return true;
     }
     const stop = this.anchors.get(id);
@@ -142,6 +169,7 @@ export class BoardEngine {
   goToStop(index: number, instant = false) {
     const stop = clamp(index, 0, STOPS.length - 1);
     if (this.state.mode === "explore") {
+      this.overlayStop = stop;
       this.flyCamera(this.frame(stop));
       this.setState({ station: STOPS[stop].station });
       return;
@@ -152,6 +180,8 @@ export class BoardEngine {
   /** Advance or go back by one stop. */
   step(direction: 1 | -1) {
     if (!this.state.board) return;
+    // During a flight the camera is still leaving: count from where it is going.
+    if (this.state.overlay) return this.goToStop((this.camFlight ? this.overlayStop : this.nearestStop()) + direction);
     const { pos } = this.position(this.smoothScroll);
     const target = direction > 0 ? Math.floor(pos + 0.51) + 1 : Math.ceil(pos - 0.51) - 1;
     if (target < 0) return this.close();
@@ -226,29 +256,129 @@ export class BoardEngine {
 
   /** Small screens: full-screen map, opened on request. */
   openOverlay() {
+    if (this.state.board) return;
     const root = document.documentElement;
+    const station = this.readingStation();
+    // The page leaves the flow under the map and the document collapses:
+    // the place to come back to has to be kept by hand.
+    const anchor = this.stations[station];
+    this.overlayAnchor = anchor ? { el: anchor, top: anchor.getBoundingClientRect().top } : null;
+    this.overlayStop = STATION_FIRST_STOP[station];
+    this.overlayOpener = document.activeElement as HTMLElement | null;
+    window.history.scrollRestoration = "manual";
+    window.history.pushState({ ccMap: true }, "");
     root.classList.add("board-on", "map-overlay");
     this.setBackgroundInert(true);
-    this.setState({ overlay: true, board: true, open: true });
+    this.setState({ overlay: true, board: true, open: true, station });
     this.measure();
     this.scene = null;
-    this.explore = fit(STOPS[0].rect, this.vw, this.vh - TITLE_BAR, this.padding(1));
+    this.explore = this.frame(STATION_FIRST_STOP[station]);
     this.enterExplore();
     this.nodes.world.classList.add("is-ready");
     this.wake();
+  }
+
+  /** The chapter on screen, so the map opens where the reader already is. */
+  private readingStation() {
+    const middle = window.innerHeight * 0.45;
+    let station = 0;
+    this.stations.forEach((el, i) => {
+      if (el.getBoundingClientRect().top <= middle) station = i;
+    });
+    return station;
+  }
+
+  /** A link to the map, from the vertical reading. */
+  openFromLink(id: string) {
+    if (id !== "mapa" || this.state.board) return false;
+    this.openOverlay();
+    return true;
+  }
+
+  /**
+   * An in-page link in the vertical reading. Not left to the browser: a native jump
+   * adds a history entry without the router state, and coming back to one of those
+   * after the map or a video reloads the whole page.
+   */
+  jumpInReading(id: string) {
+    if (this.state.board) return false;
+    const target = document.getElementById(id);
+    if (!target) return false;
+    target.scrollIntoView({ block: "start" });
+    this.focusAnchor(id);
+    return true;
+  }
+
+  /** Leaves the phone map for the reading, at that chapter. */
+  readAt(id: string) {
+    if (!this.state.overlay) return;
+    this.closeOverlay();
+    const target = document.getElementById(id);
+    if (!target) return;
+    target.scrollIntoView({ block: "start" });
+    this.focusAnchor(id);
   }
 
   private setBackgroundInert(inert: boolean) {
     document.querySelectorAll<HTMLElement>(OVERLAY_BACKGROUND).forEach((el) => (el.inert = inert));
   }
 
-  closeOverlay() {
+  closeOverlay(fromHistory = false) {
     this.leaveExplore();
+    this.glide = null;
     this.setBackgroundInert(false);
     this.releaseOverlay();
+    this.bar = TITLE_BAR;
     this.setState({ overlay: false, board: false, open: false });
     this.syncBoard();
+    this.restoreReading();
+    if (!fromHistory && window.history.state?.ccMap) {
+      this.ignorePop = true;
+      window.history.back();
+    } else {
+      window.history.scrollRestoration = "auto";
+    }
   }
+
+  /**
+   * Back at the same spot. Sections off screen skip their layout and remember the
+   * size they had on the map: they are measured for real once, or the page would
+   * come back with another height and the scroll position would mean something else.
+   */
+  private restoreReading() {
+    const root = document.documentElement;
+    root.classList.add("measure-all");
+    const anchor = this.overlayAnchor;
+    this.overlayAnchor = null;
+    // Widened past the breakpoint while open: the board is back and owns the scroll.
+    if (anchor && !this.state.board) window.scrollBy(0, anchor.el.getBoundingClientRect().top - anchor.top);
+    // Two frames: the browser stores the remembered sizes after layout.
+    requestAnimationFrame(() => requestAnimationFrame(() => root.classList.remove("measure-all")));
+
+    // A tap does not always leave the focus on what was tapped.
+    const opener = this.overlayOpener && this.overlayOpener !== document.body ? this.overlayOpener : document.querySelector<HTMLElement>(".view-map");
+    opener?.focus({ preventScroll: true });
+    this.overlayOpener = null;
+  }
+
+  /** The phone's back gesture leaves the map, not the page. */
+  private onPopState = () => {
+    if (historyGuard.skipNext) {
+      historyGuard.skipNext = false;
+      return;
+    }
+    if (historyGuard.video) return;
+    if (this.ignorePop) {
+      this.ignorePop = false;
+      window.history.scrollRestoration = "auto";
+    } else if (this.state.overlay) {
+      this.closeOverlay(true);
+    } else if (window.history.state?.ccMap || window.history.state?.ccVideo) {
+      // Forward into an entry that no longer has anything behind it.
+      this.ignorePop = true;
+      window.history.back();
+    }
+  };
 
   /* ---------------- Setup ---------------- */
 
@@ -281,6 +411,7 @@ export class BoardEngine {
     this.query.addEventListener("change", this.syncBoard, { signal });
     this.reduced.addEventListener("change", this.syncBoard, { signal });
     window.addEventListener("keydown", this.onKey, { signal });
+    window.addEventListener("popstate", this.onPopState, { signal });
     this.nodes.viewport.addEventListener("pointerdown", this.onPointerDown, { signal });
     window.addEventListener("pointermove", this.onPointerMove, { signal });
     window.addEventListener("pointerup", this.onPointerUp, { signal });
@@ -291,7 +422,10 @@ export class BoardEngine {
 
   private syncBoard = () => {
     if (this.state.overlay) {
+      const width = this.vw;
       this.measure();
+      // A turned phone: the same chapter, framed for the new shape.
+      if (width !== this.vw) this.explore = this.frame(this.nearestStop());
       this.wake();
       return;
     }
@@ -322,6 +456,10 @@ export class BoardEngine {
   private measure() {
     this.vw = document.documentElement.clientWidth;
     this.vh = window.innerHeight;
+    if (this.state.overlay) {
+      this.vh = this.nodes.win.clientHeight || this.vh;
+      this.bar = this.nodes.win.clientHeight - this.nodes.viewport.clientHeight || TITLE_BAR;
+    }
     this.trackTop = this.nodes.track.offsetTop;
     this.openEnd = OPEN_RANGE * this.vh;
     let at = this.openEnd;
@@ -368,12 +506,13 @@ export class BoardEngine {
 
   private viewSize(): [number, number] {
     const scene = this.scene;
-    if (this.state.overlay) return [this.vw, this.vh - TITLE_BAR];
+    if (this.state.overlay) return [this.vw, this.vh - this.bar];
     if (!scene) return [this.vw * 0.92, this.vh * 0.86 - TITLE_BAR];
     return [scene.ww, scene.wh - TITLE_BAR];
   }
 
   private padding(open: number) {
+    if (this.state.overlay) return OVERLAY_PADDING;
     const sidebar = this.sidebar && !this.state.overlay ? SIDEBAR_WIDTH : 0;
     return { left: (44 + sidebar) * open, right: 44 * open, top: 30 * open, bottom: 58 * open };
   }
@@ -381,6 +520,7 @@ export class BoardEngine {
   /** Camera that rests on a stop, for the map window fully open. */
   private frame(index: number, view = this.openFrame()): Camera {
     const stop = STOPS[index];
+    if (this.state.overlay) return fit(stop.rect, ...this.viewSize(), this.padding(1));
     const w = view.ww;
     const h = view.wh - TITLE_BAR;
     return fit(stop.rect, w, h, this.padding(1));
@@ -458,7 +598,8 @@ export class BoardEngine {
   }
 
   private flyCamera(to: Camera, duration = 800) {
-    this.camFlight = { from: { ...this.explore }, to, start: performance.now(), duration };
+    this.glide = null;
+    this.camFlight = { from: { ...this.explore }, to, start: performance.now(), duration: this.reduced.matches ? 1 : duration };
     this.wake();
   }
 
@@ -479,6 +620,7 @@ export class BoardEngine {
     const dt = Math.min(64, now - this.lastFrame);
     this.lastFrame = now;
     let busy = this.advanceMaximize(dt);
+    if (this.advanceGlide(dt)) busy = true;
 
     if (this.state.mode === "guided" && !this.state.overlay) {
       const target = this.scrollValue();
@@ -498,6 +640,20 @@ export class BoardEngine {
       this.raf = requestAnimationFrame(this.tick);
     }
   };
+
+  /** A flick keeps moving for a moment, like anything that has weight. */
+  private advanceGlide(dt: number) {
+    const glide = this.glide;
+    if (!glide) return false;
+    const { cx, cy, z } = this.explore;
+    this.explore = { z, cx: cx + (glide.vx * dt) / z, cy: cy + (glide.vy * dt) / z };
+    this.clampExplore();
+    const decay = Math.exp(-dt / GLIDE_DECAY_MS);
+    glide.vx *= decay;
+    glide.vy *= decay;
+    if (Math.hypot(glide.vx, glide.vy) < GLIDE_MIN_SPEED) this.glide = null;
+    return true;
+  }
 
   private advanceMaximize(dt: number) {
     const target = this.state.maximized ? 1 : 0;
@@ -547,7 +703,7 @@ export class BoardEngine {
   private paint(scene: Scene) {
     const { win, world, viewport, stage } = this.nodes;
     const vw = scene.ww;
-    const vh = scene.wh - TITLE_BAR;
+    const vh = scene.wh - this.bar;
     const x = vw / 2 - scene.cx * scene.z;
     const y = vh / 2 - scene.cy * scene.z;
     this.cameraNow = { cx: scene.cx, cy: scene.cy, z: scene.z };
@@ -626,7 +782,7 @@ export class BoardEngine {
     if (zoom) zoom.textContent = `${Math.round(scene.z * 100)}%`;
     if (coords) coords.textContent = `X ${Math.round(scene.cx)}  Y ${Math.round(scene.cy)}`;
     if (progress) {
-      const { pos } = this.position(this.smoothScroll);
+      const pos = this.state.overlay ? this.nearestStop() : this.position(this.smoothScroll).pos;
       progress.style.transform = `scaleX(${pos / (STOPS.length - 1)})`;
     }
     if (rail) rail.style.setProperty("--rail", this.railPosition().toFixed(3));
@@ -750,7 +906,12 @@ export class BoardEngine {
 
   private onPointerDown = (e: PointerEvent) => {
     if (e.button !== 0 || !this.state.board) return;
+    const stoppedGlide = this.glide !== null;
+    this.glide = null;
     this.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    // A tap is one finger, on the map, that was not stopping it.
+    const canvas = !(e.target as HTMLElement).closest(`${NO_PAN_CONTROLS},[data-board-ui]`);
+    this.tapStart = this.state.overlay && canvas && !stoppedGlide && this.pointers.size === 1 ? { id: e.pointerId, x: e.clientX, y: e.clientY } : null;
     const target = e.target as HTMLElement;
     const exploring = this.state.mode === "explore";
 
@@ -762,7 +923,7 @@ export class BoardEngine {
     }
 
     const note = target.closest<HTMLElement>("[data-movable]");
-    if (this.state.open && note && !target.closest("a,button,summary,iframe")) {
+    if (this.state.open && !this.state.overlay && note && !target.closest("a,button,summary,iframe")) {
       const style = getComputedStyle(note);
       this.note = {
         el: note,
@@ -816,21 +977,60 @@ export class BoardEngine {
     drag.x = e.clientX;
     drag.y = e.clientY;
     this.panBy(-dx, -dy);
+    if (this.state.overlay) {
+      // Event time, not handler time: after a busy moment queued moves would all look instant.
+      const elapsed = Math.max(8, e.timeStamp - this.panTrack.t);
+      const blend = (old: number, next: number) => clamp(old * 0.4 + (next / elapsed) * 0.6, -GLIDE_MAX_SPEED, GLIDE_MAX_SPEED);
+      this.panTrack = { t: e.timeStamp, vx: blend(this.panTrack.vx, -dx), vy: blend(this.panTrack.vy, -dy) };
+    }
   };
 
   private onPointerUp = (e: PointerEvent) => {
     this.pointers.delete(e.pointerId);
     if (this.pointers.size < 2) this.pinch = null;
+    const tap = this.tapStart;
+    if (tap && tap.id === e.pointerId) {
+      this.tapStart = null;
+      const still = e.type === "pointerup" && !this.drag?.moved && Math.hypot(e.clientX - tap.x, e.clientY - tap.y) < DOUBLE_TAP_PX;
+      if (still) this.onTap(e);
+    }
     if (this.note && e.pointerId === this.note.id) {
       delete this.note.el.dataset.dragging;
       this.note = null;
     }
     if (this.drag && e.pointerId === this.drag.id) {
       if (this.drag.moved) this.suppressClick = true;
+      if (this.state.overlay && this.drag.moved && !this.reduced.matches && e.timeStamp - this.panTrack.t < 120) {
+        this.glide = { vx: this.panTrack.vx, vy: this.panTrack.vy };
+        this.wake();
+      }
       this.drag = null;
       delete this.nodes.stage.dataset.dragging;
     }
   };
+
+  /** Two taps on the same spot: closer to it, or back to the whole chapter. */
+  private onTap(e: PointerEvent) {
+    const last = this.lastTap;
+    const again = e.timeStamp - last.t < DOUBLE_TAP_MS && Math.hypot(e.clientX - last.x, e.clientY - last.y) < DOUBLE_TAP_PX;
+    if (!again) {
+      this.lastTap = { t: e.timeStamp, x: e.clientX, y: e.clientY };
+      return;
+    }
+    this.lastTap = { t: 0, x: 0, y: 0 };
+    const base = this.frame(this.nearestStop());
+    const { cx, cy, z } = this.explore;
+    if (z > base.z * 1.5) return this.flyCamera(base, 420);
+    const rect = this.nodes.viewport.getBoundingClientRect();
+    this.flyCamera(
+      {
+        cx: cx + (e.clientX - rect.left - rect.width / 2) / z,
+        cy: cy + (e.clientY - rect.top - rect.height / 2) / z,
+        z: Math.min(1, base.z * 2.6),
+      },
+      420,
+    );
+  }
 
   private onClickCapture = (e: MouseEvent) => {
     if (!this.suppressClick) return;

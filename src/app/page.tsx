@@ -1,7 +1,8 @@
 import { bootcamp } from "@/content/bootcamp";
 import { BoardProvider } from "@/components/os/board-provider";
 import { DesktopShell, FlowBar, SystemBar } from "@/components/os/desktop-shell";
-import { MapWindow, ViewMapButton } from "@/components/os/map-window";
+import { MapWindow } from "@/components/os/map-window";
+import { ChapterBar } from "@/components/os/mobile-chrome";
 import { BoardEdges } from "@/components/board/primitives";
 import {
   AudienceStation,
@@ -28,6 +29,7 @@ export default function Page() {
       <div className="track" data-board="track">
         <div className="stage" data-board="stage">
           <SystemBar />
+          <ChapterBar chapters={chapters} ui={os} />
           <DesktopShell />
           <div className="scrim" aria-hidden />
 
@@ -49,8 +51,7 @@ export default function Page() {
 
       <SiteFooter />
 
-      <ViewMapButton label={os.viewMap} />
-      <FlowBar price={price?.label ?? null} />
+      <FlowBar price={price?.label ?? null} mapLabel={os.viewMap} />
     </BoardProvider>
   );
 }

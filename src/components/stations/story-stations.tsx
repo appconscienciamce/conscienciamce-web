@@ -2,6 +2,7 @@ import { bootcamp } from "@/content/bootcamp";
 import { ClaimText, CtaButton, Print, Rich } from "@/components/editorial";
 import { Piece, Station } from "@/components/board/primitives";
 import { Scribble } from "@/components/os/glyphs";
+import { MapCard } from "@/components/os/mobile-chrome";
 import { CrumpleNote } from "@/components/crumple-note";
 import { TechText } from "@/components/tech-text";
 import { resolveClaim } from "@/lib/offer";
@@ -35,6 +36,7 @@ export function HeroStation() {
         <a href="#mapa" className="btn btn-line" data-track="hero_cta_click">
           {hero.secondaryCta}
         </a>
+        <MapCard title={os.mapCard.title} text={os.mapCard.text} cta={os.mapCard.cta} />
       </Piece>
       <Piece x={690} y={334} w={306} as="aside" className="hero-facts">
         <p className="hero-format">

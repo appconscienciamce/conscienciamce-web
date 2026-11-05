@@ -4,6 +4,7 @@ import { CtaButton, Print } from "@/components/editorial";
 import { DesktopFolder, DesktopSticker, DesktopWindow } from "./desktop-window";
 import { StatusGlyphs } from "./glyphs";
 import { MenuBar, type MenuGroup } from "./menu-bar";
+import { ViewMapButton } from "./mobile-chrome";
 import { SoundControl } from "./sound-control";
 import { SystemClock } from "./system-clock";
 
@@ -20,7 +21,7 @@ export function SystemBar() {
     <header className="sys-bar">
       <a href="#inicio" className="sys-brand">
         <Image src={brand.mark.src!} alt="" width={brand.mark.width} height={brand.mark.height} />
-        {hero.programName}
+        <span>{hero.programName}</span>
       </a>
       <MenuBar groups={groups} label={os.navLabel} />
       <div className="sys-right">
@@ -57,7 +58,7 @@ export function DesktopShell() {
         className="dwin-photo"
         style={{ top: "9%", left: "calc(21.6vw - 176px)", width: 170 }}
       >
-        <Print image={desktop.boardPhoto.image} sizes="170px" priority className="dwin-print" />
+        <Print image={desktop.boardPhoto.image} sizes="170px" className="dwin-print" />
       </DesktopWindow>
 
       <DesktopWindow
@@ -129,11 +130,11 @@ export function DesktopShell() {
   );
 }
 
-export function FlowBar({ price }: { price: string | null }) {
+export function FlowBar({ price, mapLabel }: { price: string | null; mapLabel: string }) {
   return (
     <div className="flow-bar" data-flow-bar>
-      <CtaButton />
-      {price && <span>{price}</span>}
+      <ViewMapButton label={mapLabel} />
+      <CtaButton note={price ?? undefined} />
     </div>
   );
 }

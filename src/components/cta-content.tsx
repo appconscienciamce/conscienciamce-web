@@ -1,7 +1,7 @@
 const POINTS = Array.from({ length: 10 }, (_, i) => i);
 
 /** Inside of the primary button: rising points, label and arrow. */
-export function CtaContent({ label }: { label: string }) {
+export function CtaContent({ label, note }: { label: string; note?: string }) {
   return (
     <>
       <span aria-hidden className="btn-points">
@@ -15,6 +15,7 @@ export function CtaContent({ label }: { label: string }) {
           <path d="M5 12h14" />
           <path d="m12 5 7 7-7 7" />
         </svg>
+        {note && <small>{note}</small>}
       </span>
     </>
   );

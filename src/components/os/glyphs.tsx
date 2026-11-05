@@ -30,6 +30,15 @@ export function StatusGlyphs() {
   );
 }
 
+export function MapGlyph() {
+  return (
+    <svg viewBox="0 0 20 20" aria-hidden fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M2.5 5 7 3l6 2 4.5-2v12L13 17l-6-2-4.5 2z" />
+      <path d="M7 3v12M13 5v12" />
+    </svg>
+  );
+}
+
 export function PlayGlyph() {
   return (
     <svg viewBox="0 0 16 16" aria-hidden fill="currentColor">

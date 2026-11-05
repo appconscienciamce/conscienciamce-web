@@ -7,10 +7,19 @@ import "./globals.css";
 // All families are SIL Open Font License, self-hosted by next/font.
 const averia = Averia_Serif_Libre({
   subsets: ["latin"],
-  weight: ["300", "400", "700"],
+  weight: "400",
   style: ["normal", "italic"],
   display: "swap",
   variable: "--font-averia",
+});
+
+// Only the price on the ticket, far from the first screen: it must not delay the title.
+const averiaBold = Averia_Serif_Libre({
+  subsets: ["latin"],
+  weight: "700",
+  display: "swap",
+  preload: false,
+  variable: "--font-averia-bold",
 });
 
 const dmSans = DM_Sans({
@@ -52,6 +61,8 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   themeColor: "#080808",
   colorScheme: "dark",
+  // Lets the page reach behind the notch; the chrome keeps clear with safe-area insets.
+  viewportFit: "cover",
 };
 
 // Picks the layout before first paint so the board never flashes as a document.
@@ -62,7 +73,7 @@ const bootScript = `(function(){var d=document.documentElement;d.classList.add('
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es" className={`${averia.variable} ${dmSans.variable} ${dmMono.variable}`} suppressHydrationWarning>
+    <html lang="es" className={`${averia.variable} ${averiaBold.variable} ${dmSans.variable} ${dmMono.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: bootScript }} />
       </head>

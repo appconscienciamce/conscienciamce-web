@@ -48,14 +48,27 @@ export function BoardProvider({ children }: { children: React.ReactNode }) {
       const link = target.closest<HTMLAnchorElement>('a[href^="#"]');
       if (!link || e.defaultPrevented) return;
       const id = link.getAttribute("href")!.slice(1);
-      if (engine.goTo(id)) {
+      if (engine.openFromLink(id)) {
         e.preventDefault();
-        window.history.replaceState(null, "", `#${id}`);
+      } else if (engine.goTo(id) || engine.jumpInReading(id)) {
+        e.preventDefault();
+        // Keeps the state: the phone map uses it to answer the back gesture.
+        window.history.replaceState(window.history.state, "", `#${id}`);
       }
     };
     document.addEventListener("click", onClick);
 
+    // Without a pointer to hover, a photo gets its color when it reaches the middle of the screen.
+    const photos = window.matchMedia("(hover: none)").matches
+      ? new IntersectionObserver(
+          (entries) => entries.forEach((entry) => entry.target.toggleAttribute("data-lit", entry.isIntersecting)),
+          { rootMargin: "-32% 0px -32% 0px" },
+        )
+      : null;
+    if (photos) document.querySelectorAll(".print,.video-frame").forEach((el) => photos.observe(el));
+
     return () => {
+      photos?.disconnect();
       document.removeEventListener("click", onClick);
       engine.destroy();
       engineRef.current = null;

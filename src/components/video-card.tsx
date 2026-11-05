@@ -4,14 +4,16 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useBoard } from "@/components/os/board-provider";
 import { CloseGlyph } from "@/components/os/glyphs";
+import { historyGuard } from "@/lib/board/history-guard";
 
 const OPEN_MS = 420;
 const CLOSE_MS = 260;
+const CLOSE_SLACK_MS = 200;
 const EASING = "cubic-bezier(0.32, 0.72, 0, 1)";
 
 /** Everything behind the video window while it is open. */
 const BOARD_BACKGROUND = ".world,.board-ui,.win-bar,.sys-bar,.site-footer,.skip-link";
-const PAGE_BACKGROUND = ".track,.thanks-shell,.site-footer,.flow-bar,.view-map,.skip-link";
+const PAGE_BACKGROUND = ".track,.thanks-shell,.site-footer,.flow-bar,.skip-link";
 
 /** Keys that scroll the page while focus sits on the window's only control. */
 const SCROLL_KEYS = new Set(["PageUp", "PageDown", "Home", "End", " "]);
@@ -105,11 +107,17 @@ function VideoWindow({
     const poster = posterRef.current;
     if (!win || !poster || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return onClosed();
     scrimRef.current?.setAttribute("data-closing", "true");
+    // A video still loading can starve animation frames: closing never waits for them.
+    const fallback = window.setTimeout(onClosed, CLOSE_MS + CLOSE_SLACK_MS);
+    const finish = () => {
+      window.clearTimeout(fallback);
+      onClosed();
+    };
     // Still flying in: going back along the same path is the honest way out,
     // and measuring now would read a window that is mid-transform.
     if (opening.current?.playState === "running") {
       opening.current.reverse();
-      opening.current.finished.then(onClosed, onClosed);
+      opening.current.finished.then(finish, finish);
       return;
     }
     win
@@ -118,7 +126,7 @@ function VideoWindow({
         easing: EASING,
         fill: "forwards",
       })
-      .finished.then(onClosed, onClosed);
+      .finished.then(finish, finish);
   };
 
   useLayoutEffect(() => {
@@ -137,6 +145,16 @@ function VideoWindow({
     // The phone map already keeps some of these inert: give back what was found.
     const previous = background.map((el) => el.inert);
     background.forEach((el) => (el.inert = true));
+
+    // On a phone the back gesture is how people leave a window: it closes this one, nothing else.
+    window.history.pushState({ ...window.history.state, ccVideo: true }, "");
+    historyGuard.video = true;
+    let popped = false;
+    const onPop = () => {
+      popped = true;
+      close();
+    };
+    window.addEventListener("popstate", onPop);
     closeRef.current?.focus({ preventScroll: true });
     window.dispatchEvent(new CustomEvent("cc:video", { detail: { open: true } }));
 
@@ -174,7 +192,15 @@ function VideoWindow({
       window.removeEventListener("keydown", onKey, true);
       window.removeEventListener("scroll", onScroll);
       scrim?.removeEventListener("wheel", onWheel);
-      background.forEach((el, i) => (el.inert = previous[i]));
+      const onMap = document.documentElement.classList.contains("map-overlay");
+      background.forEach((el, i) => (el.inert = previous[i] && onMap));
+      window.removeEventListener("popstate", onPop);
+      historyGuard.video = false;
+      if (!popped) {
+        // Closed by hand: its history entry goes too, without anyone else reacting.
+        historyGuard.skipNext = true;
+        window.history.back();
+      }
       window.dispatchEvent(new CustomEvent("cc:video", { detail: { open: false } }));
       poster?.focus({ preventScroll: true });
     };
