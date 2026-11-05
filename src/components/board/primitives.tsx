@@ -1,3 +1,4 @@
+import { ChevronGlyph } from "@/components/os/glyphs";
 import { bootcamp } from "@/content/bootcamp";
 import { AppBar } from "@/components/os/phone-home";
 import { EDGES, STATIONS } from "@/lib/board/layout";
@@ -43,8 +44,13 @@ export function Station({
       {index > 0 &&
         (next ? (
           <a href={`#${next.id}`} className="app-next">
-            <small>{os.phone.next}</small>
-            {next.label}
+            <span>
+              <small>{os.phone.next}</small>
+              {next.label}
+            </span>
+            <span aria-hidden className="scroll-arrow">
+              <ChevronGlyph direction="down" />
+            </span>
           </a>
         ) : (
           <p className="app-end">

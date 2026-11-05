@@ -126,10 +126,12 @@ export function RestoreGlyph() {
   );
 }
 
-export function ChevronGlyph({ direction }: { direction: "left" | "right" }) {
+const CHEVRONS = { left: "M7.5 2.5L4 6l3.5 3.5", right: "M4.5 2.5L8 6 4.5 9.5", down: "M2.5 4.5L6 8l3.5-3.5" };
+
+export function ChevronGlyph({ direction }: { direction: keyof typeof CHEVRONS }) {
   return (
     <svg viewBox="0 0 12 12" aria-hidden fill="none" stroke="currentColor" strokeWidth="1.3">
-      <path d={direction === "left" ? "M7.5 2.5L4 6l3.5 3.5" : "M4.5 2.5L8 6 4.5 9.5"} />
+      <path d={CHEVRONS[direction]} />
     </svg>
   );
 }

@@ -174,7 +174,7 @@ export const bootcamp: BootcampContent = {
         days: "Dos días",
         outcomes: "Qué te llevás",
         hosts: "Nosotros",
-        gallery: "Galería",
+        testimonials: "Testimonios",
       },
     },
     mapCard: {

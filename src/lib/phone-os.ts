@@ -12,7 +12,7 @@ const CLOSE_MS = 320;
 const NEXT_MS = 360;
 const EASE = "cubic-bezier(0.32, 0.72, 0, 1)";
 /** Behind an open app, and out of the keyboard's way. */
-const HOME = ".phone-home,.st-hero";
+export const HOME = ".phone-home,.st-hero";
 
 interface AppEntry {
   ccApp?: string;
@@ -28,10 +28,14 @@ let origin: HTMLElement | null = null;
 let shownDepth = 0;
 /** A close is on its way through the history. A second tap must not walk out of the site. */
 let closing = false;
+/** The window already left with the finger: closing it has nothing left to show. */
+let quietClose = false;
 
 const root = () => document.documentElement;
-const motion = () => !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+export const motion = () => !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const entry = () => (window.history.state ?? {}) as AppEntry;
+
+export const currentApp = () => current;
 
 export const isPhoneOs = () => root().classList.contains("phone-os") && !root().classList.contains("board-on");
 
@@ -57,6 +61,7 @@ function show(app: HTMLElement) {
 
 function hide(app: HTMLElement) {
   app.removeAttribute("data-app-open");
+  app.style.visibility = "";
   if (current === null) {
     delete root().dataset.app;
     setHomeInert(false);
@@ -80,7 +85,7 @@ function present(app: HTMLElement, targetId: string, icon: HTMLElement | null, a
   }
   if (previous) {
     app.style.zIndex = "39";
-    const slide = app.animate([{ transform: `translateX(${back ? -100 : 100}%)` }, { transform: "none" }], { duration: NEXT_MS, easing: EASE });
+    const slide = app.animate([{ transform: `translateY(${back ? -100 : 100}%)` }, { transform: "none" }], { duration: NEXT_MS, easing: EASE });
     const done = () => {
       app.style.zIndex = "";
       if (previous !== current) hide(previous);
@@ -109,6 +114,8 @@ function reveal(app: HTMLElement, targetId: string) {
 
 function dismiss() {
   shownDepth = 0;
+  const instant = quietClose;
+  quietClose = false;
   const app = current;
   if (!app) return;
   const icon = origin;
@@ -119,7 +126,7 @@ function dismiss() {
     hide(app);
     if (!current) icon?.closest<HTMLElement>("a,button")?.focus({ preventScroll: true });
   };
-  if (!motion()) return done();
+  if (instant || !motion()) return done();
   // Back into the icon it came from, or just down if it never had one.
   const to = icon?.isConnected
     ? { transform: fromIcon(icon, app), borderRadius: "32px", opacity: 0 }
@@ -131,7 +138,10 @@ function dismiss() {
 }
 
 /** Opens the chapter that holds `id`, at `id`. The home screen's own chapter just goes home. */
-export function openApp(id: string, { icon = null, replace = false }: { icon?: HTMLElement | null; replace?: boolean } = {}) {
+export function openApp(
+  id: string,
+  { icon = null, replace = false, instant = false, atEnd = false }: { icon?: HTMLElement | null; replace?: boolean; instant?: boolean; atEnd?: boolean } = {},
+) {
   const app = stationOf(id);
   if (!app) return false;
   if (isHome(app)) {
@@ -147,13 +157,16 @@ export function openApp(id: string, { icon = null, replace = false }: { icon?: H
   const next = { ...state, ccApp: app.id, ccDepth: (state.ccDepth ?? 0) + 1 };
   if (replace) window.history.replaceState(next, "", `#${id}`);
   else window.history.pushState(next, "", `#${id}`);
-  present(app, id, icon, true);
+  // The icon is where it goes back to, even if the finger brought it here.
+  present(app, id, icon ?? document.querySelector<HTMLElement>(`.phone-app[href="#${id}"] .phone-icon`), !instant);
+  if (atEnd) app.scrollTop = app.scrollHeight;
   return true;
 }
 
 /** Back to the home screen, however many chapters the reader walked through. */
-export function closeApp() {
+export function closeApp({ instant = false }: { instant?: boolean } = {}) {
   if (closing) return;
+  quietClose = instant;
   const { ccDepth = 0, ccMap } = entry();
   const steps = ccDepth + (ccMap ? 1 : 0);
   if (steps > 0) {

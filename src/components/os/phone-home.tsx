@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { useEffect } from "react";
 import { closeApp, isPhoneOs, openApp, startPhoneOs } from "@/lib/phone-os";
+import { startCarousels } from "@/lib/phone-carousels";
+import { startPull } from "@/lib/phone-pull";
 import { useBoard } from "./board-provider";
 import { ChevronGlyph } from "./glyphs";
 import { MacFolder } from "./mac-folder";
@@ -47,11 +49,29 @@ function AppIcon({ app }: { app: PhoneApp }) {
 }
 
 /** The first screen on a phone: the apps of the bootcamp, on a dark canvas. */
-export function PhoneHome({ apps, mapLabel, widget }: { apps: PhoneApp[]; mapLabel: string; widget: { title: string; text: string } }) {
+export function PhoneHome({
+  apps,
+  mapLabel,
+  widget,
+  scrollLabel,
+}: {
+  apps: PhoneApp[];
+  mapLabel: string;
+  widget: { title: string; text: string };
+  scrollLabel: string;
+}) {
   const { engine } = useBoard();
 
   useEffect(() => {
-    if (isPhoneOs()) return startPhoneOs();
+    if (!isPhoneOs()) return;
+    const stopApps = startPhoneOs();
+    const stopPull = startPull();
+    const stopCarousels = startCarousels();
+    return () => {
+      stopApps();
+      stopPull();
+      stopCarousels();
+    };
   }, []);
 
   return (
@@ -74,6 +94,18 @@ export function PhoneHome({ apps, mapLabel, widget }: { apps: PhoneApp[]; mapLab
         </span>
         <ChevronGlyph direction="right" />
       </button>
+
+      <a
+        href={`#${apps[0].id}`}
+        className="scroll-arrow phone-scroll"
+        aria-label={`${scrollLabel} ${apps[0].label}`}
+        onClick={(e) => {
+          e.preventDefault();
+          openApp(apps[0].id);
+        }}
+      >
+        <ChevronGlyph direction="down" />
+      </a>
     </nav>
   );
 }

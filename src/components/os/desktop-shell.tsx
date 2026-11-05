@@ -48,9 +48,9 @@ export function PhoneShell() {
     { id: "dos-dias", label: apps.days, icon: { kind: "folder" } },
     { id: "que-te-llevas", label: apps.outcomes, icon: { kind: "folder" } },
     { id: "quienes", label: apps.hosts, icon: { kind: "photo", src: portrait } },
-    { id: "galeria", label: apps.gallery, icon: { kind: "photo", src: proof.gallery[2].image.src! } },
+    { id: "testimonios", label: apps.testimonials, icon: { kind: "photo", src: proof.gallery[2].image.src! } },
   ];
-  return <PhoneHome apps={grid} mapLabel={os.viewMap} widget={os.mapCard} />;
+  return <PhoneHome apps={grid} mapLabel={os.viewMap} widget={os.mapCard} scrollLabel={os.phone.next} />;
 }
 
 /** The dark room behind the map. Only present while the board layout is active. */

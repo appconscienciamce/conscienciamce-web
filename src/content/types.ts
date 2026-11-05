@@ -116,7 +116,7 @@ export interface OsCopy {
   phone: {
     heroWindow: string;
     next: string;
-    apps: { para: string; manifesto: string; pilar: string; file: string; days: string; outcomes: string; hosts: string; gallery: string; };
+    apps: { para: string; manifesto: string; pilar: string; file: string; days: string; outcomes: string; hosts: string; testimonials: string };
   };
   mapCard: { title: string; text: string; cta: string; full: string };
   skip: string;
