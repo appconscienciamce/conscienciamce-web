@@ -95,6 +95,7 @@ export const bootcamp: BootcampContent = {
 
   hero: {
     eyebrow: "Bootcamp — Creadores Conscientes",
+    kicker: "Bootcamp · Entrenamiento en vivo",
     dateLine: "17 y 18 de noviembre · 15:00 ARG · Online",
     programName: "Creadores Conscientes",
     title: { before: "Marketing creativo ", italic: "y", after: " auténtico" },
@@ -174,7 +175,7 @@ export const bootcamp: BootcampContent = {
     mapHint: "Deslizá hacia arriba para avanzar. Tocá dos veces o pellizcá para acercarte.",
     chaptersLabel: "Capítulos",
     phone: {
-      heroWindow: "creadores.txt",
+      heroWindow: "lideres-y-creadores.txt",
       next: "Seguir con",
       apps: {
         para: "Para quién",
@@ -458,6 +459,7 @@ export const bootcamp: BootcampContent = {
       title: "Lo que logramos",
       items: [
         { value: "USD 2,6M", text: "para creadores conscientes" },
+        { value: "+30", text: "marcas acompañadas" },
         { value: "USD 50K", text: "de promedio mensual en 2026" },
         { value: "+2 años", text: "sosteniendo esos números" },
         { value: "Miles", text: "de clientes en academias" },
@@ -515,15 +517,25 @@ export const bootcamp: BootcampContent = {
     navResults: "Resultados",
     pilarName: "Pilar Sousa",
     pilarLead: "Cómo construimos junto a Pilar un ecosistema que generó más de",
+    pilarPeriod: "en 7 meses",
+    home: { price: "36,90", pilar: "+650K", lock: "Archivo con candado" },
+    authority: {
+      title: "Lo que logramos",
+      intro: "No importa tanto quiénes somos: te lo contamos al final. Lo importante son los frutos que cosechamos con coherencia, excelencia y compromiso.",
+      photos: [
+        { name: "santiago.jpg", image: { src: "/media/santiago/img16.webp", alt: "Santiago Gómez sentado en un set de grabación", width: 400, height: 600 } },
+        { name: "santiago-y-oriana.jpg", image: { src: "/media/hosts/noche.webp", alt: "Santiago y Oriana de noche, con una bebé en brazos", width: 400, height: 600 } },
+      ],
+    },
     audience: {
       headline: { before: "No funciona para ", italic: "todos", after: " lo mismo." },
     },
     days: {
       title: { before: "Dos", italic: "días" },
       zones: [
-        { flag: "🇦🇷", time: "15:00", place: "Argentina" },
-        { flag: "🇨🇴", time: "13:00", place: "Colombia" },
-        { flag: "🇪🇸", time: "19:00", place: "España" },
+        { flag: "ar", time: "15:00", place: "Argentina" },
+        { flag: "co", time: "13:00", place: "Colombia" },
+        { flag: "es", time: "19:00", place: "España" },
       ],
       more: "Qué vemos este día",
       dates: [
@@ -531,25 +543,29 @@ export const bootcamp: BootcampContent = {
           day: "17",
           month: "/11",
           label: "Martes 17 de noviembre",
+          focus: "Trabajo interno",
           photo: { name: "dia-1.jpg", image: { src: "/media/santiago/img13.webp", alt: "Santiago Gómez explicando frente a una pizarra", width: 400, height: 600 } },
         },
         {
           day: "18",
           month: "/11",
           label: "Miércoles 18 de noviembre",
+          focus: "Trabajo externo",
+          reveal: "Te revelo todo lo que aprendí después de invertir más de USD 100.000 en mentorías e infoproductos con los mejores referentes en marketing.",
           photo: { name: "dia-2.jpg", image: { src: "/media/santiago/img4.webp", alt: "Santiago Gómez hablando con micrófono frente a un grupo, en un evento en vivo", width: 400, height: 600 } },
         },
       ],
     },
     kit: {
       cards: [
-        { tag: "Día 1", title: "Desarmar el juego", text: "Recuperás criterio y reconocés desde dónde querés construir." },
-        { tag: "Día 2", title: "Posicionamiento, comunicación y negocio", text: "Tu diferencial, tu posición y cómo se expresa en tu mensaje, tu contenido y tu oferta." },
+        { tag: "Zoom · 17 y 18 de noviembre", title: "2 días en directo", text: "Trabajo interno el primer día, trabajo externo el segundo." },
         { tag: "Personalizado", title: "Tu roadmap", text: "Lo completás antes de empezar, para llegar con un punto de partida claro." },
         { tag: "Caso real", title: "El expediente de Pilar", text: "El proceso completo, de punta a punta: qué funcionó, qué no y qué decisiones se tomaron." },
         { tag: "Zoom", title: "La grabación", text: "Los dos días quedan grabados." },
       ],
     },
+    /** Which of the outcomes the phone shows, to keep the page short. */
+    gainsShown: [0, 1, 4],
     gains: [
       { src: "/media/items/1.webp", alt: "", width: 410, height: 643 },
       { src: "/media/items/2.webp", alt: "", width: 403, height: 643 },
@@ -558,9 +574,7 @@ export const bootcamp: BootcampContent = {
       { src: "/media/items/5.webp", alt: "", width: 396, height: 643 },
     ],
     hosts: {
-      lead: { name: "santiago-y-oriana.jpg", image: { src: "/media/hosts/noche.webp", alt: "Santiago y Oriana de noche, con una bebé en brazos", width: 400, height: 600 } },
-      side: { name: "familia.jpg", image: { src: "/media/hosts/santiago-oriana.webp", alt: "Santiago Gómez y Oriana Safenreider en un ascensor, con una bebé en brazos", width: 400, height: 600 } },
-      numbers: "Lo que logramos",
+      lead: { name: "familia.jpg", image: { src: "/media/hosts/santiago-oriana.webp", alt: "Santiago Gómez y Oriana Safenreider en un ascensor, con una bebé en brazos", width: 400, height: 600 } },
     },
     enroll: {
       seats: "300",
@@ -573,6 +587,10 @@ export const bootcamp: BootcampContent = {
       ],
       /** The FAQ here leaves out the question about choosing projects. */
       faqItems: 3,
+      moreFaq: [
+        { q: "¿Cuántos lugares hay?", a: "300 lugares." },
+        { q: "¿En qué horario es?", a: "Los dos días a las 15:00 de Argentina, 13:00 de Colombia y 19:00 de España." },
+      ],
     },
   },
 

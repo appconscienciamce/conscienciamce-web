@@ -106,7 +106,7 @@ export function EnrollStation({ variant }: { variant: Variant }) {
   const current = variant === "current";
   // The first row is the format, already printed on the ticket.
   const logistics = current ? editorial.enroll.rows : resolveLogistics().slice(1);
-  const questions = current ? faq.items.slice(0, editorial.enroll.faqItems) : faq.items;
+  const questions = current ? [...faq.items.slice(0, editorial.enroll.faqItems), ...editorial.enroll.moreFaq] : faq.items;
   return (
     <Station index={7} titleId="enroll-title" className="st-enroll">
       {current && <EdEnroll />}

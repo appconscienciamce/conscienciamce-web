@@ -11,13 +11,14 @@ Casi todo se edita en `src/content/bootcamp.ts`, sin tocar el diseño.
 
 La página en `/` y `/gracias` aplica el feedback de Santiago. La versión anterior quedó en `/evento` y `/evento/gracias`, sin indexar.
 
-- [ ] **Números de autoridad** (`hosts.authority`): USD 2,6M, USD 50K, +2 años y «Miles» salen del audio de Santiago, dichos sin certeza. Confirmar cifra y a qué se refiere cada una.
+- [ ] **Números de autoridad** (`hosts.authority`): USD 2,6M, +30 marcas, USD 50K, +2 años y «Miles» salen del audio de Santiago, dichos sin certeza. Confirmar cifra y a qué se refiere cada una.
 - [ ] **Horario**: 15:00 ARG, 13:00 COL y 19:00 ESP es «lo más probable» según el audio.
 - [ ] **Grabación**: el audio dice que queda grabado «para tener o comprar». Hoy la página dice que queda grabado, sin costo aparte.
 - [ ] **Preguntas nuevas del roadmap** (`thanksEvento`): las cuatro de la segunda parte son propuesta.
 - [ ] **VIP** (USD 197, hasta 50 lugares): sin construir, falta definirlo. La llamada 1 a 1 no aparece en esta versión.
 - [ ] **Fotos en alta**: casi todas miden 400×600 y en un celular se notan.
-- [ ] **Fotos de Oriana sola**: para volver a sumar la pila de fotos con clips en la sección de Santiago y Oriana.
+- [ ] **Nuevos datos del audio**: «más de USD 650.000 en 7 meses» (Pilar) y «más de USD 100.000 invertidos en mentorías e infoproductos» (día 2). Confirmar.
+- [ ] **Fotos de Oriana sola**: para «Lo que logramos», que hoy muestra a Santiago solo y a los dos juntos, y para volver a sumar la pila de fotos con clips en la sección de Santiago y Oriana.
 - [ ] **Permiso de Pilar**: el expediente ahora dice «Pilar Sousa», con nombre completo.
 
 ## 1. Decisiones de oferta

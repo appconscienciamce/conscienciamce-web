@@ -144,6 +144,7 @@ export interface BootcampContent {
   cta: { label: string; shortLabel: string; pendingNoticeTitle: string; pendingNoticeBody: string };
   hero: {
     eyebrow: string;
+    kicker: string;
     dateLine: string;
     programName: string;
     title: { before: string; italic: string; after: string };
@@ -271,17 +272,21 @@ export interface BootcampContent {
     navResults: string;
     pilarName: string;
     pilarLead: string;
+    pilarPeriod: string;
+    home: { price: string; pilar: string; lock: string };
+    authority: { title: string; intro: string; photos: { name: string; image: Img }[] };
     audience: { headline: { before: string; italic: string; after: string } };
     days: {
       title: { before: string; italic: string };
-      zones: { flag: string; time: string; place: string }[];
+      zones: { flag: "ar" | "co" | "es"; time: string; place: string }[];
       more: string;
-      dates: { day: string; month: string; label: string; photo: { name: string; image: Img } }[];
+      dates: { day: string; month: string; label: string; focus: string; reveal?: string; photo: { name: string; image: Img } }[];
     };
     kit: { cards: { tag: string; title: string; text: string }[] };
+    gainsShown: number[];
     gains: Img[];
-    hosts: { lead: { name: string; image: Img }; side: { name: string; image: Img }; numbers: string };
-    enroll: { seats: string; seatsText: string; rows: { label: string; value: string }[]; faqItems: number };
+    hosts: { lead: { name: string; image: Img } };
+    enroll: { seats: string; seatsText: string; rows: { label: string; value: string }[]; faqItems: number; moreFaq: { q: string; a: string }[] };
   };
   footer: { line: string; copyright: string };
 }

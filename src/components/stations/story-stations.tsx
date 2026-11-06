@@ -18,7 +18,12 @@ export function HeroStation({ variant }: { variant: Variant }) {
     <Station index={0} titleId="hero-title" className="st-hero">
       <Piece x={44} y={36} w={950}>
         <p className="eyebrow">{hero.eyebrow}</p>
-        {variant === "current" && <p className="hero-date">{hero.dateLine}</p>}
+        {variant === "current" && (
+          <>
+            <p className="hero-kicker">{hero.kicker}</p>
+            <p className="hero-date">{hero.dateLine}</p>
+          </>
+        )}
       </Piece>
       <Piece x={40} y={74} w={970}>
         <h1 id="hero-title" className="hero-title">

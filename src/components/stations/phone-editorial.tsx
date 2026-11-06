@@ -3,6 +3,7 @@ import { ClaimText, Print, Rich } from "@/components/editorial";
 import type { Img } from "@/content/types";
 import { resolveClaim } from "@/lib/offer";
 import { KitStack } from "./kit-stack";
+import { Flag } from "./flags";
 import { DayMore } from "./phone-touch";
 
 /**
@@ -93,11 +94,32 @@ export function EdManifesto() {
         </ol>
       </div>
 
-      <div className="ed-dark ed-closing-block">
-        <blockquote className="ed-note ed-r">{manifesto.paragraph}</blockquote>
-        <p className="ed-lead ed-r">{manifesto.closing}</p>
-      </div>
+      <EdAuthority />
     </div>
+  );
+}
+
+function EdAuthority() {
+  const { hosts, editorial } = bootcamp;
+  const { title, intro, photos } = editorial.authority;
+  return (
+    <section className="ed-dark ed-authority" data-phone-anchor="testimonios">
+      <h3 className="ed-title ed-r">{title}</h3>
+      <p className="ed-lead ed-r">{intro}</p>
+      <div className="ed-duo">
+        {photos.map((photo) => (
+          <Shot key={photo.name} image={photo.image} name={photo.name} sizes="46vw" position="50% 40%" />
+        ))}
+      </div>
+      <dl className="ed-results">
+        {hosts.authority.items.map((item) => (
+          <div key={item.value} className="ed-r">
+            <dt>{item.value}</dt>
+            <dd>{item.text}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
   );
 }
 
@@ -111,6 +133,7 @@ export function EdPilar() {
       <p className="ed-figure ed-r">
         <ClaimText id={casePilar.figure} />
       </p>
+      <p className="ed-figure-note ed-r">{editorial.pilarPeriod}</p>
     </div>
   );
 }
@@ -127,7 +150,7 @@ export function EdDays() {
         <ul className="ed-zones ed-r">
           {editorial.days.zones.map((zone) => (
             <li key={zone.place}>
-              <span aria-hidden>{zone.flag}</span>
+              <Flag code={zone.flag} />
               <strong>{zone.time}</strong>
               {zone.place}
             </li>
@@ -146,8 +169,10 @@ export function EdDays() {
             <p className="ed-kicker ed-r">
               {day.number} · {dated.label}
             </p>
+            <p className="ed-focus ed-r">{dated.focus}</p>
             <h3 className="ed-title ed-r">{day.title}</h3>
             <p className="ed-lead ed-r">{day.summary}</p>
+            {dated.reveal && <p className="ed-reveal ed-r">{dated.reveal}</p>}
             <DayMore label={editorial.days.more}>
               <ul>
                 {day.items.map((item, n) => (
@@ -172,10 +197,10 @@ export function EdOutcomes() {
       <KitStack cards={editorial.kit.cards} />
       <p className="ed-kicker ed-r">{outcomes.intro}</p>
       <ol className="ed-gains">
-        {outcomes.items.map((item, i) => (
-          <li key={item.numeral} className="ed-r">
+        {editorial.gainsShown.map((i) => (
+          <li key={outcomes.items[i].numeral} className="ed-r">
             <Print image={editorial.gains[i]} sizes="34vw" />
-            <p>{item.text}</p>
+            <p>{outcomes.items[i].text}</p>
           </li>
         ))}
       </ol>
@@ -185,13 +210,12 @@ export function EdOutcomes() {
 
 export function EdHosts() {
   const { hosts, editorial } = bootcamp;
-  const { lead, side, numbers } = editorial.hosts;
+  const { lead } = editorial.hosts;
   return (
     <div className="ed ed-hosts">
       <div className="ed-dark ed-hosts-top">
         <div className="ed-hosts-shots">
-          <Shot image={lead.image} name={lead.name} sizes="80vw" className="ed-hosts-lead" position="50% 56%" />
-          <Shot image={side.image} name={side.name} sizes="46vw" className="ed-hosts-side" position="50% 46%" />
+          <Shot image={lead.image} name={lead.name} sizes="92vw" className="ed-hosts-lead" position="50% 46%" />
         </div>
         <h2 className="ed-title ed-names ed-r">
           {hosts.people[0].name}
@@ -209,30 +233,15 @@ export function EdHosts() {
           </p>
         ))}
       </div>
-      <section className="ed-paper ed-numbers" data-phone-anchor="testimonios">
-        <h3 className="ed-kicker ed-r">{numbers}</h3>
-        <dl>
-          {hosts.authority.items.map((item) => (
-            <div key={item.value} className="ed-r">
-              <dt>{item.value}</dt>
-              <dd>{item.text}</dd>
-            </div>
-          ))}
-        </dl>
-      </section>
     </div>
   );
 }
 
 export function EdEnroll() {
-  const { investment, editorial } = bootcamp;
+  const { investment } = bootcamp;
   return (
     <div className="ed ed-dark ed-enroll">
       <h2 className="ed-title ed-r">{investment.title}</h2>
-      <p className="ed-seats ed-r">
-        <strong>{editorial.enroll.seats}</strong>
-        {editorial.enroll.seatsText}
-      </p>
     </div>
   );
 }

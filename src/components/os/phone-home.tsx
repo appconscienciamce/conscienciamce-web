@@ -17,6 +17,10 @@ export interface PhoneApp {
   id: string;
   label: string;
   icon: PhoneIcon;
+  /** A note on the corner of the icon: a figure, or a lock. */
+  badge?: { text: string } | { lock: string };
+  /** A folder in another finish, to stand out from the rest. */
+  tone?: "gold";
 }
 
 function Icon({ icon }: { icon: PhoneIcon }) {
@@ -38,13 +42,27 @@ function AppIcon({ app }: { app: PhoneApp }) {
       href={`#${app.id}`}
       className="phone-app"
       data-kind={app.icon.kind}
+      data-tone={app.tone}
       onClick={(e) => {
         e.preventDefault();
         openApp(app.id, { icon: e.currentTarget.querySelector<HTMLElement>(".phone-icon") });
       }}
     >
-      <span className="phone-icon">
-        <Icon icon={app.icon} />
+      <span className="phone-slot">
+        <span className="phone-icon">
+          <Icon icon={app.icon} />
+        </span>
+        {app.badge &&
+          ("lock" in app.badge ? (
+            <span className="phone-badge is-lock" role="img" aria-label={app.badge.lock}>
+              <svg viewBox="0 0 16 16" aria-hidden fill="none" stroke="currentColor" strokeWidth="1.6">
+                <rect x="3" y="7" width="10" height="7" rx="1.6" fill="currentColor" stroke="none" />
+                <path d="M5.2 7V5.2a2.8 2.8 0 0 1 5.6 0V7" />
+              </svg>
+            </span>
+          ) : (
+            <span className="phone-badge">{app.badge.text}</span>
+          ))}
       </span>
       <span className="phone-label">{app.label}</span>
     </a>
