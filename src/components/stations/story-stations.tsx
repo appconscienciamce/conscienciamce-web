@@ -6,17 +6,18 @@ import { MapCard } from "@/components/os/mobile-chrome";
 import { CrumpleNote } from "@/components/crumple-note";
 import { TechText } from "@/components/tech-text";
 import { resolveClaim } from "@/lib/offer";
+import type { Variant } from "@/content/types";
 import { ManifestoBoard } from "./manifesto-board";
 import { EdAudience, EdDays, EdManifesto, EdOutcomes, EdPilar } from "./phone-editorial";
 
-export function HeroStation() {
+export function HeroStation({ variant }: { variant: Variant }) {
   const { hero, os } = bootcamp;
   const promiseLead = hero.promise.slice(0, hero.promise.lastIndexOf(hero.promiseHighlight));
   return (
     <Station index={0} titleId="hero-title" className="st-hero">
       <Piece x={44} y={36} w={950}>
         <p className="eyebrow">{hero.eyebrow}</p>
-        <p className="hero-date">{hero.dateLine}</p>
+        {variant === "evento" && <p className="hero-date">{hero.dateLine}</p>}
       </Piece>
       <Piece x={40} y={74} w={970}>
         <h1 id="hero-title" className="hero-title">
@@ -54,12 +55,12 @@ export function HeroStation() {
   );
 }
 
-export function AudienceStation() {
+export function AudienceStation({ variant }: { variant: Variant }) {
   const { audience } = bootcamp;
   const floor = resolveClaim(audience.floor);
   return (
     <Station index={1} titleId="audience-title" className="st-audience">
-      <EdAudience />
+      {variant === "evento" && <EdAudience />}
       <Piece x={36} y={36} w={1060}>
         <h2 id="audience-title" className="display-xl">
           {audience.title}
@@ -121,11 +122,11 @@ export function AudienceStation() {
   );
 }
 
-export function ManifestoStation() {
+export function ManifestoStation({ variant }: { variant: Variant }) {
   const { manifesto } = bootcamp;
   return (
     <Station index={2} titleId="manifesto-title" className="st-manifesto">
-      <EdManifesto />
+      {variant === "evento" && <EdManifesto />}
       <ManifestoBoard
         strikes={manifesto.strikes}
         sortLabel={manifesto.sortLabel}
@@ -161,12 +162,12 @@ export function ManifestoStation() {
   );
 }
 
-export function PilarStation() {
+export function PilarStation({ variant }: { variant: Variant }) {
   const { casePilar } = bootcamp;
   const figure = resolveClaim(casePilar.figure);
   return (
     <Station index={3} titleId="pilar-title" className="st-pilar">
-      <EdPilar />
+      {variant === "evento" && <EdPilar />}
       <Piece x={36} y={40} w={640}>
         <p className="eyebrow">{casePilar.kicker}</p>
         <h2 id="pilar-title" className="display-lg">
@@ -274,12 +275,12 @@ export function PilarStation() {
   );
 }
 
-export function TwoDaysStation() {
+export function TwoDaysStation({ variant }: { variant: Variant }) {
   const { twoDays } = bootcamp;
   const [dayOne, dayTwo] = twoDays.days;
   return (
     <Station index={4} titleId="days-title" className="st-days">
-      <EdDays />
+      {variant === "evento" && <EdDays />}
       <Piece x={36} y={40} w={320}>
         <h2 id="days-title" className="display-lg">
           {twoDays.title}
@@ -362,11 +363,11 @@ const zigzag = () => {
   }, "");
 };
 
-export function OutcomesStation() {
+export function OutcomesStation({ variant }: { variant: Variant }) {
   const { outcomes } = bootcamp;
   return (
     <Station index={5} titleId="outcomes-title" className="st-outcomes">
-      <EdOutcomes />
+      {variant === "evento" && <EdOutcomes />}
       <Piece x={0} y={0} w={1320} h={780} className="outcome-lines">
         <svg viewBox="0 0 1320 780" aria-hidden fill="none">
           <path d={zigzag()} pathLength={1} />

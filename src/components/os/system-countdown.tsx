@@ -9,7 +9,16 @@ import { SystemClock } from "./system-clock";
  * The days left until the bootcamp, where the clock is. Once the live days are over,
  * the clock again. Client only: a static page would keep the number of the day it was built.
  */
-export function SystemCountdown({ dates, copy }: { dates: { start: string; end: string }; copy: OsCopy["countdown"] }) {
+export function SystemCountdown({
+  dates,
+  copy,
+  dated = false,
+}: {
+  dates: { start: string; end: string };
+  copy: OsCopy["countdown"];
+  /** With the dates of the bootcamp above the days left. */
+  dated?: boolean;
+}) {
   const [now, setNow] = useState<Date | null>(null);
 
   // The number changes once a day: a look every minute is more than enough.
@@ -24,16 +33,20 @@ export function SystemCountdown({ dates, copy }: { dates: { start: string; end: 
   if (moment.phase === "over") return <SystemClock />;
 
   const one = moment.phase === "before" && moment.days === 1;
-  const live = moment.phase === "live";
-  const label = live ? copy.today : copy.dates;
-  const value = live ? `${copy.day} ${moment.day}` : `${one ? copy.leftOne : copy.left} ${moment.days} ${one ? copy.unitOne : copy.unit}`;
+  const said = one ? copy.leftOne : copy.left;
+  const label = moment.phase === "live" ? copy.today : dated ? copy.dates : said;
+  const value = moment.phase === "live" ? `${copy.day} ${moment.day}` : dated ? `${said} ${moment.days}` : String(moment.days);
+  const unit = moment.phase === "live" ? "" : one ? copy.unitOne : copy.unit;
 
   return (
-    <span className="sys-pill" role="timer" aria-label={now ? `${label}: ${value}` : undefined} data-pending={now ? undefined : ""}>
+    <span className="sys-pill" role="timer" aria-label={now ? `${label} ${value} ${unit}`.trim() : undefined} data-pending={now ? undefined : ""}>
       <span aria-hidden className="sys-pill-dot" />
       <span aria-hidden className="sys-pill-text">
         <span className="sys-pill-label">{label}</span>
-        <span className="sys-pill-value">{value}</span>
+        <span className="sys-pill-value">
+          {value}
+          {unit && <span className="sys-pill-unit">{unit}</span>}
+        </span>
       </span>
     </span>
   );

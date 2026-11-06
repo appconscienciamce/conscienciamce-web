@@ -200,7 +200,7 @@ export function EdHosts() {
           </p>
         ))}
       </div>
-      <section className="ed-paper ed-numbers" data-phone-anchor="resultados">
+      <section className="ed-paper ed-numbers" data-phone-anchor="testimonios">
         <h3 className="ed-kicker ed-r">{numbers}</h3>
         <dl>
           {hosts.authority.items.map((item) => (

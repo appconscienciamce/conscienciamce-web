@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect } from "react";
 import { closeApp, isPhoneOs, openApp, startPhoneOs } from "@/lib/phone-os";
 import { startCanvas } from "@/lib/phone-canvas";
+import { startCarousels } from "@/lib/phone-carousels";
 import { startColor } from "@/lib/phone-color";
 import { startReveal } from "@/lib/phone-reveal";
 import { startPull } from "@/lib/phone-pull";
@@ -50,31 +51,41 @@ function AppIcon({ app }: { app: PhoneApp }) {
   );
 }
 
+function startEditorial() {
+  const stopReveal = startReveal();
+  const stopColor = startColor();
+  return () => {
+    stopReveal();
+    stopColor();
+  };
+}
+
 /** The first screen on a phone: the apps of the bootcamp, on a dark canvas. */
 export function PhoneHome({
   apps,
   label,
   scrollLabel,
+  editorial = false,
 }: {
   apps: PhoneApp[];
   label: string;
   scrollLabel: string;
+  /** The page at `/evento`: pieces arrive and photos light up, instead of sideways lists. */
+  editorial?: boolean;
 }) {
   useEffect(() => {
     if (!isPhoneOs()) return;
     const stopApps = startPhoneOs();
     const stopCanvas = startCanvas();
     const stopPull = startPull();
-    const stopReveal = startReveal();
-    const stopColor = startColor();
+    const stopReading = editorial ? startEditorial() : startCarousels();
     return () => {
       stopApps();
       stopCanvas();
       stopPull();
-      stopReveal();
-      stopColor();
+      stopReading();
     };
-  }, []);
+  }, [editorial]);
 
   return (
     <nav className="phone-home" aria-label={label}>

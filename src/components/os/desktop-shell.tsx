@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { bootcamp } from "@/content/bootcamp";
+import type { Variant } from "@/content/types";
 import { CtaButton, Print } from "@/components/editorial";
 import { DesktopFolder, DesktopSticker, DesktopWindow } from "./desktop-window";
 import { StatusGlyphs } from "./glyphs";
@@ -8,14 +9,15 @@ import { PhoneHome, type PhoneApp } from "./phone-home";
 import { SoundControl } from "./sound-control";
 import { SystemCountdown } from "./system-countdown";
 
-export function SystemBar() {
-  const { os, hero, brand, chapters, offer } = bootcamp;
+export function SystemBar({ variant }: { variant: Variant }) {
+  const { os, hero, brand, chapters, offer, editorial } = bootcamp;
+  const evento = variant === "evento";
   const groups: MenuGroup[] = os.nav.map(({ label, href, items, chapters: withChapters }) => ({
     label,
     href,
     items: withChapters
       ? chapters.map((chapter, i) => ({ label: chapter.label, href: `#${chapter.id}`, hint: chapter.number, station: i }))
-      : items,
+      : items?.map((item) => (evento && item.href === "#testimonios" ? { ...item, label: editorial.navResults } : item)),
   }));
   return (
     <header className="sys-bar">
@@ -28,17 +30,18 @@ export function SystemBar() {
         <span className="sys-live">{os.liveBadge}</span>
         <SoundControl ui={os.sound} />
         <StatusGlyphs />
-        <SystemCountdown dates={offer.eventDates} copy={os.countdown} />
+        <SystemCountdown dates={offer.eventDates} copy={os.countdown} dated={evento} />
       </div>
     </header>
   );
 }
 
 /** The home screen of the phone reading. */
-export function PhoneShell() {
-  const { os, casePilar, hosts } = bootcamp;
+export function PhoneShell({ variant }: { variant: Variant }) {
+  const { os, casePilar, hosts, proof } = bootcamp;
   const { apps } = os.phone;
-  const portrait = hosts.people[1].image.src!;
+  const evento = variant === "evento";
+  const portrait = hosts.people[evento ? 1 : 0].image.src!;
   const grid: PhoneApp[] = [
     { id: "para-quien", label: apps.para, icon: { kind: "folder" } },
     { id: "manifiesto", label: apps.manifesto, icon: { kind: "note" } },
@@ -47,9 +50,11 @@ export function PhoneShell() {
     { id: "dos-dias", label: apps.days, icon: { kind: "folder" } },
     { id: "que-te-llevas", label: apps.outcomes, icon: { kind: "folder" } },
     { id: "quienes", label: apps.hosts, icon: { kind: "photo", src: portrait } },
-    { id: "inscripcion", label: apps.enroll, icon: { kind: "ticket" } },
+    evento
+      ? { id: "inscripcion", label: apps.enroll, icon: { kind: "ticket" } }
+      : { id: "testimonios", label: apps.testimonials, icon: { kind: "photo", src: proof.gallery[2].image.src! } },
   ];
-  return <PhoneHome apps={grid} label={os.chaptersLabel} scrollLabel={os.phone.next} />;
+  return <PhoneHome apps={grid} label={os.chaptersLabel} scrollLabel={os.phone.next} editorial={evento} />;
 }
 
 /** The dark room behind the map. Only present while the board layout is active. */

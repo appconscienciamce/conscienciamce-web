@@ -10,7 +10,8 @@ export type TrackEvent =
   | "board_open"
   | "chapter_view"
   | "roadmap_submit"
-  | "whatsapp_click";
+  | "whatsapp_click"
+  | "upsell_click";
 
 declare global {
   interface Window {

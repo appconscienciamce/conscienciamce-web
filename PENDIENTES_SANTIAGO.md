@@ -7,14 +7,17 @@ Casi todo se edita en `src/content/bootcamp.ts`, sin tocar el diseño.
 
 ---
 
-## Rama `feedback-santiago`: para confirmar antes de publicarla
+## Versión `/evento`: para confirmar antes de que reemplace a la actual
+
+La página en `/evento` y `/evento/gracias` aplica el feedback de Santiago, no se indexa y vive junto a la actual, que sigue en `/`.
 
 - [ ] **Números de autoridad** (`hosts.authority`): USD 2,6M, USD 50K, +2 años, 20K y «Miles» salen del audio de Santiago, dichos sin certeza. Confirmar cifra y a qué se refiere cada una.
 - [ ] **Horario**: 15:00 ARG, 13:00 COL y 19:00 ESP es «lo más probable» según el audio.
 - [ ] **Grabación**: el audio dice que queda grabado «para tener o comprar». Hoy la página dice que queda grabado, sin costo aparte.
-- [ ] **Preguntas nuevas del roadmap** (`thanks.ts`): las cuatro de la segunda parte son propuesta.
-- [ ] **VIP** (USD 197, hasta 50 lugares): sin construir, falta definirlo. La llamada 1 a 1 ya no está.
+- [ ] **Preguntas nuevas del roadmap** (`thanksEvento`): las cuatro de la segunda parte son propuesta.
+- [ ] **VIP** (USD 197, hasta 50 lugares): sin construir, falta definirlo. La llamada 1 a 1 no aparece en esta versión.
 - [ ] **Fotos en alta**: casi todas miden 400×600 y en un celular se notan.
+- [ ] **Stripe**: el Payment Link redirige a `/gracias`, la página actual. `/evento/gracias` se ve solo entrando directo.
 
 ## 1. Decisiones de oferta
 

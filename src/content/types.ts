@@ -71,6 +71,9 @@ export type Inline = string | { strong: string };
 export type RichParagraph = Inline[];
 
 /** Image slot. `src: null` renders a labelled placeholder, never a stand-in face. */
+/** Which version of the page: the live one at `/`, or the one at `/evento`. */
+export type Variant = "live" | "evento";
+
 export interface Img {
   src: string | null;
   alt: string;
@@ -119,7 +122,7 @@ export interface OsCopy {
   phone: {
     heroWindow: string;
     next: string;
-    apps: { para: string; manifesto: string; pilar: string; file: string; days: string; outcomes: string; hosts: string; enroll: string };
+    apps: { para: string; manifesto: string; pilar: string; file: string; days: string; outcomes: string; hosts: string; testimonials: string; enroll: string };
   };
   mapCard: { title: string; text: string; cta: string; full: string };
   skip: string;
@@ -236,23 +239,36 @@ export interface BootcampContent {
     decisionsTitle: string;
     decisions: string[];
   };
+  proof: {
+    title: string;
+    intro: string;
+    videos: { name: string; videoId: string }[];
+    galleryTitle: string;
+    gallery: { image: Img; caption: string }[];
+  };
   hosts: {
     title: string;
     trackRecord: { before: string; claim: ClaimId; after: string };
     paragraphs: string[];
     authority: { title: string; items: { value: string; text: string }[] };
+    ownBrandLead: string;
+    ownBrandClaim: ClaimId;
+    ownBrandAfter: string;
     people: { name: string; image: Img; label: string }[];
     album: Img[];
   };
   investment: {
     title: string;
     paragraphs: string[];
+    selectionTitle: string;
+    selection: string[];
     ticket: { name: string; detail: string; priceLabel: string; pricePending: string; stub: string };
     format: string;
   };
   faq: { title: string; items: { q: string; a: string }[] };
-  /** Only the phone reading uses this. */
+  /** Only the page at `/evento` reads this. */
   editorial: {
+    navResults: string;
     audience: { headline: { before: string; italic: string; after: string }; photo: { name: string; image: Img } };
     manifesto: { inline: Img; tired: { name: string; image: Img } };
     days: {
@@ -264,7 +280,7 @@ export interface BootcampContent {
     kit: { cards: { tag: string; title: string; text: string }[] };
     gains: Img[];
     hosts: { lead: { name: string; image: Img }; side: { name: string; image: Img }; trio: { name: string; image: Img }; numbers: string };
-    enroll: { seats: string; seatsText: string };
+    enroll: { seats: string; seatsText: string; rows: { label: string; value: string }[]; faqItems: number };
   };
   footer: { line: string; copyright: string };
 }
