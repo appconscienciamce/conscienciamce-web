@@ -17,6 +17,7 @@ La página en `/` y `/gracias` aplica el feedback de Santiago. La versión anter
 - [ ] **Preguntas nuevas del roadmap** (`thanksEvento`): las cuatro de la segunda parte son propuesta.
 - [ ] **VIP** (USD 197, hasta 50 lugares): sin construir, falta definirlo. La llamada 1 a 1 no aparece en esta versión.
 - [ ] **Fotos en alta**: casi todas miden 400×600 y en un celular se notan.
+- [ ] **Fotos de Oriana sola**: para volver a sumar la pila de fotos con clips en la sección de Santiago y Oriana.
 - [ ] **Permiso de Pilar**: el expediente ahora dice «Pilar Sousa», con nombre completo.
 
 ## 1. Decisiones de oferta

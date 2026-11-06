@@ -87,7 +87,6 @@
 }
 
 .ed-audience,
-.ed-manifesto,
 .ed-pilar,
 .ed-outcomes,
 .ed-enroll {
@@ -208,8 +207,7 @@
 }
 
 .shot .print img,
-.ed-gains .print img,
-.pile .print img {
+.ed-gains .print img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -302,8 +300,19 @@
 /* ---------------- 02 Manifesto ---------------- */
 
 .ed-manifesto {
-  padding-top: 164px;
   overflow: clip;
+}
+
+.ed-thesis-block {
+  padding: 164px var(--gutter) 64px;
+}
+
+.ed-tired-block {
+  padding: 72px var(--gutter) 40px;
+}
+
+.ed-closing-block {
+  padding: 48px var(--gutter) 56px;
 }
 
 .ed-thesis mark {
@@ -326,7 +335,9 @@
 }
 
 .ed-strikes {
-  margin: 46px calc(var(--gutter) * -1.4) 54px;
+  position: relative;
+  z-index: 2;
+  margin: -20px -20px -20px;
   overflow: hidden;
   background: var(--paper);
   color: var(--ink);
@@ -389,11 +400,11 @@
   left: 0;
   font-family: var(--font-display);
   font-size: 26px;
-  color: var(--text-3);
+  color: var(--soft);
 }
 
 .ed-note {
-  margin: 30px calc(var(--gutter) * -0.3) 0;
+  margin: 0 calc(var(--gutter) * -0.3) 0;
   padding: 22px 20px;
   background: var(--paper);
   border-radius: 4px;
@@ -415,7 +426,7 @@
 }
 
 .ed-figure {
-  margin: 22px calc(var(--gutter) * -0.2) 0;
+  margin: 8px calc(var(--gutter) * -0.2) 0;
   font-family: var(--font-display);
   font-size: clamp(46px, 15.4vw, 112px);
   line-height: 1;
@@ -435,16 +446,41 @@
 /* ---------------- 04 The two days ---------------- */
 
 .ed-days-head {
-  padding: 60px var(--gutter) 40px;
+  padding: 56px var(--gutter) 24px;
 }
 
-.ed-days-head .ed-kicker {
-  margin-top: 18px;
+.ed-zones {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ed-zones li {
+  display: grid;
+  gap: 1px;
+  font-size: 12.5px;
+  color: var(--soft);
+}
+
+.ed-zones span {
+  font-size: 19px;
+  line-height: 1.2;
+}
+
+.ed-zones strong {
+  font-family: var(--font-display);
+  font-size: 23px;
+  font-weight: 400;
+  line-height: 1.1;
+  color: var(--ink);
 }
 
 .ed-day {
   position: relative;
-  padding: 26px var(--gutter) 44px;
+  padding: 18px var(--gutter) 44px;
   overflow: clip;
 }
 
@@ -664,21 +700,11 @@
   margin-inline: clamp(14px, 4vw, 40px);
 }
 
-/* ---------------- Arrival ---------------- */
+/* ---------------- Arrival: written by the scroll (lib/phone-reveal.ts) ---------------- */
 
-@media (prefers-reduced-motion: no-preference) {
-  [data-reveal] .ed-r {
-    opacity: 0;
-    translate: 0 26px;
-    transition:
-      opacity 0.7s var(--ease-mac) var(--reveal-delay, 0s),
-      translate 0.8s var(--ease-mac) var(--reveal-delay, 0s);
-  }
-
-  [data-reveal] .ed-r[data-in] {
-    opacity: 1;
-    translate: 0 0;
-  }
+[data-reveal] [data-scrub] {
+  opacity: var(--p, 0);
+  translate: 0 calc((1 - var(--p, 0)) * 34px);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -857,22 +883,6 @@
   font-family: var(--font-body);
 }
 
-/* ---------------- Thesis and work photos, lying down ---------------- */
-
-.ed-thesis-shot,
-.ed-tired-shot {
-  width: 100%;
-  margin-top: 30px;
-}
-
-.ed-thesis-shot {
-  rotate: -0.9deg;
-}
-
-.ed-tired-shot {
-  rotate: 0.8deg;
-}
-
 /* ---------------- The date beside the big number ---------------- */
 
 .ed-day-n small {
@@ -884,8 +894,21 @@
 /* ---------------- The fold of each day ---------------- */
 
 .ed-more {
-  margin-top: 14px;
-  border-bottom: 1px solid var(--hair);
+  margin-top: 18px;
+  padding: 0 16px;
+  border-radius: 12px;
+}
+
+.ed-day.ed-dark .ed-more {
+  --soft: var(--ink-2);
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.ed-day.ed-paper .ed-more {
+  --soft: var(--text-3);
+  background: var(--ink);
+  color: var(--text);
 }
 
 .ed-more > button {
@@ -893,9 +916,10 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  min-height: 44px;
-  color: var(--soft);
-  font-size: 14px;
+  min-height: 48px;
+  color: inherit;
+  font-size: 15px;
+  font-weight: 500;
   text-align: left;
 }
 
@@ -955,81 +979,14 @@
   text-wrap: nowrap;
 }
 
-/* ---------------- The pile of clipped photos ---------------- */
-
-.pile {
-  position: relative;
-  height: 96vw;
-  max-height: 600px;
-  margin: 34px 0 10px;
-  padding: 0;
-  list-style: none;
-}
-
-.pile li {
-  position: absolute;
-  width: 72%;
-  transition:
-    translate 0.5s var(--ease-mac),
-    rotate 0.5s var(--ease-mac),
-    scale 0.5s var(--ease-mac);
-}
-
-.pile button {
-  position: relative;
-  display: block;
-  width: 100%;
-  padding: 6px;
-  background: var(--paper);
-  border-radius: 3px;
-  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.5);
-}
-
-.pile .print {
-  aspect-ratio: 5 / 4;
-  overflow: hidden;
-}
-
-.pile .paperclip {
-  position: absolute;
-  top: -14px;
-  left: 18px;
-  width: 15px;
-  color: #c9c9c5;
-}
-
-.pile [data-photo="0"] { top: 0; left: 0; z-index: 1; rotate: -3deg; }
-.pile [data-photo="1"] { top: 22%; left: 28%; z-index: 2; rotate: 2.5deg; }
-.pile [data-photo="2"] { top: 44%; left: 7%; z-index: 3; rotate: -1.5deg; }
-
-.pile li[data-top] {
-  z-index: 4;
-  rotate: 0deg;
-  scale: 1.16;
-  translate: 0 -4%;
-}
-
-.pile [data-photo="0"][data-top] { translate: 19% 20%; }
-.pile [data-photo="1"][data-top] { translate: -10% -2%; }
-.pile [data-photo="2"][data-top] { translate: 12% -22%; }
-
-.pile li[data-top] .print img {
-  filter: none;
-}
-
-/* ---------------- Dots on everything white ---------------- */
+/* ---------------- Dots, only on two pieces ---------------- */
 
 .v-current {
   --dots: radial-gradient(circle, rgba(21, 21, 21, 0.15) 0.8px, transparent 1.1px);
 }
 
 .ed-thesis mark,
-.ed-note,
-.ed-strikes,
-.kit [data-card="1"],
-.kit [data-card="3"],
-.v-current .ticket,
-.v-current .doc-paper {
+.ed-note {
   background-image: var(--dots);
   background-size: 6px 6px;
 }
@@ -1073,6 +1030,19 @@
   margin-bottom: 16px;
   padding-bottom: 14px;
   border-bottom: 1px solid var(--line-strong);
+}
+
+.phone-os:not(.board-on) .v-current .canvas .file-review {
+  --line-strong: rgba(21, 21, 21, 0.22);
+  --text-3: var(--ink-2);
+  --text: var(--ink);
+  --bg: var(--paper);
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.phone-os:not(.board-on) .v-current .canvas .file-review .body-soft {
+  color: var(--ink-2);
 }
 
 .file-review .file-check li {
@@ -1142,27 +1112,14 @@
   opacity: 0.56;
 }
 
-/* ---------------- The room: one dot for each place ---------------- */
+/* ---------------- The places ---------------- */
 
 .ed-seats {
-  margin-top: 28px;
-}
-
-.ed-room {
-  display: block;
-  aspect-ratio: 30 / 10;
-  background-image: radial-gradient(circle at center, var(--text) 32%, transparent 36%);
-  background-size: calc(100% / 30) 10%;
-  opacity: 0.86;
-}
-
-.ed-seats p {
   display: flex;
   align-items: baseline;
-  flex-wrap: wrap;
-  gap: 2px 12px;
-  margin: 16px 0 0;
-  font-size: 17px;
+  gap: 12px;
+  margin: 26px 0 0;
+  font-size: 16px;
   color: var(--text-2);
 }
 

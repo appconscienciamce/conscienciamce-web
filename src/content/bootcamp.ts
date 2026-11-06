@@ -514,22 +514,17 @@ export const bootcamp: BootcampContent = {
   editorial: {
     navResults: "Resultados",
     pilarName: "Pilar Sousa",
+    pilarLead: "Cómo construimos junto a Pilar un ecosistema que generó más de",
     audience: {
       headline: { before: "No funciona para ", italic: "todos", after: " lo mismo." },
     },
-    manifesto: {
-      thesis: {
-        name: "parecer.jpg",
-        image: { src: "/media/items/1.webp", alt: "Collage de una cabeza de mármol partida, con nubes dentro", width: 410, height: 643 },
-      },
-      tired: {
-        name: "trabajo-real.jpg",
-        image: { src: "/media/santiago/img20.webp", alt: "Sesión de trabajo por videollamada de Santiago Gómez con un grupo", width: 400, height: 600 },
-      },
-    },
     days: {
       title: { before: "Dos", italic: "días" },
-      schedule: "15:00 Argentina · 13:00 Colombia · 19:00 España",
+      zones: [
+        { flag: "🇦🇷", time: "15:00", place: "Argentina" },
+        { flag: "🇨🇴", time: "13:00", place: "Colombia" },
+        { flag: "🇪🇸", time: "19:00", place: "España" },
+      ],
       more: "Qué vemos este día",
       dates: [
         {
@@ -565,17 +560,11 @@ export const bootcamp: BootcampContent = {
     hosts: {
       lead: { name: "santiago-y-oriana.jpg", image: { src: "/media/hosts/noche.webp", alt: "Santiago y Oriana de noche, con una bebé en brazos", width: 400, height: 600 } },
       side: { name: "familia.jpg", image: { src: "/media/hosts/santiago-oriana.webp", alt: "Santiago Gómez y Oriana Safenreider en un ascensor, con una bebé en brazos", width: 400, height: 600 } },
-      pile: [
-        { src: "/media/hosts/lago.webp", alt: "Santiago con una bebé en brazos, frente a un lago", width: 540, height: 720 },
-        { src: "/media/hosts/bosque.webp", alt: "Santiago junto a una camioneta, en el bosque", width: 400, height: 600 },
-        { src: "/media/santiago/img8.webp", alt: "Santiago Gómez frente a una pirámide", width: 400, height: 600 },
-      ],
-      pileLabel: "Fotos de Santiago: tocá una para verla",
       numbers: "Lo que logramos",
     },
     enroll: {
       seats: "300",
-      seatsText: "lugares en la sala. Ni uno más.",
+      seatsText: "lugares disponibles",
       rows: [
         { label: "Fechas", value: "17 y 18 de noviembre" },
         { label: "Horario", value: "15:00 ARG · 13:00 COL · 19:00 ESP" },

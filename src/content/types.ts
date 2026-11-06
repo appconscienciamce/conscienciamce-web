@@ -270,17 +270,17 @@ export interface BootcampContent {
   editorial: {
     navResults: string;
     pilarName: string;
+    pilarLead: string;
     audience: { headline: { before: string; italic: string; after: string } };
-    manifesto: { thesis: { name: string; image: Img }; tired: { name: string; image: Img } };
     days: {
       title: { before: string; italic: string };
-      schedule: string;
+      zones: { flag: string; time: string; place: string }[];
       more: string;
       dates: { day: string; month: string; label: string; photo: { name: string; image: Img } }[];
     };
     kit: { cards: { tag: string; title: string; text: string }[] };
     gains: Img[];
-    hosts: { lead: { name: string; image: Img }; side: { name: string; image: Img }; pile: Img[]; pileLabel: string; numbers: string };
+    hosts: { lead: { name: string; image: Img }; side: { name: string; image: Img }; numbers: string };
     enroll: { seats: string; seatsText: string; rows: { label: string; value: string }[]; faqItems: number };
   };
   footer: { line: string; copyright: string };

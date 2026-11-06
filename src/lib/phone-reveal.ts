@@ -1,50 +1,65 @@
 import { appWindow, motion } from "@/lib/phone-os";
 
 /**
- * Each piece of a chapter comes in on its own as it reaches the screen: it rises a
- * little and settles, and its photos ease out of a slight zoom. Pieces arriving
- * together follow one another instead of popping in at once.
- * Once in, a piece stays: scrolling back up never makes the page put itself together twice.
+ * Each piece of the page is tied to the scroll: it comes in as the finger moves it up
+ * and goes back the same way, like a scrubbed timeline. Nothing runs on its own clock.
  * Without JavaScript, or for those who asked for less motion, nothing is ever hidden.
  */
 
-const PIECES = ".ed-r";
-/** A piece starts in once its top is this far up from the bottom of the screen. */
-const LINE = "0px 0px -10% 0px";
-/** Between pieces arriving together, and the most any one of them waits. */
-const STAGGER_S = 0.09;
-const MAX_DELAY_S = 0.36;
+const PIECES = ".ed-r,.ph-keep,.ed-fit li,.ed-nofit li";
+/** The bar with the buy button covers this much of the bottom of the window. */
+const BAR_PX = 84;
+/** How far a piece travels up the screen while it arrives, as a part of the window. */
+const TRAVEL = 0.2;
 
-/** Starts revealing the pieces of the board as they come into view. Returns what stops it. */
+const clamp = (value: number) => Math.min(1, Math.max(0, value));
+
+/** Starts tying the pieces of the page to the scroll. Returns what stops it. */
 export function startReveal() {
   const win = appWindow();
   if (!win || !motion()) return () => {};
   const pieces = Array.from(win.querySelectorAll<HTMLElement>(PIECES));
+  const painted = new Map<HTMLElement, number>();
   win.setAttribute("data-reveal", "");
+  pieces.forEach((piece) => piece.setAttribute("data-scrub", ""));
 
-  const seen = new IntersectionObserver(
-    (entries) => {
-      // Top to bottom, in the order they are read.
-      const arriving = entries
-        .filter((entry) => entry.isIntersecting)
-        .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
-      arriving.forEach((entry, i) => {
-        const piece = entry.target as HTMLElement;
-        piece.style.setProperty("--reveal-delay", `${Math.min(MAX_DELAY_S, i * STAGGER_S)}s`);
-        piece.setAttribute("data-in", "");
-        seen.unobserve(piece);
-      });
-    },
-    { rootMargin: LINE },
-  );
-  pieces.forEach((piece) => seen.observe(piece));
+  let frame = 0;
+  const paint = () => {
+    frame = 0;
+    const box = win.getBoundingClientRect();
+    if (!box.height) return;
+    const line = box.bottom - BAR_PX;
+    const span = box.height * TRAVEL;
+    // The last pieces may never climb that far: the end of the page shows them all.
+    const atEnd = win.scrollTop + win.clientHeight >= win.scrollHeight - 2;
+    const tops = pieces.map((piece) => piece.getBoundingClientRect().top);
+    pieces.forEach((piece, i) => {
+      const progress = atEnd ? 1 : clamp((line - tops[i]) / span);
+      if (Math.abs((painted.get(piece) ?? -1) - progress) < 0.004) return;
+      painted.set(piece, progress);
+      piece.style.setProperty("--p", progress.toFixed(3));
+      if (progress > 0.97) piece.setAttribute("data-in", "");
+    });
+  };
+  const schedule = () => {
+    if (!frame) frame = requestAnimationFrame(paint);
+  };
+
+  win.addEventListener("scroll", schedule, { passive: true });
+  // Opening the window is a resize too: from nothing to the whole screen.
+  const resize = new ResizeObserver(schedule);
+  resize.observe(win);
+  schedule();
 
   return () => {
-    seen.disconnect();
+    cancelAnimationFrame(frame);
+    win.removeEventListener("scroll", schedule);
+    resize.disconnect();
     win.removeAttribute("data-reveal");
     pieces.forEach((piece) => {
+      piece.removeAttribute("data-scrub");
       piece.removeAttribute("data-in");
-      piece.style.removeProperty("--reveal-delay");
+      piece.style.removeProperty("--p");
     });
   };
 }

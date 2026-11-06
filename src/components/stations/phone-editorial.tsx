@@ -3,7 +3,7 @@ import { ClaimText, Print, Rich } from "@/components/editorial";
 import type { Img } from "@/content/types";
 import { resolveClaim } from "@/lib/offer";
 import { KitStack } from "./kit-stack";
-import { DayMore, PhotoPile } from "./phone-touch";
+import { DayMore } from "./phone-touch";
 
 /**
  * The phone reading, section by section. The board keeps its own pieces; these only
@@ -36,16 +36,16 @@ export function EdAudience() {
         {headline.after}
       </h2>
       <p className="ed-lead ed-r">{audience.intro}</p>
-      <section className="ed-fit ed-r">
-        <h3>{audience.fitTitle}</h3>
+      <section className="ed-fit">
+        <h3 className="ed-r">{audience.fitTitle}</h3>
         <ul>
           {audience.fit.map((item) => (
             <li key={item}>{item}</li>
           ))}
         </ul>
       </section>
-      <section className="ed-nofit ed-r">
-        <h3>{audience.notFitTitle}</h3>
+      <section className="ed-nofit">
+        <h3 className="ed-r">{audience.notFitTitle}</h3>
         <ul>
           {audience.notFit.map((item) => (
             <li key={item}>{item}</li>
@@ -62,18 +62,18 @@ export function EdAudience() {
 }
 
 export function EdManifesto() {
-  const { manifesto, editorial } = bootcamp;
-  const { thesis, tired } = editorial.manifesto;
+  const { manifesto } = bootcamp;
   const words = manifesto.strikes.map((word) => <span key={word}>{word}</span>);
   return (
-    <div className="ed ed-dark ed-manifesto">
-      <h2 className="ed-thesis ed-r">
-        {manifesto.thesis.before}
-        <mark>{manifesto.thesis.highlight}</mark>
-        {manifesto.thesis.after}
-      </h2>
-      <Shot image={thesis.image} name={thesis.name} sizes="92vw" className="ed-thesis-shot" position="50% 24%" />
-      <p className="ed-counter ed-r">{manifesto.counter}</p>
+    <div className="ed ed-manifesto">
+      <div className="ed-dark ed-thesis-block">
+        <h2 className="ed-thesis ed-r">
+          {manifesto.thesis.before}
+          <mark>{manifesto.thesis.highlight}</mark>
+          {manifesto.thesis.after}
+        </h2>
+        <p className="ed-counter ed-r">{manifesto.counter}</p>
+      </div>
 
       <div aria-hidden className="ed-strikes">
         <div>
@@ -82,33 +82,35 @@ export function EdManifesto() {
         </div>
       </div>
 
-      <h3 className="ed-opening ed-r">{manifesto.opening}</h3>
-      <Shot image={tired.image} name={tired.name} sizes="92vw" className="ed-tired-shot" position="50% 62%" />
-      <ol className="ed-tired">
-        {manifesto.tiredOf.map((line) => (
-          <li key={line} className="ed-r">
-            {line}
-          </li>
-        ))}
-      </ol>
+      <div className="ed-paper ed-tired-block">
+        <h3 className="ed-opening ed-r">{manifesto.opening}</h3>
+        <ol className="ed-tired">
+          {manifesto.tiredOf.map((line) => (
+            <li key={line} className="ed-r">
+              {line}
+            </li>
+          ))}
+        </ol>
+      </div>
 
-      <blockquote className="ed-note ed-r">{manifesto.paragraph}</blockquote>
-      <p className="ed-lead ed-r">{manifesto.closing}</p>
+      <div className="ed-dark ed-closing-block">
+        <blockquote className="ed-note ed-r">{manifesto.paragraph}</blockquote>
+        <p className="ed-lead ed-r">{manifesto.closing}</p>
+      </div>
     </div>
   );
 }
 
 export function EdPilar() {
-  const { casePilar } = bootcamp;
-  const figure = resolveClaim(casePilar.figure);
+  const { casePilar, editorial } = bootcamp;
   return (
     <div className="ed ed-raised ed-pilar">
       <p className="ed-kicker ed-r">{casePilar.kicker}</p>
       <h2 className="ed-title ed-r">{casePilar.title}</h2>
+      <p className="ed-lead ed-r">{editorial.pilarLead}</p>
       <p className="ed-figure ed-r">
         <ClaimText id={casePilar.figure} />
       </p>
-      <p className="ed-lead ed-r">{figure.state === "fallback" ? casePilar.lead.fallback : casePilar.lead.withClaim}</p>
     </div>
   );
 }
@@ -117,12 +119,20 @@ export function EdDays() {
   const { twoDays, editorial } = bootcamp;
   return (
     <div className="ed ed-days">
-      <div className="ed-dark ed-days-head">
+      <div className="ed-paper ed-days-head">
         <h2 className="ed-giant ed-r">
           {editorial.days.title.before} <em>{editorial.days.title.italic}</em>
         </h2>
         <p className="ed-lead ed-r">{twoDays.intro}</p>
-        <p className="ed-kicker ed-r">{editorial.days.schedule}</p>
+        <ul className="ed-zones ed-r">
+          {editorial.days.zones.map((zone) => (
+            <li key={zone.place}>
+              <span aria-hidden>{zone.flag}</span>
+              <strong>{zone.time}</strong>
+              {zone.place}
+            </li>
+          ))}
+        </ul>
       </div>
       {twoDays.days.map((day, i) => {
         const dated = editorial.days.dates[i];
@@ -175,7 +185,7 @@ export function EdOutcomes() {
 
 export function EdHosts() {
   const { hosts, editorial } = bootcamp;
-  const { lead, side, pile, pileLabel, numbers } = editorial.hosts;
+  const { lead, side, numbers } = editorial.hosts;
   return (
     <div className="ed ed-hosts">
       <div className="ed-dark ed-hosts-top">
@@ -193,7 +203,6 @@ export function EdHosts() {
           <ClaimText id={hosts.trackRecord.claim} />
           {hosts.trackRecord.after}
         </p>
-        <PhotoPile photos={pile} label={pileLabel} />
         {hosts.paragraphs.map((paragraph) => (
           <p key={paragraph} className="ed-body ed-r">
             {paragraph}
@@ -220,13 +229,10 @@ export function EdEnroll() {
   return (
     <div className="ed ed-dark ed-enroll">
       <h2 className="ed-title ed-r">{investment.title}</h2>
-      <div className="ed-seats ed-r">
-        <span aria-hidden className="ed-room" />
-        <p>
-          <strong>{editorial.enroll.seats}</strong>
-          {editorial.enroll.seatsText}
-        </p>
-      </div>
+      <p className="ed-seats ed-r">
+        <strong>{editorial.enroll.seats}</strong>
+        {editorial.enroll.seatsText}
+      </p>
     </div>
   );
 }
