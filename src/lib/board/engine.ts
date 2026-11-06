@@ -146,7 +146,7 @@ export class BoardEngine {
       const { ccMap: _map, ccVideo: _video, ...rest } = window.history.state;
       window.history.replaceState(rest, "");
     }
-    window.history.scrollRestoration = "auto";
+    this.releaseScrollMemory();
     this.bind();
     this.syncBoard();
     const hash = window.location.hash.slice(1);
@@ -159,7 +159,7 @@ export class BoardEngine {
     window.clearTimeout(this.idleTimer);
     this.setExploreListeners(false);
     this.releaseOverlay();
-    window.history.scrollRestoration = "auto";
+    this.releaseScrollMemory();
   }
 
   /* ---------------- Public actions ---------------- */
@@ -336,8 +336,8 @@ export class BoardEngine {
   /** The chapter on screen, so the map opens where the reader already is. */
   private readingStation() {
     if (isPhoneOs()) {
-      const app = document.querySelector<HTMLElement>("[data-app-open]");
-      return app ? Math.max(0, this.stations.indexOf(app)) : 0;
+      const { app } = document.documentElement.dataset;
+      return Math.max(0, this.stations.findIndex((el) => el.id === app));
     }
     const middle = window.innerHeight * 0.45;
     let station = 0;
@@ -373,11 +373,11 @@ export class BoardEngine {
   readAt(id: string) {
     if (!this.state.overlay) return;
     if (document.documentElement.classList.contains("phone-os")) {
-      // The map's history entry becomes the app: going back from it lands where the map was opened.
-      // Reading on in the app already open, there is nothing to replace it with.
-      const station = document.getElementById(id)?.closest("[data-station]");
-      this.closeOverlay(station !== document.querySelector("[data-app-open]"));
-      openApp(id, { replace: true });
+      // The map's history entry becomes the window: going back from it lands where the map was opened.
+      // With the window already open there is nothing to replace it with.
+      const open = !!document.querySelector("[data-app-open]");
+      this.closeOverlay(!open);
+      openApp(id, { replace: true, instant: open });
       return;
     }
     this.closeOverlay();
@@ -405,8 +405,13 @@ export class BoardEngine {
       this.ignorePop = true;
       window.history.back();
     } else {
-      window.history.scrollRestoration = "auto";
+      this.releaseScrollMemory();
     }
+  }
+
+  /** The phone reading keeps it manual for good: see startPhoneOs. */
+  private releaseScrollMemory() {
+    if (!document.documentElement.classList.contains("phone-os")) window.history.scrollRestoration = "auto";
   }
 
   /**
@@ -427,7 +432,7 @@ export class BoardEngine {
     requestAnimationFrame(() => requestAnimationFrame(() => root.classList.remove("measure-all")));
 
     // A tap does not always leave the focus on what was tapped.
-    const opener = this.overlayOpener && this.overlayOpener !== document.body ? this.overlayOpener : document.querySelector<HTMLElement>(".view-map");
+    const opener = this.overlayOpener && this.overlayOpener !== document.body ? this.overlayOpener : document.querySelector<HTMLElement>(".phone-widget");
     opener?.focus({ preventScroll: true });
     this.overlayOpener = null;
   }
@@ -441,7 +446,7 @@ export class BoardEngine {
     if (historyGuard.video) return;
     if (this.ignorePop) {
       this.ignorePop = false;
-      window.history.scrollRestoration = "auto";
+      this.releaseScrollMemory();
     } else if (this.state.overlay) {
       this.closeOverlay(true);
     } else if (window.history.state?.ccMap || window.history.state?.ccVideo) {

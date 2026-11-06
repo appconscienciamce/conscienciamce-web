@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect } from "react";
 import { closeApp, isPhoneOs, openApp, startPhoneOs } from "@/lib/phone-os";
+import { startCanvas } from "@/lib/phone-canvas";
 import { startCarousels } from "@/lib/phone-carousels";
 import { startPull } from "@/lib/phone-pull";
 import { useBoard } from "./board-provider";
@@ -51,12 +52,12 @@ function AppIcon({ app }: { app: PhoneApp }) {
 /** The first screen on a phone: the apps of the bootcamp, on a dark canvas. */
 export function PhoneHome({
   apps,
-  mapLabel,
+  label,
   widget,
   scrollLabel,
 }: {
   apps: PhoneApp[];
-  mapLabel: string;
+  label: string;
   widget: { title: string; text: string };
   scrollLabel: string;
 }) {
@@ -65,17 +66,19 @@ export function PhoneHome({
   useEffect(() => {
     if (!isPhoneOs()) return;
     const stopApps = startPhoneOs();
+    const stopCanvas = startCanvas();
     const stopPull = startPull();
     const stopCarousels = startCarousels();
     return () => {
       stopApps();
+      stopCanvas();
       stopPull();
       stopCarousels();
     };
   }, []);
 
   return (
-    <nav className="phone-home" aria-label={mapLabel}>
+    <nav className="phone-home" aria-label={label}>
       <ul className="phone-grid">
         {apps.map((app) => (
           <li key={app.id}>
@@ -110,7 +113,7 @@ export function PhoneHome({
   );
 }
 
-/** Title bar of a chapter when it runs as an app. The system's own chrome stays above it. */
+/** Title bar of a window. The system's own chrome stays above it. */
 export function AppBar({ title, back }: { title: string; back: string }) {
   return (
     <div className="app-bar">

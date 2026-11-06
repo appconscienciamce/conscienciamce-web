@@ -156,7 +156,6 @@ export const bootcamp: BootcampContent = {
     zoomOut: "Alejar",
     zoomReset: "Volver al 100%",
     fit: "Ajustar",
-    viewMap: "Ver mapa",
     closeMap: "Volver a la lectura",
     back: "Volver",
     readHere: "Leer",

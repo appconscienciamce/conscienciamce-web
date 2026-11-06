@@ -1885,33 +1885,6 @@ figcaption.mono-note {
   opacity: 0.78;
 }
 
-.view-map {
-  flex: none;
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 3px;
-  min-width: 84px;
-  padding: 6px 12px;
-  border-radius: 0.75rem;
-  background: var(--text);
-  color: var(--ink);
-  font-size: 13px;
-  font-weight: 500;
-  line-height: 1.1;
-  transition: transform 0.2s var(--ease-mac);
-}
-
-.view-map:active {
-  transform: scale(0.95);
-}
-
-.view-map svg {
-  width: 21px;
-  height: 21px;
-}
-
 /* ---------------- Chapter bar and index, vertical reading ---------------- */
 
 .chapter-bar {
@@ -2111,8 +2084,7 @@ html.board-on body {
   cursor: var(--cursor);
 }
 
-.board-on .flow-bar,
-.board-on .view-map {
+.board-on .flow-bar {
   display: none;
 }
 
@@ -4956,7 +4928,7 @@ button.tl:not(:disabled):active {
 }
 
 /* ================================================================
-   Phone reading: a home screen, and every chapter an app over it.
+   Phone reading: a home screen, and one window with the whole board.
    Same sections as ever: only with JavaScript and only on small or
    touch screens, so nothing is lost without it.
 ================================================================= */
@@ -4966,6 +4938,12 @@ button.tl:not(:disabled):active {
 .app-next,
 .app-end {
   display: none;
+}
+
+/* Only the phone gives these two a box of their own. */
+.canvas,
+.canvas-sheet {
+  display: contents;
 }
 
 html.phone-os:not(.board-on),
@@ -5346,7 +5324,8 @@ html[data-app] .phone-widget-art rect {
   }
 }
 
-@media (max-height: 640px) {
+/* A phone on its side has no row to spare for it. */
+@media (max-height: 520px) {
   .phone-widget {
     display: none;
   }
@@ -5364,29 +5343,74 @@ html[data-app] .phone-widget-art rect {
   }
 }
 
-/* ---------------- A chapter as an app ---------------- */
+/* ---------------- One window: the board, in a single column ---------------- */
 
-.phone-os:not(.board-on) .st:not(.st-hero) {
-  display: none;
-  content-visibility: visible;
+/* Not inherited: a frame arriving must not restyle everything inside it. */
+@property --in {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 1;
 }
 
-.phone-os:not(.board-on) .st[data-app-open] {
+.phone-os:not(.board-on) .canvas {
+  display: none;
+}
+
+.phone-os:not(.board-on) .canvas[data-app-open] {
   position: fixed;
   inset: var(--sys-h) 0 0;
   z-index: 38;
   display: block;
-  max-width: none;
-  margin: 0;
-  padding: 0 18px calc(96px + env(safe-area-inset-bottom, 0px));
   overflow: hidden auto;
   overscroll-behavior: contain;
-  background: var(--os-2);
-  border: 0;
+  background: var(--bg);
   border-radius: 14px 14px 0 0;
   box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
   transform-origin: 0 0;
   -webkit-overflow-scrolling: touch;
+}
+
+/* The board itself: it moves with the page, like a surface under the frames. */
+.phone-os:not(.board-on) .canvas-sheet {
+  display: block;
+  padding: 44px max(10px, env(safe-area-inset-right, 0px)) calc(96px + env(safe-area-inset-bottom, 0px)) max(10px, env(safe-area-inset-left, 0px));
+  background-color: var(--bg);
+  background-image: radial-gradient(circle, rgba(245, 245, 243, 0.17) 1px, transparent 1.4px);
+  background-size: 22px 22px;
+}
+
+/* Each chapter is a frame. Nothing clips it: its title and connector live outside. */
+.phone-os:not(.board-on) .canvas .st {
+  width: min(100%, 720px);
+  max-width: none;
+  margin: 0 auto 124px;
+  padding: 22px 18px 26px;
+  overflow: visible;
+  content-visibility: visible;
+  border-radius: 14px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+  opacity: calc(0.3 + var(--in, 1) * 0.7);
+  transform: translateY(calc((1 - var(--in, 1)) * 44px)) scale(calc(0.95 + var(--in, 1) * 0.05));
+}
+
+.phone-os:not(.board-on) .canvas .st:last-child {
+  margin-bottom: 0;
+}
+
+/* The frame's name, on the board, the way a frame shows it. */
+.phone-os:not(.board-on) .canvas .st-tag {
+  position: absolute;
+  top: -27px;
+  left: 4px;
+  right: 4px;
+  display: flex;
+  justify-content: flex-start;
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  font-size: 12.5px;
+  color: var(--text-2);
 }
 
 .phone-os:not(.board-on) .app-bar {
@@ -5401,12 +5425,11 @@ html[data-app] .phone-widget-art rect {
   color: var(--text-2);
 }
 
-.phone-os:not(.board-on) .st[data-app-open] .app-bar {
+.phone-os:not(.board-on) .canvas .app-bar {
   position: sticky;
   top: 0;
   z-index: 5;
-  margin: 0 -18px 18px;
-  padding: 0 8px 0 14px;
+  padding: 0 max(8px, env(safe-area-inset-right, 0px)) 0 max(14px, env(safe-area-inset-left, 0px));
   border-bottom: 1px solid #191919;
 }
 
@@ -5443,7 +5466,8 @@ html[data-app] .phone-widget-art rect {
   display: none;
 }
 
-.phone-os:not(.board-on) .st[data-app-open] .app-bar-progress {
+/* Written by the scroll: this has to work where scroll timelines don't. */
+.phone-os:not(.board-on) .canvas .app-bar-progress {
   position: absolute;
   left: 0;
   right: 0;
@@ -5455,44 +5479,51 @@ html[data-app] .phone-widget-art rect {
   transform-origin: 0 50%;
 }
 
-@supports (animation-timeline: scroll()) {
-  .phone-os:not(.board-on) .st[data-app-open] .app-bar-progress {
-    animation: app-progress linear both;
-    animation-timeline: scroll(nearest);
-  }
-}
-
-@keyframes app-progress {
-  to {
-    transform: scaleX(1);
-  }
-}
-
-/* A jump inside an app lands below its title bar. */
-.phone-os:not(.board-on) .st[data-app-open] [id] {
+/* A jump on the board lands below the title bar, with the frame's name in sight. */
+.phone-os:not(.board-on) .canvas [id] {
   scroll-margin-top: 64px;
 }
 
-/* The end of a chapter is not a stop: the arrow says there is more below. */
-.phone-os:not(.board-on) .st[data-app-open] .app-next {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
-  gap: 12px;
-  margin-top: 34px;
-  padding: 8px 0;
-  color: var(--text);
-  font-family: var(--font-display);
-  font-size: 19px;
-  line-height: 1.15;
-  text-align: right;
+.phone-os:not(.board-on) .canvas .st[id] {
+  scroll-margin-top: 88px;
 }
 
-.app-next small {
-  display: block;
-  font-family: var(--font-body);
+/* From frame to frame: the same line that joins the chapters on the map. */
+.phone-os:not(.board-on) .canvas .app-next {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 8px;
+  height: 124px;
+  padding-bottom: 22px;
+  color: var(--text);
+}
+
+.phone-os:not(.board-on) .canvas .app-next::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  border-left: 1px dashed rgba(245, 245, 243, 0.34);
+}
+
+.app-next-word {
+  position: relative;
+  padding: 3px 10px;
+  background: var(--raised);
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 0.5px var(--glass-line);
   font-size: 12px;
-  color: var(--text-3);
+  color: var(--text-2);
+}
+
+.app-next .scroll-arrow {
+  position: relative;
 }
 
 .scroll-arrow {
@@ -5551,7 +5582,7 @@ html[data-app] .phone-scroll {
   }
 }
 
-.phone-os:not(.board-on) .st[data-app-open] .app-end {
+.phone-os:not(.board-on) .canvas .app-end {
   display: block;
   margin-top: 28px;
   font-size: 13px;
@@ -5960,15 +5991,9 @@ html.map-overlay body {
     --chapter-h: 32px;
   }
 
-  .flow-bar .btn,
-  .view-map {
+  .flow-bar .btn {
     min-height: 42px;
     padding-block: 3px;
-  }
-
-  .view-map {
-    flex-direction: row;
-    gap: 6px;
   }
 
   .map-overlay .win-bar {
@@ -5985,33 +6010,6 @@ html.map-overlay body {
   }
 }
 
-
-/* The way into the map, right under the way in. */
-.hero-cta .hero-map {
-  display: none;
-}
-
-.phone-os:not(.board-on) .hero-cta {
-  display: grid;
-  gap: 8px;
-}
-
-.phone-os:not(.board-on) .hero-cta .hero-map {
-  display: inline-flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  width: 100%;
-  min-height: 44px;
-  padding: 0 16px;
-  background: none;
-  border-radius: 12px;
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.26);
-  color: var(--ink);
-  font-size: 15px;
-  font-weight: 500;
-}
 
 .phone-os:not(.board-on) .phone-home {
   position: relative;
@@ -6039,7 +6037,7 @@ html.map-overlay body {
 }
 
 /* Short screens have no room to spare: the arrow rides on the map strip. */
-@media (min-height: 641px) and (max-height: 780px) {
+@media (min-height: 521px) and (max-height: 780px) {
   .phone-os:not(.board-on) .phone-home {
     padding-bottom: max(10px, env(safe-area-inset-bottom, 0px));
   }

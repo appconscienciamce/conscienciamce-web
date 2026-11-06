@@ -4,7 +4,6 @@ import { CtaButton, Print } from "@/components/editorial";
 import { DesktopFolder, DesktopSticker, DesktopWindow } from "./desktop-window";
 import { StatusGlyphs } from "./glyphs";
 import { MenuBar, type MenuGroup } from "./menu-bar";
-import { ViewMapButton } from "./mobile-chrome";
 import { PhoneHome, type PhoneApp } from "./phone-home";
 import { SoundControl } from "./sound-control";
 import { SystemClock } from "./system-clock";
@@ -50,7 +49,7 @@ export function PhoneShell() {
     { id: "quienes", label: apps.hosts, icon: { kind: "photo", src: portrait } },
     { id: "testimonios", label: apps.testimonials, icon: { kind: "photo", src: proof.gallery[2].image.src! } },
   ];
-  return <PhoneHome apps={grid} mapLabel={os.viewMap} widget={os.mapCard} scrollLabel={os.phone.next} />;
+  return <PhoneHome apps={grid} label={os.chaptersLabel} widget={os.mapCard} scrollLabel={os.phone.next} />;
 }
 
 /** The dark room behind the map. Only present while the board layout is active. */
@@ -149,10 +148,9 @@ export function DesktopShell() {
   );
 }
 
-export function FlowBar({ price, mapLabel }: { price: string | null; mapLabel: string }) {
+export function FlowBar({ price }: { price: string | null }) {
   return (
     <div className="flow-bar" data-flow-bar>
-      <ViewMapButton label={mapLabel} />
       <CtaButton note={price ?? undefined} />
     </div>
   );

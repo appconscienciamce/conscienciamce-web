@@ -6,17 +6,6 @@ import { EDGES, STATIONS, WORLD } from "@/lib/board/layout";
 import { useBoard } from "./board-provider";
 import { ChevronGlyph, MapGlyph } from "./glyphs";
 
-/** Opens the full-screen map from the vertical reading. */
-export function ViewMapButton({ label, className }: { label: string; className?: string }) {
-  const { engine } = useBoard();
-  return (
-    <button type="button" className={className ? `view-map ${className}` : "view-map"} onClick={(e) => engine()?.openOverlay(e.currentTarget)}>
-      <MapGlyph />
-      {label}
-    </button>
-  );
-}
-
 /** The whole board in miniature. */
 export function MapArt() {
   return (

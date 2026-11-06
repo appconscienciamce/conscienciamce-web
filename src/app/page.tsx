@@ -3,6 +3,7 @@ import { BoardProvider } from "@/components/os/board-provider";
 import { DesktopShell, FlowBar, PhoneShell, SystemBar } from "@/components/os/desktop-shell";
 import { MapWindow } from "@/components/os/map-window";
 import { ChapterBar } from "@/components/os/mobile-chrome";
+import { AppBar } from "@/components/os/phone-home";
 import { BoardEdges } from "@/components/board/primitives";
 import {
   AudienceStation,
@@ -38,13 +39,18 @@ export default function Page() {
             <BoardEdges />
             <main>
               <HeroStation />
-              <AudienceStation />
-              <ManifestoStation />
-              <PilarStation />
-              <TwoDaysStation />
-              <OutcomesStation />
-              <HostsStation />
-              <EnrollStation />
+              <div className="canvas">
+                <AppBar title={chapters[1].label} back={os.back} />
+                <div className="canvas-sheet">
+                  <AudienceStation />
+                  <ManifestoStation />
+                  <PilarStation />
+                  <TwoDaysStation />
+                  <OutcomesStation />
+                  <HostsStation />
+                  <EnrollStation />
+                </div>
+              </div>
             </main>
           </MapWindow>
         </div>
@@ -52,7 +58,7 @@ export default function Page() {
 
       <SiteFooter />
 
-      <FlowBar price={price?.label ?? null} mapLabel={os.viewMap} />
+      <FlowBar price={price?.label ?? null} />
     </BoardProvider>
   );
 }

@@ -1,14 +1,13 @@
 import { historyGuard } from "@/lib/board/history-guard";
-import { closeApp, currentApp, HOME, isPhoneOs, motion, openApp } from "@/lib/phone-os";
+import { appWindow, closeApp, currentApp, HOME, isPhoneOs, motion, openApp } from "@/lib/phone-os";
 
 /**
- * The phone reading as one continuous walk. Scrolling past the end of a chapter
- * keeps going: the next one comes up attached to the finger, and the one being
- * left falls behind it. Scrolling up from the top does the same in reverse.
- * Chapters stay apps, so the history and the back gesture work as usual.
+ * The way in and out of the board. From the home screen the window comes up
+ * attached to the finger, and the home screen falls behind it. Scrolling up from
+ * the top of the board does the same in reverse. Inside it the page just scrolls.
  */
 
-/** Finger travel, as a share of the screen, that brings a chapter all the way in. */
+/** Finger travel, as a share of the screen, that brings the window all the way in. */
 const TRAVEL = 0.62;
 /** Released past this point, it goes through. Short of it, it goes back. */
 const COMMIT_AT = 0.36;
@@ -45,7 +44,7 @@ interface Touch {
 interface Pull {
   /** 1 walks forward, -1 back. */
   direction: 1 | -1;
-  /** The chapter on the way in. Nothing means the home screen. */
+  /** The window on the way in. Nothing means the home screen. */
   target: HTMLElement | null;
   /** The window that moves with the finger: the one on top, in both directions. */
   front: HTMLElement;
@@ -74,34 +73,26 @@ function setProgress(active: Pull, progress: number) {
 }
 
 function begin(direction: 1 | -1): Pull | null {
-  const list = chapters();
   const app = currentApp();
-  const index = app ? list.indexOf(app) : 0;
   const home = Array.from(document.querySelectorAll<HTMLElement>(HOME));
+  const animate = (front: HTMLElement) => [paused(front, FRONT), ...home.map((el) => paused(el, BEHIND))];
 
   if (direction > 0) {
-    const target = list[index + 1];
-    if (!target) return null;
+    const target = appWindow();
+    if (app || !target) return null;
     target.setAttribute("data-app-open", "");
     target.style.zIndex = "39";
     target.scrollTop = 0;
-    const behind = app ? [app] : home;
-    return { direction, target, front: target, progress: 0, animations: [paused(target, FRONT), ...behind.map((el) => paused(el, BEHIND))] };
+    return { direction, target, front: target, progress: 0, animations: animate(target) };
   }
 
   if (!app) return null;
-  const target = index > 1 ? list[index - 1] : null;
-  if (target) {
-    target.setAttribute("data-app-open", "");
-    target.scrollTop = target.scrollHeight;
-  }
   app.style.zIndex = "39";
-  const behind = target ? [target] : home;
-  return { direction, target, front: app, progress: 0, animations: [paused(app, FRONT), ...behind.map((el) => paused(el, BEHIND))] };
+  return { direction, target: null, front: app, progress: 0, animations: animate(app) };
 }
 
 function finish(active: Pull, commit: boolean) {
-  const { direction, target, front, animations } = active;
+  const { target, front, animations } = active;
   pull = null;
   front.style.zIndex = "";
   if (!commit) {
@@ -110,7 +101,7 @@ function finish(active: Pull, commit: boolean) {
     return;
   }
   if (target) {
-    openApp(target.id, { instant: true, atEnd: direction < 0 });
+    openApp(chapters()[1].id, { instant: true });
     animations.forEach((animation) => animation.cancel());
     return;
   }
@@ -172,7 +163,7 @@ function onTouchMove(e: TouchEvent) {
     if (Math.hypot(dx, dy) < LOCK_PX) return;
     const direction = dy < 0 ? 1 : -1;
     const atEdge = direction > 0 ? touch.atEnd : touch.atTop;
-    // Sideways belongs to the carousels, and inside a chapter the page scrolls by itself.
+    // Sideways belongs to the carousels, and inside the board the page scrolls by itself.
     if (Math.abs(dx) > Math.abs(dy) || !atEdge || !e.cancelable) {
       touch = null;
       return;

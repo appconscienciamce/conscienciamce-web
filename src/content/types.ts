@@ -106,7 +106,6 @@ export interface OsCopy {
   zoomOut: string;
   zoomReset: string;
   fit: string;
-  viewMap: string;
   closeMap: string;
   back: string;
   readHere: string;

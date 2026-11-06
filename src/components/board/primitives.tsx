@@ -21,7 +21,7 @@ export function Station({
   children: React.ReactNode;
 }) {
   const def = STATIONS[index];
-  const { chapters, os, footer } = bootcamp;
+  const { chapters, os, footer, board } = bootcamp;
   const chapter = chapters[index];
   const next = chapters[index + 1];
   const style: Vars = {
@@ -31,8 +31,8 @@ export function Station({
     "--h": `${def.h}px`,
   };
   return (
-    <section id={def.id} data-station={def.id} aria-labelledby={titleId} className={`st ${className}`} style={style}>
-      <AppBar title={index === 0 ? os.phone.heroWindow : chapter.label} back={os.back} />
+    <section id={def.id} data-station={def.id} data-label={chapter.label} aria-labelledby={titleId} className={`st ${className}`} style={style}>
+      {index === 0 && <AppBar title={os.phone.heroWindow} back={os.back} />}
       <p className="st-tag">
         {chapter.number} — {chapter.label}
       </p>
@@ -43,10 +43,9 @@ export function Station({
       {children}
       {index > 0 &&
         (next ? (
-          <a href={`#${next.id}`} className="app-next">
-            <span>
-              <small>{os.phone.next}</small>
-              {next.label}
+          <a href={`#${next.id}`} className="app-next" aria-label={`${os.phone.next} ${next.label}`}>
+            <span aria-hidden className="app-next-word">
+              {board.path[index]}
             </span>
             <span aria-hidden className="scroll-arrow">
               <ChevronGlyph direction="down" />
