@@ -340,6 +340,7 @@
   margin: -20px -20px -20px;
   overflow: hidden;
   background: var(--paper);
+  border-block: 2px solid var(--ink);
   color: var(--ink);
   rotate: -2.2deg;
 }
@@ -368,9 +369,9 @@
 
 .ed-opening {
   margin: 0;
-  max-width: 11em;
   font-family: var(--font-display);
-  font-size: clamp(34px, 10.2vw, 66px);
+  font-size: clamp(27px, 8.6vw, 60px);
+  text-wrap: balance;
   font-style: italic;
   font-weight: 400;
   line-height: 1.04;
@@ -435,6 +436,7 @@
 }
 
 .phone-os:not(.board-on) .v-current .canvas .st-pilar {
+  padding-bottom: 64px;
   background: #171717;
 }
 
@@ -1092,10 +1094,10 @@
 }
 
 .file-check-text {
-  background: linear-gradient(currentColor, currentColor) 0 56% / 0 1px no-repeat;
+  text-decoration: line-through 1px transparent;
   transition:
-    background-size 0.35s var(--ease-mac),
-    opacity 0.35s;
+    text-decoration-color 0.3s var(--ease-mac),
+    opacity 0.3s;
 }
 
 .file-check [aria-pressed="true"] .file-check-box {
@@ -1108,7 +1110,7 @@
 }
 
 .file-check [aria-pressed="true"] .file-check-text {
-  background-size: 100% 1px;
+  text-decoration-color: currentColor;
   opacity: 0.56;
 }
 
