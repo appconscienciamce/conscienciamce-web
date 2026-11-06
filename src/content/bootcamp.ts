@@ -24,7 +24,7 @@ export const bootcamp: BootcampContent = {
     checkoutUrl: "https://buy.stripe.com/4gMbJ24iOgfQ5AH6htgA901",
     registrationCloses: { at: null, approved: false },
     // `drift`: the bar's count is simulated, from 300 down to about `low`, then back to 300.
-    seats: { total: 300, taken: 0, approved: false, drift: { low: 100 } },
+    seats: { total: 300, taken: 0, approved: true, drift: { low: 100 } },
   },
 
   seo: {
