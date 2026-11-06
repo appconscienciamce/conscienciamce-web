@@ -42,6 +42,27 @@ export function resolveLogistics(): { label: string; value: string; state: GateS
   });
 }
 
+/**
+ * The real close of registration, for the countdown in the system bar. Shown when
+ * approved, or as it is in a draft. Never a made-up date: without one, `null`.
+ */
+export function resolveRegistrationClose(): string | null {
+  const { at, approved } = offer.registrationCloses;
+  if (!at || Number.isNaN(Date.parse(at))) return null;
+  return approved || isDraft ? at : null;
+}
+
+/**
+ * Places left, for the system bar: the cap minus the real registrations. Shown when
+ * approved, or as it is in a draft. With `drift`, the bar counts down from there by
+ * itself to about `low` (lib/seats-drift.ts); without it, it only goes down when `taken` goes up.
+ */
+export function resolveSeats(): { left: number; total: number; low: number | null } | null {
+  const { total, taken, approved, drift } = offer.seats;
+  if (!(total > 0) || !(approved || isDraft)) return null;
+  return { left: Math.max(0, total - Math.max(0, taken)), total, low: drift ? drift.low : null };
+}
+
 /** Checkout is live only with a real URL, an approved offer and a confirmed price. */
 export const checkoutLive = Boolean(offer.checkoutUrl) && offer.status === "approved" && offer.price.approved;
 

@@ -22,6 +22,9 @@ export const bootcamp: BootcampContent = {
       { label: "Grabación", value: "Queda grabado", approved: true },
     ],
     checkoutUrl: "https://buy.stripe.com/4gMbJ24iOgfQ5AH6htgA901",
+    registrationCloses: { at: null, approved: false },
+    // `drift`: the bar's count is simulated, from 300 down to about `low`, then back to 300.
+    seats: { total: 300, taken: 0, approved: false, drift: { low: 100 } },
   },
 
   seo: {
@@ -134,6 +137,18 @@ export const bootcamp: BootcampContent = {
       volume: "Volumen",
     },
     liveBadge: "2 días en vivo",
+    countdown: {
+      label: "Inscripción cierra en",
+      short: "Cierra en",
+      closes: "La inscripción cierra el",
+    },
+    seats: {
+      left: "Quedan",
+      leftOne: "Queda",
+      unit: "plazas",
+      unitOne: "plaza",
+      full: "Cupo completo",
+    },
     windowTitle: "Mapa de creación / Creadores Conscientes",
     openMap: "Abrir el mapa",
     resume: "Continuar en el capítulo",
@@ -165,6 +180,7 @@ export const bootcamp: BootcampContent = {
     phone: {
       heroWindow: "creadores.txt",
       next: "Seguir con",
+      enter: "Scrolleá para entrar",
       apps: {
         para: "Para quién",
         manifesto: "Manifiesto",

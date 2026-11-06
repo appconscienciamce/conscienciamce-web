@@ -19,6 +19,8 @@ const DASH: [number, number] = [4, 2];
 const STROKE = 1.2;
 /** On touch nobody hovers: it shows what it does, then stops spending battery. */
 const TOUCH_SWEEP_SECONDS = 5;
+/** After the first touch, the wait before the letters are drawn: past the start of a gesture. */
+const FIRST_TOUCH_DELAY_MS = 600;
 
 interface Art {
   image: HTMLCanvasElement;
@@ -110,6 +112,13 @@ export function TechText({
     const frame = { x1: 0, y1: 0, x2: 0, y2: 0, alpha: 0, index: -1 };
 
     const measure = document.createElement("canvas").getContext("2d")!;
+
+    // On the phone a window can sit over the hero, or be on its way: the hero is still on
+    // screen to an observer, but nobody sees it. Drawing then only takes frames from the window.
+    const root = document.documentElement;
+    const covered = () => root.hasAttribute("data-app") || root.hasAttribute("data-pulling");
+    const uncovered = new MutationObserver(() => wake());
+    uncovered.observe(root, { attributes: true, attributeFilter: ["data-app", "data-pulling"] });
 
     const setFont = (target: CanvasRenderingContext2D, size: number) => {
       const family = getComputedStyle(container).fontFamily || "serif";
@@ -332,6 +341,7 @@ export function TechText({
 
     const tick = (now: number) => {
       raf = 0;
+      if (covered()) return;
       const dt = Math.min(0.05, Math.max(0.001, (now - last) / 1000));
       last = now;
       // Reading computed styles on every frame forces the browser to recalculate them.
@@ -453,13 +463,15 @@ export function TechText({
         paint.globalAlpha = 1;
       }
       drawFrame(ink);
+      // The plain line steps aside only once this one is drawn: never a blank in between.
+      if (!container.dataset.ready) container.dataset.ready = "true";
 
       const settling = moving || kicks.length > 0 || (frame.alpha > 0.01 && frame.alpha < 0.99);
       if ((active || settling) && visible && alive) raf = requestAnimationFrame(tick);
     };
 
     function wake() {
-      if (raf || !visible || !alive) return;
+      if (raf || !visible || !alive || covered()) return;
       last = performance.now();
       raf = requestAnimationFrame(tick);
     }
@@ -553,14 +565,16 @@ export function TechText({
       resizeObserver.observe(container);
       intersectionObserver.observe(container);
       resize();
-      container.dataset.ready = "true";
     };
     // Drawing the letters is heavy for a phone: the real line waits for the first
     // sign of someone there. If that is a scroll past the hero, nothing gets drawn.
+    // Not in that same moment, though: on the phone that first touch is often the one
+    // opening the board, and the heaviest frame here would land on its first frame.
+    let soon = 0;
     const beginOnce = () => {
       window.removeEventListener("scroll", beginOnce);
       window.removeEventListener("pointerdown", beginOnce);
-      begin();
+      soon = window.setTimeout(begin, FIRST_TOUCH_DELAY_MS);
     };
     if (touch) {
       window.addEventListener("scroll", beginOnce, { passive: true });
@@ -574,6 +588,8 @@ export function TechText({
       delete container.dataset.ready;
       window.removeEventListener("scroll", beginOnce);
       window.removeEventListener("pointerdown", beginOnce);
+      window.clearTimeout(soon);
+      uncovered.disconnect();
       cancelAnimationFrame(raf);
       resizeObserver.disconnect();
       intersectionObserver.disconnect();

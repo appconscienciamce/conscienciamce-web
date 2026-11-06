@@ -5,11 +5,15 @@ import { DesktopFolder, DesktopSticker, DesktopWindow } from "./desktop-window";
 import { StatusGlyphs } from "./glyphs";
 import { MenuBar, type MenuGroup } from "./menu-bar";
 import { PhoneHome, type PhoneApp } from "./phone-home";
+import { isDraft, resolveRegistrationClose, resolveSeats } from "@/lib/offer";
 import { SoundControl } from "./sound-control";
-import { SystemClock } from "./system-clock";
+import { SystemCountdown } from "./system-countdown";
+import { SystemSeats } from "./system-seats";
 
 export function SystemBar() {
   const { os, hero, brand, chapters } = bootcamp;
+  // The places left take the clock's place. Without a cap, the countdown or the clock.
+  const seats = resolveSeats();
   const groups: MenuGroup[] = os.nav.map(({ label, href, items, chapters: withChapters }) => ({
     label,
     href,
@@ -28,7 +32,11 @@ export function SystemBar() {
         <span className="sys-live">{os.liveBadge}</span>
         <SoundControl ui={os.sound} />
         <StatusGlyphs />
-        <SystemClock />
+        {seats ? (
+          <SystemSeats from={seats.left} low={seats.low} copy={os.seats} />
+        ) : (
+          <SystemCountdown closesAt={resolveRegistrationClose()} preview={isDraft} copy={os.countdown} />
+        )}
       </div>
     </header>
   );
@@ -49,7 +57,7 @@ export function PhoneShell() {
     { id: "quienes", label: apps.hosts, icon: { kind: "photo", src: portrait } },
     { id: "testimonios", label: apps.testimonials, icon: { kind: "photo", src: proof.gallery[2].image.src! } },
   ];
-  return <PhoneHome apps={grid} label={os.chaptersLabel} widget={os.mapCard} scrollLabel={os.phone.next} />;
+  return <PhoneHome apps={grid} label={os.chaptersLabel} enterLabel={os.phone.enter} />;
 }
 
 /** The dark room behind the map. Only present while the board layout is active. */

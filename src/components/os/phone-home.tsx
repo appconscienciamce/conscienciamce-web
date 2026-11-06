@@ -4,12 +4,11 @@ import Image from "next/image";
 import { useEffect } from "react";
 import { closeApp, isPhoneOs, openApp, startPhoneOs } from "@/lib/phone-os";
 import { startCanvas } from "@/lib/phone-canvas";
-import { startCarousels } from "@/lib/phone-carousels";
-import { startPull } from "@/lib/phone-pull";
-import { useBoard } from "./board-provider";
-import { ChevronGlyph } from "./glyphs";
+import { startAlbums, startCarousels } from "@/lib/phone-carousels";
+import { startColor } from "@/lib/phone-color";
+import { enterLanding, startPull } from "@/lib/phone-pull";
+import { startReveal } from "@/lib/phone-reveal";
 import { MacFolder } from "./mac-folder";
-import { MapArt } from "./mobile-chrome";
 
 export type PhoneIcon = { kind: "folder" } | { kind: "note" } | { kind: "photo"; src: string };
 
@@ -49,31 +48,25 @@ function AppIcon({ app }: { app: PhoneApp }) {
   );
 }
 
-/** The first screen on a phone: the apps of the bootcamp, on a dark canvas. */
-export function PhoneHome({
-  apps,
-  label,
-  widget,
-  scrollLabel,
-}: {
-  apps: PhoneApp[];
-  label: string;
-  widget: { title: string; text: string };
-  scrollLabel: string;
-}) {
-  const { engine } = useBoard();
-
+/** The first screen on a phone: the hero window and the apps of the bootcamp, on a dark canvas. */
+export function PhoneHome({ apps, label, enterLabel }: { apps: PhoneApp[]; label: string; enterLabel: string }) {
   useEffect(() => {
     if (!isPhoneOs()) return;
     const stopApps = startPhoneOs();
     const stopCanvas = startCanvas();
     const stopPull = startPull();
     const stopCarousels = startCarousels();
+    const stopAlbums = startAlbums();
+    const stopColor = startColor();
+    const stopReveal = startReveal();
     return () => {
       stopApps();
       stopCanvas();
       stopPull();
       stopCarousels();
+      stopAlbums();
+      stopColor();
+      stopReveal();
     };
   }, []);
 
@@ -87,27 +80,17 @@ export function PhoneHome({
         ))}
       </ul>
 
-      <button type="button" className="phone-widget" onClick={(e) => engine()?.openOverlay(e.currentTarget)}>
-        <span className="phone-widget-art">
-          <MapArt />
-        </span>
-        <span className="phone-widget-text">
-          <strong>{widget.title}</strong>
-          <span>{widget.text}</span>
-        </span>
-        <ChevronGlyph direction="right" />
-      </button>
-
+      {/* The same words as on the computer: scrolling is the way in, and this does it for a tap. */}
       <a
         href={`#${apps[0].id}`}
-        className="scroll-arrow phone-scroll"
-        aria-label={`${scrollLabel} ${apps[0].label}`}
+        className="phone-enter"
         onClick={(e) => {
           e.preventDefault();
-          openApp(apps[0].id);
+          enterLanding();
         }}
       >
-        <ChevronGlyph direction="down" />
+        <span aria-hidden className="phone-enter-ring" />
+        {enterLabel}
       </a>
     </nav>
   );

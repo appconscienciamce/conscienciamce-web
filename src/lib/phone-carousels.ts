@@ -197,6 +197,22 @@ class Loop {
   }
 }
 
+/**
+ * The hosts' album turns by itself in CSS. It only rests while nobody can see it:
+ * scrolled away, or with the window closed. Returns what stops the watching.
+ */
+export function startAlbums() {
+  const albums = document.querySelectorAll<HTMLElement>(".photo-orbit");
+  const seen = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => entry.target.toggleAttribute("data-idle", !entry.isIntersecting));
+  });
+  albums.forEach((el) => seen.observe(el));
+  return () => {
+    seen.disconnect();
+    albums.forEach((el) => el.removeAttribute("data-idle"));
+  };
+}
+
 /** Starts every list when it comes into view. Returns what stops them. */
 export function startCarousels() {
   if (!motion()) return () => {};
