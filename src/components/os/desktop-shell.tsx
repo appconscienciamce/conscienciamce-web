@@ -36,9 +36,9 @@ export function SystemBar() {
 
 /** The home screen of the phone reading. */
 export function PhoneShell() {
-  const { os, casePilar, hosts, proof } = bootcamp;
+  const { os, casePilar, hosts } = bootcamp;
   const { apps } = os.phone;
-  const portrait = hosts.people[0].image.src!;
+  const portrait = hosts.people[1].image.src!;
   const grid: PhoneApp[] = [
     { id: "para-quien", label: apps.para, icon: { kind: "folder" } },
     { id: "manifiesto", label: apps.manifesto, icon: { kind: "note" } },
@@ -47,7 +47,7 @@ export function PhoneShell() {
     { id: "dos-dias", label: apps.days, icon: { kind: "folder" } },
     { id: "que-te-llevas", label: apps.outcomes, icon: { kind: "folder" } },
     { id: "quienes", label: apps.hosts, icon: { kind: "photo", src: portrait } },
-    { id: "testimonios", label: apps.testimonials, icon: { kind: "photo", src: proof.gallery[2].image.src! } },
+    { id: "inscripcion", label: apps.enroll, icon: { kind: "ticket" } },
   ];
   return <PhoneHome apps={grid} label={os.chaptersLabel} scrollLabel={os.phone.next} />;
 }

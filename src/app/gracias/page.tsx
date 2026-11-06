@@ -5,7 +5,7 @@ import { Checklist } from "@/components/thanks/checklist";
 import { RoadmapForm } from "@/components/thanks/roadmap-form";
 import { SiteFooter } from "@/components/site-footer";
 import { VideoCard } from "@/components/video-card";
-import { SystemClock } from "@/components/os/system-clock";
+import { SystemCountdown } from "@/components/os/system-countdown";
 import { bootcamp } from "@/content/bootcamp";
 import { thanks } from "@/content/thanks";
 
@@ -62,13 +62,12 @@ function StepWindow({
 }
 
 export default function ThanksPage() {
-  const { hero, checklist, roadmap, whatsapp, videos, upsell } = thanks;
-  const { brand, os } = bootcamp;
+  const { hero, checklist, roadmap, whatsapp, videos } = thanks;
+  const { brand, os, offer } = bootcamp;
   const steps = [
     { id: roadmap.id, label: roadmap.label },
     { id: whatsapp.id, label: whatsapp.label },
     { id: videos.id, label: videos.label },
-    { id: upsell.id, label: upsell.label, optional: checklist.optional },
   ];
 
   return (
@@ -79,7 +78,7 @@ export default function ThanksPage() {
           {bootcamp.hero.programName}
         </span>
         <div className="sys-right">
-          <SystemClock />
+          <SystemCountdown dates={offer.eventDates} copy={os.countdown} />
         </div>
       </header>
 
@@ -114,33 +113,6 @@ export default function ThanksPage() {
               </ul>
             </StepWindow>
 
-            <StepWindow id={upsell.id} number={4} title={upsell.title} text={upsell.text} badge={checklist.optional}>
-              <div className="thanks-upsell">
-                {upsell.videoId ? (
-                  <VideoCard
-                    name={upsell.videoTitle}
-                    videoId={upsell.videoId}
-                    closeLabel={os.closeWindow}
-                    caption={false}
-                    windowTitle={upsell.videoTitle}
-                    playLabel={`Reproducir: ${upsell.videoTitle}`}
-                  />
-                ) : (
-                  <div className="thanks-vsl-empty">
-                    <span aria-hidden className="video-empty-play">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
-                        <path d="M8 5v14l11-7z" />
-                      </svg>
-                    </span>
-                    <p>{upsell.videoPending}</p>
-                  </div>
-                )}
-                <div className="thanks-action">
-                  {upsell.price && upsell.url && <p className="thanks-price">{upsell.price}</p>}
-                  <ActionLink href={upsell.url} label={upsell.cta} unavailable={upsell.unavailable} event="upsell_click" />
-                </div>
-              </div>
-            </StepWindow>
           </div>
         </div>
       </main>

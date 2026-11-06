@@ -4,14 +4,15 @@ import { Piece, Station } from "@/components/board/primitives";
 import { CtaContent } from "@/components/cta-content";
 import { FaqItem } from "@/components/faq-item";
 import { HalftoneImage } from "@/components/halftone-image";
-import { VideoCard } from "@/components/video-card";
+import { EdEnroll, EdHosts } from "./phone-editorial";
 import { REGISTRATION_ANCHOR, checkoutLive, ctaHref, resolveLogistics } from "@/lib/offer";
 
 export function HostsStation() {
-  const { hosts, proof, os } = bootcamp;
+  const { hosts } = bootcamp;
   const [santiago, oriana] = hosts.people;
   return (
     <Station index={6} titleId="hosts-title" className="st-hosts">
+      <EdHosts />
       <Piece x={36} y={34} w={640}>
         <h2 id="hosts-title" className="display-md">
           {hosts.title}
@@ -49,34 +50,16 @@ export function HostsStation() {
         <PhotoStack photos={hosts.album} />
       </Piece>
 
-      <Piece x={700} y={470} w={462} movable className="paper-note note-tape own-brand">
-        <p>
-          <strong>{hosts.ownBrandLead}</strong> <ClaimText id={hosts.ownBrandClaim} />
-        </p>
-        <p>{hosts.ownBrandAfter}</p>
-      </Piece>
-
-      <Piece x={1316} y={30} w={760} id="testimonios">
-        <h3 className="display-sm">{proof.title}</h3>
-        <p className="mono-note">{proof.intro}</p>
-      </Piece>
-      <Piece x={1316} y={140} w={760} as="ul" className="video-grid">
-        {proof.videos.map((video) => (
-          <li key={video.videoId}>
-            <VideoCard name={video.name} videoId={video.videoId} closeLabel={os.closeWindow} />
-          </li>
-        ))}
-      </Piece>
-      <Piece x={2110} y={36} w={340} id="galeria" className="contact-sheet">
-        <h3 className="mono-note">{proof.galleryTitle}</h3>
-        <ul>
-          {proof.gallery.map((item) => (
-            <li key={item.caption} style={{ "--ratio": `${item.image.width} / ${item.image.height}` } as React.CSSProperties}>
-              <Print image={item.image} sizes="(max-width: 900px) 100vw, 110px" className="contact-photo" />
-              <span>{item.caption}</span>
-            </li>
+      <Piece x={1316} y={40} w={1100} id="resultados" className="authority">
+        <h3 className="display-sm">{hosts.authority.title}</h3>
+        <dl>
+          {hosts.authority.items.map((item) => (
+            <div key={item.value}>
+              <dt>{item.value}</dt>
+              <dd>{item.text}</dd>
+            </div>
           ))}
-        </ul>
+        </dl>
       </Piece>
     </Station>
   );
@@ -88,6 +71,7 @@ export function EnrollStation() {
   const logistics = resolveLogistics().slice(1);
   return (
     <Station index={7} titleId="enroll-title" className="st-enroll">
+      <EdEnroll />
       <Piece x={40} y={30} w={760}>
         <h2 id="enroll-title" className="display-md">
           {investment.title}
@@ -99,7 +83,7 @@ export function EnrollStation() {
         ))}
       </Piece>
 
-      <Piece x={40} y={232} w={1120} className="ticket-wrap">
+      <Piece x={40} y={232} w={1120} className="ticket-wrap ph-keep">
         <article className="ticket">
           <div className="ticket-main">
             <p className="ticket-format">{investment.format}</p>
@@ -136,14 +120,7 @@ export function EnrollStation() {
         </article>
       </Piece>
 
-      <Piece x={1320} y={40} w={460} movable className="paper-note note-tape selection-note">
-        <h3>{investment.selectionTitle}</h3>
-        {investment.selection.map((paragraph) => (
-          <p key={paragraph}>{paragraph}</p>
-        ))}
-      </Piece>
-
-      <Piece x={1830} y={24} w={620} id="preguntas" className="faq">
+      <Piece x={1320} y={24} w={620} id="preguntas" className="faq ph-keep">
         <h3 className="display-sm">{faq.title}</h3>
         {faq.items.map((item) => (
           <FaqItem key={item.q} question={item.q} answer={item.a} />

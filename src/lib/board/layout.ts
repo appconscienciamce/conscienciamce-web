@@ -68,7 +68,7 @@ export const STOPS: StopDef[] = [
   { anchor: "dia-2", station: 4, rect: within(4, 1280, 0, 1200, 700) },
   { station: 5, rect: within(5, 0, 0, 1320, 780) },
   { station: 6, rect: within(6, 0, 0, 1200, 680) },
-  { anchor: "testimonios", station: 6, rect: within(6, 1280, 0, 1200, 720) },
+  { anchor: "resultados", station: 6, rect: within(6, 1280, 0, 1200, 720) },
   { station: 7, rect: within(7, 0, 0, 1200, 700) },
   { anchor: "preguntas", station: 7, rect: within(7, 1280, 0, 1200, 680) },
 ];

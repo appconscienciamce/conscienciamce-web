@@ -28,6 +28,19 @@ export const thanks = {
       project: "¿Qué estás construyendo hoy?",
       goal: "¿Qué querés resolver en estos dos días?",
     },
+    file: { name: "mi-roadmap.txt", open: "Abrir", close: "Cerrar", hint: "Dos partes, cuatro preguntas cada una" },
+    next: "Seguir",
+    back: "Volver",
+    partOne: "Parte 1 de 2",
+    partTwo: "Parte 2 de 2",
+    hook: "Ya está la base. Con estas cuatro respuestas llegamos con tu caso mucho más claro.",
+    /** Optional, and they travel inside `goal`: the endpoint stores the four fields above. */
+    more: [
+      { name: "strength", label: "¿Qué hacés mejor que la mayoría?", rows: 2, maxLength: 600 },
+      { name: "revenue", label: "¿Cuánto genera tu negocio por mes hoy?", rows: 1, maxLength: 600 },
+      { name: "tried", label: "¿Qué probaste que no te funcionó?", rows: 2, maxLength: 600 },
+      { name: "future", label: "Si en 12 meses todo sale bien, ¿qué cambió?", rows: 2, maxLength: 600 },
+    ],
     submit: "Enviar mi roadmap",
     sending: "Enviando…",
     sent: "Listo, recibimos tu roadmap.",
@@ -47,30 +60,12 @@ export const thanks = {
 
   videos: {
     id: "videos",
-    label: "Videos para llegar listo",
-    title: "Mirá estos videos antes de empezar",
-    text: "Tres videos de Santiago para llegar al bootcamp con las ideas de base.",
-    items: [
-      { videoId: "3OrfRs_pk_Y", title: "Así genero $64.735/mes con marketing creativo" },
-      { videoId: "8KtuBhCM42A", title: "Cómo gano $50.000 al mes utilizando tecnología espiritual" },
-      { videoId: "gxEd5FQq7kk", title: "Reprogramá así tu identidad para generar $50-100K/mes" },
-    ],
+    label: "Video para llegar listo",
+    title: "Mirá este video antes de empezar",
+    text: "Para llegar al bootcamp con las ideas de base.",
+    items: [{ videoId: "3OrfRs_pk_Y", title: "Así genero $64.735/mes con marketing creativo" }],
   },
 
-  upsell: {
-    id: "llamada",
-    label: "Llamada 1 a 1",
-    title: "Sumá una llamada 1 a 1",
-    text: "Si querés bajar lo del bootcamp a tu negocio en una llamada 1 a 1, mirá este video.",
-    videoTitle: "Llamada 1 a 1",
-    /** YouTube id of the sales video. */
-    videoId: null as string | null,
-    videoPending: "Video próximamente",
-    price: null as string | null,
-    url: null as string | null,
-    cta: "Quiero mi llamada",
-    unavailable: "Las llamadas todavía no están abiertas. Se van a poder pedir desde esta misma página.",
-  },
 };
 
-export type ThanksStep = "roadmap" | "whatsapp" | "videos" | "upsell";
+export type ThanksStep = "roadmap" | "whatsapp" | "videos";

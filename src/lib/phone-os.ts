@@ -38,6 +38,13 @@ export const currentApp = () => current;
 
 export const isPhoneOs = () => root().classList.contains("phone-os") && !root().classList.contains("board-on");
 
+/** Some anchors belong to the board: on a phone their place is held by a `data-phone-anchor`. */
+const landing = (id: string) => {
+  const target = document.getElementById(id);
+  if (target?.getClientRects().length) return target;
+  return document.querySelector<HTMLElement>(`[data-phone-anchor="${id}"]`) ?? target;
+};
+
 const stationOf = (id: string) => document.getElementById(id)?.closest<HTMLElement>("[data-station]") ?? null;
 const isHome = (station: HTMLElement) => station.classList.contains("st-hero");
 
@@ -62,7 +69,7 @@ function hide(win: HTMLElement) {
 }
 
 function reveal(id: string, smooth = false) {
-  document.getElementById(id)?.scrollIntoView({ block: "start", behavior: smooth ? "smooth" : "auto" });
+  landing(id)?.scrollIntoView({ block: "start", behavior: smooth ? "smooth" : "auto" });
 }
 
 function present(id: string, icon: HTMLElement | null, animate: boolean) {

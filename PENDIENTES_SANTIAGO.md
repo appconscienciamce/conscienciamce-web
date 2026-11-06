@@ -7,6 +7,15 @@ Casi todo se edita en `src/content/bootcamp.ts`, sin tocar el diseño.
 
 ---
 
+## Rama `feedback-santiago`: para confirmar antes de publicarla
+
+- [ ] **Números de autoridad** (`hosts.authority`): USD 2,6M, USD 50K, +2 años, 20K y «Miles» salen del audio de Santiago, dichos sin certeza. Confirmar cifra y a qué se refiere cada una.
+- [ ] **Horario**: 15:00 ARG, 13:00 COL y 19:00 ESP es «lo más probable» según el audio.
+- [ ] **Grabación**: el audio dice que queda grabado «para tener o comprar». Hoy la página dice que queda grabado, sin costo aparte.
+- [ ] **Preguntas nuevas del roadmap** (`thanks.ts`): las cuatro de la segunda parte son propuesta.
+- [ ] **VIP** (USD 197, hasta 50 lugares): sin construir, falta definirlo. La llamada 1 a 1 ya no está.
+- [ ] **Fotos en alta**: casi todas miden 400×600 y en un celular se notan.
+
 ## 1. Decisiones de oferta
 
 | # | Qué decidir | Estado actual | Dónde se cambia |

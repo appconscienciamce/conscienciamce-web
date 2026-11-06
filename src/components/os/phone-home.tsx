@@ -4,12 +4,13 @@ import Image from "next/image";
 import { useEffect } from "react";
 import { closeApp, isPhoneOs, openApp, startPhoneOs } from "@/lib/phone-os";
 import { startCanvas } from "@/lib/phone-canvas";
-import { startCarousels } from "@/lib/phone-carousels";
+import { startColor } from "@/lib/phone-color";
+import { startReveal } from "@/lib/phone-reveal";
 import { startPull } from "@/lib/phone-pull";
 import { ChevronGlyph } from "./glyphs";
 import { MacFolder } from "./mac-folder";
 
-export type PhoneIcon = { kind: "folder" } | { kind: "note" } | { kind: "photo"; src: string };
+export type PhoneIcon = { kind: "folder" } | { kind: "note" } | { kind: "ticket" } | { kind: "photo"; src: string };
 
 export interface PhoneApp {
   id: string;
@@ -23,6 +24,8 @@ function Icon({ icon }: { icon: PhoneIcon }) {
       return <Image src={icon.src} alt="" width={132} height={132} quality={90} />;
     case "note":
       return <span aria-hidden className="phone-icon-note" />;
+    case "ticket":
+      return <span aria-hidden className="phone-icon-ticket" />;
     default:
       return <MacFolder />;
   }
@@ -62,12 +65,14 @@ export function PhoneHome({
     const stopApps = startPhoneOs();
     const stopCanvas = startCanvas();
     const stopPull = startPull();
-    const stopCarousels = startCarousels();
+    const stopReveal = startReveal();
+    const stopColor = startColor();
     return () => {
       stopApps();
       stopCanvas();
       stopPull();
-      stopCarousels();
+      stopReveal();
+      stopColor();
     };
   }, []);
 

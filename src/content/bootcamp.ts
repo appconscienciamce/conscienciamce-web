@@ -17,7 +17,8 @@ export const bootcamp: BootcampContent = {
     logistics: [
       { label: "Formato", value: "2 días en vivo", approved: true },
       { label: "Fechas", value: "17 y 18 de noviembre", approved: true },
-      { label: "Horario", value: "Te lo enviamos por mail", approved: true },
+      { label: "Horario", value: "15:00 ARG · 13:00 COL · 19:00 ESP", approved: true },
+      { label: "Lugares", value: "300", approved: true },
       { label: "Plataforma", value: "Zoom", approved: true },
       { label: "Grabación", value: "Queda grabado", approved: true },
     ],
@@ -95,6 +96,7 @@ export const bootcamp: BootcampContent = {
 
   hero: {
     eyebrow: "Bootcamp — Creadores Conscientes",
+    dateLine: "17 y 18 de noviembre · 15:00 ARG · Online",
     programName: "Creadores Conscientes",
     title: { before: "Marketing creativo ", italic: "y", after: " auténtico" },
     promise:
@@ -118,7 +120,7 @@ export const bootcamp: BootcampContent = {
           { label: "Día 1", href: "#dos-dias" },
           { label: "Día 2", href: "#dia-2" },
           { label: "Caso Pilar", href: "#caso-pilar" },
-          { label: "Testimonios", href: "#testimonios" },
+          { label: "Resultados", href: "#resultados" },
           { label: "Preguntas", href: "#preguntas" },
         ],
       },
@@ -136,6 +138,7 @@ export const bootcamp: BootcampContent = {
     },
     liveBadge: "2 días en vivo",
     countdown: {
+      dates: "17 y 18 nov",
       left: "Faltan",
       leftOne: "Falta",
       unit: "días",
@@ -182,7 +185,7 @@ export const bootcamp: BootcampContent = {
         days: "Dos días",
         outcomes: "Qué te llevás",
         hosts: "Nosotros",
-        testimonials: "Testimonios",
+        enroll: "Inscripción",
       },
     },
     mapCard: {
@@ -391,28 +394,6 @@ export const bootcamp: BootcampContent = {
     decisions: ["Qué decir", "Cómo posicionarte", "Qué crear", "Qué vender", "Qué construir a continuación"],
   },
 
-  proof: {
-    title: "Quienes ya trabajaron con Santiago",
-    intro: "Testimonios de personas que trabajaron con Santiago en Consciencia MCE.",
-    videos: [
-      { name: "Lucas", videoId: "4KqPW5kEa-s" },
-      { name: "Gonzalo", videoId: "ElEjtQWUoM4" },
-      { name: "Nicolás", videoId: "DFetk1jh2Ac" },
-      { name: "Denise", videoId: "Z9HtD4_jbUc" },
-      { name: "Laureano", videoId: "8u1wb35RSbA" },
-      { name: "Daniel", videoId: "2XxkjfUsiwE" },
-    ],
-    galleryTitle: "Trabajo cercano, 1 a 1",
-    gallery: [
-      { image: { src: "/media/clients/santiago-daniel.webp", alt: "Santiago Gómez junto a Daniel", width: 350, height: 600 }, caption: "Con Daniel" },
-      { image: { src: "/media/clients/santiago-lucas.webp", alt: "Santiago Gómez junto a Lucas", width: 350, height: 600 }, caption: "Con Lucas" },
-      { image: { src: "/media/clients/santi-aida.webp", alt: "Videollamada de trabajo de Santiago Gómez con Aida", width: 1000, height: 1333 }, caption: "Con Aida" },
-      { image: { src: "/media/clients/santiago-cris.webp", alt: "Santiago Gómez junto a Cris", width: 350, height: 600 }, caption: "Con Cris" },
-      { image: { src: "/media/clients/santiago-yasmari.webp", alt: "Santiago Gómez junto a Yasmari", width: 350, height: 600 }, caption: "Con Yasmari" },
-      { image: { src: "/media/clients/santi-daniviola.webp", alt: "Santiago Gómez junto a Dani Viola", width: 1000, height: 1778 }, caption: "Con Dani Viola" },
-    ],
-  },
-
   hosts: {
     title: "Somos Santiago Gómez y Oriana Safenreider",
     trackRecord: {
@@ -425,10 +406,6 @@ export const bootcamp: BootcampContent = {
       "Trabajamos cerca de las personas, comprendiendo su visión y participando en las decisiones que dan forma a sus proyectos.",
       "Nuestra forma de construir integra consciencia, identidad y negocio. Nos importa qué quiere expresar esa persona, el impacto que quiere generar y la vida que está construyendo mientras desarrolla su empresa.",
     ],
-    ownBrandLead: "También lo aplicamos a nuestra propia marca.",
-    ownBrandClaim: "santiagoMonthly",
-    ownBrandAfter:
-      "En este bootcamp vamos a compartir tanto esa experiencia como lo que aprendimos construyendo detrás de otras marcas.",
     people: [
       {
         name: "Santiago Gómez",
@@ -451,6 +428,16 @@ export const bootcamp: BootcampContent = {
         },
       },
     ],
+    authority: {
+      title: "Lo que logramos",
+      items: [
+        { value: "USD 2,6M", text: "para creadores conscientes" },
+        { value: "USD 50K", text: "de promedio mensual en 2026" },
+        { value: "+2 años", text: "sosteniendo esos números" },
+        { value: "20K", text: "seguidores" },
+        { value: "Miles", text: "de clientes en academias" },
+      ],
+    },
     album: [
       { src: "/media/hosts/noche.webp", alt: "Santiago y Oriana de noche, con una bebé en brazos", width: 400, height: 600 },
       { src: "/media/hosts/lago.webp", alt: "Santiago con una bebé en brazos, frente a un lago", width: 540, height: 720 },
@@ -462,10 +449,6 @@ export const bootcamp: BootcampContent = {
     title: "Dos días para acceder a nuestro criterio, visión y perspectiva",
     paragraphs: [
       "Durante estos dos días vamos a compartir el criterio con el que trabajamos en nuestros procesos 1 a 1, abriendo un caso real y las decisiones que hubo detrás de su construcción.",
-    ],
-    selectionTitle: "También queremos conocer qué estás construyendo.",
-    selection: [
-      "Elegimos pocos proyectos para involucrarnos de forma cercana, poniendo nuestra visión, tiempo y recursos en trabajar junto a la persona. Entre quienes participen puede haber proyectos con los que tenga sentido seguir construyendo después del bootcamp.",
     ],
     ticket: {
       name: "Creadores Conscientes",
@@ -492,11 +475,64 @@ export const bootcamp: BootcampContent = {
         q: "¿Es en vivo? ¿Queda grabado?",
         a: "Son 2 días en vivo por Zoom con Santiago y Oriana, y queda grabado.",
       },
-      {
-        q: "¿Qué pasa después del bootcamp?",
-        a: "Elegimos pocos proyectos para involucrarnos de forma cercana. Entre quienes participen puede haber proyectos con los que tenga sentido seguir construyendo.",
-      },
     ],
+  },
+
+  editorial: {
+    audience: {
+      headline: { before: "No funciona para ", italic: "todos", after: " lo mismo." },
+      photo: {
+        name: "tu-camino.jpg",
+        image: { src: "/media/santiago/img8.webp", alt: "Santiago Gómez de espaldas frente a una pirámide", width: 400, height: 600 },
+      },
+    },
+    manifesto: {
+      inline: { src: "/media/santiago/img6.webp", alt: "", width: 400, height: 600 },
+      tired: {
+        name: "sesion-en-vivo.jpg",
+        image: { src: "/media/santiago/img20.webp", alt: "Sesión de trabajo por videollamada de Santiago Gómez con un grupo", width: 400, height: 600 },
+      },
+    },
+    days: {
+      title: { before: "Dos", italic: "días" },
+      schedule: "15:00 Argentina · 13:00 Colombia · 19:00 España",
+      more: "Qué vemos este día",
+      dates: [
+        {
+          day: "17",
+          label: "Martes 17 de noviembre",
+          photo: { name: "dia-1.jpg", image: { src: "/media/santiago/img13.webp", alt: "Santiago Gómez explicando frente a una pizarra", width: 400, height: 600 } },
+        },
+        {
+          day: "18",
+          label: "Miércoles 18 de noviembre",
+          photo: { name: "dia-2.jpg", image: { src: "/media/santiago/img4.webp", alt: "Santiago Gómez hablando con micrófono frente a un grupo, en un evento en vivo", width: 400, height: 600 } },
+        },
+      ],
+    },
+    kit: {
+      cards: [
+        { tag: "Día 1", title: "Desarmar el juego", text: "Recuperás criterio y reconocés desde dónde querés construir." },
+        { tag: "Día 2", title: "Posicionamiento, comunicación y negocio", text: "Tu diferencial, tu posición y cómo se expresa en tu mensaje, tu contenido y tu oferta." },
+        { tag: "Personalizado", title: "Tu roadmap", text: "Lo completás antes de empezar, para llegar con un punto de partida claro." },
+        { tag: "Caso real", title: "El expediente de Pilar", text: "El proceso completo, de punta a punta: qué funcionó, qué no y qué decisiones se tomaron." },
+        { tag: "Zoom", title: "La grabación", text: "Los dos días quedan grabados." },
+      ],
+    },
+    gains: [
+      { src: "/media/items/1.webp", alt: "", width: 410, height: 643 },
+      { src: "/media/items/2.webp", alt: "", width: 403, height: 643 },
+      { src: "/media/items/3.webp", alt: "", width: 394, height: 643 },
+      { src: "/media/items/4.webp", alt: "", width: 404, height: 643 },
+      { src: "/media/items/5.webp", alt: "", width: 396, height: 643 },
+    ],
+    hosts: {
+      lead: { name: "santiago-y-oriana.jpg", image: { src: "/media/hosts/noche.webp", alt: "Santiago y Oriana de noche, con una bebé en brazos", width: 400, height: 600 } },
+      side: { name: "ascensor.jpg", image: { src: "/media/hosts/santiago-oriana.webp", alt: "Santiago Gómez y Oriana Safenreider en un ascensor, con una bebé en brazos", width: 400, height: 600 } },
+      trio: { name: "equipo.jpg", image: { src: "/media/santiago/img22.webp", alt: "Santiago Gómez junto a dos personas de su equipo", width: 400, height: 600 } },
+      numbers: "Lo que logramos",
+    },
+    enroll: { seats: "300", seatsText: "lugares disponibles" },
   },
 
   footer: {

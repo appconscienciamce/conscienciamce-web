@@ -7,6 +7,7 @@ import { CrumpleNote } from "@/components/crumple-note";
 import { TechText } from "@/components/tech-text";
 import { resolveClaim } from "@/lib/offer";
 import { ManifestoBoard } from "./manifesto-board";
+import { EdAudience, EdDays, EdManifesto, EdOutcomes, EdPilar } from "./phone-editorial";
 
 export function HeroStation() {
   const { hero, os } = bootcamp;
@@ -15,6 +16,7 @@ export function HeroStation() {
     <Station index={0} titleId="hero-title" className="st-hero">
       <Piece x={44} y={36} w={950}>
         <p className="eyebrow">{hero.eyebrow}</p>
+        <p className="hero-date">{hero.dateLine}</p>
       </Piece>
       <Piece x={40} y={74} w={970}>
         <h1 id="hero-title" className="hero-title">
@@ -57,6 +59,7 @@ export function AudienceStation() {
   const floor = resolveClaim(audience.floor);
   return (
     <Station index={1} titleId="audience-title" className="st-audience">
+      <EdAudience />
       <Piece x={36} y={36} w={1060}>
         <h2 id="audience-title" className="display-xl">
           {audience.title}
@@ -122,6 +125,7 @@ export function ManifestoStation() {
   const { manifesto } = bootcamp;
   return (
     <Station index={2} titleId="manifesto-title" className="st-manifesto">
+      <EdManifesto />
       <ManifestoBoard
         strikes={manifesto.strikes}
         sortLabel={manifesto.sortLabel}
@@ -162,6 +166,7 @@ export function PilarStation() {
   const figure = resolveClaim(casePilar.figure);
   return (
     <Station index={3} titleId="pilar-title" className="st-pilar">
+      <EdPilar />
       <Piece x={36} y={40} w={640}>
         <p className="eyebrow">{casePilar.kicker}</p>
         <h2 id="pilar-title" className="display-lg">
@@ -176,7 +181,7 @@ export function PilarStation() {
         <p className="lead">{figure.state === "fallback" ? casePilar.lead.fallback : casePilar.lead.withClaim}</p>
       </Piece>
 
-      <Piece x={716} y={72} w={460} h={540} className="folder">
+      <Piece x={716} y={72} w={460} h={540} className="folder ph-keep">
         <a href="#expediente" aria-label={`${casePilar.folderCta}: ${casePilar.folderLabel}`}>
           <span className="folder-back" />
           <span className="folder-sheet folder-sheet-a" />
@@ -226,7 +231,7 @@ export function PilarStation() {
         </a>
       </Piece>
 
-      <Piece x={1280} y={20} w={600} as="article" id="expediente" className="doc-paper file-doc">
+      <Piece x={1280} y={20} w={600} as="article" id="expediente" className="doc-paper file-doc ph-keep">
         <header className="file-head">
           <p className="eyebrow">{casePilar.fileTitle}</p>
           <p className="file-case">{casePilar.folderName}</p>
@@ -256,7 +261,7 @@ export function PilarStation() {
         <Print image={casePilar.image} sizes="170px" className="clip-photo" />
       </Piece>
 
-      <Piece x={1914} y={236} w={356} className="file-review">
+      <Piece x={1914} y={236} w={356} className="file-review ph-keep">
         <h3>{casePilar.reviewTitle}</h3>
         <ul>
           {casePilar.review.map((item) => (
@@ -274,6 +279,7 @@ export function TwoDaysStation() {
   const [dayOne, dayTwo] = twoDays.days;
   return (
     <Station index={4} titleId="days-title" className="st-days">
+      <EdDays />
       <Piece x={36} y={40} w={320}>
         <h2 id="days-title" className="display-lg">
           {twoDays.title}
@@ -360,6 +366,7 @@ export function OutcomesStation() {
   const { outcomes } = bootcamp;
   return (
     <Station index={5} titleId="outcomes-title" className="st-outcomes">
+      <EdOutcomes />
       <Piece x={0} y={0} w={1320} h={780} className="outcome-lines">
         <svg viewBox="0 0 1320 780" aria-hidden fill="none">
           <path d={zigzag()} pathLength={1} />

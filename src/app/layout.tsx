@@ -3,6 +3,7 @@ import { Averia_Serif_Libre, DM_Mono, DM_Sans } from "next/font/google";
 import { bootcamp } from "@/content/bootcamp";
 import { BOARD_QUERY, REDUCED_MOTION_QUERY } from "@/lib/board/layout";
 import "./globals.css";
+import "./editorial.css";
 
 // All families are SIL Open Font License, self-hosted by next/font.
 const averia = Averia_Serif_Libre({

@@ -24,19 +24,16 @@ export function SystemCountdown({ dates, copy }: { dates: { start: string; end: 
   if (moment.phase === "over") return <SystemClock />;
 
   const one = moment.phase === "before" && moment.days === 1;
-  const label = moment.phase === "live" ? copy.today : one ? copy.leftOne : copy.left;
-  const value = moment.phase === "live" ? `${copy.day} ${moment.day}` : String(moment.days);
-  const unit = moment.phase === "live" ? "" : one ? copy.unitOne : copy.unit;
+  const live = moment.phase === "live";
+  const label = live ? copy.today : copy.dates;
+  const value = live ? `${copy.day} ${moment.day}` : `${one ? copy.leftOne : copy.left} ${moment.days} ${one ? copy.unitOne : copy.unit}`;
 
   return (
-    <span className="sys-pill" role="timer" aria-label={now ? `${label} ${value} ${unit}`.trim() : undefined} data-pending={now ? undefined : ""}>
+    <span className="sys-pill" role="timer" aria-label={now ? `${label}: ${value}` : undefined} data-pending={now ? undefined : ""}>
       <span aria-hidden className="sys-pill-dot" />
       <span aria-hidden className="sys-pill-text">
         <span className="sys-pill-label">{label}</span>
-        <span className="sys-pill-value">
-          {value}
-          {unit && <span className="sys-pill-unit">{unit}</span>}
-        </span>
+        <span className="sys-pill-value">{value}</span>
       </span>
     </span>
   );
