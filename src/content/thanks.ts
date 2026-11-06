@@ -20,8 +20,8 @@ export const thanks = {
     label: "Tu roadmap",
     title: "Completá tu roadmap",
     text: "Contanos dónde estás hoy para llegar a los dos días con un punto de partida claro.",
-    /** Where answers go. Until it exists the form cannot be sent. */
-    endpoint: null as string | null,
+    /** Where answers go: the Consciencia MCE backend. Without one the form cannot be sent. */
+    endpoint: "https://api.conscienciamce.com/api/bootcamp/roadmap" as string | null,
     fields: {
       name: "Nombre y apellido",
       email: "Email",

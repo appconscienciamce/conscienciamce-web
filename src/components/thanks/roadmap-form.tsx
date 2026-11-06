@@ -72,19 +72,19 @@ export function RoadmapForm({ copy }: { copy: RoadmapCopy }) {
     <form className="roadmap-form" method="post" onSubmit={onSubmit} aria-busy={status === "sending"}>
       <label>
         <span>{fields.name}</span>
-        <input name="name" type="text" autoComplete="name" required />
+        <input name="name" type="text" autoComplete="name" maxLength={200} required />
       </label>
       <label>
         <span>{fields.email}</span>
-        <input name="email" type="email" autoComplete="email" required />
+        <input name="email" type="email" autoComplete="email" maxLength={320} required />
       </label>
       <label className="is-wide">
         <span>{fields.project}</span>
-        <textarea name="project" rows={3} required />
+        <textarea name="project" rows={3} maxLength={5000} required />
       </label>
       <label className="is-wide">
         <span>{fields.goal}</span>
-        <textarea name="goal" rows={3} required />
+        <textarea name="goal" rows={3} maxLength={5000} required />
       </label>
       <div className="roadmap-actions">
         <button type="submit" className="btn btn-solid" disabled={!endpoint || !ready || status === "sending"}>

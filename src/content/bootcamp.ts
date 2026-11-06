@@ -11,17 +11,17 @@ import type { BootcampContent } from "./types";
  */
 export const bootcamp: BootcampContent = {
   offer: {
-    status: "draft",
+    status: "approved",
     approvedClaims: ["salesTrackRecord", "millionsInSales", "pilarRevenue", "revenueFloor", "santiagoMonthly"],
     price: { currency: "USD", amount: 36.9, label: "USD 36,90", approved: true },
     logistics: [
       { label: "Formato", value: "2 días en vivo", approved: true },
-      { label: "Fechas", value: null, approved: false },
-      { label: "Horario", value: null, approved: false },
-      { label: "Plataforma", value: null, approved: false },
-      { label: "Grabación", value: null, approved: false },
+      { label: "Fechas", value: "Te las enviamos por mail", approved: true },
+      { label: "Horario", value: "Te lo enviamos por mail", approved: true },
+      { label: "Plataforma", value: "Zoom", approved: true },
+      { label: "Grabación", value: "Queda grabado", approved: true },
     ],
-    checkoutUrl: null,
+    checkoutUrl: "https://buy.stripe.com/4gMbJ24iOgfQ5AH6htgA901",
   },
 
   seo: {
@@ -481,7 +481,7 @@ export const bootcamp: BootcampContent = {
       },
       {
         q: "¿Es en vivo? ¿Queda grabado?",
-        a: "Son 2 días en vivo con Santiago y Oriana.",
+        a: "Son 2 días en vivo por Zoom con Santiago y Oriana, y queda grabado.",
       },
       {
         q: "¿Qué pasa después del bootcamp?",

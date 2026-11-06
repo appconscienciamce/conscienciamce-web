@@ -3,7 +3,7 @@
 Lista mínima de decisiones y materiales que faltan para publicar la landing.
 Casi todo se edita en `src/content/bootcamp.ts`, sin tocar el diseño.
 
-**Importante:** desde esta versión la página no muestra marcas de «pendiente». Esta lista es el único lugar donde queda registrado qué falta aprobar. Mientras `offer.status` sea `"draft"`, la página no se indexa y muestra los datos tal cual. Al pasar a `"approved"`, toda cifra no aprobada se reemplaza por un texto seguro.
+**Importante:** desde esta versión la página no muestra marcas de «pendiente». Esta lista es el único lugar donde queda registrado qué falta aprobar. `offer.status` está en `"approved"` desde el 6 de noviembre de 2026: la página se indexa, los botones van a Stripe, toda cifra no aprobada se reemplaza por un texto seguro y las filas sin dato no se muestran.
 
 ---
 
@@ -11,11 +11,11 @@ Casi todo se edita en `src/content/bootcamp.ts`, sin tocar el diseño.
 
 | # | Qué decidir | Estado actual | Dónde se cambia |
 |---|---|---|---|
-| 1 | **Precio final** (trabajado: USD 36,90) | Se muestra sin marca | `offer.price` → `approved: true` |
-| 2 | **Fechas del evento** | «A confirmar» | `offer.logistics` |
-| 3 | **Horario y zona horaria** | «A confirmar» | `offer.logistics` |
-| 4 | **Plataforma del vivo y si hay grabación** | «A confirmar». El FAQ todavía no lo aclara | `offer.logistics` y `faq` |
-| 5 | **Link de Stripe** | El botón del ticket no compra: muestra «Todavía no abrimos las inscripciones» | `offer.checkoutUrl` + `offer.status: "approved"` |
+| 1 | **Precio final** | Aprobado: USD 36,90 | `offer.price` |
+| 2 | **Fechas del evento** | Sin dato. La página dice «Te las enviamos por mail», y el mail de confirmación promete mandarlas antes de empezar | `offer.logistics` |
+| 3 | **Horario y zona horaria** | Sin dato. La página dice «Te lo enviamos por mail» | `offer.logistics` |
+| 4 | **Plataforma y grabación** | Resuelto: Zoom, queda grabado | `offer.logistics` y `faq` |
+| 5 | **Link de Stripe** | Resuelto: los botones llevan al Payment Link | `offer.checkoutUrl` |
 | 6 | **Nombre final** («Creadores Conscientes» es nombre de trabajo; también apareció «Referente») | «Creadores Conscientes» | `hero`, `seo`, `investment.ticket.name` |
 | 7 | **Voz del texto**: la promesa dice «voy a ayudarte», pero son dos facilitadores | Como en la fuente | `hero.promise` |
 | 8 | **Frase madre**: «Convertí lo que sabés…» o «Aprendé cómo se construyen…» | Sin usar todavía | `hero` |
@@ -52,8 +52,8 @@ Aprobadas el 4 de noviembre de 2026, junto con el precio de USD 36,90: `pilarRev
 
 Todo se carga en `src/content/thanks.ts`. Mientras falte el dato, ese control queda apagado y lo dice: nadie llega a un link roto y no se pierde ninguna respuesta.
 
-- [ ] **Destino del formulario del roadmap** → `roadmap.endpoint`. Sin esto no se puede enviar. Falta decidir adónde van las respuestas.
-  El destino debe responder 2xx recién después de guardar y no redirigir: esa respuesta es lo que le dice a la persona que su roadmap llegó. Cada envío lleva un `submissionId`, que se repite en los reintentos y sirve para descartar duplicados.
+- [x] **Destino del formulario del roadmap**: `POST https://api.conscienciamce.com/api/bootcamp/roadmap`, en el backend de MCE 2.0. Guarda en `bootcamp_roadmaps` y avisa al equipo por mail. Necesita la migración `0090` aplicada.
+  El destino responde 2xx recién después de guardar y no redirige: esa respuesta es lo que le dice a la persona que su roadmap llegó. Cada envío lleva un `submissionId`, que se repite en los reintentos y sirve para descartar duplicados.
 - [ ] **Quién puede ver `/gracias`:** hoy la ve cualquiera que tenga la URL. Al conectar Stripe, verificar la sesión de pago antes de mostrarla.
 - [ ] **Cifras en los títulos de los videos:** $64.735/mes, $50.000 al mes y $50-100K/mes salen de los títulos públicos de YouTube, no de las cifras aprobadas de la landing. Confirmar que estén bien en esta página.
 - [ ] **Preguntas del roadmap**: las cuatro son propuesta mía. Confirmar cuáles van.
@@ -72,9 +72,11 @@ Todo se carga en `src/content/thanks.ts`. Mientras falte el dato, ese control qu
 
 ## 6. Para activar la venta (fuera de esta iteración)
 
-- [ ] Checkout real en Stripe → `offer.checkoutUrl`.
-- [ ] Términos, privacidad y política de reembolso: páginas publicadas y enlazadas antes de cobrar.
+- [x] Checkout real en Stripe → `offer.checkoutUrl`.
+- [ ] Términos, privacidad y política de reembolso: quedaron afuera por decisión del 6 de noviembre de 2026. Stripe pide el link de privacidad para mandar sus recibos automáticos.
 - [ ] Actualizar `next`: `npm audit` marca 2 vulnerabilidades (1 alta, 1 moderada) en esa dependencia.
-- [ ] Definir la URL de `/gracias` como destino después del pago en Stripe.
-- [ ] Emails de confirmación y recordatorio, comunidad de WhatsApp.
+- [ ] Confirmar que el Payment Link redirige a `/gracias` después del pago.
+- [x] Email de confirmación: lo manda el backend de MCE 2.0 por Resend al recibir el webhook.
+- [ ] Webhook de Stripe: crearlo apuntando a `https://api.conscienciamce.com/api/webhooks/stripe-bootcamp` con el evento `checkout.session.completed`, y cargar en Vercel `BOOTCAMP_STRIPE_WEBHOOK_SECRET` y `BOOTCAMP_PAYMENT_LINK_ID`.
+- [ ] Email con fechas, horario y link de Zoom, y recordatorios: necesitan esos datos. Comunidad de WhatsApp.
 - [ ] Pixel y analítica. Los eventos ya existen (`hero_cta_click`, `board_open`, `chapter_view`, `pricing_cta_click`), falta conectarlos a un destino.
