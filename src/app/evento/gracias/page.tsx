@@ -8,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function EventoThanksPage() {
-  return <ThanksPage variant="evento" />;
+  return <ThanksPage variant="classic" />;
 }

@@ -70,7 +70,7 @@ export function PhoneHome({
   apps: PhoneApp[];
   label: string;
   scrollLabel: string;
-  /** The page at `/evento`: pieces arrive and photos light up, instead of sideways lists. */
+  /** The current page: pieces arrive and photos light up, instead of sideways lists. */
   editorial?: boolean;
 }) {
   useEffect(() => {

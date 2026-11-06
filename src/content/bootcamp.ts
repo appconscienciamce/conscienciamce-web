@@ -460,7 +460,6 @@ export const bootcamp: BootcampContent = {
         { value: "USD 2,6M", text: "para creadores conscientes" },
         { value: "USD 50K", text: "de promedio mensual en 2026" },
         { value: "+2 años", text: "sosteniendo esos números" },
-        { value: "20K", text: "seguidores" },
         { value: "Miles", text: "de clientes en academias" },
       ],
     },
@@ -514,17 +513,17 @@ export const bootcamp: BootcampContent = {
 
   editorial: {
     navResults: "Resultados",
+    pilarName: "Pilar Sousa",
     audience: {
       headline: { before: "No funciona para ", italic: "todos", after: " lo mismo." },
-      photo: {
-        name: "tu-camino.jpg",
-        image: { src: "/media/santiago/img8.webp", alt: "Santiago Gómez de espaldas frente a una pirámide", width: 400, height: 600 },
-      },
     },
     manifesto: {
-      inline: { src: "/media/santiago/img6.webp", alt: "", width: 400, height: 600 },
+      thesis: {
+        name: "parecer.jpg",
+        image: { src: "/media/items/1.webp", alt: "Collage de una cabeza de mármol partida, con nubes dentro", width: 410, height: 643 },
+      },
       tired: {
-        name: "sesion-en-vivo.jpg",
+        name: "trabajo-real.jpg",
         image: { src: "/media/santiago/img20.webp", alt: "Sesión de trabajo por videollamada de Santiago Gómez con un grupo", width: 400, height: 600 },
       },
     },
@@ -535,11 +534,13 @@ export const bootcamp: BootcampContent = {
       dates: [
         {
           day: "17",
+          month: "/11",
           label: "Martes 17 de noviembre",
           photo: { name: "dia-1.jpg", image: { src: "/media/santiago/img13.webp", alt: "Santiago Gómez explicando frente a una pizarra", width: 400, height: 600 } },
         },
         {
           day: "18",
+          month: "/11",
           label: "Miércoles 18 de noviembre",
           photo: { name: "dia-2.jpg", image: { src: "/media/santiago/img4.webp", alt: "Santiago Gómez hablando con micrófono frente a un grupo, en un evento en vivo", width: 400, height: 600 } },
         },
@@ -563,19 +564,23 @@ export const bootcamp: BootcampContent = {
     ],
     hosts: {
       lead: { name: "santiago-y-oriana.jpg", image: { src: "/media/hosts/noche.webp", alt: "Santiago y Oriana de noche, con una bebé en brazos", width: 400, height: 600 } },
-      side: { name: "ascensor.jpg", image: { src: "/media/hosts/santiago-oriana.webp", alt: "Santiago Gómez y Oriana Safenreider en un ascensor, con una bebé en brazos", width: 400, height: 600 } },
-      trio: { name: "equipo.jpg", image: { src: "/media/santiago/img22.webp", alt: "Santiago Gómez junto a dos personas de su equipo", width: 400, height: 600 } },
+      side: { name: "familia.jpg", image: { src: "/media/hosts/santiago-oriana.webp", alt: "Santiago Gómez y Oriana Safenreider en un ascensor, con una bebé en brazos", width: 400, height: 600 } },
+      pile: [
+        { src: "/media/hosts/lago.webp", alt: "Santiago con una bebé en brazos, frente a un lago", width: 540, height: 720 },
+        { src: "/media/hosts/bosque.webp", alt: "Santiago junto a una camioneta, en el bosque", width: 400, height: 600 },
+        { src: "/media/santiago/img8.webp", alt: "Santiago Gómez frente a una pirámide", width: 400, height: 600 },
+      ],
+      pileLabel: "Fotos de Santiago: tocá una para verla",
       numbers: "Lo que logramos",
     },
     enroll: {
       seats: "300",
-      seatsText: "lugares disponibles",
+      seatsText: "lugares en la sala. Ni uno más.",
       rows: [
         { label: "Fechas", value: "17 y 18 de noviembre" },
         { label: "Horario", value: "15:00 ARG · 13:00 COL · 19:00 ESP" },
         { label: "Lugares", value: "300" },
         { label: "Plataforma", value: "Zoom" },
-        { label: "Grabación", value: "Queda grabado" },
       ],
       /** The FAQ here leaves out the question about choosing projects. */
       faqItems: 3,

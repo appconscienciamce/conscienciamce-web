@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import { Landing } from "@/components/landing";
 
 export const metadata: Metadata = {
-  // A version under review: only people with the link should reach it.
+  // The previous version, kept for later: only people with the link should reach it.
   robots: { index: false, follow: false },
 };
 
 export default function EventoPage() {
-  return <Landing variant="evento" />;
+  return <Landing variant="classic" />;
 }

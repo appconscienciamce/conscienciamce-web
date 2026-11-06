@@ -8,7 +8,7 @@ import { VideoCard } from "@/components/video-card";
 import { SystemClock } from "@/components/os/system-clock";
 import { SystemCountdown } from "@/components/os/system-countdown";
 import { bootcamp } from "@/content/bootcamp";
-import { thanks, thanksEvento } from "@/content/thanks";
+import { thanks, thanksCurrent } from "@/content/thanks";
 import type { Variant } from "@/content/types";
 
 function StepWindow({
@@ -57,28 +57,28 @@ function StepWindow({
   );
 }
 
-/** The thank-you page. `/evento/gracias` has the roadmap as a closed file, one video and no call. */
+/** The thank-you page: the roadmap as a closed file, one video and no call. `/evento/gracias` keeps the previous one. */
 export function ThanksPage({ variant }: { variant: Variant }) {
-  const evento = variant === "evento";
+  const current = variant === "current";
   const { hero, checklist, roadmap, whatsapp, videos, upsell } = thanks;
   const { brand, os, offer } = bootcamp;
-  const video = evento ? { ...videos, ...thanksEvento.videos, items: videos.items.slice(0, thanksEvento.videos.count) } : videos;
+  const video = current ? { ...videos, ...thanksCurrent.videos, items: videos.items.slice(0, thanksCurrent.videos.count) } : videos;
   const steps = [
     { id: roadmap.id, label: roadmap.label },
     { id: whatsapp.id, label: whatsapp.label },
     { id: videos.id, label: video.label },
-    ...(evento ? [] : [{ id: upsell.id, label: upsell.label, optional: checklist.optional }]),
+    ...(current ? [] : [{ id: upsell.id, label: upsell.label, optional: checklist.optional }]),
   ];
 
   return (
-    <div className={evento ? "thanks-shell evento" : "thanks-shell"}>
+    <div className={current ? "thanks-shell v-current" : "thanks-shell"}>
       <header className="sys-bar">
         <span className="sys-brand">
           <Image src={brand.mark.src!} alt="" width={brand.mark.width} height={brand.mark.height} />
           {bootcamp.hero.programName}
         </span>
         <div className="sys-right">
-          {evento ? <SystemCountdown dates={offer.eventDates} copy={os.countdown} dated /> : <SystemClock />}
+          {current ? <SystemCountdown dates={offer.eventDates} copy={os.countdown} dated /> : <SystemClock />}
         </div>
       </header>
 
@@ -94,7 +94,7 @@ export function ThanksPage({ variant }: { variant: Variant }) {
 
           <div className="thanks-steps">
             <StepWindow id={roadmap.id} number={1} title={roadmap.title} text={roadmap.text} tone="paper">
-              {evento ? <RoadmapFile copy={{ ...roadmap, ...thanksEvento }} /> : <RoadmapForm copy={roadmap} />}
+              {current ? <RoadmapFile copy={{ ...roadmap, ...thanksCurrent }} /> : <RoadmapForm copy={roadmap} />}
             </StepWindow>
 
             <StepWindow id={whatsapp.id} number={2} title={whatsapp.title} text={whatsapp.text}>
@@ -113,7 +113,7 @@ export function ThanksPage({ variant }: { variant: Variant }) {
               </ul>
             </StepWindow>
 
-            {!evento && (
+            {!current && (
               <StepWindow id={upsell.id} number={4} title={upsell.title} text={upsell.text} badge={checklist.optional}>
                 <div className="thanks-upsell">
                   {upsell.videoId ? (

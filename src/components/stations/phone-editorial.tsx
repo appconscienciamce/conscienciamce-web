@@ -3,6 +3,7 @@ import { ClaimText, Print, Rich } from "@/components/editorial";
 import type { Img } from "@/content/types";
 import { resolveClaim } from "@/lib/offer";
 import { KitStack } from "./kit-stack";
+import { DayMore, PhotoPile } from "./phone-touch";
 
 /**
  * The phone reading, section by section. The board keeps its own pieces; these only
@@ -25,7 +26,7 @@ function Shot({ image, name, sizes, className = "", position }: { image: Img; na
 
 export function EdAudience() {
   const { audience, editorial } = bootcamp;
-  const { headline, photo } = editorial.audience;
+  const { headline } = editorial.audience;
   const floor = resolveClaim(audience.floor);
   return (
     <div className="ed ed-paper ed-audience">
@@ -34,7 +35,6 @@ export function EdAudience() {
         <em>{headline.italic}</em>
         {headline.after}
       </h2>
-      <Shot image={photo.image} name={photo.name} sizes="70vw" className="ed-audience-shot" position="50% 62%" />
       <p className="ed-lead ed-r">{audience.intro}</p>
       <section className="ed-fit ed-r">
         <h3>{audience.fitTitle}</h3>
@@ -63,18 +63,16 @@ export function EdAudience() {
 
 export function EdManifesto() {
   const { manifesto, editorial } = bootcamp;
-  const { inline, tired } = editorial.manifesto;
+  const { thesis, tired } = editorial.manifesto;
   const words = manifesto.strikes.map((word) => <span key={word}>{word}</span>);
   return (
     <div className="ed ed-dark ed-manifesto">
       <h2 className="ed-thesis ed-r">
         {manifesto.thesis.before}
-        <span aria-hidden className="ed-chip">
-          <Print image={inline} sizes="110px" />
-        </span>{" "}
         <mark>{manifesto.thesis.highlight}</mark>
         {manifesto.thesis.after}
       </h2>
+      <Shot image={thesis.image} name={thesis.name} sizes="92vw" className="ed-thesis-shot" position="50% 24%" />
       <p className="ed-counter ed-r">{manifesto.counter}</p>
 
       <div aria-hidden className="ed-strikes">
@@ -85,7 +83,7 @@ export function EdManifesto() {
       </div>
 
       <h3 className="ed-opening ed-r">{manifesto.opening}</h3>
-      <Shot image={tired.image} name={tired.name} sizes="62vw" className="ed-tired-shot" />
+      <Shot image={tired.image} name={tired.name} sizes="92vw" className="ed-tired-shot" position="50% 62%" />
       <ol className="ed-tired">
         {manifesto.tiredOf.map((line) => (
           <li key={line} className="ed-r">
@@ -132,15 +130,15 @@ export function EdDays() {
           <article key={day.number} className={`ed-day ${i === 0 ? "ed-dark" : "ed-paper"}`} data-phone-anchor={i === 1 ? "dia-2" : undefined}>
             <p aria-hidden className="ed-day-n ed-r">
               {dated.day}
+              <small>{dated.month}</small>
             </p>
-            <Shot image={dated.photo.image} name={dated.photo.name} sizes="64vw" className="ed-day-shot" />
+            <Shot image={dated.photo.image} name={dated.photo.name} sizes="86vw" className="ed-day-shot" position={i === 0 ? "50% 58%" : "50% 66%"} />
             <p className="ed-kicker ed-r">
               {day.number} · {dated.label}
             </p>
             <h3 className="ed-title ed-r">{day.title}</h3>
             <p className="ed-lead ed-r">{day.summary}</p>
-            <details className="ed-more ed-r">
-              <summary>{editorial.days.more}</summary>
+            <DayMore label={editorial.days.more}>
               <ul>
                 {day.items.map((item, n) => (
                   <li key={n}>
@@ -148,7 +146,7 @@ export function EdDays() {
                   </li>
                 ))}
               </ul>
-            </details>
+            </DayMore>
           </article>
         );
       })}
@@ -177,23 +175,25 @@ export function EdOutcomes() {
 
 export function EdHosts() {
   const { hosts, editorial } = bootcamp;
-  const { lead, side, trio, numbers } = editorial.hosts;
+  const { lead, side, pile, pileLabel, numbers } = editorial.hosts;
   return (
     <div className="ed ed-hosts">
       <div className="ed-dark ed-hosts-top">
         <div className="ed-hosts-shots">
-          <Shot image={lead.image} name={lead.name} sizes="66vw" className="ed-hosts-lead" />
-          <Shot image={side.image} name={side.name} sizes="44vw" className="ed-hosts-side" />
+          <Shot image={lead.image} name={lead.name} sizes="80vw" className="ed-hosts-lead" position="50% 56%" />
+          <Shot image={side.image} name={side.name} sizes="46vw" className="ed-hosts-side" position="50% 46%" />
         </div>
-        <h2 className="ed-huge ed-r">
-          {hosts.people[0].name} <em>y</em> {hosts.people[1].name}
+        <h2 className="ed-title ed-names ed-r">
+          {hosts.people[0].name}
+          <br />
+          <em>y</em> {hosts.people[1].name}
         </h2>
         <p className="ed-lead ed-r">
           {hosts.trackRecord.before}
           <ClaimText id={hosts.trackRecord.claim} />
           {hosts.trackRecord.after}
         </p>
-        <Shot image={trio.image} name={trio.name} sizes="58vw" className="ed-hosts-trio" />
+        <PhotoPile photos={pile} label={pileLabel} />
         {hosts.paragraphs.map((paragraph) => (
           <p key={paragraph} className="ed-body ed-r">
             {paragraph}
@@ -220,10 +220,13 @@ export function EdEnroll() {
   return (
     <div className="ed ed-dark ed-enroll">
       <h2 className="ed-title ed-r">{investment.title}</h2>
-      <p className="ed-seats ed-r">
-        <strong>{editorial.enroll.seats}</strong>
-        {editorial.enroll.seatsText}
-      </p>
+      <div className="ed-seats ed-r">
+        <span aria-hidden className="ed-room" />
+        <p>
+          <strong>{editorial.enroll.seats}</strong>
+          {editorial.enroll.seatsText}
+        </p>
+      </div>
     </div>
   );
 }

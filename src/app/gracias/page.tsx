@@ -9,5 +9,5 @@ export const metadata: Metadata = {
 };
 
 export default function GraciasPage() {
-  return <ThanksPage variant="live" />;
+  return <ThanksPage variant="current" />;
 }

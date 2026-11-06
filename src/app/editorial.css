@@ -24,12 +24,12 @@
 }
 
 /* No more cards on a board: one continuous page inside the window. */
-.phone-os:not(.board-on) .evento .canvas-sheet {
+.phone-os:not(.board-on) .v-current .canvas-sheet {
   padding: 0 0 calc(84px + env(safe-area-inset-bottom, 0px));
   background: var(--bg);
 }
 
-.phone-os:not(.board-on) .evento .canvas .st {
+.phone-os:not(.board-on) .v-current .canvas .st {
   width: 100%;
   margin: 0;
   padding: 0;
@@ -41,15 +41,15 @@
   transform: none;
 }
 
-.phone-os:not(.board-on) .evento .canvas .st > :not(.ed):not(.ph-keep):not(.app-end) {
+.phone-os:not(.board-on) .v-current .canvas .st > :not(.ed):not(.ph-keep):not(.app-end) {
   display: none;
 }
 
-.phone-os:not(.board-on) .evento .canvas .st[id] {
+.phone-os:not(.board-on) .v-current .canvas .st[id] {
   scroll-margin-top: 44px;
 }
 
-.phone-os:not(.board-on) .evento .canvas .app-end {
+.phone-os:not(.board-on) .v-current .canvas .app-end {
   padding: 28px 20px 8px;
   background: var(--bg);
 }
@@ -113,7 +113,7 @@
 }
 
 .ed-giant {
-  font-size: clamp(92px, 33vw, 220px);
+  font-size: clamp(66px, 21vw, 140px);
   line-height: 0.84;
   letter-spacing: -0.05em;
 }
@@ -204,12 +204,12 @@
 }
 
 .shot .print {
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 16 / 10;
 }
 
 .shot .print img,
 .ed-gains .print img,
-.ed-chip .print img {
+.pile .print img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -226,12 +226,6 @@
 
 .ed-audience {
   padding-bottom: 72px;
-}
-
-.ed-audience-shot {
-  width: 72%;
-  margin: 30px 0 0 auto;
-  rotate: 1.4deg;
 }
 
 .ed-fit,
@@ -322,20 +316,6 @@
   box-decoration-break: clone;
 }
 
-.ed-chip {
-  display: inline-block;
-  width: 1.5em;
-  height: 0.78em;
-  margin: 0 0.04em;
-  overflow: hidden;
-  vertical-align: -0.03em;
-  border-radius: 999px;
-}
-
-.ed-chip .print {
-  height: 100%;
-}
-
 .ed-counter {
   margin: 26px 0 0;
   font-family: var(--font-display);
@@ -384,12 +364,6 @@
   font-weight: 400;
   line-height: 1.04;
   letter-spacing: -0.02em;
-}
-
-.ed-tired-shot {
-  width: 58%;
-  margin: 26px 0 0 auto;
-  rotate: -1.6deg;
 }
 
 .ed-tired {
@@ -449,11 +423,11 @@
   white-space: nowrap;
 }
 
-.phone-os:not(.board-on) .evento .canvas .st-pilar {
+.phone-os:not(.board-on) .v-current .canvas .st-pilar {
   background: #171717;
 }
 
-.phone-os:not(.board-on) .evento .canvas .st-pilar > .ph-keep {
+.phone-os:not(.board-on) .v-current .canvas .st-pilar > .ph-keep {
   width: auto;
   margin-inline: var(--gutter-out, clamp(18px, 5.4vw, 40px));
 }
@@ -488,7 +462,7 @@
 }
 
 .ed-day-shot {
-  width: 62%;
+  width: 88%;
   margin: 0 0 26px auto;
   rotate: 1.2deg;
 }
@@ -504,55 +478,6 @@
 
 .ed-day .ed-lead {
   margin-top: 14px;
-}
-
-.ed-more {
-  margin-top: 18px;
-  border-top: 1px solid var(--hair);
-  border-bottom: 1px solid var(--hair);
-}
-
-.ed-more summary {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  min-height: 48px;
-  font-size: 15px;
-  font-weight: 500;
-  list-style: none;
-  cursor: pointer;
-}
-
-.ed-more summary::-webkit-details-marker {
-  display: none;
-}
-
-.ed-more summary::after {
-  content: "+";
-  font-family: var(--font-mono);
-  font-size: 20px;
-  transition: rotate 0.3s var(--ease-mac);
-}
-
-.ed-more[open] summary::after {
-  rotate: 45deg;
-}
-
-.ed-more ul {
-  margin: 0;
-  padding: 0 0 14px;
-  list-style: none;
-}
-
-.ed-more li {
-  padding: 7px 0;
-  font-size: 15px;
-  line-height: 1.42;
-  color: var(--soft);
-}
-
-.ed-more li strong {
-  color: var(--text-strong, inherit);
 }
 
 /* ---------------- 05 What you take with you ---------------- */
@@ -684,22 +609,16 @@
 }
 
 .ed-hosts-lead {
-  width: 70%;
+  width: 84%;
   rotate: -1.5deg;
 }
 
 .ed-hosts-side {
   position: absolute;
   right: 0;
-  bottom: -18px;
-  width: 44%;
+  bottom: -30px;
+  width: 48%;
   rotate: 2.2deg;
-}
-
-.ed-hosts-trio {
-  width: 62%;
-  margin: 28px 0 8px auto;
-  rotate: 1.3deg;
 }
 
 .ed-numbers {
@@ -736,29 +655,11 @@
   padding-bottom: 20px;
 }
 
-.ed-seats {
-  display: flex;
-  align-items: baseline;
-  gap: 12px;
-  margin: 26px 0 0;
-  font-size: 16px;
-  color: var(--text-2);
-}
-
-.ed-seats strong {
-  font-family: var(--font-display);
-  font-size: 68px;
-  font-weight: 400;
-  line-height: 1;
-  letter-spacing: -0.04em;
-  color: var(--text);
-}
-
-.phone-os:not(.board-on) .evento .canvas .st-enroll {
+.phone-os:not(.board-on) .v-current .canvas .st-enroll {
   background: var(--bg);
 }
 
-.phone-os:not(.board-on) .evento .canvas .st-enroll > .ph-keep {
+.phone-os:not(.board-on) .v-current .canvas .st-enroll > .ph-keep {
   width: auto;
   margin-inline: clamp(14px, 4vw, 40px);
 }
@@ -946,12 +847,347 @@
 }
 
 /* The date takes the name of the bootcamp less room in the bar. */
-.evento .sys-pill-value {
+.v-current .sys-pill-value {
   font-family: var(--font-body);
   letter-spacing: 0;
 }
 
-.evento .sys-pill-unit {
+.v-current .sys-pill-unit {
   margin-left: 0.3em;
   font-family: var(--font-body);
+}
+
+/* ---------------- Thesis and work photos, lying down ---------------- */
+
+.ed-thesis-shot,
+.ed-tired-shot {
+  width: 100%;
+  margin-top: 30px;
+}
+
+.ed-thesis-shot {
+  rotate: -0.9deg;
+}
+
+.ed-tired-shot {
+  rotate: 0.8deg;
+}
+
+/* ---------------- The date beside the big number ---------------- */
+
+.ed-day-n small {
+  margin-left: 0.04em;
+  font-size: 0.26em;
+  letter-spacing: -0.02em;
+}
+
+/* ---------------- The fold of each day ---------------- */
+
+.ed-more {
+  margin-top: 14px;
+  border-bottom: 1px solid var(--hair);
+}
+
+.ed-more > button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 44px;
+  color: var(--soft);
+  font-size: 14px;
+  text-align: left;
+}
+
+.ed-more-mark {
+  width: 7px;
+  height: 7px;
+  margin: -3px 3px 0 0;
+  border-right: 1px solid currentColor;
+  border-bottom: 1px solid currentColor;
+  rotate: 45deg;
+  transition: rotate 0.5s var(--ease-mac), margin 0.5s var(--ease-mac);
+}
+
+.ed-more[data-open] .ed-more-mark {
+  margin-top: 4px;
+  rotate: 225deg;
+}
+
+.ed-more-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows 0.55s var(--ease-mac),
+    opacity 0.55s var(--ease-mac);
+}
+
+.ed-more-body > div {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.ed-more[data-open] .ed-more-body {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.ed-more ul {
+  margin: 0;
+  padding: 0 0 14px;
+  list-style: none;
+}
+
+.ed-more li {
+  padding: 6px 0;
+  font-size: 15px;
+  line-height: 1.42;
+  color: var(--soft);
+}
+
+/* ---------------- Names, in two lines ---------------- */
+
+.ed-names {
+  font-size: clamp(27px, 9.1vw, 62px);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  text-wrap: nowrap;
+}
+
+/* ---------------- The pile of clipped photos ---------------- */
+
+.pile {
+  position: relative;
+  height: 96vw;
+  max-height: 600px;
+  margin: 34px 0 10px;
+  padding: 0;
+  list-style: none;
+}
+
+.pile li {
+  position: absolute;
+  width: 72%;
+  transition:
+    translate 0.5s var(--ease-mac),
+    rotate 0.5s var(--ease-mac),
+    scale 0.5s var(--ease-mac);
+}
+
+.pile button {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 6px;
+  background: var(--paper);
+  border-radius: 3px;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.5);
+}
+
+.pile .print {
+  aspect-ratio: 5 / 4;
+  overflow: hidden;
+}
+
+.pile .paperclip {
+  position: absolute;
+  top: -14px;
+  left: 18px;
+  width: 15px;
+  color: #c9c9c5;
+}
+
+.pile [data-photo="0"] { top: 0; left: 0; z-index: 1; rotate: -3deg; }
+.pile [data-photo="1"] { top: 22%; left: 28%; z-index: 2; rotate: 2.5deg; }
+.pile [data-photo="2"] { top: 44%; left: 7%; z-index: 3; rotate: -1.5deg; }
+
+.pile li[data-top] {
+  z-index: 4;
+  rotate: 0deg;
+  scale: 1.16;
+  translate: 0 -4%;
+}
+
+.pile [data-photo="0"][data-top] { translate: 19% 20%; }
+.pile [data-photo="1"][data-top] { translate: -10% -2%; }
+.pile [data-photo="2"][data-top] { translate: 12% -22%; }
+
+.pile li[data-top] .print img {
+  filter: none;
+}
+
+/* ---------------- Dots on everything white ---------------- */
+
+.v-current {
+  --dots: radial-gradient(circle, rgba(21, 21, 21, 0.15) 0.8px, transparent 1.1px);
+}
+
+.ed-thesis mark,
+.ed-note,
+.ed-strikes,
+.kit [data-card="1"],
+.kit [data-card="3"],
+.v-current .ticket,
+.v-current .doc-paper {
+  background-image: var(--dots);
+  background-size: 6px 6px;
+}
+
+/* ---------------- Pilar's eight layers join up ---------------- */
+
+.file-layers.ed-r li:nth-child(1) { --i: 0; }
+.file-layers.ed-r li:nth-child(2) { --i: 1; }
+.file-layers.ed-r li:nth-child(3) { --i: 2; }
+.file-layers.ed-r li:nth-child(4) { --i: 3; }
+.file-layers.ed-r li:nth-child(5) { --i: 4; }
+.file-layers.ed-r li:nth-child(6) { --i: 5; }
+.file-layers.ed-r li:nth-child(7) { --i: 6; }
+.file-layers.ed-r li:nth-child(8) { --i: 7; }
+
+.file-layers.ed-r li::before {
+  background: var(--ink);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 0.42s var(--ease-mac) calc(0.3s + var(--i) * 0.2s);
+}
+
+.file-layers.ed-r span {
+  transition:
+    background 0.3s var(--ease-mac) calc(0.3s + var(--i) * 0.2s),
+    color 0.3s var(--ease-mac) calc(0.3s + var(--i) * 0.2s);
+}
+
+.file-layers.ed-r[data-in] li::before {
+  transform: none;
+}
+
+.file-layers.ed-r[data-in] span {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+/* ---------------- What we will review, to cross out ---------------- */
+
+.file-check {
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line-strong);
+}
+
+.file-review .file-check li {
+  display: block;
+  padding: 0;
+}
+
+.file-review .file-check li::before {
+  display: none;
+}
+
+.file-check button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 44px;
+  color: inherit;
+  font-size: 18px;
+  text-align: left;
+}
+
+.file-check-box {
+  position: relative;
+  flex: none;
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--text-3);
+  border-radius: 4px;
+  transition: background 0.25s var(--ease-mac);
+}
+
+.file-check-box::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 9px;
+  height: 5px;
+  border-left: 1.5px solid var(--bg);
+  border-bottom: 1.5px solid var(--bg);
+  opacity: 0;
+  transform: rotate(-45deg) scale(0.6);
+  transition:
+    opacity 0.2s,
+    transform 0.25s var(--ease-mac);
+}
+
+.file-check-text {
+  background: linear-gradient(currentColor, currentColor) 0 56% / 0 1px no-repeat;
+  transition:
+    background-size 0.35s var(--ease-mac),
+    opacity 0.35s;
+}
+
+.file-check [aria-pressed="true"] .file-check-box {
+  background: var(--text);
+}
+
+.file-check [aria-pressed="true"] .file-check-box::after {
+  opacity: 1;
+  transform: rotate(-45deg);
+}
+
+.file-check [aria-pressed="true"] .file-check-text {
+  background-size: 100% 1px;
+  opacity: 0.56;
+}
+
+/* ---------------- The room: one dot for each place ---------------- */
+
+.ed-seats {
+  margin-top: 28px;
+}
+
+.ed-room {
+  display: block;
+  aspect-ratio: 30 / 10;
+  background-image: radial-gradient(circle at center, var(--text) 32%, transparent 36%);
+  background-size: calc(100% / 30) 10%;
+  opacity: 0.86;
+}
+
+.ed-seats p {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 2px 12px;
+  margin: 16px 0 0;
+  font-size: 17px;
+  color: var(--text-2);
+}
+
+.ed-seats strong {
+  font-family: var(--font-display);
+  font-size: 68px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--text);
+}
+
+/* ---------------- Room between the ticket and the questions ---------------- */
+
+.phone-os:not(.board-on) .v-current .canvas .st-enroll > .faq {
+  margin-top: 76px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .file-layers.ed-r li::before {
+    transform: none;
+  }
+
+  .file-layers.ed-r span {
+    background: var(--ink);
+    color: var(--paper);
+  }
 }

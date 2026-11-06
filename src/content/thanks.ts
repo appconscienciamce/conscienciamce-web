@@ -73,8 +73,8 @@ export const thanks = {
   },
 };
 
-/** What the page at `/evento/gracias` does differently. */
-export const thanksEvento = {
+/** What the current thank-you page does differently from the one kept at `/evento/gracias`. */
+export const thanksCurrent = {
   file: { name: "mi-roadmap.txt", open: "Abrir", close: "Cerrar", hint: "Dos partes, cuatro preguntas cada una" },
   next: "Seguir",
   back: "Volver",

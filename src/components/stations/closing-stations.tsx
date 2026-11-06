@@ -14,7 +14,7 @@ export function HostsStation({ variant }: { variant: Variant }) {
   const [santiago, oriana] = hosts.people;
   return (
     <Station index={6} titleId="hosts-title" className="st-hosts">
-      {variant === "evento" && <EdHosts />}
+      {variant === "current" && <EdHosts />}
       <Piece x={36} y={34} w={640}>
         <h2 id="hosts-title" className="display-md">
           {hosts.title}
@@ -52,7 +52,7 @@ export function HostsStation({ variant }: { variant: Variant }) {
         <PhotoStack photos={hosts.album} />
       </Piece>
 
-      {variant === "evento" ? (
+      {variant === "current" ? (
         <Piece x={1316} y={40} w={1100} id="testimonios" className="authority">
           <h3 className="display-sm">{hosts.authority.title}</h3>
           <dl>
@@ -103,13 +103,13 @@ export function HostsStation({ variant }: { variant: Variant }) {
 
 export function EnrollStation({ variant }: { variant: Variant }) {
   const { investment, cta, faq, hero, editorial } = bootcamp;
-  const evento = variant === "evento";
+  const current = variant === "current";
   // The first row is the format, already printed on the ticket.
-  const logistics = evento ? editorial.enroll.rows : resolveLogistics().slice(1);
-  const questions = evento ? faq.items.slice(0, editorial.enroll.faqItems) : faq.items;
+  const logistics = current ? editorial.enroll.rows : resolveLogistics().slice(1);
+  const questions = current ? faq.items.slice(0, editorial.enroll.faqItems) : faq.items;
   return (
     <Station index={7} titleId="enroll-title" className="st-enroll">
-      {evento && <EdEnroll />}
+      {current && <EdEnroll />}
       <Piece x={40} y={30} w={760}>
         <h2 id="enroll-title" className="display-md">
           {investment.title}
@@ -158,7 +158,7 @@ export function EnrollStation({ variant }: { variant: Variant }) {
         </article>
       </Piece>
 
-      {!evento && (
+      {!current && (
         <Piece x={1320} y={40} w={460} movable className="paper-note note-tape selection-note">
           <h3>{investment.selectionTitle}</h3>
           {investment.selection.map((paragraph) => (
@@ -167,7 +167,7 @@ export function EnrollStation({ variant }: { variant: Variant }) {
         </Piece>
       )}
 
-      <Piece x={evento ? 1320 : 1830} y={24} w={620} id="preguntas" className="faq ph-keep">
+      <Piece x={current ? 1320 : 1830} y={24} w={620} id="preguntas" className="faq ph-keep">
         <h3 className="display-sm">{faq.title}</h3>
         {questions.map((item) => (
           <FaqItem key={item.q} question={item.q} answer={item.a} />

@@ -71,8 +71,8 @@ export type Inline = string | { strong: string };
 export type RichParagraph = Inline[];
 
 /** Image slot. `src: null` renders a labelled placeholder, never a stand-in face. */
-/** Which version of the page: the live one at `/`, or the one at `/evento`. */
-export type Variant = "live" | "evento";
+/** Which version of the page: the current one at `/`, or the previous one, kept at `/evento`. */
+export type Variant = "classic" | "current";
 
 export interface Img {
   src: string | null;
@@ -266,20 +266,21 @@ export interface BootcampContent {
     format: string;
   };
   faq: { title: string; items: { q: string; a: string }[] };
-  /** Only the page at `/evento` reads this. */
+  /** Only the current page reads this. */
   editorial: {
     navResults: string;
-    audience: { headline: { before: string; italic: string; after: string }; photo: { name: string; image: Img } };
-    manifesto: { inline: Img; tired: { name: string; image: Img } };
+    pilarName: string;
+    audience: { headline: { before: string; italic: string; after: string } };
+    manifesto: { thesis: { name: string; image: Img }; tired: { name: string; image: Img } };
     days: {
       title: { before: string; italic: string };
       schedule: string;
       more: string;
-      dates: { day: string; label: string; photo: { name: string; image: Img } }[];
+      dates: { day: string; month: string; label: string; photo: { name: string; image: Img } }[];
     };
     kit: { cards: { tag: string; title: string; text: string }[] };
     gains: Img[];
-    hosts: { lead: { name: string; image: Img }; side: { name: string; image: Img }; trio: { name: string; image: Img }; numbers: string };
+    hosts: { lead: { name: string; image: Img }; side: { name: string; image: Img }; pile: Img[]; pileLabel: string; numbers: string };
     enroll: { seats: string; seatsText: string; rows: { label: string; value: string }[]; faqItems: number };
   };
   footer: { line: string; copyright: string };

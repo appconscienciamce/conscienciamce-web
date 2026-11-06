@@ -9,6 +9,7 @@ import { resolveClaim } from "@/lib/offer";
 import type { Variant } from "@/content/types";
 import { ManifestoBoard } from "./manifesto-board";
 import { EdAudience, EdDays, EdManifesto, EdOutcomes, EdPilar } from "./phone-editorial";
+import { CheckList } from "./phone-touch";
 
 export function HeroStation({ variant }: { variant: Variant }) {
   const { hero, os } = bootcamp;
@@ -17,7 +18,7 @@ export function HeroStation({ variant }: { variant: Variant }) {
     <Station index={0} titleId="hero-title" className="st-hero">
       <Piece x={44} y={36} w={950}>
         <p className="eyebrow">{hero.eyebrow}</p>
-        {variant === "evento" && <p className="hero-date">{hero.dateLine}</p>}
+        {variant === "current" && <p className="hero-date">{hero.dateLine}</p>}
       </Piece>
       <Piece x={40} y={74} w={970}>
         <h1 id="hero-title" className="hero-title">
@@ -60,7 +61,7 @@ export function AudienceStation({ variant }: { variant: Variant }) {
   const floor = resolveClaim(audience.floor);
   return (
     <Station index={1} titleId="audience-title" className="st-audience">
-      {variant === "evento" && <EdAudience />}
+      {variant === "current" && <EdAudience />}
       <Piece x={36} y={36} w={1060}>
         <h2 id="audience-title" className="display-xl">
           {audience.title}
@@ -126,7 +127,7 @@ export function ManifestoStation({ variant }: { variant: Variant }) {
   const { manifesto } = bootcamp;
   return (
     <Station index={2} titleId="manifesto-title" className="st-manifesto">
-      {variant === "evento" && <EdManifesto />}
+      {variant === "current" && <EdManifesto />}
       <ManifestoBoard
         strikes={manifesto.strikes}
         sortLabel={manifesto.sortLabel}
@@ -163,11 +164,13 @@ export function ManifestoStation({ variant }: { variant: Variant }) {
 }
 
 export function PilarStation({ variant }: { variant: Variant }) {
-  const { casePilar } = bootcamp;
+  const { casePilar, editorial } = bootcamp;
   const figure = resolveClaim(casePilar.figure);
+  const current = variant === "current";
+  const name = current ? editorial.pilarName : casePilar.folderName;
   return (
     <Station index={3} titleId="pilar-title" className="st-pilar">
-      {variant === "evento" && <EdPilar />}
+      {variant === "current" && <EdPilar />}
       <Piece x={36} y={40} w={640}>
         <p className="eyebrow">{casePilar.kicker}</p>
         <h2 id="pilar-title" className="display-lg">
@@ -195,7 +198,7 @@ export function PilarStation({ variant }: { variant: Variant }) {
               <span>{casePilar.fileTitle}</span>
               <span>{casePilar.kicker}</span>
             </span>
-            <span className="folder-name">{casePilar.folderName}</span>
+            <span className="folder-name">{name}</span>
             <span className="folder-stamp">
               <svg viewBox="0 0 120 120" aria-hidden>
                 <defs>
@@ -235,7 +238,7 @@ export function PilarStation({ variant }: { variant: Variant }) {
       <Piece x={1280} y={20} w={600} as="article" id="expediente" className="doc-paper file-doc ph-keep">
         <header className="file-head">
           <p className="eyebrow">{casePilar.fileTitle}</p>
-          <p className="file-case">{casePilar.folderName}</p>
+          <p className="file-case">{name}</p>
           <p className="file-tag">{casePilar.kicker}</p>
         </header>
         <div aria-hidden className="file-clip">
@@ -245,7 +248,7 @@ export function PilarStation({ variant }: { variant: Variant }) {
           <Print image={casePilar.image} sizes="120px" className="clip-photo" />
         </div>
         <p className="file-intro">{casePilar.intro}</p>
-        <ol className="file-layers">
+        <ol className={current ? "file-layers ed-r" : "file-layers"}>
           {casePilar.layers.map((layer, i) => (
             <li key={layer}>
               <span>{String(i + 1).padStart(2, "0")}</span>
@@ -264,11 +267,15 @@ export function PilarStation({ variant }: { variant: Variant }) {
 
       <Piece x={1914} y={236} w={356} className="file-review ph-keep">
         <h3>{casePilar.reviewTitle}</h3>
-        <ul>
-          {casePilar.review.map((item) => (
-            <li key={item}>{item}</li>
-          ))}
-        </ul>
+        {current ? (
+          <CheckList items={casePilar.review} />
+        ) : (
+          <ul>
+            {casePilar.review.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        )}
         <p className="body-soft">{casePilar.closing}</p>
       </Piece>
     </Station>
@@ -280,7 +287,7 @@ export function TwoDaysStation({ variant }: { variant: Variant }) {
   const [dayOne, dayTwo] = twoDays.days;
   return (
     <Station index={4} titleId="days-title" className="st-days">
-      {variant === "evento" && <EdDays />}
+      {variant === "current" && <EdDays />}
       <Piece x={36} y={40} w={320}>
         <h2 id="days-title" className="display-lg">
           {twoDays.title}
@@ -367,7 +374,7 @@ export function OutcomesStation({ variant }: { variant: Variant }) {
   const { outcomes } = bootcamp;
   return (
     <Station index={5} titleId="outcomes-title" className="st-outcomes">
-      {variant === "evento" && <EdOutcomes />}
+      {variant === "current" && <EdOutcomes />}
       <Piece x={0} y={0} w={1320} h={780} className="outcome-lines">
         <svg viewBox="0 0 1320 780" aria-hidden fill="none">
           <path d={zigzag()} pathLength={1} />

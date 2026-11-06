@@ -18,7 +18,7 @@ import { EnrollStation, HostsStation } from "@/components/stations/closing-stati
 import { SiteFooter } from "@/components/site-footer";
 import { ctaHref, resolvePrice } from "@/lib/offer";
 
-/** The whole page. `/` is the live version; `/evento` shares the board and reads differently on a phone. */
+/** The whole page. `/` is the current version; `/evento` keeps the previous one, which reads differently on a phone. */
 export function Landing({ variant }: { variant: Variant }) {
   const { chapters, cta, os } = bootcamp;
   const price = resolvePrice();
@@ -29,7 +29,7 @@ export function Landing({ variant }: { variant: Variant }) {
         {os.skip}
       </a>
 
-      <div className={variant === "evento" ? "track evento" : "track"} data-board="track">
+      <div className={variant === "current" ? "track v-current" : "track"} data-board="track">
         <div className="stage" data-board="stage">
           <SystemBar variant={variant} />
           <ChapterBar chapters={chapters} ui={os} />
