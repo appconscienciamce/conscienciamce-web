@@ -1,5 +1,5 @@
 import { bootcamp } from "@/content/bootcamp";
-import { ClaimText, PhotoOrbit, PriceText, Print } from "@/components/editorial";
+import { ClaimText, PhotoStack, PriceText, Print } from "@/components/editorial";
 import { Piece, Station } from "@/components/board/primitives";
 import { CtaContent } from "@/components/cta-content";
 import { FaqItem } from "@/components/faq-item";
@@ -46,7 +46,7 @@ export function HostsStation() {
       </Piece>
 
       <Piece x={700} y={470} w={462} className="hosts-album">
-        <PhotoOrbit photos={hosts.album} />
+        <PhotoStack photos={hosts.album} />
       </Piece>
 
       <Piece x={700} y={470} w={462} movable className="paper-note note-tape own-brand">

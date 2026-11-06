@@ -12,8 +12,6 @@ const ARRIVAL = 0.42;
 const READING_LINE = 0.4;
 /** Pixels short of the end that still count as the end. */
 const END_PX = 2;
-/** The board is laid out ahead once the browser is idle, or after this long at the latest. */
-const WARM_TIMEOUT_MS = 2500;
 
 /** Starts following the scroll of the window. Returns what stops it. */
 export function startCanvas() {
@@ -63,29 +61,10 @@ export function startCanvas() {
   // Opening the window is a resize too: from nothing to the whole screen.
   const resize = new ResizeObserver(schedule);
   resize.observe(win);
-  // A window already laid out keeps its size when it opens: it is painted all the same.
-  const opened = new MutationObserver(schedule);
-  opened.observe(win, { attributes: true, attributeFilter: ["data-app-open"] });
-
-  // The whole board is long: laying it out the moment it opens stalls the first frames of the
-  // gesture. Once the home screen is up and the browser is idle, it is laid out out of sight.
-  const warm = () => {
-    win.setAttribute("data-warm", "layout");
-    void win.scrollHeight;
-    // Laid out: from now on it is skipped, and its layout kept for when it opens.
-    win.setAttribute("data-warm", "");
-  };
-  // Safari has no idle callback: it simply waits.
-  const hasIdle = typeof window.requestIdleCallback === "function";
-  const idle = hasIdle ? window.requestIdleCallback(warm, { timeout: WARM_TIMEOUT_MS }) : window.setTimeout(warm, WARM_TIMEOUT_MS);
 
   return () => {
     signal.abort();
     resize.disconnect();
-    opened.disconnect();
     cancelAnimationFrame(frame);
-    if (hasIdle) window.cancelIdleCallback(idle);
-    else window.clearTimeout(idle);
-    win.removeAttribute("data-warm");
   };
 }

@@ -192,17 +192,6 @@ export function startPhoneOs() {
   // Going back to an entry with a hash would jump the board to that anchor: closing a video, for one.
   window.history.scrollRestoration = "manual";
 
-  // Opening and closing move the focus by script. A ring belongs there only if a keyboard is in use:
-  // with no click before it, the browser would draw one after a scroll as well.
-  const input = new AbortController();
-  const listen = { capture: true, passive: true, signal: input.signal };
-  const keyboard = (e: KeyboardEvent) => {
-    if (!e.metaKey && !e.ctrlKey && !e.altKey) root().dataset.keys = "";
-  };
-  const pointer = () => delete root().dataset.keys;
-  document.addEventListener("keydown", keyboard, listen);
-  ["pointerdown", "touchstart", "wheel"].forEach((type) => document.addEventListener(type, pointer, listen));
-
   // A shared link to a chapter opens the board at that chapter.
   const hash = window.location.hash.slice(1);
   if (hash) {
@@ -217,7 +206,5 @@ export function startPhoneOs() {
   return () => {
     window.removeEventListener("popstate", onPop);
     window.history.scrollRestoration = "auto";
-    input.abort();
-    delete root().dataset.keys;
   };
 }

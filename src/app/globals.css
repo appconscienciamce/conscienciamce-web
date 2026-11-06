@@ -653,179 +653,6 @@ html:not(.js) .sys-menu:focus-within .sys-drop {
   text-transform: uppercase;
 }
 
-/* Where the clock was, one quiet pill (system-seats.tsx, system-countdown.tsx): the places
-   left, or the time left until registration closes. The one thing in the bar that stands
-   out: the red of the window's close button, beating slowly. No banner, no siren. */
-.sys-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  height: 26px;
-  padding: 0 11px 0 10px;
-  background: rgba(255, 255, 255, 0.07);
-  border-radius: 999px;
-  box-shadow: inset 0 0 0 0.5px var(--glass-line);
-  font-size: 12.5px;
-  color: var(--text);
-  white-space: nowrap;
-}
-
-.sys-pill-dot {
-  position: relative;
-  flex: none;
-  width: 7px;
-  height: 7px;
-  background: var(--light-red);
-  border-radius: 50%;
-}
-
-.sys-pill-dot::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: var(--light-red);
-  animation: pill-beat 2.6s cubic-bezier(0.22, 1, 0.36, 1) infinite;
-}
-
-@keyframes pill-beat {
-  from {
-    opacity: 0.55;
-    transform: scale(1);
-  }
-
-  to {
-    opacity: 0;
-    transform: scale(2.8);
-  }
-}
-
-.sys-pill-text {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 6px;
-}
-
-.sys-pill-label {
-  color: var(--text-2);
-}
-
-.sys-pill-value {
-  font-family: var(--font-mono);
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.02em;
-}
-
-/* The word after the number, back in the bar's own type. */
-.sys-pill-unit {
-  font-family: var(--font-body);
-  letter-spacing: 0;
-  color: var(--text-2);
-}
-
-/* None left: the pill stays, quiet, and stops beating. */
-.sys-pill[data-full] .sys-pill-dot {
-  background: var(--text-3);
-}
-
-.sys-pill[data-full] .sys-pill-dot::after {
-  display: none;
-}
-
-/* Before the first count the number is there, unseen, holding its width. */
-.sys-seats[data-pending] .sys-seats-n {
-  visibility: hidden;
-}
-
-/* A place goes: the new number settles in from just above. */
-.sys-seats-n {
-  display: inline-block;
-}
-
-.sys-seats[data-ticked] .sys-seats-n {
-  animation: seat-tick 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-@keyframes seat-tick {
-  from {
-    opacity: 0.25;
-    transform: translateY(-0.35em);
-  }
-
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-.sys-countdown .sys-pill-text {
-  gap: 8px;
-}
-
-.sys-countdown-short {
-  display: none;
-}
-
-/* The phone's bar has no room for a line: the words go small, above the value,
-   like a status widget, and the name of the bootcamp keeps its whole width. */
-@media (max-width: 719px) {
-  .sys-right {
-    gap: 10px;
-  }
-
-  .sys-pill {
-    gap: 7px;
-    height: 32px;
-    padding: 0 11px 0 10px;
-    border-radius: 11px;
-  }
-
-  .sys-pill-text,
-  .sys-countdown .sys-pill-text {
-    display: grid;
-    gap: 1px;
-  }
-
-  .sys-countdown-long {
-    display: none;
-  }
-
-  .sys-countdown-short {
-    display: inline;
-  }
-
-  .sys-pill-label {
-    font-family: var(--font-mono);
-    font-size: 8.5px;
-    line-height: 1;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-  }
-
-  .sys-pill-value {
-    font-size: 12px;
-    line-height: 1.1;
-  }
-}
-
-/* The narrower phones, with days still ahead: to the minute. The seconds come back on the last day. */
-@media (max-width: 389px) {
-  .sys-countdown[data-days] .sys-countdown-seconds {
-    display: none;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .sys-pill-dot::after {
-    animation: none;
-    opacity: 0;
-  }
-
-  .sys-seats[data-ticked] .sys-seats-n {
-    animation: none;
-  }
-}
-
 .desktop,
 .scrim,
 .board-ui,
@@ -2556,44 +2383,6 @@ button.tl::after {
 
 button.tl:not(:disabled):active {
   filter: brightness(0.8);
-}
-
-/* The hero window on the phone: its three lights beat one after the other, like a
-   traffic light in size only, then rest. Slow, so it reads as alive and not as an alarm. */
-.phone-os:not(.board-on) .st-hero .app-bar .tl {
-  animation: traffic-beat 3.2s cubic-bezier(0.45, 0, 0.55, 1) infinite;
-}
-
-.phone-os:not(.board-on) .st-hero .app-bar .tl-min {
-  animation-delay: 0.6s;
-}
-
-.phone-os:not(.board-on) .st-hero .app-bar .tl-max {
-  animation-delay: 1.2s;
-}
-
-/* Each light takes 0.6s of the 3.2s: they never beat together, and then all three rest. */
-@keyframes traffic-beat {
-  0%,
-  18.75%,
-  100% {
-    transform: scale(1);
-  }
-
-  9% {
-    transform: scale(1.4);
-  }
-}
-
-/* Under the open window nobody sees them. */
-.phone-os:not(.board-on)[data-app] .st-hero .app-bar .tl {
-  animation-play-state: paused;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .phone-os:not(.board-on) .st-hero .app-bar .tl {
-    animation: none;
-  }
 }
 
 .dwin-print {
@@ -5213,20 +5002,11 @@ html.phone-os:not(.board-on) body {
 
 /* ---------------- The hero is a window on the home screen ---------------- */
 
-/* Room above the hero window: the same share of the free space as below the apps,
-   so the window and the apps read as one group in the middle of the screen. */
-.phone-os:not(.board-on) .stage::before {
-  content: "";
-  order: 1;
-  flex: 1 1 0;
-  min-height: 14px;
-}
-
 .phone-os:not(.board-on) .st-hero {
   flex: none;
   order: 1;
   width: min(calc(100% - 28px), 560px);
-  margin: 0 auto;
+  margin: 12px auto 0;
   padding: 0;
   overflow: hidden;
   border: 0;
@@ -5277,33 +5057,22 @@ html.phone-os:not(.board-on) body {
 
 /* ---------------- Apps ---------------- */
 
-/* The apps sit close under the hero window. What is left of the screen goes half above
-   the window and half below the apps, where the way in waits at the bottom. */
 .phone-os:not(.board-on) .phone-home {
   order: 2;
-  flex: 1 1 auto;
+  flex: 1;
   display: flex;
   flex-direction: column;
-  /* 560px of apps plus the 14px sides: the panel matches the hero window's width. */
-  width: min(100%, 588px);
+  justify-content: space-between;
+  width: min(100%, 560px);
   margin: 0 auto;
-  padding: 40px 14px max(4px, env(safe-area-inset-bottom, 0px));
+  padding: 14px 14px calc(46px + env(safe-area-inset-bottom, 0px));
 }
 
 .phone-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: min(2.6vh, 20px) 6px;
-  gap: min(2.6dvh, 20px) 6px;
-  padding: 18px 8px 16px;
-  background: rgba(20, 20, 20, 0.62);
-  -webkit-backdrop-filter: blur(14px);
-  backdrop-filter: blur(14px);
-  border-radius: 22px;
-  box-shadow:
-    inset 0 0 0 0.5px var(--glass-line),
-    0 14px 34px rgba(0, 0, 0, 0.36);
-  animation: home-in 0.7s var(--ease-mac) 0.08s both;
+  gap: min(2.2vh, 18px) 6px;
+  gap: min(2.2dvh, 18px) 6px;
 }
 
 .phone-app {
@@ -5415,6 +5184,153 @@ html.phone-os:not(.board-on) body {
   }
 }
 
+/* The board, alive on the home screen: chapters light up along the path. */
+.phone-widget {
+  flex: 1 1 74px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-content: end;
+  align-items: end;
+  gap: 2px 10px;
+  position: relative;
+  width: 100%;
+  min-height: 0;
+  max-height: 280px;
+  margin-top: min(2.4vh, 20px);
+  margin-top: min(2.4dvh, 20px);
+  padding: 14px;
+  overflow: hidden;
+  background: rgba(20, 20, 20, 0.62);
+  border-radius: 20px;
+  box-shadow:
+    inset 0 0 0 0.5px var(--glass-line),
+    0 14px 34px rgba(0, 0, 0, 0.36);
+  color: var(--text);
+  text-align: left;
+  animation: home-in 0.7s var(--ease-mac) 0.24s both;
+  transition: transform 0.25s var(--ease-mac);
+}
+
+.phone-widget:active {
+  transform: scale(0.98);
+}
+
+.phone-widget-art {
+  position: absolute;
+  inset: 14px 14px 58px;
+}
+
+.phone-widget-art svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.phone-widget-art rect {
+  fill: #5d5d5a;
+  animation: map-pulse 7s ease-in-out infinite;
+}
+
+/* Nobody is looking at it behind an open app. */
+html[data-app] .phone-widget-art rect {
+  animation-play-state: paused;
+}
+
+.phone-widget-art rect:nth-of-type(2) { animation-delay: 0.9s; }
+.phone-widget-art rect:nth-of-type(3) { animation-delay: 1.8s; }
+.phone-widget-art rect:nth-of-type(4) { animation-delay: 2.7s; }
+.phone-widget-art rect:nth-of-type(5) { animation-delay: 3.6s; }
+.phone-widget-art rect:nth-of-type(6) { animation-delay: 4.5s; }
+.phone-widget-art rect:nth-of-type(7) { animation-delay: 5.4s; }
+.phone-widget-art rect:nth-of-type(8) { animation-delay: 6.3s; }
+
+@keyframes map-pulse {
+  0%,
+  14%,
+  100% {
+    fill: #5d5d5a;
+  }
+
+  6% {
+    fill: #f5f5f3;
+  }
+}
+
+.phone-widget-art path {
+  fill: none;
+  stroke: #d8d8d5;
+  stroke-width: 1.4;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: map-draw 1.2s var(--ease-sync) 0.5s forwards;
+}
+
+.phone-widget-art path:nth-of-type(2) { animation-delay: 0.8s; }
+.phone-widget-art path:nth-of-type(3) { animation-delay: 1.1s; }
+.phone-widget-art path:nth-of-type(4) { animation-delay: 1.4s; }
+.phone-widget-art path:nth-of-type(5) { animation-delay: 1.7s; }
+.phone-widget-art path:nth-of-type(6) { animation-delay: 2s; }
+.phone-widget-art path:nth-of-type(7) { animation-delay: 2.3s; }
+
+.phone-widget-text {
+  position: relative;
+  display: grid;
+  min-width: 0;
+}
+
+.phone-widget-text strong {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+.phone-widget-text span {
+  overflow: hidden;
+  font-size: 13px;
+  line-height: 1.3;
+  color: var(--text-2);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.phone-widget > svg {
+  position: relative;
+  width: 13px;
+  height: 13px;
+  margin-bottom: 4px;
+}
+
+/* Mobile browsers leave far less than the screen: the widget turns into a strip. */
+@media (max-height: 780px) {
+  .phone-widget {
+    align-content: center;
+    align-items: center;
+    min-height: 74px;
+    padding: 10px 14px;
+  }
+
+  .phone-widget-art {
+    inset: 10px 38px 10px 54%;
+  }
+
+  .phone-widget-text {
+    max-width: 52%;
+  }
+
+  .phone-widget-text span {
+    white-space: normal;
+  }
+}
+
+/* A phone on its side has no row to spare for it. */
+@media (max-height: 520px) {
+  .phone-widget {
+    display: none;
+  }
+}
+
 /* The smallest phones keep the title and the action: the promise is one tap away. */
 @media (max-height: 600px) {
   .phone-os:not(.board-on) .hero-promise,
@@ -5440,7 +5356,6 @@ html.phone-os:not(.board-on) body {
   display: none;
 }
 
-.phone-os:not(.board-on) .canvas[data-warm],
 .phone-os:not(.board-on) .canvas[data-app-open] {
   position: fixed;
   inset: var(--sys-h) 0 0;
@@ -5453,24 +5368,6 @@ html.phone-os:not(.board-on) body {
   box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
   transform-origin: 0 0;
   -webkit-overflow-scrolling: touch;
-}
-
-/* Closed but warm: laid out ahead of time (phone-canvas.ts), so opening costs a paint and not
-   the layout of the whole page. Out of sight and out of the way, and nothing inside it runs:
-   content-visibility skips it and keeps its layout for when it opens. */
-.phone-os:not(.board-on) .canvas[data-warm]:not([data-app-open]) {
-  visibility: hidden;
-  pointer-events: none;
-}
-
-/* Not while it is being laid out ("layout"): only once it has been. */
-.phone-os:not(.board-on) .canvas[data-warm=""]:not([data-app-open]) {
-  content-visibility: hidden;
-}
-
-/* Closed, nothing in it moves: its endless animations wait for the window to open. */
-.phone-os:not(.board-on) .canvas[data-warm]:not([data-app-open]) * {
-  animation-play-state: paused !important;
 }
 
 /* The board itself: it moves with the page, like a surface under the frames. */
@@ -5492,41 +5389,12 @@ html.phone-os:not(.board-on) body {
   content-visibility: visible;
   border-radius: 14px;
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
-  opacity: calc(0.4 + var(--in, 1) * 0.6);
-  transform: translateY(calc((1 - var(--in, 1)) * 30px)) scale(calc(0.97 + var(--in, 1) * 0.03));
+  opacity: calc(0.3 + var(--in, 1) * 0.7);
+  transform: translateY(calc((1 - var(--in, 1)) * 44px)) scale(calc(0.95 + var(--in, 1) * 0.05));
 }
 
 .phone-os:not(.board-on) .canvas .st:last-child {
   margin-bottom: 0;
-}
-
-/* Inside the frame, each piece comes in on its own as it reaches the screen (phone-reveal.ts):
-   it rises a little and settles, slowly, one after another. Its photos ease out of a slight zoom. */
-.phone-os:not(.board-on) .canvas[data-reveal] .st > .piece {
-  transition:
-    opacity 1.1s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0s),
-    translate 1.4s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0s);
-}
-
-.phone-os:not(.board-on) .canvas[data-reveal] .st > .piece:not([data-in]) {
-  opacity: 0;
-  translate: 0 28px;
-}
-
-.phone-os:not(.board-on) .canvas[data-reveal] .st > .piece .print img {
-  transition:
-    transform 0.4s var(--ease),
-    filter 1s var(--ease),
-    scale 1.8s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0s);
-}
-
-.phone-os:not(.board-on) .canvas[data-reveal] .st > .piece:not([data-in]) .print img {
-  scale: 1.1;
-}
-
-/* This entrance replaces the one tied to the scroll: both at once would move the piece twice. */
-.phone-os:not(.board-on) .canvas[data-reveal] :is(.paper-note, .nofit-card, .doc-dark, .doc-paper, .outcome, .snap) {
-  animation: none;
 }
 
 /* The frame's name, on the board, the way a frame shows it. */
@@ -5686,55 +5554,21 @@ html.phone-os:not(.board-on) body {
   }
 }
 
-/* The way in, worded as on the computer, at the bottom of the screen. Small to the eye, not to the finger. */
-.phone-enter {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  align-self: center;
-  gap: 12px;
-  min-height: 48px;
-  margin-top: auto;
-  padding: 10px 16px 6px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--text-2);
-  white-space: nowrap;
-  animation: home-in 0.7s var(--ease-mac) 0.3s both;
+/* Small to the eye, not to the finger. */
+.phone-scroll::after {
+  content: "";
+  position: absolute;
+  inset: -8px -8px -4px;
 }
 
-/* A ring that never stops going up and down: the page has more below. */
-.phone-enter-ring {
-  flex: none;
-  width: 12px;
-  height: 12px;
-  border: 1.5px solid var(--text);
-  border-radius: 50%;
-  animation: enter-ring 2.2s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+.phone-scroll {
+  position: absolute;
+  right: 14px;
+  bottom: max(8px, env(safe-area-inset-bottom, 0px));
 }
 
-@keyframes enter-ring {
-  0%,
-  100% {
-    transform: translateY(-5px);
-  }
-
-  50% {
-    transform: translateY(5px);
-  }
-}
-
-html[data-app] .phone-enter-ring {
+html[data-app] .phone-scroll {
   animation-play-state: paused;
-}
-
-/* Still for those who asked for less motion: a ring that sits there says the same. */
-@media (prefers-reduced-motion: reduce) {
-  .phone-enter-ring {
-    animation: none;
-  }
 }
 
 .phone-os:not(.board-on)[data-app] .flow-bar {
@@ -5800,19 +5634,6 @@ html[data-app] .phone-enter-ring {
 
 .phone-os:not(.board-on) .outcome {
   height: 100%;
-}
-
-/* No pointer to bring the colour back: the photo in the middle of the screen gets it,
-   and gives it back once it has gone by. */
-.phone-os:not(.board-on) .print img,
-.phone-os:not(.board-on) .video-frame img {
-  transition:
-    transform 0.4s var(--ease),
-    filter 1s var(--ease);
-}
-
-.phone-os:not(.board-on) img[data-lit] {
-  filter: none;
 }
 
 /* Sources this small stay small: a print in the hand, not a poster. */
@@ -6215,95 +6036,86 @@ html.map-overlay body {
   display: none !important;
 }
 
-/* Opening and closing move the focus by themselves: no ring where no keyboard asked for it.
-   The first key pressed brings the rings back (data-keys, set in phone-os.ts). */
-.phone-os:not(.board-on):not([data-keys]) :focus-visible {
-  outline: none;
+/* Short screens have no room to spare: the arrow rides on the map strip. */
+@media (min-height: 521px) and (max-height: 780px) {
+  .phone-os:not(.board-on) .phone-home {
+    padding-bottom: max(10px, env(safe-area-inset-bottom, 0px));
+  }
+
+  .phone-widget > svg {
+    display: none;
+  }
+
+  .phone-widget-art {
+    inset: 10px 62px 10px 54%;
+  }
+
+  .phone-scroll {
+    right: 26px;
+    bottom: calc(max(10px, env(safe-area-inset-bottom, 0px)) + 20px);
+  }
 }
 
-/* The hosts' photos, going round like on a turntable. The one in front is the
-   one to look at: bigger, sharp and in colour. The ones behind wait their turn,
-   smaller, dim and out of focus. */
-@property --spin {
-  syntax: "<angle>";
-  inherits: true;
-  initial-value: 0deg;
+/* The focus moves here by itself after a swipe: no ring where no keyboard asked for it. */
+@media (hover: none) {
+  .phone-os:not(.board-on) .app-bar button:focus-visible {
+    outline: none;
+  }
 }
 
-.photo-orbit {
+/* Photos held by paper clips, overlapping sideways. */
+.photo-stack {
   position: relative;
-  isolation: isolate;
-  aspect-ratio: 1.6;
-  margin: 22px 0 8px;
+  aspect-ratio: 1.26;
+  margin: 26px 0 8px;
   padding: 0;
   list-style: none;
 }
 
-.photo-orbit li {
+.photo-stack li {
   position: absolute;
-  top: 50%;
-  left: 29%;
-  width: 42%;
+  top: 0;
+  left: 0;
+  width: 56%;
   aspect-ratio: 3 / 4;
-  /* Half its own height: a margin in % is taken from the width of the album. */
-  margin-top: -28%;
-  padding: 5px;
+  padding: 6px;
   background: #f1f0ea;
-  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.45);
+  transform: rotate(-3deg);
 }
 
-.photo-orbit .print {
+.photo-stack[data-count="3"] li:nth-child(2) {
+  top: 18px;
+  left: 22%;
+  transform: rotate(2deg);
+}
+
+.photo-stack[data-count="3"] li:nth-child(3) {
+  top: 4px;
+  left: 44%;
+  transform: rotate(-1.5deg);
+}
+
+.photo-stack .print {
+  position: relative;
   width: 100%;
   height: 100%;
+  border-radius: 0;
 }
 
-/* The colour belongs to the one in front, not to the hover nobody has on a phone. */
-.photo-orbit .print img {
+.paperclip {
+  position: absolute;
+  top: -14px;
+  left: 20px;
+  width: 15px;
+  height: 40px;
+  color: #c9c9c4;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.5));
+}
+
+/* On a phone nothing hovers, and these are the warm ones. */
+.phone-os:not(.board-on) .photo-stack .print img {
   filter: none;
-}
-
-/* Where the round cannot be drawn: one in front, one on each side, still. */
-.photo-orbit li:nth-child(n + 2) {
-  z-index: -1;
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
-  filter: blur(2px) brightness(0.6) grayscale(0.75);
-  transform: translateX(68%) scale(0.7);
-}
-
-.photo-orbit li:nth-child(3) {
-  transform: translateX(-68%) scale(0.7);
-}
-
-/* The real round. --d is how close a photo is to the front: 1 in front, 0 at the very back. */
-@supports (transform: translateX(calc(sin(1deg) * 1px))) {
-  .photo-orbit li:nth-child(n) {
-    /* The ring slows down while a photo is in front, and hurries through the change. */
-    --a: calc(var(--spin) + var(--i) * 1turn / var(--count));
-    --at: calc(var(--a) - sin(var(--a) * var(--count)) * 0.78rad / var(--count));
-    --d: calc((1 + cos(var(--at))) / 2);
-    z-index: calc(var(--d) * 10);
-    box-shadow: 0 calc(5px + var(--d) * 12px) calc(12px + var(--d) * 20px) rgba(0, 0, 0, calc(0.25 + var(--d) * 0.27));
-    filter: blur(calc((1 - var(--d)) * 3px)) brightness(calc(0.48 + var(--d) * 0.52)) grayscale(calc(1 - var(--d)));
-    transform: translateX(calc(sin(var(--at)) * 78%)) scale(calc(0.6 + var(--d) * 0.4));
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .photo-orbit {
-    animation: orbit calc(var(--count) * 4.2s) linear infinite;
-  }
-
-  /* Nobody is looking: scrolled away, or with the window closed. */
-  .photo-orbit[data-idle],
-  .phone-os:not([data-app]) .photo-orbit {
-    animation-play-state: paused;
-  }
-}
-
-@keyframes orbit {
-  to {
-    --spin: -1turn;
-  }
 }
 
 .board-on .hosts-album {

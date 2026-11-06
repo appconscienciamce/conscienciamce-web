@@ -48,22 +48,6 @@ export interface OfferConfig {
    * "registration opening soon" notice instead of a fake purchase.
    */
   checkoutUrl: string | null;
-  /**
-   * When registration really closes, as an ISO date with its time zone
-   * ("2026-11-20T23:59:00-03:00"). The system bar counts down to it. While `null`,
-   * or not approved in production, the bar keeps its clock: a deadline is never made up.
-   */
-  registrationCloses: { at: string | null; approved: boolean };
-  /**
-   * The cap on places, and how many are really taken. The system bar shows what is left.
-   * `taken` goes up with each real registration, by hand until the checkout counts them.
-   * Approve it only if sales really close at `total`.
-   *
-   * With `drift`, the bar doesn't show the real count: it goes down by itself, unevenly,
-   * about one place every seven or eight seconds, to about `low`, and then it is back at the cap
-   * (lib/seats-drift.ts). Remove `drift` and it is the real count again.
-   */
-  seats: { total: number; taken: number; approved: boolean; drift?: { low: number } };
 }
 
 export interface Seo {
@@ -100,10 +84,6 @@ export interface OsCopy {
   navLabel: string;
   sound: { label: string; track: string; play: string; pause: string; playing: string; paused: string; volume: string };
   liveBadge: string;
-  /** The countdown that replaces the clock once registration has a real closing date. */
-  countdown: { label: string; short: string; closes: string };
-  /** Places left, where the clock is. Singular and plural, and the word for none left. */
-  seats: { left: string; leftOne: string; unit: string; unitOne: string; full: string };
   windowTitle: string;
   openMap: string;
   resume: string;
@@ -135,8 +115,6 @@ export interface OsCopy {
   phone: {
     heroWindow: string;
     next: string;
-    /** Under the apps: scrolling opens the whole landing. */
-    enter: string;
     apps: { para: string; manifesto: string; pilar: string; file: string; days: string; outcomes: string; hosts: string; testimonials: string };
   };
   mapCard: { title: string; text: string; cta: string; full: string };
