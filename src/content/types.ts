@@ -48,6 +48,8 @@ export interface OfferConfig {
    * "registration opening soon" notice instead of a fake purchase.
    */
   checkoutUrl: string | null;
+  /** The live days, as calendar dates in Buenos Aires (YYYY-MM-DD). The system bar counts down to them. */
+  eventDates: { start: string; end: string };
 }
 
 export interface Seo {
@@ -84,6 +86,8 @@ export interface OsCopy {
   navLabel: string;
   sound: { label: string; track: string; play: string; pause: string; playing: string; paused: string; volume: string };
   liveBadge: string;
+  /** The days left until the bootcamp, where the clock is. Singular and plural, and the live days. */
+  countdown: { left: string; leftOne: string; unit: string; unitOne: string; today: string; day: string };
   windowTitle: string;
   openMap: string;
   resume: string;

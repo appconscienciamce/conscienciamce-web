@@ -16,12 +16,13 @@ export const bootcamp: BootcampContent = {
     price: { currency: "USD", amount: 36.9, label: "USD 36,90", approved: true },
     logistics: [
       { label: "Formato", value: "2 días en vivo", approved: true },
-      { label: "Fechas", value: "Te las enviamos por mail", approved: true },
+      { label: "Fechas", value: "17 y 18 de noviembre", approved: true },
       { label: "Horario", value: "Te lo enviamos por mail", approved: true },
       { label: "Plataforma", value: "Zoom", approved: true },
       { label: "Grabación", value: "Queda grabado", approved: true },
     ],
     checkoutUrl: "https://buy.stripe.com/4gMbJ24iOgfQ5AH6htgA901",
+    eventDates: { start: "2026-11-17", end: "2026-11-18" },
   },
 
   seo: {
@@ -134,6 +135,14 @@ export const bootcamp: BootcampContent = {
       volume: "Volumen",
     },
     liveBadge: "2 días en vivo",
+    countdown: {
+      left: "Faltan",
+      leftOne: "Falta",
+      unit: "días",
+      unitOne: "día",
+      today: "Hoy en vivo",
+      day: "Día",
+    },
     windowTitle: "Mapa de creación / Creadores Conscientes",
     openMap: "Abrir el mapa",
     resume: "Continuar en el capítulo",

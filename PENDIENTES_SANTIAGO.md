@@ -12,7 +12,7 @@ Casi todo se edita en `src/content/bootcamp.ts`, sin tocar el diseño.
 | # | Qué decidir | Estado actual | Dónde se cambia |
 |---|---|---|---|
 | 1 | **Precio final** | Aprobado: USD 36,90 | `offer.price` |
-| 2 | **Fechas del evento** | Sin dato. La página dice «Te las enviamos por mail», y el mail de confirmación promete mandarlas antes de empezar | `offer.logistics` |
+| 2 | **Fechas del evento** | Resuelto: 17 y 18 de noviembre de 2026. La barra de arriba muestra los días que faltan, y el mail de confirmación todavía promete mandarlas antes de empezar | `offer.logistics` y `offer.eventDates` |
 | 3 | **Horario y zona horaria** | Sin dato. La página dice «Te lo enviamos por mail» | `offer.logistics` |
 | 4 | **Plataforma y grabación** | Resuelto: Zoom, queda grabado | `offer.logistics` y `faq` |
 | 5 | **Link de Stripe** | Resuelto: los botones llevan al Payment Link | `offer.checkoutUrl` |

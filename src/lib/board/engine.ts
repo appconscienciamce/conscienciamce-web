@@ -432,8 +432,7 @@ export class BoardEngine {
     requestAnimationFrame(() => requestAnimationFrame(() => root.classList.remove("measure-all")));
 
     // A tap does not always leave the focus on what was tapped.
-    const opener = this.overlayOpener && this.overlayOpener !== document.body ? this.overlayOpener : document.querySelector<HTMLElement>(".phone-widget");
-    opener?.focus({ preventScroll: true });
+    if (this.overlayOpener !== document.body) this.overlayOpener?.focus({ preventScroll: true });
     this.overlayOpener = null;
   }
 

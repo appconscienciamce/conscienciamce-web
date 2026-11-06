@@ -6,10 +6,8 @@ import { closeApp, isPhoneOs, openApp, startPhoneOs } from "@/lib/phone-os";
 import { startCanvas } from "@/lib/phone-canvas";
 import { startCarousels } from "@/lib/phone-carousels";
 import { startPull } from "@/lib/phone-pull";
-import { useBoard } from "./board-provider";
 import { ChevronGlyph } from "./glyphs";
 import { MacFolder } from "./mac-folder";
-import { MapArt } from "./mobile-chrome";
 
 export type PhoneIcon = { kind: "folder" } | { kind: "note" } | { kind: "photo"; src: string };
 
@@ -53,16 +51,12 @@ function AppIcon({ app }: { app: PhoneApp }) {
 export function PhoneHome({
   apps,
   label,
-  widget,
   scrollLabel,
 }: {
   apps: PhoneApp[];
   label: string;
-  widget: { title: string; text: string };
   scrollLabel: string;
 }) {
-  const { engine } = useBoard();
-
   useEffect(() => {
     if (!isPhoneOs()) return;
     const stopApps = startPhoneOs();
@@ -86,17 +80,6 @@ export function PhoneHome({
           </li>
         ))}
       </ul>
-
-      <button type="button" className="phone-widget" onClick={(e) => engine()?.openOverlay(e.currentTarget)}>
-        <span className="phone-widget-art">
-          <MapArt />
-        </span>
-        <span className="phone-widget-text">
-          <strong>{widget.title}</strong>
-          <span>{widget.text}</span>
-        </span>
-        <ChevronGlyph direction="right" />
-      </button>
 
       <a
         href={`#${apps[0].id}`}
