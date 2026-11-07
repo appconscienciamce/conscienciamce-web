@@ -60,7 +60,8 @@ export function Landing({ variant }: { variant: Variant }) {
 
       <SiteFooter />
 
-      <FlowBar price={price?.label ?? null} />
+      {/* The current page keeps the button bare: the price lives on the ticket. */}
+      <FlowBar price={variant === "classic" ? (price?.label ?? null) : null} />
     </BoardProvider>
   );
 }
