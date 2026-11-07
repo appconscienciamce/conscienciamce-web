@@ -127,11 +127,17 @@ function EdAuthority() {
               <dd className="ed-faces">
                 {item.faces.map((face) => (
                   <span key={face.name} className="ed-face">
-                    {face.image ? (
-                      <Image src={face.image.src!} alt="" width={96} height={96} quality={90} />
-                    ) : (
-                      <b aria-hidden>{face.name.charAt(0)}</b>
-                    )}
+                    <span className="ed-face-pic">
+                      {face.image ? (
+                        <Image src={face.image.src!} alt="" width={96} height={96} quality={90} />
+                      ) : (
+                        <b aria-hidden>{face.name.charAt(0)}</b>
+                      )}
+                      <svg className="ed-verified" viewBox="0 0 24 24" role="img" aria-label="Verificado">
+                        <polygon fill="#0095f6" points="12.00,0.00 14.69,1.95 18.00,1.61 19.35,4.65 22.39,6.00 22.05,9.31 24.00,12.00 22.05,14.69 22.39,18.00 19.35,19.35 18.00,22.39 14.69,22.05 12.00,24.00 9.31,22.05 6.00,22.39 4.65,19.35 1.61,18.00 1.95,14.69 0.00,12.00 1.95,9.31 1.61,6.00 4.65,4.65 6.00,1.61 9.31,1.95" />
+                        <path d="M7.2 12.3l3.1 3.1 6.5-6.6" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </span>
                     <small>{face.name}</small>
                   </span>
                 ))}
