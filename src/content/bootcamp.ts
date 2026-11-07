@@ -534,7 +534,7 @@ export const bootcamp: BootcampContent = {
         "Más adelante te contamos sobre quiénes somos. Pero esto es lo que logramos:",
       ],
       photos: [
-        { name: "santiago.jpg", image: { src: "/media/santiago/img16.webp", alt: "Santiago Gómez sentado en un set de grabación", width: 400, height: 600 } },
+        { name: "santiago.jpg", image: { src: "/media/santiago/santiago.webp", alt: "Santiago Gómez sentado frente a una computadora, con las manos juntas, pensando", width: 500, height: 654 } },
         { name: "oriana.jpg", image: { src: "/media/hosts/oriana.webp", alt: "Oriana Safenreider de pie junto a una pizarra, en un taller", width: 500, height: 667 } },
       ],
     },
@@ -561,7 +561,7 @@ export const bootcamp: BootcampContent = {
           month: "/11",
           label: "Martes 17 de noviembre",
           focus: "Trabajo interno",
-          photo: { name: "dia-1.jpg", image: { src: "/media/santiago/dia-1.webp", alt: "Santiago Gómez sentado frente a una computadora, con las manos juntas, pensando", width: 500, height: 654 } },
+          photo: { name: "dia-1.jpg", image: { src: "/media/santiago/img13.webp", alt: "Santiago Gómez explicando frente a una pizarra", width: 400, height: 600 } },
         },
         {
           day: "18",

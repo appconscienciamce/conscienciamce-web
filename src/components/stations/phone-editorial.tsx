@@ -173,7 +173,7 @@ export function EdDays() {
               {dated.day}
               <small>{dated.month}</small>
             </p>
-            <Shot image={dated.photo.image} name={dated.photo.name} sizes="86vw" className="ed-day-shot" position={i === 0 ? "50% 36%" : "50% 66%"} />
+            <Shot image={dated.photo.image} name={dated.photo.name} sizes="86vw" className="ed-day-shot" position={i === 0 ? "50% 58%" : "50% 66%"} />
             <p className="ed-kicker ed-r">
               {day.number} · {dated.label}
             </p>
