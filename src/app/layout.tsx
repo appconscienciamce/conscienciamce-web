@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Averia_Serif_Libre, DM_Mono, DM_Sans } from "next/font/google";
+import { SierraTracking } from "@/components/sierra-tracking";
 import { bootcamp } from "@/content/bootcamp";
 import { BOARD_QUERY, REDUCED_MOTION_QUERY } from "@/lib/board/layout";
 import "./globals.css";
@@ -78,7 +79,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <script dangerouslySetInnerHTML={{ __html: bootScript }} />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        {/* Visitas y clics al checkout para el panel de synx build. */}
+        <SierraTracking />
+      </body>
     </html>
   );
 }
