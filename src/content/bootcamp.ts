@@ -595,7 +595,7 @@ export const bootcamp: BootcampContent = {
       { src: "/media/items/5.webp", alt: "", width: 396, height: 643 },
     ],
     hosts: {
-      lead: { name: "santiago-y-oriana.jpg", image: { src: "/media/hosts/santiago-y-oriana.webp", alt: "Santiago Gómez y Oriana Safenreider en una sala de madera, delante de una pizarra", width: 500, height: 667 } },
+      lead: { name: "santiago-y-oriana.jpg", image: { src: "/media/hosts/santiago-y-oriana.webp", alt: "Santiago Gómez y Oriana Safenreider en una sala de madera, delante de una pizarra", width: 500, height: 560 } },
     },
     enroll: {
       seats: "300",
