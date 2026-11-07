@@ -40,7 +40,7 @@ export const thanks = {
     label: "Grupo de WhatsApp",
     title: "Entrá al grupo de WhatsApp",
     text: "Es por donde vamos a compartir las novedades del bootcamp.",
-    url: null as string | null,
+    url: "https://chat.whatsapp.com/FlDQEduq4BYJSULFhXNDTr" as string | null,
     cta: "Entrar al grupo",
     unavailable: "El link del grupo todavía no está disponible. Va a aparecer en esta misma página.",
   },
@@ -76,6 +76,7 @@ export const thanks = {
 /** What the current thank-you page does differently from the one kept at `/evento/gracias`. */
 export const thanksCurrent = {
   file: { name: "mi-roadmap.txt", open: "Abrir", close: "Cerrar", hint: "Dos partes, 9 preguntas" },
+  whatsappText: "Entrá primero a la comunidad: ahí compartimos el link de Zoom y toda la información del evento.",
   text: "Al completar esto, te creamos tu roadmap estratégico y el mapa de tu alma para que puedas diseñar tus próximos movimientos. Te lo entregamos después del bootcamp.",
   fields: {
     name: "Nombre y apellido",

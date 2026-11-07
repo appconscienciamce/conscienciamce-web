@@ -621,7 +621,7 @@ export const bootcamp: BootcampContent = {
         "Vas a tener 3 horas de consultoría en vivo con nosotros para traer tus preguntas, decisiones, bloqueos y próximos movimientos. Vamos a trabajar sobre casos reales de las personas que estén dentro.",
         "Si querés acceder más de cerca a nuestro criterio, experiencia y frecuencia, podés sumarte al VIP y vivir una experiencia mucho más profunda y aplicada del evento.",
       ],
-      priceLabel: "Inversión",
+      priceLabel: "Extra, aparte de tu entrada",
       price: "USD 111",
       cta: "Quiero el VIP",
       url: "https://buy.stripe.com/5kQbJ27v0gfQ5AHfS3gA902",

@@ -63,12 +63,30 @@ export function ThanksPage({ variant }: { variant: Variant }) {
   const { hero, checklist, roadmap, whatsapp, videos, upsell } = thanks;
   const { brand, os, offer } = bootcamp;
   const video = current ? { ...videos, ...thanksCurrent.videos, items: videos.items.slice(0, thanksCurrent.videos.count) } : videos;
-  const steps = [
-    { id: roadmap.id, label: roadmap.label },
-    { id: whatsapp.id, label: whatsapp.label },
-    { id: videos.id, label: video.label },
-    ...(current ? [] : [{ id: upsell.id, label: upsell.label, optional: checklist.optional }]),
-  ];
+  // The current page sends people to the group first: many will not have their birth time at hand.
+  const steps = current
+    ? [
+        { id: whatsapp.id, label: whatsapp.label },
+        { id: roadmap.id, label: roadmap.label },
+      ]
+    : [
+        { id: roadmap.id, label: roadmap.label },
+        { id: whatsapp.id, label: whatsapp.label },
+        { id: videos.id, label: video.label },
+        { id: upsell.id, label: upsell.label, optional: checklist.optional },
+      ];
+  const roadmapStep = (
+    <StepWindow id={roadmap.id} number={current ? 2 : 1} title={roadmap.title} text={current ? thanksCurrent.text : roadmap.text} tone="paper">
+      {current ? <RoadmapFile copy={{ ...roadmap, ...thanksCurrent }} /> : <RoadmapForm copy={roadmap} />}
+    </StepWindow>
+  );
+  const whatsappStep = (
+    <StepWindow id={whatsapp.id} number={current ? 1 : 2} title={whatsapp.title} text={current ? thanksCurrent.whatsappText : whatsapp.text}>
+      <div className="thanks-action">
+        <ActionLink href={whatsapp.url} label={whatsapp.cta} unavailable={whatsapp.unavailable} event="whatsapp_click" />
+      </div>
+    </StepWindow>
+  );
 
   return (
     <div className={current ? "thanks-shell v-current" : "thanks-shell"}>
@@ -93,16 +111,10 @@ export function ThanksPage({ variant }: { variant: Variant }) {
           <Checklist title={checklist.title} steps={steps} />
 
           <div className="thanks-steps">
-            <StepWindow id={roadmap.id} number={1} title={roadmap.title} text={current ? thanksCurrent.text : roadmap.text} tone="paper">
-              {current ? <RoadmapFile copy={{ ...roadmap, ...thanksCurrent }} /> : <RoadmapForm copy={roadmap} />}
-            </StepWindow>
+            {current ? whatsappStep : roadmapStep}
+            {current ? roadmapStep : whatsappStep}
 
-            <StepWindow id={whatsapp.id} number={2} title={whatsapp.title} text={whatsapp.text}>
-              <div className="thanks-action">
-                <ActionLink href={whatsapp.url} label={whatsapp.cta} unavailable={whatsapp.unavailable} event="whatsapp_click" />
-              </div>
-            </StepWindow>
-
+            {!current && (
             <StepWindow id={videos.id} number={3} title={video.title} text={video.text}>
               <ul className="thanks-videos">
                 {video.items.map((item) => (
@@ -112,6 +124,7 @@ export function ThanksPage({ variant }: { variant: Variant }) {
                 ))}
               </ul>
             </StepWindow>
+            )}
 
             {!current && (
               <StepWindow id={upsell.id} number={4} title={upsell.title} text={upsell.text} badge={checklist.optional}>
