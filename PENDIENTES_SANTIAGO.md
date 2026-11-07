@@ -7,19 +7,19 @@ Casi todo se edita en `src/content/bootcamp.ts`, sin tocar el diseño.
 
 ---
 
-## Versión actual: datos publicados que falta confirmar
+## Para lanzar (lista enviada a Santiago el 7 de noviembre de 2026)
 
-La página en `/` y `/gracias` aplica el feedback de Santiago. La versión anterior quedó en `/evento` y `/evento/gracias`, sin indexar.
+Es lo único que queda abierto. Todo lo que no está en esta lista se da por resuelto: las cifras de «Lo que logramos», los datos de Pilar (5K, USD 650.000 en 7 meses), los USD 100.000 del día 2, el horario, los 300 lugares, la grabación, el permiso de Pilar, las fotos, el copy y la política de privacidad y reembolso. Las secciones de abajo quedan como historial.
 
-- [ ] **Números de autoridad** (`hosts.authority`): USD 2,6M, +30 marcas, USD 50K, +2 años y «Miles» salen del audio de Santiago, dichos sin certeza. Confirmar cifra y a qué se refiere cada una.
-- [ ] **Horario**: 15:00 ARG, 13:00 COL y 19:00 ESP es «lo más probable» según el audio.
-- [ ] **Grabación**: el audio dice que queda grabado «para tener o comprar». Hoy la página dice que queda grabado, sin costo aparte.
-- [ ] **Preguntas nuevas del roadmap** (`thanksEvento`): las cuatro de la segunda parte son propuesta.
-- [ ] **VIP** (USD 197, hasta 50 lugares): sin construir, falta definirlo. La llamada 1 a 1 no aparece en esta versión.
-- [ ] **Fotos en alta**: casi todas miden 400×600 y en un celular se notan.
-- [ ] **Nuevos datos del audio**: «más de USD 650.000 en 7 meses» (Pilar) y «más de USD 100.000 invertidos en mentorías e infoproductos» (día 2). Confirmar.
-- [ ] **Fotos de Oriana sola**: para «Lo que logramos», que hoy muestra a Santiago solo y a los dos juntos, y para volver a sumar la pila de fotos con clips en la sección de Santiago y Oriana.
-- [ ] **Permiso de Pilar**: el expediente ahora dice «Pilar Sousa», con nombre completo.
+- [ ] **Stripe**: crear el webhook (, evento ) y cargar en Vercel  y .
+- [ ] **Redirección**: confirmar que el Payment Link lleva a  después de pagar.
+- [ ] **Compra de prueba** de punta a punta.
+- [ ] **Link del grupo de WhatsApp** →  en .
+- [ ] **Link de Zoom**: solo si va en el mail de bienvenida. Si lo comparten por el grupo, no hace falta.
+- [ ] **Pixel de Meta**: el ID, si van a pautar.
+- [ ] **Preguntas extra del roadmap** en : confirmar las 4.
+- [ ] **VIP** (USD 197, unos 50 lugares): decidir si va. Si va, hay que armarlo.
+- [ ] **Migración 0090**: confirmar que está aplicada en la base de producción.
 
 ## 1. Decisiones de oferta
 
