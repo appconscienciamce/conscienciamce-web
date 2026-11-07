@@ -534,8 +534,8 @@ export const bootcamp: BootcampContent = {
         "Más adelante te contamos sobre quiénes somos. Pero esto es lo que logramos:",
       ],
       photos: [
-        { name: "santiago.jpg", image: { src: "/media/santiago/santiago.webp", alt: "Santiago Gómez sentado frente a una computadora, con las manos juntas, pensando", width: 500, height: 654 } },
-        { name: "oriana.jpg", image: { src: "/media/hosts/oriana.webp", alt: "Oriana Safenreider de pie junto a una pizarra, en un taller", width: 500, height: 667 } },
+        { name: "santiago.jpg", image: { src: "/media/santiago/santiago.webp", alt: "Santiago Gómez sentado frente a una computadora, con las manos juntas, pensando", width: 368, height: 460 } },
+        { name: "oriana.jpg", image: { src: "/media/hosts/oriana.webp", alt: "Oriana Safenreider de pie junto a una pizarra, en un taller", width: 264, height: 330 } },
       ],
     },
     audience: {
