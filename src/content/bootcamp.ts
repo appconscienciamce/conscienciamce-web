@@ -265,16 +265,17 @@ export const bootcamp: BootcampContent = {
       "Creamos este bootcamp para personas que ya tienen experiencia, resultados y un negocio activo, pero sienten que lo que están construyendo todavía no representa todo lo que tienen para aportar.",
     fitTitle: "Es para vos si",
     fit: [
-      "Tenés experiencia, resultados y un negocio activo.",
-      "Tenés distintas capacidades e intereses, y una visión que no entra en un nicho fácil de explicar.",
-      "Ya invertiste en formación y metodologías, pero seguís dependiendo de lo que otro dice que funciona.",
-      "Estás delante de la cámara, o detrás: en estrategia, contenido, oferta, lanzamientos o monetización.",
+      "Sos una persona creativa, sensible y multipasional, y sentís que reducirte a una sola cosa ya no representa todo lo que sos capaz de construir.",
+      "Escalás marcas o sos creador, experto, estratega o fundador con experiencia y resultados de verdad.",
+      "Querés convertirte en referente en tu industria y que tu nombre tenga peso, no solo alcance.",
+      "Querés construir algo serio y real a largo plazo, crecer económicamente sin perder el alma, el cuerpo, la familia o tu propósito.",
     ],
     notFitTitle: "No es para vos si",
     notFit: [
-      "Querés empezar una marca personal desde cero.",
-      "Buscás una fórmula para copiar sin preguntarte si tiene sentido para vos.",
-      "Todavía no tenés recorrido real ni algo construido sobre lo que trabajar.",
+      "Sos principiante o querés empezar algo desde cero.",
+      "Buscás una fórmula exacta, un funnel secreto o una estrategia para copiar, y que alguien te diga exactamente qué hacer sin desarrollar criterio y pensamiento original.",
+      "Todavía no entendiste que tu negocio, tu marca y tus resultados son una extensión de quién sos.",
+      "Tu única prioridad es crecer, facturar o conseguir atención, sin importar qué terminás construyendo ni en quién te convertís durante el proceso.",
     ],
     floor: "revenueFloor",
     conflict: ["Experiencia real", "Fórmulas ajenas", "Criterio propio"],
@@ -557,6 +558,11 @@ export const bootcamp: BootcampContent = {
         name: "parecer.jpg",
         image: { src: "/media/items/1.webp", alt: "Collage de una cabeza de mármol partida, con nubes dentro", width: 410, height: 643 },
       },
+      /** Beside the marble head, so the masculine and the feminine sit together. */
+      balance: {
+        name: "equilibrio.jpg",
+        image: { src: "/media/items/equilibrio.webp", alt: "Pintura de una columna de mármol rodeada de ángeles y figuras femeninas", width: 756, height: 1344 },
+      },
     },
     days: {
       title: { before: "Dos", italic: "días" },
@@ -607,6 +613,18 @@ export const bootcamp: BootcampContent = {
     ],
     hosts: {
       lead: { name: "santiago-y-oriana.jpg", image: { src: "/media/hosts/santiago-y-oriana.webp", alt: "Santiago Gómez y Oriana Safenreider en una sala de madera, delante de una pizarra", width: 1500, height: 1602 } },
+    },
+    vip: {
+      kicker: "Experiencia VIP",
+      title: "El Bootcamp te muestra cómo pensamos. En el VIP llevamos esa forma de pensar a tu caso particular.",
+      paragraphs: [
+        "Vas a tener 3 horas de consultoría en vivo con nosotros para traer tus preguntas, decisiones, bloqueos y próximos movimientos. Vamos a trabajar sobre casos reales de las personas que estén dentro.",
+        "Si querés acceder más de cerca a nuestro criterio, experiencia y frecuencia, podés sumarte al VIP y vivir una experiencia mucho más profunda y aplicada del evento.",
+      ],
+      priceLabel: "Inversión",
+      price: "USD 111",
+      cta: "Quiero el VIP",
+      url: "https://buy.stripe.com/5kQbJ27v0gfQ5AHfS3gA902",
     },
     enroll: {
       seats: "300",

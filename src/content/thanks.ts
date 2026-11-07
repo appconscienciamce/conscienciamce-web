@@ -75,18 +75,33 @@ export const thanks = {
 
 /** What the current thank-you page does differently from the one kept at `/evento/gracias`. */
 export const thanksCurrent = {
-  file: { name: "mi-roadmap.txt", open: "Abrir", close: "Cerrar", hint: "Dos partes, cuatro preguntas cada una" },
+  file: { name: "mi-roadmap.txt", open: "Abrir", close: "Cerrar", hint: "Dos partes, 9 preguntas" },
+  text: "Al completar esto, te creamos tu roadmap estratégico y el mapa de tu alma para que puedas diseñar tus próximos movimientos. Te lo entregamos después del bootcamp.",
+  fields: {
+    name: "Nombre y apellido",
+    email: "Email",
+    project: "¿Quién sos, qué hacés actualmente y qué estás construyendo?",
+    projectHint: "Contanos brevemente qué vendés, a quién ayudás, cuál es tu rol y en qué etapa está hoy tu marca o negocio.",
+    goal: "¿Cuál es hoy tu principal fuente de ingresos y en qué nivel de facturación mensual estás?",
+    goalHint: "Podés responder con un rango si preferís.",
+  },
   next: "Seguir",
   back: "Volver",
   partOne: "Parte 1 de 2",
   partTwo: "Parte 2 de 2",
-  hook: "Ya está la base. Con estas cuatro respuestas llegamos con tu caso mucho más claro.",
-  /** Optional, and they travel inside `goal`: the endpoint stores four fields. */
+  hook: "Ya está la base. Con estas respuestas creamos tu roadmap y el mapa de tu alma.",
+  /**
+   * They travel inside `goal`: the endpoint stores four fields of up to 5000 characters,
+   * so the limits below keep the whole answer under that.
+   */
   more: [
-    { name: "strength", label: "¿Qué hacés mejor que la mayoría?", rows: 2, maxLength: 600 },
-    { name: "revenue", label: "¿Cuánto genera tu negocio por mes hoy?", rows: 1, maxLength: 600 },
-    { name: "tried", label: "¿Qué probaste que no te funcionó?", rows: 2, maxLength: 600 },
-    { name: "future", label: "Si en 12 meses todo sale bien, ¿qué cambió?", rows: 2, maxLength: 600 },
+    { name: "birth", part: 1, label: "Tu fecha de nacimiento, lugar y hora exacta", hint: "Por ejemplo: 14/03/1992, Rosario, Argentina, 07:45.", rows: 1, maxLength: 200 },
+    { name: "represent", part: 2, label: "¿Qué querés que tu nombre represente en los próximos años y qué sentís que hoy tu marca todavía no logra transmitir correctamente sobre vos?", rows: 3, maxLength: 500 },
+    { name: "bottleneck", part: 2, label: "¿Cuál sentís que es hoy tu mayor cuello de botella para llegar a tu próximo nivel?", hint: "¿Qué es lo que más te está frenando, confundiendo o postergando?", rows: 3, maxLength: 500 },
+    { name: "ninety", part: 2, label: "¿Qué querés haber transformado en tu marca o negocio durante los próximos 90 días?", hint: "¿Qué tendría que cambiar para que sintieras que realmente avanzaste?", rows: 3, maxLength: 500 },
+    { name: "clarity", part: 2, label: "Si estos dos días fueran extremadamente valiosos para vos, ¿con qué claridad, decisión o respuesta te gustaría salir?", rows: 3, maxLength: 500 },
+    { name: "why", part: 2, label: "¿Qué fue lo que hizo que decidieras comprar tu entrada?", hint: "¿Qué idea, problema, deseo o parte de nuestra comunicación hizo que pensaras: «quiero estar ahí»?", rows: 3, maxLength: 500 },
+    { name: "question", part: 2, label: "¿Qué pregunta te gustaría que respondiéramos sí o sí durante estos dos días?", rows: 2, maxLength: 500 },
   ],
   videos: {
     label: "Video para llegar listo",

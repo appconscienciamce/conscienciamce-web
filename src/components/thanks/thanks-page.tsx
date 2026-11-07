@@ -93,7 +93,7 @@ export function ThanksPage({ variant }: { variant: Variant }) {
           <Checklist title={checklist.title} steps={steps} />
 
           <div className="thanks-steps">
-            <StepWindow id={roadmap.id} number={1} title={roadmap.title} text={roadmap.text} tone="paper">
+            <StepWindow id={roadmap.id} number={1} title={roadmap.title} text={current ? thanksCurrent.text : roadmap.text} tone="paper">
               {current ? <RoadmapFile copy={{ ...roadmap, ...thanksCurrent }} /> : <RoadmapForm copy={roadmap} />}
             </StepWindow>
 

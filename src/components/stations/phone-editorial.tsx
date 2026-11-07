@@ -29,7 +29,6 @@ function Shot({ image, name, sizes, className = "", position }: { image: Img; na
 export function EdAudience() {
   const { audience, editorial } = bootcamp;
   const { headline } = editorial.audience;
-  const floor = resolveClaim(audience.floor);
   return (
     <div className="ed ed-paper ed-audience">
       <h2 className="ed-huge ed-r">
@@ -52,11 +51,6 @@ export function EdAudience() {
           {audience.notFit.map((item) => (
             <li key={item}>{item}</li>
           ))}
-          {floor.state !== "fallback" && (
-            <li>
-              <ClaimText id={audience.floor} />
-            </li>
-          )}
         </ul>
       </section>
     </div>
@@ -65,7 +59,7 @@ export function EdAudience() {
 
 export function EdManifesto() {
   const { manifesto, editorial } = bootcamp;
-  const { thesis, newWorld } = editorial.manifesto;
+  const { thesis, balance, newWorld } = editorial.manifesto;
   const words = manifesto.strikes.map((word) => <span key={word}>{word}</span>);
   return (
     <div className="ed ed-manifesto">
@@ -78,7 +72,10 @@ export function EdManifesto() {
           <mark>{manifesto.thesis.highlight}</mark>
           {manifesto.thesis.after}
         </h2>
-        <Shot image={thesis.image} name={thesis.name} sizes="92vw" className="ed-thesis-shot" position="50% 24%" />
+        <div className="ed-duo ed-thesis-duo">
+          <Shot image={thesis.image} name={thesis.name} sizes="46vw" position="50% 30%" />
+          <Shot image={balance.image} name={balance.name} sizes="46vw" position="50% 40%" />
+        </div>
         <p className="ed-counter ed-r">{manifesto.counter}</p>
       </div>
 

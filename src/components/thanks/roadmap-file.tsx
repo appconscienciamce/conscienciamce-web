@@ -7,14 +7,14 @@ import { track } from "@/lib/analytics";
 interface RoadmapCopy {
   id: string;
   endpoint: string | null;
-  fields: { name: string; email: string; project: string; goal: string };
+  fields: { name: string; email: string; project: string; goal: string; projectHint?: string; goalHint?: string };
   file: { name: string; open: string; close: string; hint: string };
   next: string;
   back: string;
   partOne: string;
   partTwo: string;
   hook: string;
-  more: { name: string; label: string; rows: number; maxLength: number }[];
+  more: { name: string; label: string; hint?: string; part?: number; rows: number; maxLength: number }[];
   submit: string;
   sending: string;
   sent: string;
@@ -23,6 +23,20 @@ interface RoadmapCopy {
 }
 
 type Status = "idle" | "sending" | "sent" | "failed";
+
+function Extra({ field }: { field: RoadmapCopy["more"][number] }) {
+  return (
+    <label className="is-wide">
+      <span>{field.label}</span>
+      {field.hint && <small className="roadmap-hint">{field.hint}</small>}
+      {field.rows === 1 ? (
+        <input name={field.name} type="text" maxLength={field.maxLength} />
+      ) : (
+        <textarea name={field.name} rows={field.rows} maxLength={field.maxLength} />
+      )}
+    </label>
+  );
+}
 
 const TIMEOUT_MS = 15000;
 
@@ -124,24 +138,30 @@ export function RoadmapFile({ copy }: { copy: RoadmapCopy }) {
                 <span>{fields.email}</span>
                 <input name="email" type="email" autoComplete="email" maxLength={320} required />
               </label>
+              {more
+                .filter((field) => field.part === 1)
+                .map((field) => (
+                  <Extra key={field.name} field={field} />
+                ))}
               <label className="is-wide">
                 <span>{fields.project}</span>
-                <textarea name="project" rows={3} maxLength={5000} required />
+                {fields.projectHint && <small className="roadmap-hint">{fields.projectHint}</small>}
+                <textarea name="project" rows={3} maxLength={1500} required />
               </label>
               <label className="is-wide">
                 <span>{fields.goal}</span>
-                <textarea name="goal" rows={3} maxLength={1800} required />
+                {fields.goalHint && <small className="roadmap-hint">{fields.goalHint}</small>}
+                <textarea name="goal" rows={2} maxLength={400} required />
               </label>
             </div>
 
             <div className="roadmap-fields" data-part="2" hidden={part !== 2}>
               <p className="roadmap-hook is-wide">{copy.hook}</p>
-              {more.map((field) => (
-                <label key={field.name} className="is-wide">
-                  <span>{field.label}</span>
-                  <textarea name={field.name} rows={field.rows} maxLength={field.maxLength} />
-                </label>
-              ))}
+              {more
+                .filter((field) => field.part !== 1)
+                .map((field) => (
+                  <Extra key={field.name} field={field} />
+                ))}
             </div>
 
             <div className="roadmap-actions">
