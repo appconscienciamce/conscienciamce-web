@@ -422,12 +422,12 @@ export const bootcamp: BootcampContent = {
     title: "Somos Santiago Gómez y Oriana Safenreider",
     trackRecord: {
       before:
-        "Durante años estuvimos detrás de marcas, creadores, productos y negocios digitales, ayudando a transformar conocimiento en marcas, audiencias, productos y ",
+        "Durante años estuvimos detrás de marcas, creadores y negocios digitales, ayudando a transformar conocimiento en marcas, audiencias y ",
       claim: "salesTrackRecord",
       after: ".",
     },
     paragraphs: [
-      "Trabajamos cerca de las personas, comprendiendo su visión y participando en las decisiones que dan forma a sus proyectos.",
+      "Trabajamos cerca de las personas, comprendiendo su visión y participando en las decisiones que dan vida a sus proyectos.",
       "Nuestra forma de construir integra consciencia, identidad y negocio. Nos importa qué quiere expresar esa persona, el impacto que quiere generar y la vida que está construyendo mientras desarrolla su empresa.",
     ],
     ownBrandLead: "También lo aplicamos a nuestra propia marca.",
