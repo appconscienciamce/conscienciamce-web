@@ -21,7 +21,9 @@ export function startCanvas() {
   const title = win.querySelector(".app-bar-title");
   const progress = win.querySelector<HTMLElement>(".app-bar-progress");
   const arrival = frames.map(() => "");
-  const animate = motion();
+  // The current page draws its own arrival per piece (phone-reveal): writing --in on every frame
+  // would only make the browser restyle each whole chapter while the finger scrolls.
+  const animate = motion() && !win.closest(".v-current");
   let reading: HTMLElement | null = null;
   let frame = 0;
 
