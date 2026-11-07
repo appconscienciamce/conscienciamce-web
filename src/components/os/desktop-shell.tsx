@@ -41,7 +41,7 @@ export function PhoneShell({ variant }: { variant: Variant }) {
   const { os, casePilar, hosts, proof, editorial } = bootcamp;
   const { apps } = os.phone;
   const current = variant === "current";
-  const portrait = hosts.people[current ? 1 : 0].image.src!;
+  const portrait = current ? editorial.home.hostsIcon : hosts.people[0].image.src!;
   const grid: PhoneApp[] = [
     { id: "para-quien", label: apps.para, icon: { kind: "folder" } },
     { id: "manifiesto", label: apps.manifesto, icon: { kind: "note" } },
