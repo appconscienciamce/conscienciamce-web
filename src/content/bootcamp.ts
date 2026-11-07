@@ -534,8 +534,8 @@ export const bootcamp: BootcampContent = {
         "Más adelante te contamos sobre quiénes somos. Pero esto es lo que logramos:",
       ],
       photos: [
-        { name: "santiago.jpg", image: { src: "/media/santiago/santiago.webp", alt: "Santiago Gómez sentado frente a una computadora, con las manos juntas, pensando", width: 368, height: 460 } },
-        { name: "oriana.jpg", image: { src: "/media/hosts/oriana.webp", alt: "Oriana Safenreider de pie junto a una pizarra, en un taller", width: 264, height: 330 } },
+        { name: "santiago.jpg", image: { src: "/media/santiago/santiago.webp", alt: "Santiago Gómez sentado frente a una computadora, con las manos juntas, pensando", width: 1120, height: 1400 } },
+        { name: "oriana.jpg", image: { src: "/media/hosts/oriana.webp", alt: "Oriana Safenreider de pie junto a una pizarra, en un taller", width: 760, height: 950 } },
       ],
     },
     audience: {
@@ -561,7 +561,7 @@ export const bootcamp: BootcampContent = {
           month: "/11",
           label: "Martes 17 de noviembre",
           focus: "Trabajo interno",
-          photo: { name: "dia-1.jpg", image: { src: "/media/santiago/dia-1.webp", alt: "Santiago Gómez con los brazos abiertos, en medio de una ronda de personas de pie", width: 500, height: 750 } },
+          photo: { name: "dia-1.jpg", image: { src: "/media/santiago/dia-1.webp", alt: "Santiago Gómez con los brazos abiertos, en medio de una ronda de personas de pie", width: 1500, height: 1161 } },
         },
         {
           day: "18",
@@ -595,7 +595,7 @@ export const bootcamp: BootcampContent = {
       { src: "/media/items/5.webp", alt: "", width: 396, height: 643 },
     ],
     hosts: {
-      lead: { name: "santiago-y-oriana.jpg", image: { src: "/media/hosts/santiago-y-oriana.webp", alt: "Santiago Gómez y Oriana Safenreider en una sala de madera, delante de una pizarra", width: 500, height: 560 } },
+      lead: { name: "santiago-y-oriana.jpg", image: { src: "/media/hosts/santiago-y-oriana.webp", alt: "Santiago Gómez y Oriana Safenreider en una sala de madera, delante de una pizarra", width: 1500, height: 1602 } },
     },
     enroll: {
       seats: "300",
