@@ -87,6 +87,11 @@
   border-top: 1px solid rgba(21, 21, 21, 0.14);
 }
 
+/* Air between the audience list and the kit title. */
+.phone-os:not(.board-on) .v-current .canvas .ed-outcomes {
+  padding-top: 96px;
+}
+
 /* ---------------- The new world, before the thesis ---------------- */
 
 .phone-os:not(.board-on) .v-current .canvas .ed-newworld {
