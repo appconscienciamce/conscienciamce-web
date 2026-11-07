@@ -665,6 +665,11 @@
   rotate: -1.5deg;
 }
 
+/* Standing, so both of them fit from head to waist. */
+.ed-hosts-lead .print {
+  aspect-ratio: 4 / 5;
+}
+
 .ed-hosts-side {
   position: absolute;
   right: 0;
