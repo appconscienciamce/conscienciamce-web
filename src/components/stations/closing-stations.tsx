@@ -158,25 +158,6 @@ export function EnrollStation({ variant }: { variant: Variant }) {
         </article>
       </Piece>
 
-      {current && (
-        <Piece x={1980} y={40} w={460} as="article" className="vip ph-keep">
-          <p className="vip-kicker">{editorial.vip.kicker}</p>
-          <h3 className="vip-title">{editorial.vip.title}</h3>
-          {editorial.vip.paragraphs.map((paragraph) => (
-            <p key={paragraph} className="vip-text">
-              {paragraph}
-            </p>
-          ))}
-          <p className="vip-price">
-            <span>{editorial.vip.priceLabel}</span>
-            <strong>{editorial.vip.price}</strong>
-          </p>
-          <a href={editorial.vip.url} data-track="vip_cta_click" className="btn vip-cta">
-            <CtaContent label={editorial.vip.cta} />
-          </a>
-        </Piece>
-      )}
-
       {!current && (
         <Piece x={1320} y={40} w={460} movable className="paper-note note-tape selection-note">
           <h3>{investment.selectionTitle}</h3>

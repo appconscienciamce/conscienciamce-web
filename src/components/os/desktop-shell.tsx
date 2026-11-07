@@ -60,7 +60,7 @@ export function PhoneShell({ variant }: { variant: Variant }) {
     const at = (id: string) => grid.find((app) => app.id === id)!;
     grid.splice(0, grid.length, ...["manifiesto", "dos-dias", "caso-pilar", "expediente", "para-quien", "que-te-llevas", "inscripcion", "quienes"].map((id) => (id === "para-quien" ? audience : at(id))));
   }
-  return <PhoneHome apps={grid} label={os.chaptersLabel} scrollLabel={os.phone.next} editorial={current} />;
+  return <PhoneHome apps={grid} label={os.chaptersLabel} scrollLabel={os.phone.next} editorial={current} hint={current ? editorial.home.hint : undefined} />;
 }
 
 /** The dark room behind the map. Only present while the board layout is active. */

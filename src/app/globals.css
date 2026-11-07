@@ -5404,6 +5404,11 @@ html.phone-os:not(.board-on) body {
   position: sticky;
   top: 0;
   z-index: 5;
+  /* Its own layer: on iOS a sticky bar over a moving page can flicker while it repaints. */
+  transform: translateZ(0);
+  will-change: transform;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
   padding: 0 max(8px, env(safe-area-inset-right, 0px)) 0 max(14px, env(safe-area-inset-left, 0px));
   border-bottom: 1px solid #191919;
 }

@@ -88,7 +88,9 @@ export function PhoneHome({
   label,
   scrollLabel,
   editorial = false,
+  hint,
 }: {
+  hint?: string;
   apps: PhoneApp[];
   label: string;
   scrollLabel: string;
@@ -119,6 +121,11 @@ export function PhoneHome({
         ))}
       </ul>
 
+      {hint && (
+        <p aria-hidden className="phone-hint">
+          {hint}
+        </p>
+      )}
       <a
         href={`#${apps[0].id}`}
         className="scroll-arrow phone-scroll"

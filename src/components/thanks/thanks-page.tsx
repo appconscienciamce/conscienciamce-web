@@ -57,6 +57,46 @@ function StepWindow({
   );
 }
 
+/** The VIP as a black ticket: the same ticket as the landing, inverted. */
+function VipTicket() {
+  const { vip } = bootcamp.editorial;
+  return (
+    <article className="vip-ticket">
+      <div className="vip-ticket-main">
+        <p className="vip-ticket-tag">{vip.kicker}</p>
+        <p className="vip-ticket-name">
+          Creadores <i>Conscientes</i>
+        </p>
+        <h3 className="vip-ticket-title">{vip.title}</h3>
+        {vip.paragraphs.map((paragraph) => (
+          <p key={paragraph} className="vip-ticket-text">
+            {paragraph}
+          </p>
+        ))}
+        <dl className="vip-ticket-rows">
+          {vip.rows.map((row) => (
+            <div key={row.label}>
+              <dt>{row.label}</dt>
+              <dd>{row.value}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+      <div className="vip-ticket-stub">
+        <p className="vip-ticket-admit">{vip.admit}</p>
+        <p className="vip-ticket-price">
+          <span>{vip.priceLabel}</span>
+          <strong>{vip.price}</strong>
+        </p>
+        <a href={vip.url} data-track="vip_cta_click" className="btn vip-ticket-cta">
+          {vip.cta} <span aria-hidden>&rarr;</span>
+        </a>
+        <span aria-hidden className="vip-ticket-barcode" />
+      </div>
+    </article>
+  );
+}
+
 /** The thank-you page: the roadmap as a closed file, one video and no call. `/evento/gracias` keeps the previous one. */
 export function ThanksPage({ variant }: { variant: Variant }) {
   const current = variant === "current";
@@ -68,6 +108,7 @@ export function ThanksPage({ variant }: { variant: Variant }) {
     ? [
         { id: whatsapp.id, label: whatsapp.label },
         { id: roadmap.id, label: roadmap.label },
+        { id: "vip", label: bootcamp.editorial.vip.label, optional: checklist.optional },
       ]
     : [
         { id: roadmap.id, label: roadmap.label },
@@ -113,6 +154,12 @@ export function ThanksPage({ variant }: { variant: Variant }) {
           <div className="thanks-steps">
             {current ? whatsappStep : roadmapStep}
             {current ? roadmapStep : whatsappStep}
+
+            {current && (
+              <StepWindow id="vip" number={3} title={bootcamp.editorial.vip.stepTitle} text={bootcamp.editorial.vip.stepText} badge={checklist.optional} tone="paper">
+                <VipTicket />
+              </StepWindow>
+            )}
 
             {!current && (
             <StepWindow id={videos.id} number={3} title={video.title} text={video.text}>

@@ -276,7 +276,7 @@ export interface BootcampContent {
     pilarPeriod: string;
     pilarPromise: string;
     pilarFile: { intro: string; layers: string[]; share: string };
-    home: { pilar: string; lock: string; hostsIcon: string };
+    home: { hint: string; pilar: string; lock: string; hostsIcon: string };
     authority: { title: string; intro: string[]; photos: { name: string; image: Img }[] };
     audience: { headline: { before: string; italic: string; after: string } };
     manifesto: { newWorld: { lead: string; text: string }; thesis: { name: string; image: Img }; balance: { name: string; image: Img } };
@@ -290,7 +290,7 @@ export interface BootcampContent {
     gainsShown: number[];
     gains: Img[];
     hosts: { lead: { name: string; image: Img } };
-    vip: { kicker: string; title: string; paragraphs: string[]; priceLabel: string; price: string; cta: string; url: string };
+    vip: { kicker: string; label: string; stepTitle: string; stepText: string; rows: { label: string; value: string }[]; admit: string; title: string; paragraphs: string[]; priceLabel: string; price: string; cta: string; url: string };
     enroll: { seats: string; seatsText: string; rows: { label: string; value: string }[]; faqItems: number; moreFaq: { q: string; a: string }[] };
   };
   footer: { line: string; copyright: string };

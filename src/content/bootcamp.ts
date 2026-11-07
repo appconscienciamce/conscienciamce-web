@@ -537,7 +537,7 @@ export const bootcamp: BootcampContent = {
       layers: ["Su expertise", "Mensaje y narrativa", "Posicionamiento", "Contenido", "Lanzamiento", "Oferta", "Producto, entrega y servicio", "Monetización"],
       share: "Voy a compartirte todo lo que funcionó, lo que no, qué decisiones tomamos y cómo pensamos cada paso en el proceso.",
     },
-    home: { pilar: "+650K", lock: "Archivo con candado", hostsIcon: "/media/hosts/nosotros-icono.webp" },
+    home: { hint: "Deslizá para ver más", pilar: "+650K", lock: "Archivo con candado", hostsIcon: "/media/hosts/nosotros-icono.webp" },
     authority: {
       title: "Somos Santiago y Oriana",
       intro: [
@@ -621,6 +621,14 @@ export const bootcamp: BootcampContent = {
         "Vas a tener 3 horas de consultoría en vivo con nosotros para traer tus preguntas, decisiones, bloqueos y próximos movimientos. Vamos a trabajar sobre casos reales de las personas que estén dentro.",
         "Si querés acceder más de cerca a nuestro criterio, experiencia y frecuencia, podés sumarte al VIP y vivir una experiencia mucho más profunda y aplicada del evento.",
       ],
+      label: "Experiencia VIP",
+      stepTitle: "Sumate al VIP",
+      stepText: "Opcional: 3 horas de consultoría en vivo con nosotros, aparte de tu entrada.",
+      rows: [
+        { label: "Formato", value: "3 horas en vivo" },
+        { label: "Con", value: "Santiago y Oriana" },
+      ],
+      admit: "Acceso VIP",
       priceLabel: "Extra, aparte de tu entrada",
       price: "USD 111",
       cta: "Quiero el VIP",
