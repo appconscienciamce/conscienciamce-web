@@ -11,13 +11,13 @@ Casi todo se edita en `src/content/bootcamp.ts`, sin tocar el diseño.
 
 Es lo único que queda abierto. Todo lo que no está en esta lista se da por resuelto: las cifras de «Lo que logramos», los datos de Pilar (5K, USD 650.000 en 7 meses), los USD 100.000 del día 2, el horario, los 300 lugares, la grabación, el permiso de Pilar, las fotos, el copy y la política de privacidad y reembolso. Las secciones de abajo quedan como historial.
 
-- [ ] **Stripe**: crear el webhook (, evento ) y cargar en Vercel  y .
-- [ ] **Redirección**: confirmar que el Payment Link lleva a  después de pagar.
+- [ ] **Stripe**: crear el webhook (`https://api.conscienciamce.com/api/webhooks/stripe-bootcamp`, evento `checkout.session.completed`) y cargar en Vercel `BOOTCAMP_STRIPE_WEBHOOK_SECRET` y `BOOTCAMP_PAYMENT_LINK_ID`.
+- [ ] **Redirección**: confirmar que el Payment Link lleva a `/gracias` después de pagar.
 - [ ] **Compra de prueba** de punta a punta.
-- [ ] **Link del grupo de WhatsApp** →  en .
+- [ ] **Link del grupo de WhatsApp** → `whatsapp.url` en `src/content/thanks.ts`.
 - [ ] **Link de Zoom**: solo si va en el mail de bienvenida. Si lo comparten por el grupo, no hace falta.
 - [ ] **Pixel de Meta**: el ID, si van a pautar.
-- [ ] **Preguntas extra del roadmap** en : confirmar las 4.
+- [ ] **Preguntas extra del roadmap** en `/gracias`: confirmar las 4.
 - [ ] **VIP** (USD 197, unos 50 lugares): decidir si va. Si va, hay que armarlo.
 - [ ] **Migración 0090**: confirmar que está aplicada en la base de producción.
 
