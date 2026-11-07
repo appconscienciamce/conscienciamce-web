@@ -464,9 +464,9 @@ export const bootcamp: BootcampContent = {
           value: "4",
           text: "negocios de infoproductos escalados a +100K/mes",
           faces: [
-            { name: "Daniel" },
-            { name: "Luzland" },
-            { name: "Aida" },
+            { name: "Daniel", image: { src: "/media/clients/face-daniel.webp", alt: "Daniel", width: 168, height: 168 } },
+            { name: "Luzland", image: { src: "/media/clients/face-luzland.webp", alt: "Luzland", width: 168, height: 168 } },
+            { name: "Aida", image: { src: "/media/clients/face-aida.webp", alt: "Aida", width: 168, height: 168 } },
             { name: "Pilar", image: { src: "/media/pilar/pilar.webp", alt: "Pilar", width: 447, height: 447 } },
           ],
         },
