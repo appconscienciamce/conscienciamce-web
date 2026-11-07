@@ -535,7 +535,7 @@ export const bootcamp: BootcampContent = {
       ],
       photos: [
         { name: "santiago.jpg", image: { src: "/media/santiago/santiago.webp", alt: "Santiago Gómez sentado frente a una computadora, con las manos juntas, pensando", width: 1120, height: 1400 } },
-        { name: "oriana.jpg", image: { src: "/media/hosts/oriana.webp", alt: "Oriana Safenreider de pie junto a una pizarra, en un taller", width: 760, height: 950 } },
+        { name: "oriana.jpg", image: { src: "/media/hosts/oriana.webp", alt: "Oriana Safenreider de pie junto a una pizarra, en un taller", width: 560, height: 700 } },
       ],
     },
     audience: {
