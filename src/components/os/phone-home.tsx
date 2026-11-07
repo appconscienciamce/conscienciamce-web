@@ -11,7 +11,7 @@ import { startPull } from "@/lib/phone-pull";
 import { ChevronGlyph } from "./glyphs";
 import { MacFolder } from "./mac-folder";
 
-export type PhoneIcon = { kind: "folder" } | { kind: "note" } | { kind: "ticket"; mark?: string } | { kind: "photo"; src: string };
+export type PhoneIcon = { kind: "folder" } | { kind: "note" } | { kind: "ticket"; logo?: string } | { kind: "photo"; src: string };
 
 export interface PhoneApp {
   id: string;
@@ -30,7 +30,11 @@ function Icon({ icon }: { icon: PhoneIcon }) {
     case "note":
       return <span aria-hidden className="phone-icon-note" />;
     case "ticket":
-      return <span aria-hidden className="phone-icon-ticket">{icon.mark && <b>{icon.mark}</b>}</span>;
+      return (
+        <span aria-hidden className="phone-icon-ticket">
+          {icon.logo && <Image src={icon.logo} alt="" width={40} height={39} quality={90} />}
+        </span>
+      );
     default:
       return <MacFolder />;
   }

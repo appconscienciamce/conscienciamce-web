@@ -276,7 +276,7 @@ export interface BootcampContent {
     pilarPeriod: string;
     pilarPromise: string;
     pilarFile: { intro: string; layers: string[]; share: string };
-    home: { price: string; pilar: string; lock: string; hostsIcon: string };
+    home: { ticketLogo: string; pilar: string; lock: string; hostsIcon: string };
     authority: { title: string; intro: string[]; photos: { name: string; image: Img }[] };
     audience: { headline: { before: string; italic: string; after: string } };
     manifesto: { thesis: { name: string; image: Img } };

@@ -526,7 +526,7 @@ export const bootcamp: BootcampContent = {
       layers: ["Su expertise", "Mensaje y narrativa", "Posicionamiento", "Contenido", "Lanzamiento", "Oferta", "Producto, entrega y servicio", "Monetización"],
       share: "Voy a compartirte todo lo que funcionó, lo que no, qué decisiones tomamos y cómo pensamos cada paso en el proceso.",
     },
-    home: { price: "36,9", pilar: "+650K", lock: "Archivo con candado", hostsIcon: "/media/hosts/nosotros-icono.webp" },
+    home: { ticketLogo: "/media/brand/mce-logo.webp", pilar: "+650K", lock: "Archivo con candado", hostsIcon: "/media/hosts/nosotros-icono.webp" },
     authority: {
       title: "Lo que logramos",
       intro: [

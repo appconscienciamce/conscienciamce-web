@@ -51,7 +51,7 @@ export function PhoneShell({ variant }: { variant: Variant }) {
     { id: "que-te-llevas", label: apps.outcomes, icon: { kind: "folder" }, ...(current && { tone: "gold" as const }) },
     { id: "quienes", label: apps.hosts, icon: { kind: "photo", src: portrait } },
     current
-      ? { id: "inscripcion", label: apps.enroll, icon: { kind: "ticket", mark: editorial.home.price } }
+      ? { id: "inscripcion", label: apps.enroll, icon: { kind: "ticket", logo: editorial.home.ticketLogo } }
       : { id: "testimonios", label: apps.testimonials, icon: { kind: "photo", src: proof.gallery[2].image.src! } },
   ];
   return <PhoneHome apps={grid} label={os.chaptersLabel} scrollLabel={os.phone.next} editorial={current} />;

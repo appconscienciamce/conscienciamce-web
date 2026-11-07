@@ -755,17 +755,14 @@
   border-left: 1.5px dashed rgba(21, 21, 21, 0.4);
 }
 
-/* The price, printed small on the ticket, almost hidden. */
-.phone-icon-ticket b {
+/* The MCE eagle, printed small on the ticket. */
+.phone-app .phone-icon-ticket img {
   position: absolute;
   top: 50%;
-  left: 12%;
-  translate: 0 -50%;
-  color: var(--ink);
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  left: 35%;
+  width: 34%;
+  height: auto;
+  translate: -50% -50%;
 }
 
 .phone-app[data-kind="ticket"] .phone-icon {
