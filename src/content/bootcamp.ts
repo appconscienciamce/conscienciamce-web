@@ -13,7 +13,7 @@ export const bootcamp: BootcampContent = {
   offer: {
     status: "approved",
     approvedClaims: ["salesTrackRecord", "millionsInSales", "pilarRevenue", "revenueFloor", "santiagoMonthly"],
-    price: { currency: "USD", amount: 36.9, label: "USD 36,90", approved: true },
+    price: { currency: "USD", amount: 36.9, label: "USD 36,9", approved: true },
     logistics: [
       { label: "Formato", value: "2 días en vivo", approved: true },
       { label: "Fechas", value: "17 y 18 de noviembre", approved: true },
@@ -526,7 +526,7 @@ export const bootcamp: BootcampContent = {
       layers: ["Su expertise", "Mensaje y narrativa", "Posicionamiento", "Contenido", "Lanzamiento", "Oferta", "Producto, entrega y servicio", "Monetización"],
       share: "Voy a compartirte todo lo que funcionó, lo que no, qué decisiones tomamos y cómo pensamos cada paso en el proceso.",
     },
-    home: { price: "369", pilar: "+650K", lock: "Archivo con candado", hostsIcon: "/media/hosts/nosotros-icono.webp" },
+    home: { price: "36,9", pilar: "+650K", lock: "Archivo con candado", hostsIcon: "/media/hosts/nosotros-icono.webp" },
     authority: {
       title: "Lo que logramos",
       intro: [
