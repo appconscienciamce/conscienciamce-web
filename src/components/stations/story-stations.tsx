@@ -9,7 +9,6 @@ import { resolveClaim } from "@/lib/offer";
 import type { Variant } from "@/content/types";
 import { ManifestoBoard } from "./manifesto-board";
 import { EdAudience, EdDays, EdManifesto, EdOutcomes, EdPilar } from "./phone-editorial";
-import { CheckList } from "./phone-touch";
 
 export function HeroStation({ variant }: { variant: Variant }) {
   const { hero, os } = bootcamp;
@@ -252,15 +251,16 @@ export function PilarStation({ variant }: { variant: Variant }) {
           </svg>
           <Print image={casePilar.image} sizes="120px" className="clip-photo" />
         </div>
-        <p className="file-intro">{casePilar.intro}</p>
+        <p className="file-intro">{current ? editorial.pilarFile.intro : casePilar.intro}</p>
         <ol className={current ? "file-layers ed-r" : "file-layers"}>
-          {casePilar.layers.map((layer, i) => (
+          {(current ? editorial.pilarFile.layers : casePilar.layers).map((layer, i) => (
             <li key={layer}>
               <span>{String(i + 1).padStart(2, "0")}</span>
               {layer}
             </li>
           ))}
         </ol>
+        {current && <p className="file-share">{editorial.pilarFile.share}</p>}
       </Piece>
 
       <Piece x={1930} y={16} w={170} r={-2.5} movable className="clip-print">
@@ -270,19 +270,17 @@ export function PilarStation({ variant }: { variant: Variant }) {
         <Print image={casePilar.image} sizes="170px" className="clip-photo" />
       </Piece>
 
-      <Piece x={1914} y={236} w={356} className="file-review ph-keep">
-        <h3>{casePilar.reviewTitle}</h3>
-        {current ? (
-          <CheckList items={casePilar.review} />
-        ) : (
+      {!current && (
+        <Piece x={1914} y={236} w={356} className="file-review ph-keep">
+          <h3>{casePilar.reviewTitle}</h3>
           <ul>
             {casePilar.review.map((item) => (
               <li key={item}>{item}</li>
             ))}
           </ul>
-        )}
-        <p className="body-soft">{casePilar.closing}</p>
-      </Piece>
+          <p className="body-soft">{casePilar.closing}</p>
+        </Piece>
+      )}
     </Station>
   );
 }

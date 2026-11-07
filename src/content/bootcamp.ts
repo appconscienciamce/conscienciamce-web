@@ -458,11 +458,11 @@ export const bootcamp: BootcampContent = {
     authority: {
       title: "Lo que logramos",
       items: [
-        { value: "USD 2,6M", text: "para creadores conscientes" },
-        { value: "+30", text: "marcas acompañadas" },
-        { value: "USD 50K", text: "de promedio mensual en 2026" },
-        { value: "+2 años", text: "sosteniendo esos números" },
-        { value: "Miles", text: "de clientes en academias" },
+        { value: "+USD 500K", text: "de profit en 2026, 100% para nosotros, con menos de 20K followers" },
+        { value: "+USD 2,6M", text: "con creadores conscientes, vendiendo algo intangible" },
+        { value: "Miles", text: "de personas en los movimientos educativos que creamos" },
+        { value: "4", text: "negocios de infoproductos escalados a +100K/mes" },
+        { value: "+30", text: "emprendedores arriba de 10K/mes" },
       ],
     },
     album: [
@@ -516,12 +516,23 @@ export const bootcamp: BootcampContent = {
   editorial: {
     navResults: "Resultados",
     pilarName: "Pilar Sousa",
-    pilarLead: "Cómo construimos junto a Pilar un ecosistema que generó más de",
-    pilarPeriod: "en 7 meses",
-    home: { price: "36,90", pilar: "+650K", lock: "Archivo con candado" },
+    pilarRole: "Creadora y experta en metafísica.",
+    pilarLead: "Trabajando 1 a 1, pasó de 5K a generar",
+    pilarPeriod: "en los últimos 7 meses",
+    pilarPromise: "Voy a mostrarte cómo reprogramamos su identidad y construimos todo su ecosistema de negocio.",
+    pilarFile: {
+      intro:
+        "Vamos a revelarte cómo vivimos todo el proceso entero, no para que copies y pegues, sino para que aprendas a pensar movimientos estratégicos, sepas cómo tomar decisiones y escalar conscientemente.",
+      layers: ["Su expertise", "Mensaje y narrativa", "Posicionamiento", "Contenido", "Lanzamiento", "Oferta", "Producto, entrega y servicio", "Monetización"],
+      share: "Voy a compartirte todo lo que funcionó, lo que no, qué decisiones tomamos y cómo pensamos cada paso en el proceso.",
+    },
+    home: { price: "369", pilar: "+650K", lock: "Archivo con candado" },
     authority: {
       title: "Lo que logramos",
-      intro: "No importa tanto quiénes somos: te lo contamos al final. Lo importante son los frutos que cosechamos con coherencia, excelencia y compromiso.",
+      intro: [
+        "Llevamos más de 3 años detrás de grandes marcas personales y descubrimos una nueva forma de hacer negocios y crear capital conscientemente.",
+        "Más adelante te contamos sobre quiénes somos. Pero esto es lo que logramos:",
+      ],
       photos: [
         { name: "santiago.jpg", image: { src: "/media/santiago/img16.webp", alt: "Santiago Gómez sentado en un set de grabación", width: 400, height: 600 } },
         { name: "santiago-y-oriana.jpg", image: { src: "/media/hosts/noche.webp", alt: "Santiago y Oriana de noche, con una bebé en brazos", width: 400, height: 600 } },
@@ -529,6 +540,12 @@ export const bootcamp: BootcampContent = {
     },
     audience: {
       headline: { before: "No funciona para ", italic: "todos", after: " lo mismo." },
+    },
+    manifesto: {
+      thesis: {
+        name: "parecer.jpg",
+        image: { src: "/media/items/1.webp", alt: "Collage de una cabeza de mármol partida, con nubes dentro", width: 410, height: 643 },
+      },
     },
     days: {
       title: { before: "Dos", italic: "días" },
@@ -551,15 +568,19 @@ export const bootcamp: BootcampContent = {
           month: "/11",
           label: "Miércoles 18 de noviembre",
           focus: "Trabajo externo",
-          reveal: "Te revelo todo lo que aprendí después de invertir más de USD 100.000 en mentorías e infoproductos con los mejores referentes en marketing.",
+          reveal: { before: "Te voy a revelar todo lo que aprendí después de invertir más de", figure: "USD 100.000", after: "en mentorías e infoproductos." },
           photo: { name: "dia-2.jpg", image: { src: "/media/santiago/img4.webp", alt: "Santiago Gómez hablando con micrófono frente a un grupo, en un evento en vivo", width: 400, height: 600 } },
         },
       ],
     },
     kit: {
       cards: [
-        { tag: "Zoom · 17 y 18 de noviembre", title: "2 días en directo", text: "Trabajo interno el primer día, trabajo externo el segundo." },
-        { tag: "Personalizado", title: "Tu roadmap", text: "Lo completás antes de empezar, para llegar con un punto de partida claro." },
+        { tag: "Zoom · 17 y 18 de noviembre", title: "2 días en directo", text: "Trabajo interno el primer día y un trabajo en lo externo el segundo." },
+        {
+          tag: "Personalizado",
+          title: "Roadmap + mapa de tu alma",
+          text: "Al acceder, respondés unas preguntas para que, al terminar la experiencia, te entreguemos un PDF personalizado con tu diseño único de jugador, para ganar claridad estratégica sobre tu juego.",
+        },
         { tag: "Caso real", title: "El expediente de Pilar", text: "El proceso completo, de punta a punta: qué funcionó, qué no y qué decisiones se tomaron." },
         { tag: "Zoom", title: "La grabación", text: "Los dos días quedan grabados." },
       ],

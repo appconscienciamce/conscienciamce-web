@@ -63,7 +63,8 @@ export function EdAudience() {
 }
 
 export function EdManifesto() {
-  const { manifesto } = bootcamp;
+  const { manifesto, editorial } = bootcamp;
+  const { thesis } = editorial.manifesto;
   const words = manifesto.strikes.map((word) => <span key={word}>{word}</span>);
   return (
     <div className="ed ed-manifesto">
@@ -73,6 +74,7 @@ export function EdManifesto() {
           <mark>{manifesto.thesis.highlight}</mark>
           {manifesto.thesis.after}
         </h2>
+        <Shot image={thesis.image} name={thesis.name} sizes="92vw" className="ed-thesis-shot" position="50% 24%" />
         <p className="ed-counter ed-r">{manifesto.counter}</p>
       </div>
 
@@ -105,7 +107,11 @@ function EdAuthority() {
   return (
     <section className="ed-dark ed-authority" data-phone-anchor="testimonios">
       <h3 className="ed-title ed-r">{title}</h3>
-      <p className="ed-lead ed-r">{intro}</p>
+      {intro.map((line) => (
+        <p key={line} className="ed-lead ed-r">
+          {line}
+        </p>
+      ))}
       <div className="ed-duo">
         {photos.map((photo) => (
           <Shot key={photo.name} image={photo.image} name={photo.name} sizes="46vw" position="50% 40%" />
@@ -129,11 +135,13 @@ export function EdPilar() {
     <div className="ed ed-raised ed-pilar">
       <p className="ed-kicker ed-r">{casePilar.kicker}</p>
       <h2 className="ed-title ed-r">{casePilar.title}</h2>
+      <p className="ed-pilar-role ed-r">{editorial.pilarRole}</p>
       <p className="ed-lead ed-r">{editorial.pilarLead}</p>
       <p className="ed-figure ed-r">
         <ClaimText id={casePilar.figure} />
       </p>
       <p className="ed-figure-note ed-r">{editorial.pilarPeriod}</p>
+      <p className="ed-lead ed-pilar-promise ed-r">{editorial.pilarPromise}</p>
     </div>
   );
 }
@@ -172,7 +180,13 @@ export function EdDays() {
             <p className="ed-focus ed-r">{dated.focus}</p>
             <h3 className="ed-title ed-r">{day.title}</h3>
             <p className="ed-lead ed-r">{day.summary}</p>
-            {dated.reveal && <p className="ed-reveal ed-r">{dated.reveal}</p>}
+            {dated.reveal && (
+              <p className="ed-reveal ed-r">
+                {dated.reveal.before}
+                <strong>{dated.reveal.figure}</strong>
+                {dated.reveal.after}
+              </p>
+            )}
             <DayMore label={editorial.days.more}>
               <ul>
                 {day.items.map((item, n) => (

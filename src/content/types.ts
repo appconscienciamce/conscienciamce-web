@@ -271,16 +271,20 @@ export interface BootcampContent {
   editorial: {
     navResults: string;
     pilarName: string;
+    pilarRole: string;
     pilarLead: string;
     pilarPeriod: string;
+    pilarPromise: string;
+    pilarFile: { intro: string; layers: string[]; share: string };
     home: { price: string; pilar: string; lock: string };
-    authority: { title: string; intro: string; photos: { name: string; image: Img }[] };
+    authority: { title: string; intro: string[]; photos: { name: string; image: Img }[] };
     audience: { headline: { before: string; italic: string; after: string } };
+    manifesto: { thesis: { name: string; image: Img } };
     days: {
       title: { before: string; italic: string };
       zones: { flag: "ar" | "co" | "es"; time: string; place: string }[];
       more: string;
-      dates: { day: string; month: string; label: string; focus: string; reveal?: string; photo: { name: string; image: Img } }[];
+      dates: { day: string; month: string; label: string; focus: string; reveal?: { before: string; figure: string; after: string }; photo: { name: string; image: Img } }[];
     };
     kit: { cards: { tag: string; title: string; text: string }[] };
     gainsShown: number[];
