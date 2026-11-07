@@ -101,7 +101,10 @@ function finish(active: Pull, commit: boolean) {
     return;
   }
   if (target) {
-    openApp(chapters()[1].id, { instant: true });
+    // The first chapter on screen: the phone may show them in another order than the code.
+    const inside = Array.from(target.querySelectorAll<HTMLElement>("[data-station]"));
+    const first = inside.reduce<HTMLElement | null>((top, el) => (!top || el.offsetTop < top.offsetTop ? el : top), null) ?? chapters()[1];
+    openApp(first.id, { instant: true });
     animations.forEach((animation) => animation.cancel());
     return;
   }
