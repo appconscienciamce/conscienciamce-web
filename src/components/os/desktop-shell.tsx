@@ -42,8 +42,9 @@ export function PhoneShell({ variant }: { variant: Variant }) {
   const { apps } = os.phone;
   const current = variant === "current";
   const portrait = current ? editorial.home.hostsIcon : hosts.people[0].image.src!;
+  const audience: PhoneApp = { id: "para-quien", label: apps.para, icon: { kind: "folder" } };
   const grid: PhoneApp[] = [
-    { id: "para-quien", label: apps.para, icon: { kind: "folder" } },
+    ...(current ? [] : [audience]),
     { id: "manifiesto", label: apps.manifesto, icon: { kind: "note" } },
     { id: "caso-pilar", label: apps.pilar, icon: { kind: "photo", src: casePilar.image.src! }, ...(current && { badge: { text: editorial.home.pilar } }) },
     { id: "expediente", label: apps.file, icon: { kind: "folder" }, ...(current && { badge: { lock: editorial.home.lock } }) },
@@ -51,9 +52,14 @@ export function PhoneShell({ variant }: { variant: Variant }) {
     { id: "que-te-llevas", label: apps.outcomes, icon: { kind: "folder" }, ...(current && { tone: "gold" as const }) },
     { id: "quienes", label: apps.hosts, icon: { kind: "photo", src: portrait } },
     current
-      ? { id: "inscripcion", label: apps.enroll, icon: { kind: "ticket", logo: editorial.home.ticketLogo } }
+      ? { id: "inscripcion", label: apps.enroll, icon: { kind: "ticket" } }
       : { id: "testimonios", label: apps.testimonials, icon: { kind: "photo", src: proof.gallery[2].image.src! } },
   ];
+  // The current page reads manifesto, days, Pilar, who it is for, the kit, the ticket and, last, the hosts.
+  if (current) {
+    const at = (id: string) => grid.find((app) => app.id === id)!;
+    grid.splice(0, grid.length, ...["manifiesto", "dos-dias", "caso-pilar", "expediente", "para-quien", "que-te-llevas", "inscripcion", "quienes"].map((id) => (id === "para-quien" ? audience : at(id))));
+  }
   return <PhoneHome apps={grid} label={os.chaptersLabel} scrollLabel={os.phone.next} editorial={current} />;
 }
 

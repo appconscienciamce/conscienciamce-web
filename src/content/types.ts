@@ -251,7 +251,7 @@ export interface BootcampContent {
     title: string;
     trackRecord: { before: string; claim: ClaimId; after: string };
     paragraphs: string[];
-    authority: { title: string; items: { value: string; text: string }[] };
+    authority: { title: string; items: { value: string; text: string; faces?: { name: string; image?: Img }[] }[] };
     ownBrandLead: string;
     ownBrandClaim: ClaimId;
     ownBrandAfter: string;
@@ -276,10 +276,10 @@ export interface BootcampContent {
     pilarPeriod: string;
     pilarPromise: string;
     pilarFile: { intro: string; layers: string[]; share: string };
-    home: { ticketLogo: string; pilar: string; lock: string; hostsIcon: string };
+    home: { pilar: string; lock: string; hostsIcon: string };
     authority: { title: string; intro: string[]; photos: { name: string; image: Img }[] };
     audience: { headline: { before: string; italic: string; after: string } };
-    manifesto: { thesis: { name: string; image: Img } };
+    manifesto: { newWorld: { lead: string; text: string }; thesis: { name: string; image: Img } };
     days: {
       title: { before: string; italic: string };
       zones: { flag: "ar" | "co" | "es"; time: string; place: string }[];

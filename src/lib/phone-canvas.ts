@@ -32,18 +32,23 @@ export function startCanvas() {
     const range = scrollHeight - clientHeight;
     if (progress) progress.style.transform = `scaleX(${range > 0 ? Math.min(1, scrollTop / range) : 0})`;
 
-    let chapter = frames[0];
+    // The chapters may be reordered on screen: the one read is the lowest that already passed the line.
+    let chapter = frames.reduce((first, el) => (el.offsetTop < first.offsetTop ? el : first), frames[0]);
+    let passed = -Infinity;
     frames.forEach((el, i) => {
       // The layout position: what the arrival itself moves must not feed back into it.
       const top = el.offsetTop - scrollTop;
-      if (top <= clientHeight * READING_LINE) chapter = el;
+      if (top <= clientHeight * READING_LINE && el.offsetTop > passed) {
+        passed = el.offsetTop;
+        chapter = el;
+      }
       if (!animate) return;
       const value = Math.min(1, Math.max(0, (clientHeight - top) / (clientHeight * ARRIVAL))).toFixed(3);
       if (value === arrival[i]) return;
       arrival[i] = value;
       el.style.setProperty("--in", value);
     });
-    if (scrollTop >= range - END_PX) chapter = frames[frames.length - 1];
+    if (scrollTop >= range - END_PX) chapter = frames.reduce((last, el) => (el.offsetTop > last.offsetTop ? el : last), frames[0]);
 
     if (chapter !== reading) {
       reading = chapter;

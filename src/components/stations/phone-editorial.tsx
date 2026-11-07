@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { bootcamp } from "@/content/bootcamp";
 import { ClaimText, Print, Rich } from "@/components/editorial";
 import type { Img } from "@/content/types";
@@ -64,11 +65,14 @@ export function EdAudience() {
 
 export function EdManifesto() {
   const { manifesto, editorial } = bootcamp;
-  const { thesis } = editorial.manifesto;
+  const { thesis, newWorld } = editorial.manifesto;
   const words = manifesto.strikes.map((word) => <span key={word}>{word}</span>);
   return (
     <div className="ed ed-manifesto">
       <div className="ed-dark ed-thesis-block">
+        <p className="ed-newworld ed-r">
+          <strong>{newWorld.lead}</strong> {newWorld.text}
+        </p>
         <h2 className="ed-thesis ed-r">
           {manifesto.thesis.before}
           <mark>{manifesto.thesis.highlight}</mark>
@@ -85,6 +89,8 @@ export function EdManifesto() {
         </div>
       </div>
 
+      <EdAuthority />
+
       <div className="ed-paper ed-tired-block">
         <h3 className="ed-opening ed-r">{manifesto.opening}</h3>
         <ol className="ed-tired">
@@ -95,8 +101,6 @@ export function EdManifesto() {
           ))}
         </ol>
       </div>
-
-      <EdAuthority />
     </div>
   );
 }
@@ -122,6 +126,20 @@ function EdAuthority() {
           <div key={item.value} className="ed-r">
             <dt>{item.value}</dt>
             <dd>{item.text}</dd>
+            {item.faces && (
+              <dd className="ed-faces">
+                {item.faces.map((face) => (
+                  <span key={face.name} className="ed-face">
+                    {face.image ? (
+                      <Image src={face.image.src!} alt="" width={96} height={96} quality={90} />
+                    ) : (
+                      <b aria-hidden>{face.name.charAt(0)}</b>
+                    )}
+                    <small>{face.name}</small>
+                  </span>
+                ))}
+              </dd>
+            )}
           </div>
         ))}
       </dl>

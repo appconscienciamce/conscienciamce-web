@@ -64,8 +64,80 @@
 }
 
 .phone-os:not(.board-on) .v-current .canvas .app-end {
-  padding: 28px 20px 8px;
-  background: var(--bg);
+  display: none;
+}
+
+/* The phone reads in its own order. The board keeps its places, so the code order stays. */
+.phone-os:not(.board-on) .v-current .canvas-sheet {
+  display: flex;
+  flex-direction: column;
+}
+
+.phone-os:not(.board-on) .v-current .canvas .st#manifiesto { order: 1; }
+.phone-os:not(.board-on) .v-current .canvas .st#dos-dias { order: 2; }
+.phone-os:not(.board-on) .v-current .canvas .st#caso-pilar { order: 3; }
+.phone-os:not(.board-on) .v-current .canvas .st#para-quien { order: 4; }
+.phone-os:not(.board-on) .v-current .canvas .st#que-te-llevas { order: 5; }
+.phone-os:not(.board-on) .v-current .canvas .st#inscripcion { order: 6; }
+.phone-os:not(.board-on) .v-current .canvas .st#quienes { order: 7; }
+
+/* Two paper sections in a row: a hairline keeps them apart. */
+.phone-os:not(.board-on) .v-current .canvas .ed-days-head,
+.phone-os:not(.board-on) .v-current .canvas .ed-outcomes {
+  border-top: 1px solid rgba(21, 21, 21, 0.14);
+}
+
+/* ---------------- The new world, before the thesis ---------------- */
+
+.phone-os:not(.board-on) .v-current .canvas .ed-newworld {
+  margin: 0 0 30px;
+  font-family: var(--font-display);
+  font-size: clamp(21px, 6vw, 32px);
+  line-height: 1.25;
+  color: var(--soft);
+}
+
+.phone-os:not(.board-on) .v-current .canvas .ed-newworld strong {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 400;
+  color: var(--text);
+}
+
+/* ---------------- The faces behind the four businesses ---------------- */
+
+.ed-results .ed-faces {
+  display: flex;
+  gap: 14px;
+  margin: 16px 0 6px;
+}
+
+.ed-face {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+}
+
+.ed-face img,
+.ed-face b {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px var(--paper);
+  background: #2a2a2a;
+  color: var(--paper);
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.ed-face small {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--soft);
 }
 
 /* ---------------- Grounds ---------------- */
@@ -318,7 +390,7 @@
 }
 
 .ed-thesis-block {
-  padding: 164px var(--gutter) 64px;
+  padding: 88px var(--gutter) 64px;
 }
 
 .ed-tired-block {

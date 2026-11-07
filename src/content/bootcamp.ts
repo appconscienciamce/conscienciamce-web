@@ -28,7 +28,7 @@ export const bootcamp: BootcampContent = {
   seo: {
     title: "Creadores Conscientes — Bootcamp de marketing creativo y auténtico",
     description:
-      "Dos días en vivo con Santiago Gómez y Oriana Safenreider para convertir tu conocimiento, experiencia y resultados en una posición que el mercado entienda, recuerde y pueda comprar.",
+      "Dos días en vivo con Santiago Gómez y Oriana Safenreider para convertir tu conocimiento, experiencia y resultados en una posición que el mercado entienda, valore y quiera comprar.",
     siteName: "Creadores Conscientes",
     url: "https://bootcamp.conscienciamce.com",
     ogImage: null,
@@ -100,8 +100,8 @@ export const bootcamp: BootcampContent = {
     programName: "Creadores Conscientes",
     title: { before: "Marketing creativo ", italic: "y", after: " auténtico" },
     promise:
-      "Durante 2 días voy a ayudarte a convertir tu conocimiento, experiencia y resultados en una posición que el mercado entienda, recuerde y pueda comprar.",
-    promiseHighlight: "entienda, recuerde y pueda comprar.",
+      "Durante 2 días voy a ayudarte a convertir tu conocimiento, experiencia y resultados en una posición que el mercado entienda, valore y quiera comprar.",
+    promiseHighlight: "entienda, valore y quiera comprar.",
     format: "2 días en vivo",
     hosts: "Con Santiago Gómez y Oriana Safenreider",
     audience: "Para creadores, estrategas y emprendedores con experiencia y un negocio activo.",
@@ -239,7 +239,7 @@ export const bootcamp: BootcampContent = {
       { numeral: "I", text: "Qué tenés para aportar y cuál es tu diferencial, sin inventarte un personaje." },
       {
         numeral: "II",
-        text: "Cómo construir una posición que el mercado entienda, recuerde y pueda comprar, para dejar de perseguir atención.",
+        text: "Cómo construir una posición que el mercado entienda, valore y quiera comprar, para dejar de perseguir atención.",
       },
       { numeral: "III", text: "Criterio propio para decidir qué estrategias tienen sentido para tu negocio y cuáles no." },
       {
@@ -458,11 +458,21 @@ export const bootcamp: BootcampContent = {
     authority: {
       title: "Lo que logramos",
       items: [
-        { value: "+USD 500K", text: "de profit en 2026, 100% para nosotros, con menos de 20K followers" },
         { value: "+USD 2,6M", text: "con creadores conscientes, vendiendo algo intangible" },
-        { value: "Miles", text: "de personas en los movimientos educativos que creamos" },
-        { value: "4", text: "negocios de infoproductos escalados a +100K/mes" },
+        {
+          value: "4",
+          text: "negocios de infoproductos escalados a +100K/mes",
+          faces: [
+            { name: "Daniel" },
+            { name: "Luzland" },
+            { name: "Aida" },
+            { name: "Pilar", image: { src: "/media/pilar/pilar.webp", alt: "Pilar", width: 447, height: 447 } },
+          ],
+        },
         { value: "+30", text: "emprendedores arriba de 10K/mes" },
+        { value: "Millones", text: "de personas impactadas con contenido" },
+        { value: "Miles", text: "de alumnos en movimientos educativos" },
+        { value: "+USD 500K", text: "de profit en 2026, 100% para nosotros, con menos de 20K followers" },
       ],
     },
     album: [
@@ -526,12 +536,11 @@ export const bootcamp: BootcampContent = {
       layers: ["Su expertise", "Mensaje y narrativa", "Posicionamiento", "Contenido", "Lanzamiento", "Oferta", "Producto, entrega y servicio", "Monetización"],
       share: "Voy a compartirte todo lo que funcionó, lo que no, qué decisiones tomamos y cómo pensamos cada paso en el proceso.",
     },
-    home: { ticketLogo: "/media/brand/mce-logo.webp", pilar: "+650K", lock: "Archivo con candado", hostsIcon: "/media/hosts/nosotros-icono.webp" },
+    home: { pilar: "+650K", lock: "Archivo con candado", hostsIcon: "/media/hosts/nosotros-icono.webp" },
     authority: {
-      title: "Lo que logramos",
+      title: "Somos Santiago y Oriana",
       intro: [
-        "Llevamos más de 3 años detrás de grandes marcas personales y descubrimos una nueva forma de hacer negocios y crear capital conscientemente.",
-        "Más adelante te contamos sobre quiénes somos. Pero esto es lo que logramos:",
+        "Más adelante te contamos quiénes somos. Pero esto es lo que logramos después de más de 3 años detrás de las marcas personales más grandes:",
       ],
       photos: [
         { name: "santiago.jpg", image: { src: "/media/santiago/santiago.webp", alt: "Santiago Gómez sentado frente a una computadora, con las manos juntas, pensando", width: 1120, height: 1400 } },
@@ -542,6 +551,8 @@ export const bootcamp: BootcampContent = {
       headline: { before: "No funciona para ", italic: "todos", after: " lo mismo." },
     },
     manifesto: {
+      /** Provisional, from Santiago's audio: his exact copy replaces it. */
+      newWorld: { lead: "Estamos en un nuevo mundo.", text: "Hoy no se trata de estrategias: tu negocio siempre fue un reflejo de tu identidad." },
       thesis: {
         name: "parecer.jpg",
         image: { src: "/media/items/1.webp", alt: "Collage de una cabeza de mármol partida, con nubes dentro", width: 410, height: 643 },
