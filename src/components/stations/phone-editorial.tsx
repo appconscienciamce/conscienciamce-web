@@ -229,7 +229,7 @@ export function EdHosts() {
     <div className="ed ed-hosts">
       <div className="ed-dark ed-hosts-top">
         <div className="ed-hosts-shots">
-          <Shot image={lead.image} name={lead.name} sizes="92vw" className="ed-hosts-lead" position="50% 46%" />
+          <Shot image={lead.image} name={lead.name} sizes="92vw" className="ed-hosts-lead" position="50% 40%" />
         </div>
         <h2 className="ed-title ed-names ed-r">
           {hosts.people[0].name}
