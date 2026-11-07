@@ -11,7 +11,7 @@ Casi todo se edita en `src/content/bootcamp.ts`, sin tocar el diseño.
 
 Es lo único que queda abierto. Todo lo que no está en esta lista se da por resuelto: las cifras de «Lo que logramos», los datos de Pilar (5K, USD 650.000 en 7 meses), los USD 100.000 del día 2, el horario, los 300 lugares, la grabación, el permiso de Pilar, las fotos, el copy y la política de privacidad y reembolso. Las secciones de abajo quedan como historial.
 
-- [ ] **Stripe**: crear el webhook (`https://api.conscienciamce.com/api/webhooks/stripe-bootcamp`, evento `checkout.session.completed`) y cargar en Vercel `BOOTCAMP_STRIPE_WEBHOOK_SECRET` y `BOOTCAMP_PAYMENT_LINK_ID`.
+- [ ] **Stripe**: crear el webhook (`https://api.conscienciamce.com/api/webhooks/stripe-bootcamp`, eventos `checkout.session.completed` y `checkout.session.async_payment_succeeded`) y cargar en Vercel, en el proyecto del backend, `BOOTCAMP_STRIPE_WEBHOOK_SECRET` y `BOOTCAMP_PAYMENT_LINK_ID`.
 - [ ] **Redirección**: confirmar que el Payment Link lleva a `/gracias` después de pagar.
 - [ ] **Compra de prueba** de punta a punta.
 - [ ] **Link del grupo de WhatsApp** → `whatsapp.url` en `src/content/thanks.ts`.
