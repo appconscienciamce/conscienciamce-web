@@ -561,7 +561,7 @@ export const bootcamp: BootcampContent = {
           month: "/11",
           label: "Martes 17 de noviembre",
           focus: "Trabajo interno",
-          photo: { name: "dia-1.jpg", image: { src: "/media/santiago/img13.webp", alt: "Santiago Gómez explicando frente a una pizarra", width: 400, height: 600 } },
+          photo: { name: "dia-1.jpg", image: { src: "/media/santiago/dia-1.webp", alt: "Santiago Gómez sentado frente a una computadora, con las manos juntas, pensando", width: 500, height: 654 } },
         },
         {
           day: "18",
