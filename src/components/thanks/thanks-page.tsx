@@ -8,7 +8,7 @@ import { VideoCard } from "@/components/video-card";
 import { SystemClock } from "@/components/os/system-clock";
 import { SystemCountdown } from "@/components/os/system-countdown";
 import { bootcamp } from "@/content/bootcamp";
-import { thanks, thanksCurrent } from "@/content/thanks";
+import { thanks, thanksCurrent, thanksVip } from "@/content/thanks";
 import type { Variant } from "@/content/types";
 
 function StepWindow({
@@ -58,7 +58,7 @@ function StepWindow({
 }
 
 /** The VIP as a black ticket: the same ticket as the landing, inverted. */
-function VipTicket() {
+function VipTicket({ confirmed = false }: { confirmed?: boolean }) {
   const { vip } = bootcamp.editorial;
   return (
     <article className="vip-ticket">
@@ -68,7 +68,7 @@ function VipTicket() {
           Creadores <i>Conscientes</i>
         </p>
         <h3 className="vip-ticket-title">{vip.title}</h3>
-        {vip.paragraphs.map((paragraph) => (
+        {(confirmed ? vip.paragraphs.slice(0, 1) : vip.paragraphs).map((paragraph) => (
           <p key={paragraph} className="vip-ticket-text">
             {paragraph}
           </p>
@@ -84,13 +84,19 @@ function VipTicket() {
       </div>
       <div className="vip-ticket-stub">
         <p className="vip-ticket-admit">{vip.admit}</p>
-        <p className="vip-ticket-price">
-          <span>{vip.priceLabel}</span>
-          <strong>{vip.price}</strong>
-        </p>
-        <a href={vip.url} data-track="vip_cta_click" className="btn vip-ticket-cta">
-          {vip.cta} <span aria-hidden>&rarr;</span>
-        </a>
+        {confirmed ? (
+          <p className="vip-ticket-stamp">{thanksVip.confirmed}</p>
+        ) : (
+          <>
+            <p className="vip-ticket-price">
+              <span>{vip.priceLabel}</span>
+              <strong>{vip.price}</strong>
+            </p>
+            <a href={vip.url} data-track="vip_cta_click" className="btn vip-ticket-cta">
+              {vip.cta} <span aria-hidden>&rarr;</span>
+            </a>
+          </>
+        )}
         <span aria-hidden className="vip-ticket-barcode" />
       </div>
     </article>
@@ -98,9 +104,10 @@ function VipTicket() {
 }
 
 /** The thank-you page: the roadmap as a closed file, one video and no call. `/evento/gracias` keeps the previous one. */
-export function ThanksPage({ variant }: { variant: Variant }) {
+export function ThanksPage({ variant, vip = false }: { variant: Variant; vip?: boolean }) {
   const current = variant === "current";
-  const { hero, checklist, roadmap, whatsapp, videos, upsell } = thanks;
+  const { checklist, roadmap, whatsapp, videos, upsell } = thanks;
+  const hero = vip ? thanksVip.hero : thanks.hero;
   const { brand, os, offer } = bootcamp;
   const video = current ? { ...videos, ...thanksCurrent.videos, items: videos.items.slice(0, thanksCurrent.videos.count) } : videos;
   // The current page sends people to the group first: many will not have their birth time at hand.
@@ -108,7 +115,7 @@ export function ThanksPage({ variant }: { variant: Variant }) {
     ? [
         { id: whatsapp.id, label: whatsapp.label },
         { id: roadmap.id, label: roadmap.label },
-        { id: "vip", label: bootcamp.editorial.vip.label, optional: checklist.optional },
+        ...(vip ? [] : [{ id: "vip", label: bootcamp.editorial.vip.label, optional: checklist.optional }]),
       ]
     : [
         { id: roadmap.id, label: roadmap.label },
@@ -122,7 +129,7 @@ export function ThanksPage({ variant }: { variant: Variant }) {
     </StepWindow>
   );
   const whatsappStep = (
-    <StepWindow id={whatsapp.id} number={current ? 1 : 2} title={whatsapp.title} text={current ? thanksCurrent.whatsappText : whatsapp.text}>
+    <StepWindow id={whatsapp.id} number={current ? 1 : 2} title={whatsapp.title} text={vip ? thanksVip.whatsappText : current ? thanksCurrent.whatsappText : whatsapp.text}>
       <div className="thanks-action">
         <ActionLink href={whatsapp.url} label={whatsapp.cta} unavailable={whatsapp.unavailable} event="whatsapp_click" />
       </div>
@@ -146,6 +153,11 @@ export function ThanksPage({ variant }: { variant: Variant }) {
           <p className="eyebrow">{hero.eyebrow}</p>
           <h1>{hero.title}</h1>
           <p>{hero.lead}</p>
+          {vip && (
+            <div className="vip-confirmed">
+              <VipTicket confirmed />
+            </div>
+          )}
         </div>
 
         <div className="thanks-layout">
@@ -155,7 +167,7 @@ export function ThanksPage({ variant }: { variant: Variant }) {
             {current ? whatsappStep : roadmapStep}
             {current ? roadmapStep : whatsappStep}
 
-            {current && (
+            {current && !vip && (
               <StepWindow id="vip" number={3} title={bootcamp.editorial.vip.stepTitle} text={bootcamp.editorial.vip.stepText} badge={checklist.optional} tone="paper">
                 <VipTicket />
               </StepWindow>

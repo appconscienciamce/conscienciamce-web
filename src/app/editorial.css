@@ -1744,3 +1744,29 @@ html[data-app] .phone-hint {
   font-style: italic;
   line-height: 1.15;
 }
+
+
+/* ---------------- Thanks VIP: the ticket, already stamped ---------------- */
+
+.vip-confirmed {
+  max-width: 460px;
+  margin: 28px 0 0;
+}
+
+.vip-confirmed .vip-ticket-stub::before,
+.vip-confirmed .vip-ticket-stub::after {
+  background: var(--bg, #0b0b0c);
+}
+
+.vip-ticket-stamp {
+  width: fit-content;
+  margin: 4px 0 6px;
+  padding: 8px 16px;
+  border: 2px solid #f1f0eb;
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  rotate: -4deg;
+}

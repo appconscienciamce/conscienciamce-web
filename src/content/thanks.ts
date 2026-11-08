@@ -73,6 +73,18 @@ export const thanks = {
   },
 };
 
+/** The page the VIP payment link sends to: no upsell, the VIP already bought. */
+export const thanksVip = {
+  seo: { title: "VIP confirmado — Creadores Conscientes" },
+  hero: {
+    eyebrow: "Experiencia VIP — Creadores Conscientes",
+    title: "Ya sos parte del VIP.",
+    lead: "Tus 3 horas de consultoría en vivo con Santiago y Oriana quedaron confirmadas. Hacé estos dos pasos y listo.",
+  },
+  whatsappText: "La fecha y el acceso a la consultoría los compartimos en la comunidad de WhatsApp. Si todavía no entraste, hacelo ahora.",
+  confirmed: "Confirmado",
+};
+
 /** What the current thank-you page does differently from the one kept at `/evento/gracias`. */
 export const thanksCurrent = {
   file: { name: "mi-roadmap.txt", open: "Abrir", close: "Cerrar", hint: "Dos partes, 9 preguntas" },
