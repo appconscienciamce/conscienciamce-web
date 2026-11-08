@@ -2103,3 +2103,39 @@ html[data-app] .phone-hint {
   z-index: 1;
   margin-top: -30px;
 }
+
+
+/* ---------------- One rhythm for the manifesto's text ---------------- */
+
+.phone-os:not(.board-on) .v-current .canvas .ed-thesis-block,
+.phone-os:not(.board-on) .v-current .canvas .ed-promise-block {
+  --rhythm: 24px;
+}
+
+.phone-os:not(.board-on) .v-current .canvas .ed-promise-block > * {
+  margin: 0;
+}
+
+.phone-os:not(.board-on) .v-current .canvas .ed-promise-block > * + * {
+  margin-top: var(--rhythm);
+}
+
+.phone-os:not(.board-on) .v-current .canvas .ed-promise-block .ed-close strong {
+  margin-top: 6px;
+}
+
+.phone-os:not(.board-on) .v-current .canvas .ed-thesis-block > .ed-market-lead,
+.phone-os:not(.board-on) .v-current .canvas .ed-thesis-block > .ed-beats,
+.phone-os:not(.board-on) .v-current .canvas .ed-thesis-block > .ed-market,
+.phone-os:not(.board-on) .v-current .canvas .ed-thesis-block > .ed-contrast {
+  margin: 0 0 var(--rhythm);
+}
+
+.phone-os:not(.board-on) .v-current .canvas .ed-thesis-block > .ed-balance-shot {
+  margin-top: 0;
+  margin-bottom: calc(var(--rhythm) + 8px);
+}
+
+.phone-os:not(.board-on) .v-current .canvas .ed-promise-block > .ed-close {
+  margin-top: var(--rhythm);
+}
