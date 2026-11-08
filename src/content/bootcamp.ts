@@ -574,6 +574,11 @@ export const bootcamp: BootcampContent = {
         name: "parecer.jpg",
         image: { src: "/media/items/1.webp", alt: "Collage de una cabeza de mármol partida, con nubes dentro", width: 410, height: 643 },
       },
+      /** Between the counter and the promise: a breath in the middle of the text. */
+      promiseShot: {
+        name: "nueva-forma.jpg",
+        image: { src: "/media/items/4.webp", alt: "Collage de un templo griego sobre una montaña entre nubes", width: 404, height: 643 },
+      },
       /** Beside the marble head, so the masculine and the feminine sit together. */
       balance: {
         name: "equilibrio.jpg",

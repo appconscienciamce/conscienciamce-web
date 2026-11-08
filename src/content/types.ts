@@ -292,7 +292,7 @@ export interface BootcampContent {
         promise: string;
         lines: string[];
         close: [string, string];
-      }; thesis: { name: string; image: Img }; balance: { name: string; image: Img } };
+      }; thesis: { name: string; image: Img }; promiseShot: { name: string; image: Img }; balance: { name: string; image: Img } };
     days: {
       title: { before: string; italic: string };
       question: string;

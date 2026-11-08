@@ -1983,3 +1983,73 @@ html[data-app] .phone-hint {
 .phone-os:not(.board-on) .v-current .canvas .ed-promise {
   font-size: clamp(24px, 6.8vw, 36px);
 }
+
+
+/* ---------------- A picture between the counter and the promise ---------------- */
+
+.phone-os:not(.board-on) .v-current .canvas .ed-promise-shot {
+  width: 80%;
+  margin: 48px 0 48px auto;
+  rotate: -1.2deg;
+}
+
+.phone-os:not(.board-on) .v-current .canvas .ed-promise-shot .print {
+  aspect-ratio: 1 / 1;
+}
+
+/* More air around the promise and before the close. */
+.phone-os:not(.board-on) .v-current .canvas .ed-promise {
+  margin-bottom: 28px;
+}
+
+.phone-os:not(.board-on) .v-current .canvas .ed-close {
+  margin-top: 56px;
+}
+
+/* ---------------- The verified check pops in, one face after the other ---------------- */
+
+.ed-results .ed-face:nth-child(1) { --n: 0; }
+.ed-results .ed-face:nth-child(2) { --n: 1; }
+.ed-results .ed-face:nth-child(3) { --n: 2; }
+.ed-results .ed-face:nth-child(4) { --n: 3; }
+
+[data-reveal] .ed-results > div:not([data-in]) .ed-verified {
+  scale: 0;
+}
+
+[data-reveal] .ed-results > div[data-in] .ed-verified {
+  animation: verified-pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  animation-delay: calc(0.35s + var(--n, 0) * 0.18s);
+}
+
+@keyframes verified-pop {
+  0% { scale: 0; rotate: -40deg; }
+  60% { scale: 1.25; rotate: 8deg; }
+  100% { scale: 1; rotate: 0deg; }
+}
+
+/* A light ring around each face as its check lands. */
+[data-reveal] .ed-results > div[data-in] .ed-face-pic::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px #0095f6;
+  opacity: 0;
+  animation: verified-ring 0.9s ease-out both;
+  animation-delay: calc(0.45s + var(--n, 0) * 0.18s);
+  pointer-events: none;
+}
+
+@keyframes verified-ring {
+  0% { opacity: 0.9; scale: 0.9; }
+  100% { opacity: 0; scale: 1.25; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] .ed-results > div .ed-verified,
+  [data-reveal] .ed-results > div .ed-face-pic::after {
+    animation: none;
+    scale: 1;
+  }
+}
