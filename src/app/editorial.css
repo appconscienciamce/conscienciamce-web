@@ -1731,14 +1731,14 @@ html[data-app] .phone-hint {
 /* ---------------- The angels, before the thesis ---------------- */
 
 .phone-os:not(.board-on) .v-current .canvas .ed-balance-shot {
-  width: 62%;
-  margin: 4px 0 30px auto;
-  rotate: 1.6deg;
+  width: 74%;
+  margin: 4px auto 34px;
+  rotate: 1.2deg;
 }
 
 /* Lying down: the painting is tall, the window shows its middle. */
 .phone-os:not(.board-on) .v-current .canvas .ed-balance-shot .print {
-  aspect-ratio: 16 / 11;
+  aspect-ratio: 4 / 5;
 }
 
 /* ---------------- The market is changing: the manifesto's opening ---------------- */
