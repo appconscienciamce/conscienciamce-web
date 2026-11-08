@@ -31,12 +31,6 @@ export function EdAudience() {
   const { headline } = editorial.audience;
   return (
     <div className="ed ed-paper ed-audience">
-      <h2 className="ed-huge ed-r">
-        {headline.before}
-        <em>{headline.italic}</em>
-        {headline.after}
-      </h2>
-      <p className="ed-lead ed-r">{audience.intro}</p>
       <section className="ed-fit">
         <h3 className="ed-r">{audience.fitTitle}</h3>
         <ul>
@@ -195,10 +189,10 @@ export function EdDays() {
   return (
     <div className="ed ed-days">
       <div className="ed-paper ed-days-head">
+        <p className="ed-days-question ed-r">{editorial.days.question}</p>
         <h2 className="ed-giant ed-r">
           {editorial.days.title.before} <em>{editorial.days.title.italic}</em>
         </h2>
-        <p className="ed-days-question ed-r">{editorial.days.question}</p>
         <p className="ed-lead ed-r">{editorial.days.intro}</p>
         <ul className="ed-zones ed-r">
           {editorial.days.zones.map((zone) => (
@@ -252,7 +246,7 @@ export function EdOutcomes() {
   const { outcomes, editorial } = bootcamp;
   return (
     <div className="ed ed-paper ed-outcomes">
-      <h2 className="ed-huge ed-r">{outcomes.title}</h2>
+      <h2 className="ed-huge ed-r">{editorial.kit.title}</h2>
       <KitStack cards={editorial.kit.cards} />
       <p className="ed-kicker ed-r">{outcomes.intro}</p>
       <ol className="ed-gains">

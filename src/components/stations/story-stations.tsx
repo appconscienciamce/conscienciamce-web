@@ -440,7 +440,7 @@ export function OutcomesStation({ variant }: { variant: Variant }) {
       </Piece>
       <Piece x={36} y={22} w={820}>
         <h2 id="outcomes-title" className="display-md outcomes-title">
-          {outcomes.title}
+          {current ? editorial.kit.title : outcomes.title}
         </h2>
         <p className="mono-note outcomes-intro">{outcomes.intro}</p>
       </Piece>

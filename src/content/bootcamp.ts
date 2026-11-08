@@ -610,6 +610,7 @@ export const bootcamp: BootcampContent = {
       ],
     },
     kit: {
+      title: "Esto es todo lo que te llevás",
       cards: [
         { tag: "Zoom · 17 y 18 de noviembre", title: "2 días en directo", text: "Trabajo interno el primer día y un trabajo en lo externo el segundo." },
         {

@@ -301,7 +301,7 @@ export interface BootcampContent {
       more: string;
       dates: { day: string; month: string; label: string; focus: string; reveal?: { before: string; figure: string; after: string }; photo: { name: string; image: Img } }[];
     };
-    kit: { cards: { tag: string; title: string; text: string }[] };
+    kit: { title: string; cards: { tag: string; title: string; text: string }[] };
     gainsShown: number[];
     gains: Img[];
     hosts: { philosophy: string[]; lead: { name: string; image: Img } };
