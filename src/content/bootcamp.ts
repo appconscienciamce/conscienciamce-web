@@ -545,7 +545,7 @@ export const bootcamp: BootcampContent = {
         lead: "Mirá cómo lo cuento",
         name: "Así genero $64.735/mes con marketing creativo",
         videoId: "3OrfRs_pk_Y",
-        start: 1964,
+        start: 0,
         window: "santiago-500k.mp4",
         play: "Reproducir: Santiago cuenta cómo genera sus ingresos con marketing creativo",
       },
