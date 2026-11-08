@@ -83,11 +83,11 @@ export const thanksVip = {
   },
   contact: {
     id: "whatsapp-santi",
-    label: "WhatsApp de Santi",
-    title: "Escribile a Santi por WhatsApp",
+    label: "WhatsApp de Santiago",
+    title: "Escribile a Santiago por WhatsApp",
     text: "Mandale un mensaje para coordinar tu consultoría VIP: la fecha, el acceso y lo que quieras traer.",
-    url: "https://wa.me/5492284733054?text=Hola%20Santi%2C%20me%20sum%C3%A9%20al%20VIP%20de%20Creadores%20Conscientes.",
-    cta: "Escribir a Santi",
+    url: "https://wa.me/5492284733054?text=Hola%20Santiago%2C%20me%20sum%C3%A9%20al%20VIP%20de%20Creadores%20Conscientes.",
+    cta: "Hablar con Santiago",
   },
   confirmed: "Confirmado",
 };

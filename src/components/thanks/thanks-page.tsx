@@ -151,7 +151,7 @@ export function ThanksPage({ variant, vip = false }: { variant: Variant; vip?: b
       </header>
 
       <main className="thanks-page">
-        <div className="thanks-hero">
+        <div className={vip ? "thanks-hero is-vip" : "thanks-hero"}>
           <p className="eyebrow">{hero.eyebrow}</p>
           <h1>{hero.title}</h1>
           <p>{hero.lead}</p>
