@@ -575,6 +575,10 @@ export const bootcamp: BootcampContent = {
         image: { src: "/media/items/1.webp", alt: "Collage de una cabeza de mármol partida, con nubes dentro", width: 410, height: 643 },
       },
       /** Between the counter and the promise: a breath in the middle of the text. */
+      promiseTemple: {
+        name: "nueva-forma.jpg",
+        image: { src: "/media/items/4.webp", alt: "Collage de un templo griego sobre una montaña entre nubes", width: 404, height: 643 },
+      },
       promiseShot: {
         name: "escuela.jpg",
         image: { src: "/media/items/escuela.webp", alt: "La escuela de Atenas: filósofos reunidos bajo arcos de una galería clásica", width: 675, height: 1200 },

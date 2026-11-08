@@ -2053,3 +2053,53 @@ html[data-app] .phone-hint {
     scale: 1;
   }
 }
+
+/* The school and the temple, side by side before the promise. */
+.phone-os:not(.board-on) .v-current .canvas .ed-promise-duo {
+  margin: 44px 0 56px;
+}
+
+
+/* ---------------- The seam: dark above, paper below ---------------- */
+
+.phone-os:not(.board-on) .v-current .canvas .ed-thesis-block {
+  padding-bottom: 44px;
+}
+
+.phone-os:not(.board-on) .v-current .canvas .ed-seam {
+  position: relative;
+  padding: 0 var(--gutter);
+  background: linear-gradient(var(--bg) 50%, var(--paper) 50%);
+}
+
+.phone-os:not(.board-on) .v-current .canvas .ed-seam .ed-promise-duo {
+  margin: 0;
+}
+
+.phone-os:not(.board-on) .v-current .canvas .ed-promise-block {
+  padding: 44px var(--gutter) 84px;
+}
+
+.phone-os:not(.board-on) .v-current .canvas .ed-promise-block .ed-market-lead {
+  color: var(--ink);
+}
+
+.phone-os:not(.board-on) .v-current .canvas .ed-promise-block .ed-market,
+.phone-os:not(.board-on) .v-current .canvas .ed-promise-block .ed-close {
+  color: var(--ink-2);
+}
+
+.phone-os:not(.board-on) .v-current .canvas .ed-promise-block .ed-close strong {
+  color: var(--ink);
+}
+
+.phone-os:not(.board-on) .v-current .canvas .ed-promise-block .ed-close {
+  margin-top: 40px;
+}
+
+/* The band overlaps the paper a little, so its tilt shows paper and not a dark wedge. */
+.phone-os:not(.board-on) .v-current .canvas .ed-promise-block + .ed-strikes {
+  position: relative;
+  z-index: 1;
+  margin-top: -30px;
+}

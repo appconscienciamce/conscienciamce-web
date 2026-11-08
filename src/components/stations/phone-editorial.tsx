@@ -53,7 +53,7 @@ export function EdAudience() {
 
 export function EdManifesto() {
   const { manifesto, editorial } = bootcamp;
-  const { thesis, balance, market, promiseShot } = editorial.manifesto;
+  const { thesis, balance, market, promiseShot, promiseTemple } = editorial.manifesto;
   const words = manifesto.strikes.map((word) => <span key={word}>{word}</span>);
   return (
     <div className="ed ed-manifesto">
@@ -83,8 +83,17 @@ export function EdManifesto() {
         </h2>
         <Shot image={thesis.image} name={thesis.name} sizes="92vw" className="ed-thesis-shot" position="50% 24%" />
         <p className="ed-counter ed-r">{market.counter}</p>
+      </div>
 
-        <Shot image={promiseShot.image} name={promiseShot.name} sizes="80vw" className="ed-promise-shot" position="50% 62%" />
+      {/* The two pictures sit on the seam between the dark and the paper. */}
+      <div className="ed-seam">
+        <div className="ed-duo ed-promise-duo">
+          <Shot image={promiseShot.image} name={promiseShot.name} sizes="46vw" position="50% 62%" />
+          <Shot image={promiseTemple.image} name={promiseTemple.name} sizes="46vw" position="50% 100%" />
+        </div>
+      </div>
+
+      <div className="ed-paper ed-promise-block">
         <p className="ed-market-lead ed-promise ed-r">{market.promise}</p>
         {market.lines.map((line) => (
           <p key={line} className="ed-market ed-r">
