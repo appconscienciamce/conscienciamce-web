@@ -576,8 +576,8 @@ export const bootcamp: BootcampContent = {
       },
       /** Between the counter and the promise: a breath in the middle of the text. */
       promiseShot: {
-        name: "nueva-forma.jpg",
-        image: { src: "/media/items/4.webp", alt: "Collage de un templo griego sobre una montaña entre nubes", width: 404, height: 643 },
+        name: "escuela.jpg",
+        image: { src: "/media/items/escuela.webp", alt: "La escuela de Atenas: filósofos reunidos bajo arcos de una galería clásica", width: 675, height: 1200 },
       },
       /** Beside the marble head, so the masculine and the feminine sit together. */
       balance: {

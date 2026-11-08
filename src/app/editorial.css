@@ -1994,7 +1994,7 @@ html[data-app] .phone-hint {
 }
 
 .phone-os:not(.board-on) .v-current .canvas .ed-promise-shot .print {
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 4 / 5;
 }
 
 /* More air around the promise and before the close. */
