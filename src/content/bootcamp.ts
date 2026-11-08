@@ -540,6 +540,15 @@ export const bootcamp: BootcampContent = {
     home: { hint: "Deslizá para ver más", pilar: "+650K", lock: "Archivo con candado", hostsIcon: "/media/hosts/nosotros-icono.webp" },
     authority: {
       title: "Somos Santiago y Oriana",
+      /** Santiago telling the 500K himself, right where the video says it. */
+      proof: {
+        lead: "Mirá cómo lo cuento",
+        name: "Así genero $64.735/mes con marketing creativo",
+        videoId: "3OrfRs_pk_Y",
+        start: 1964,
+        window: "santiago-500k.mp4",
+        play: "Reproducir: Santiago cuenta cómo genera sus ingresos con marketing creativo",
+      },
       intro: [
         "Más adelante te contamos quiénes somos. Pero esto es lo que logramos después de más de 3 años detrás de las marcas personales más grandes:",
       ],

@@ -39,6 +39,7 @@ export function VideoCard({
   videoId,
   closeLabel,
   caption = true,
+  start,
   windowTitle = `Testimonio de ${name}`,
   playLabel = `Reproducir el testimonio de ${name}`,
 }: {
@@ -46,6 +47,8 @@ export function VideoCard({
   videoId: string;
   closeLabel: string;
   caption?: boolean;
+  /** Second where the video starts. */
+  start?: number;
   windowTitle?: string;
   playLabel?: string;
 }) {
@@ -73,12 +76,12 @@ export function VideoCard({
         </button>
       </div>
       <noscript>
-        <a href={`https://www.youtube.com/watch?v=${videoId}`} target="_blank" rel="noreferrer">
+        <a href={`https://www.youtube.com/watch?v=${videoId}${start ? `&t=${start}s` : ""}`} target="_blank" rel="noreferrer">
           {playLabel}
         </a>
       </noscript>
       {caption && <figcaption>{name}</figcaption>}
-      {open && <VideoWindow title={windowTitle} videoId={videoId} closeLabel={closeLabel} posterRef={posterRef} onClosed={() => setOpen(false)} />}
+      {open && <VideoWindow title={windowTitle} videoId={videoId} start={start} closeLabel={closeLabel} posterRef={posterRef} onClosed={() => setOpen(false)} />}
     </figure>
   );
 }
@@ -86,12 +89,14 @@ export function VideoCard({
 function VideoWindow({
   title,
   videoId,
+  start,
   closeLabel,
   posterRef,
   onClosed,
 }: {
   title: string;
   videoId: string;
+  start?: number;
   closeLabel: string;
   posterRef: React.RefObject<HTMLButtonElement | null>;
   onClosed: () => void;
@@ -241,7 +246,7 @@ function VideoWindow({
         </div>
         <div className="video-window-frame">
           <iframe
-            src={`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
+            src={`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&playsinline=1${start ? `&start=${start}` : ""}`}
             title={title}
             allow="autoplay; encrypted-media; picture-in-picture"
             allowFullScreen

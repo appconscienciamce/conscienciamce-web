@@ -6,6 +6,7 @@ import { resolveClaim } from "@/lib/offer";
 import { KitStack } from "./kit-stack";
 import { Flag } from "./flags";
 import { DayMore } from "./phone-touch";
+import { VideoCard } from "@/components/video-card";
 
 /**
  * The phone reading, section by section. The board keeps its own pieces; these only
@@ -131,7 +132,7 @@ export function EdManifesto() {
 
 function EdAuthority() {
   const { hosts, editorial } = bootcamp;
-  const { title, intro, photos } = editorial.authority;
+  const { title, intro, photos, proof } = editorial.authority;
   return (
     <section className="ed-dark ed-authority" data-phone-anchor="testimonios">
       <h3 className="ed-title ed-r">{title}</h3>
@@ -173,6 +174,10 @@ function EdAuthority() {
           </div>
         ))}
       </dl>
+      <div className="ed-proof ed-r">
+        <p className="ed-proof-lead">{proof.lead}</p>
+        <VideoCard name={proof.name} videoId={proof.videoId} start={proof.start} closeLabel={bootcamp.os.closeWindow} caption={false} windowTitle={proof.window} playLabel={proof.play} />
+      </div>
     </section>
   );
 }

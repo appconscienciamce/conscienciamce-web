@@ -277,7 +277,7 @@ export interface BootcampContent {
     pilarPromise: string;
     pilarFile: { intro: string; layers: string[]; share: string };
     home: { hint: string; pilar: string; lock: string; hostsIcon: string };
-    authority: { title: string; intro: string[]; photos: { name: string; image: Img }[] };
+    authority: { title: string; proof: { lead: string; name: string; videoId: string; start: number; window: string; play: string }; intro: string[]; photos: { name: string; image: Img }[] };
     audience: { headline: { before: string; italic: string; after: string } };
     manifesto: {
       newWorld: { lead: string; text: string };
