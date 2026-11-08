@@ -282,6 +282,8 @@ export interface BootcampContent {
     manifesto: { newWorld: { lead: string; text: string }; thesis: { name: string; image: Img }; balance: { name: string; image: Img } };
     days: {
       title: { before: string; italic: string };
+      question: string;
+      intro: string;
       zones: { flag: "ar" | "co" | "es"; time: string; place: string }[];
       more: string;
       dates: { day: string; month: string; label: string; focus: string; reveal?: { before: string; figure: string; after: string }; photo: { name: string; image: Img } }[];
@@ -289,7 +291,7 @@ export interface BootcampContent {
     kit: { cards: { tag: string; title: string; text: string }[] };
     gainsShown: number[];
     gains: Img[];
-    hosts: { lead: { name: string; image: Img } };
+    hosts: { philosophy: string[]; lead: { name: string; image: Img } };
     vip: { kicker: string; label: string; stepTitle: string; stepText: string; rows: { label: string; value: string }[]; admit: string; title: string; paragraphs: string[]; priceLabel: string; price: string; cta: string; url: string };
     enroll: { seats: string; seatsText: string; rows: { label: string; value: string }[]; faqItems: number; moreFaq: { q: string; a: string }[] };
   };

@@ -1721,3 +1721,26 @@ html[data-app] .phone-hint {
   background: repeating-linear-gradient(90deg, #f1f0eb 0 2px, transparent 2px 4px, #f1f0eb 4px 7px, transparent 7px 9px, #f1f0eb 9px 10px, transparent 10px 14px);
   opacity: 0.85;
 }
+
+
+/* ---------------- The angels, before the thesis ---------------- */
+
+.phone-os:not(.board-on) .v-current .canvas .ed-balance-shot {
+  width: 100%;
+  margin: 0 0 40px;
+  rotate: 1deg;
+}
+
+.phone-os:not(.board-on) .v-current .canvas .ed-balance-shot .print {
+  aspect-ratio: 4 / 5;
+}
+
+/* ---------------- The question of the two days ---------------- */
+
+.phone-os:not(.board-on) .v-current .canvas .ed-days-question {
+  margin: 18px 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(24px, 7vw, 38px);
+  font-style: italic;
+  line-height: 1.15;
+}

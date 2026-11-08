@@ -287,7 +287,7 @@ export const bootcamp: BootcampContent = {
     thesis: { before: "Hoy es más fácil ", highlight: "parecer", after: " una autoridad que serlo." },
     counter: "Pero nunca vas a ocupar una posición que no te permitas ocupar internamente.",
     strikes: [
-      "Nicharte porque sí",
+      "Enicharte porque sí",
       "Copiar estructuras",
       "Perseguir tendencias",
       "Construir personajes",
@@ -364,7 +364,7 @@ export const bootcamp: BootcampContent = {
         items: [
           [
             { strong: "Vaciarse." },
-            " Desarmar las ideas que instaló la industria: nicharte porque sí, construir personajes, perseguir tendencias y copiar estructuras.",
+            " Desarmar las ideas que instaló la industria: enicharte porque sí, construir personajes, perseguir tendencias y copiar estructuras.",
           ],
           ["Por qué algunas marcas generan atención pero no autoridad, y otras venden con audiencias pequeñas."],
           ["La relación entre la posición que te permitís ocupar internamente y la que construís en el mercado."],
@@ -459,10 +459,10 @@ export const bootcamp: BootcampContent = {
     authority: {
       title: "Lo que logramos",
       items: [
-        { value: "+USD 2,6M", text: "con creadores conscientes, vendiendo algo intangible" },
+        { value: "USD 2,6M", text: "de cash collected generados con creadores espirituales y vendiendo algo intangible" },
         {
-          value: "4",
-          text: "negocios de infoproductos escalados a +100K/mes",
+          value: "4 negocios",
+          text: "de infoproductos escalados a +100K/mes, con poco equipo y alto margen",
           faces: [
             { name: "Daniel", image: { src: "/media/clients/face-daniel.webp", alt: "Daniel", width: 168, height: 168 } },
             { name: "Luzland", image: { src: "/media/clients/face-luzland.webp", alt: "Luzland", width: 168, height: 168 } },
@@ -533,7 +533,7 @@ export const bootcamp: BootcampContent = {
     pilarPromise: "Voy a mostrarte cómo reprogramamos su identidad y construimos todo su ecosistema de negocio.",
     pilarFile: {
       intro:
-        "Vamos a revelarte cómo vivimos todo el proceso entero, no para que copies y pegues, sino para que aprendas a pensar movimientos estratégicos, sepas cómo tomar decisiones y escalar conscientemente.",
+        "Vamos a revelarte cómo vivimos todo el proceso entero, no para que copies y pegues, sino para que aprendas a pensar.",
       layers: ["Su expertise", "Mensaje y narrativa", "Posicionamiento", "Contenido", "Lanzamiento", "Oferta", "Producto, entrega y servicio", "Monetización"],
       share: "Voy a compartirte todo lo que funcionó, lo que no, qué decisiones tomamos y cómo pensamos cada paso en el proceso.",
     },
@@ -566,6 +566,9 @@ export const bootcamp: BootcampContent = {
     },
     days: {
       title: { before: "Dos", italic: "días" },
+      question: "¿Qué vas a aprender en estos dos días?",
+      intro:
+        "Durante este entrenamiento vas a vaciarte de todo el ruido, el caos y la confusión que hay entre tantas cosas que se dicen en nombre del marketing, para recuperar tu criterio, tu autenticidad y crear algo imposible de copiar.",
       zones: [
         { flag: "ar", time: "15:00", place: "Argentina" },
         { flag: "co", time: "13:00", place: "Colombia" },
@@ -612,6 +615,12 @@ export const bootcamp: BootcampContent = {
       { src: "/media/items/5.webp", alt: "", width: 396, height: 643 },
     ],
     hosts: {
+      philosophy: [
+        "Creemos en una nueva manera de vivir y de hacer negocios en la que no tengamos que sacrificar las relaciones, la salud, la paz y el propósito.",
+        "Nuestro éxito es integral y refleja la coherencia y la excelencia que hace más de 3 años encarnamos en nuestro proceso interno.",
+        "Todo lo que hacemos está ligado a una visión: vivir en un mundo que unifique el espíritu y la materia.",
+        "Por eso usamos los negocios como un vehículo para evolucionar nuestra consciencia.",
+      ],
       lead: { name: "santiago-y-oriana.jpg", image: { src: "/media/hosts/santiago-y-oriana.webp", alt: "Santiago Gómez y Oriana Safenreider en una sala de madera, delante de una pizarra", width: 1500, height: 1602 } },
     },
     vip: {

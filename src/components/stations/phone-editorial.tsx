@@ -67,15 +67,13 @@ export function EdManifesto() {
         <p className="ed-newworld ed-r">
           <strong>{newWorld.lead}</strong> {newWorld.text}
         </p>
+        <Shot image={balance.image} name={balance.name} sizes="92vw" className="ed-balance-shot" position="50% 42%" />
         <h2 className="ed-thesis ed-r">
           {manifesto.thesis.before}
           <mark>{manifesto.thesis.highlight}</mark>
           {manifesto.thesis.after}
         </h2>
-        <div className="ed-duo ed-thesis-duo">
-          <Shot image={thesis.image} name={thesis.name} sizes="46vw" position="50% 30%" />
-          <Shot image={balance.image} name={balance.name} sizes="46vw" position="50% 40%" />
-        </div>
+        <Shot image={thesis.image} name={thesis.name} sizes="92vw" className="ed-thesis-shot" position="50% 24%" />
         <p className="ed-counter ed-r">{manifesto.counter}</p>
       </div>
 
@@ -175,7 +173,8 @@ export function EdDays() {
         <h2 className="ed-giant ed-r">
           {editorial.days.title.before} <em>{editorial.days.title.italic}</em>
         </h2>
-        <p className="ed-lead ed-r">{twoDays.intro}</p>
+        <p className="ed-days-question ed-r">{editorial.days.question}</p>
+        <p className="ed-lead ed-r">{editorial.days.intro}</p>
         <ul className="ed-zones ed-r">
           {editorial.days.zones.map((zone) => (
             <li key={zone.place}>
@@ -257,13 +256,8 @@ export function EdHosts() {
           <br />
           <em>y</em> {hosts.people[1].name}
         </h2>
-        <p className="ed-lead ed-r">
-          {hosts.trackRecord.before}
-          <ClaimText id={hosts.trackRecord.claim} />
-          {hosts.trackRecord.after}
-        </p>
-        {hosts.paragraphs.map((paragraph) => (
-          <p key={paragraph} className="ed-body ed-r">
+        {editorial.hosts.philosophy.map((paragraph, i) => (
+          <p key={paragraph} className={`${i === 0 ? "ed-lead" : "ed-body"} ed-r`}>
             {paragraph}
           </p>
         ))}
