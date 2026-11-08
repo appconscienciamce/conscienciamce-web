@@ -79,13 +79,13 @@ export const thanksVip = {
   hero: {
     eyebrow: "Experiencia VIP — Creadores Conscientes",
     title: "Ya sos parte del VIP.",
-    lead: "Tus 3 horas de consultoría en vivo con Santiago y Oriana quedaron confirmadas. Te queda un solo paso.",
+    lead: "Tus 3 horas extra de consultoría en vivo quedaron confirmadas: es en grupo, solo con quienes accedieron al VIP, y vamos caso por caso. Te queda un solo paso.",
   },
   contact: {
     id: "whatsapp-santi",
     label: "WhatsApp de Santiago",
     title: "Escribile a Santiago por WhatsApp",
-    text: "Mandale un mensaje para coordinar tu consultoría VIP: la fecha, el acceso y lo que quieras traer.",
+    text: "Mandale un mensaje para confirmar tu lugar en el VIP. Por ahí te pasamos la fecha y el acceso a la sesión en grupo.",
     url: "https://wa.me/5492284733054?text=Hola%20Santiago%2C%20me%20sum%C3%A9%20al%20VIP%20de%20Creadores%20Conscientes.",
     cta: "Hablar con Santiago",
   },

@@ -65,7 +65,7 @@ function VipTicket({ confirmed = false }: { confirmed?: boolean }) {
       <div className="vip-ticket-main">
         <p className="vip-ticket-tag">{vip.kicker}</p>
         <p className="vip-ticket-name">
-          Consultoría 1 a 1 <i>en vivo</i>
+          Consultoría en vivo, <i>caso por caso</i>
         </p>
         <h3 className="vip-ticket-title">{vip.title}</h3>
         {(confirmed ? vip.paragraphs.slice(0, 1) : vip.paragraphs).map((paragraph) => (
