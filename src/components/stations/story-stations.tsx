@@ -115,7 +115,7 @@ export function AudienceStation({ variant }: { variant: Variant }) {
               {item}
             </li>
           ))}
-          {floor.state !== "fallback" && (
+          {variant !== "current" && floor.state !== "fallback" && (
             <li className="nofit-card is-floor">
               <span aria-hidden className="nofit-mark" />
               <ClaimText id={audience.floor} />
@@ -128,7 +128,8 @@ export function AudienceStation({ variant }: { variant: Variant }) {
 }
 
 export function ManifestoStation({ variant }: { variant: Variant }) {
-  const { manifesto } = bootcamp;
+  const { manifesto, editorial } = bootcamp;
+  const current = variant === "current";
   return (
     <Station index={2} titleId="manifesto-title" className="st-manifesto">
       {variant === "current" && <EdManifesto />}
@@ -141,6 +142,11 @@ export function ManifestoStation({ variant }: { variant: Variant }) {
         <h2 id="manifesto-title" className="eyebrow">
           {manifesto.title}
         </h2>
+        {current && (
+          <p className="board-newworld">
+            <strong>{editorial.manifesto.newWorld.lead}</strong> {editorial.manifesto.newWorld.text}
+          </p>
+        )}
         <blockquote className="thesis">
           {manifesto.thesis.before}
           <mark>{manifesto.thesis.highlight}</mark>
@@ -157,12 +163,27 @@ export function ManifestoStation({ variant }: { variant: Variant }) {
           ))}
         </ul>
       </Piece>
-      <Piece x={2130} y={66} w={430} r={1} movable className="paper-note note-tape manifesto-note">
-        <p>{manifesto.paragraph}</p>
-      </Piece>
-      <Piece x={2130} y={372} w={430}>
-        <p className="body-soft">{manifesto.closing}</p>
-      </Piece>
+      {current ? (
+        <>
+          <Piece x={2110} y={30} w={210} r={-1.4} movable as="figure" className="snap">
+            <Print image={editorial.manifesto.thesis.image} sizes="210px" className="snap-photo-short" objectPosition="50% 30%" />
+            <figcaption className="mono-note">{editorial.manifesto.thesis.name}</figcaption>
+          </Piece>
+          <Piece x={2340} y={150} w={200} r={1.6} movable as="figure" className="snap">
+            <Print image={editorial.manifesto.balance.image} sizes="200px" className="snap-photo-short" objectPosition="50% 40%" />
+            <figcaption className="mono-note">{editorial.manifesto.balance.name}</figcaption>
+          </Piece>
+        </>
+      ) : (
+        <>
+          <Piece x={2130} y={66} w={430} r={1} movable className="paper-note note-tape manifesto-note">
+            <p>{manifesto.paragraph}</p>
+          </Piece>
+          <Piece x={2130} y={372} w={430}>
+            <p className="body-soft">{manifesto.closing}</p>
+          </Piece>
+        </>
+      )}
     </Station>
   );
 }
@@ -185,8 +206,19 @@ export function PilarStation({ variant }: { variant: Variant }) {
         <p className="pilar-figure">
           <ClaimText id={casePilar.figure} />
         </p>
-        <p className="mono-note">{casePilar.figureCaption}</p>
-        <p className="lead">{figure.state === "fallback" ? casePilar.lead.fallback : casePilar.lead.withClaim}</p>
+        {current ? (
+          <>
+            <p className="lead">
+              <em>{editorial.pilarRole}</em> {editorial.pilarLead} <ClaimText id={casePilar.figure} /> {editorial.pilarPeriod}.
+            </p>
+            <p className="body-soft">{editorial.pilarPromise}</p>
+          </>
+        ) : (
+          <>
+            <p className="mono-note">{casePilar.figureCaption}</p>
+            <p className="lead">{figure.state === "fallback" ? casePilar.lead.fallback : casePilar.lead.withClaim}</p>
+          </>
+        )}
       </Piece>
 
       <Piece x={716} y={72} w={460} h={540} className="folder ph-keep">
@@ -286,8 +318,10 @@ export function PilarStation({ variant }: { variant: Variant }) {
 }
 
 export function TwoDaysStation({ variant }: { variant: Variant }) {
-  const { twoDays } = bootcamp;
+  const { twoDays, editorial } = bootcamp;
   const [dayOne, dayTwo] = twoDays.days;
+  const current = variant === "current";
+  const [dateOne, dateTwo] = editorial.days.dates;
   return (
     <Station index={4} titleId="days-title" className="st-days">
       {variant === "current" && <EdDays />}
@@ -295,7 +329,14 @@ export function TwoDaysStation({ variant }: { variant: Variant }) {
         <h2 id="days-title" className="display-lg">
           {twoDays.title}
         </h2>
-        <p className="lead">{twoDays.intro}</p>
+        {current ? (
+          <>
+            <p className="board-days-question">{editorial.days.question}</p>
+            <p className="body-soft">{editorial.days.intro}</p>
+          </>
+        ) : (
+          <p className="lead">{twoDays.intro}</p>
+        )}
       </Piece>
       <Piece x={60} y={420} w={230} r={-1.5} movable as="figure" className="snap">
         <Print image={twoDays.image} sizes="230px" className="snap-photo-short" objectPosition="30% 70%" />
@@ -305,8 +346,9 @@ export function TwoDaysStation({ variant }: { variant: Variant }) {
         <header>
           <span className="day-n">1</span>
           <div>
-            <p className="eyebrow">{dayOne.number}</p>
+            <p className="eyebrow">{current ? `${dayOne.number} · ${dateOne.label}` : dayOne.number}</p>
             <h3>{dayOne.title}</h3>
+            {current && <p className="board-focus">{dateOne.focus}</p>}
           </div>
         </header>
         <p className="day-summary">{dayOne.summary}</p>
@@ -323,8 +365,9 @@ export function TwoDaysStation({ variant }: { variant: Variant }) {
         <header>
           <span className="day-n">2</span>
           <div>
-            <p className="eyebrow">{dayTwo.number}</p>
+            <p className="eyebrow">{current ? `${dayTwo.number} · ${dateTwo.label}` : dayTwo.number}</p>
             <h3>{dayTwo.title}</h3>
+            {current && <p className="board-focus">{dateTwo.focus}</p>}
           </div>
         </header>
         <p className="day-summary">{dayTwo.summary}</p>
@@ -337,14 +380,22 @@ export function TwoDaysStation({ variant }: { variant: Variant }) {
         </ul>
       </Piece>
 
-      <Piece x={2150} y={80} w={320} as="aside" className="decisions paper-note note-pad" movable>
-        <h3>{twoDays.decisionsTitle}</h3>
-        <ol>
-          {twoDays.decisions.map((item) => (
-            <li key={item}>{item}</li>
-          ))}
-        </ol>
-      </Piece>
+      {current && dateTwo.reveal ? (
+        <Piece x={2150} y={80} w={320} as="aside" className="board-reveal" movable>
+          <p>{dateTwo.reveal.before}</p>
+          <strong>{dateTwo.reveal.figure}</strong>
+          <p>{dateTwo.reveal.after}</p>
+        </Piece>
+      ) : (
+        <Piece x={2150} y={80} w={320} as="aside" className="decisions paper-note note-pad" movable>
+          <h3>{twoDays.decisionsTitle}</h3>
+          <ol>
+            {twoDays.decisions.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ol>
+        </Piece>
+      )}
     </Station>
   );
 }
@@ -374,7 +425,8 @@ const zigzag = () => {
 };
 
 export function OutcomesStation({ variant }: { variant: Variant }) {
-  const { outcomes } = bootcamp;
+  const { outcomes, editorial } = bootcamp;
+  const current = variant === "current";
   return (
     <Station index={5} titleId="outcomes-title" className="st-outcomes">
       {variant === "current" && <EdOutcomes />}
@@ -392,6 +444,22 @@ export function OutcomesStation({ variant }: { variant: Variant }) {
         </h2>
         <p className="mono-note outcomes-intro">{outcomes.intro}</p>
       </Piece>
+      {current ? (
+        <ol className="outcome-list">
+          {editorial.kit.cards.map((card, i) => {
+            const [x, y] = OUTCOME_POSITIONS[i];
+            return (
+              <li key={card.title}>
+                <Piece x={x} y={y} w={OUTCOME_CARD.w} h={OUTCOME_CARD.h} className="outcome board-kit">
+                  <span className="mono-note">{card.tag}</span>
+                  <h3>{card.title}</h3>
+                  <p>{card.text}</p>
+                </Piece>
+              </li>
+            );
+          })}
+        </ol>
+      ) : (
       <ol className="outcome-list">
         {outcomes.items.map((item, i) => {
           const [x, y] = OUTCOME_POSITIONS[i];
@@ -407,6 +475,7 @@ export function OutcomesStation({ variant }: { variant: Variant }) {
           );
         })}
       </ol>
+      )}
       <Piece x={1104} y={500} w={196} r={1.4} movable as="figure" className="snap note-tape">
         <Print image={outcomes.photo} sizes="196px" className="snap-photo-short" objectPosition="50% 62%" />
       </Piece>

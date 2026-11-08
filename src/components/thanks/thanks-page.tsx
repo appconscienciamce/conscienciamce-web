@@ -65,7 +65,7 @@ function VipTicket({ confirmed = false }: { confirmed?: boolean }) {
       <div className="vip-ticket-main">
         <p className="vip-ticket-tag">{vip.kicker}</p>
         <p className="vip-ticket-name">
-          Creadores <i>Conscientes</i>
+          Consultoría 1 a 1 <i>en vivo</i>
         </p>
         <h3 className="vip-ticket-title">{vip.title}</h3>
         {(confirmed ? vip.paragraphs.slice(0, 1) : vip.paragraphs).map((paragraph) => (
@@ -111,7 +111,9 @@ export function ThanksPage({ variant, vip = false }: { variant: Variant; vip?: b
   const { brand, os, offer } = bootcamp;
   const video = current ? { ...videos, ...thanksCurrent.videos, items: videos.items.slice(0, thanksCurrent.videos.count) } : videos;
   // The current page sends people to the group first: many will not have their birth time at hand.
-  const steps = current
+  const steps = vip
+    ? [{ id: thanksVip.contact.id, label: thanksVip.contact.label }]
+    : current
     ? [
         { id: whatsapp.id, label: whatsapp.label },
         { id: roadmap.id, label: roadmap.label },
@@ -129,7 +131,7 @@ export function ThanksPage({ variant, vip = false }: { variant: Variant; vip?: b
     </StepWindow>
   );
   const whatsappStep = (
-    <StepWindow id={whatsapp.id} number={current ? 1 : 2} title={whatsapp.title} text={vip ? thanksVip.whatsappText : current ? thanksCurrent.whatsappText : whatsapp.text}>
+    <StepWindow id={whatsapp.id} number={current ? 1 : 2} title={whatsapp.title} text={current ? thanksCurrent.whatsappText : whatsapp.text}>
       <div className="thanks-action">
         <ActionLink href={whatsapp.url} label={whatsapp.cta} unavailable={whatsapp.unavailable} event="whatsapp_click" />
       </div>
@@ -164,8 +166,18 @@ export function ThanksPage({ variant, vip = false }: { variant: Variant; vip?: b
           <Checklist title={checklist.title} steps={steps} />
 
           <div className="thanks-steps">
-            {current ? whatsappStep : roadmapStep}
-            {current ? roadmapStep : whatsappStep}
+            {vip ? (
+              <StepWindow id={thanksVip.contact.id} number={1} title={thanksVip.contact.title} text={thanksVip.contact.text}>
+                <div className="thanks-action">
+                  <ActionLink href={thanksVip.contact.url} label={thanksVip.contact.cta} unavailable="" event="whatsapp_click" />
+                </div>
+              </StepWindow>
+            ) : (
+              <>
+                {current ? whatsappStep : roadmapStep}
+                {current ? roadmapStep : whatsappStep}
+              </>
+            )}
 
             {current && !vip && (
               <StepWindow id="vip" number={3} title={bootcamp.editorial.vip.stepTitle} text={bootcamp.editorial.vip.stepText} badge={checklist.optional} tone="paper">

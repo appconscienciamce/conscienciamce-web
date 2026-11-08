@@ -10,8 +10,12 @@ import { EdEnroll, EdHosts } from "./phone-editorial";
 import { REGISTRATION_ANCHOR, checkoutLive, ctaHref, resolveLogistics } from "@/lib/offer";
 
 export function HostsStation({ variant }: { variant: Variant }) {
-  const { hosts, proof, os } = bootcamp;
-  const [santiago, oriana] = hosts.people;
+  const { hosts, proof, os, editorial } = bootcamp;
+  const current = variant === "current";
+  const [santiagoPerson, orianaPerson] = hosts.people;
+  // The current page uses the new close portraits of each of them.
+  const santiago = current ? { ...santiagoPerson, image: editorial.authority.photos[0].image } : santiagoPerson;
+  const oriana = current ? { ...orianaPerson, image: editorial.authority.photos[1].image } : orianaPerson;
   return (
     <Station index={6} titleId="hosts-title" className="st-hosts">
       {variant === "current" && <EdHosts />}
@@ -21,14 +25,20 @@ export function HostsStation({ variant }: { variant: Variant }) {
         </h2>
       </Piece>
       <Piece x={36} y={236} w={610} className="hosts-copy">
-        <p>
-          {hosts.trackRecord.before}
-          <ClaimText id={hosts.trackRecord.claim} />
-          {hosts.trackRecord.after}
-        </p>
-        {hosts.paragraphs.map((paragraph) => (
-          <p key={paragraph}>{paragraph}</p>
-        ))}
+        {current ? (
+          editorial.hosts.philosophy.map((paragraph) => <p key={paragraph}>{paragraph}</p>)
+        ) : (
+          <>
+            <p>
+              {hosts.trackRecord.before}
+              <ClaimText id={hosts.trackRecord.claim} />
+              {hosts.trackRecord.after}
+            </p>
+            {hosts.paragraphs.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
+          </>
+        )}
       </Piece>
 
       <Piece x={700} y={22} w={216} r={-1.2} movable as="figure" className="snap">
@@ -48,18 +58,37 @@ export function HostsStation({ variant }: { variant: Variant }) {
         </figcaption>
       </Piece>
 
-      <Piece x={700} y={470} w={462} className="hosts-album">
-        <PhotoStack photos={hosts.album} />
-      </Piece>
+      {current ? (
+        <Piece x={700} y={470} w={462} r={-0.8} movable as="figure" className="snap">
+          <Print image={editorial.hosts.lead.image} sizes="462px" className="snap-photo-short" objectPosition="50% 40%" />
+          <figcaption className="mono-note">{editorial.hosts.lead.name}</figcaption>
+        </Piece>
+      ) : (
+        <Piece x={700} y={470} w={462} className="hosts-album">
+          <PhotoStack photos={hosts.album} />
+        </Piece>
+      )}
 
       {variant === "current" ? (
         <Piece x={1316} y={40} w={1100} id="testimonios" className="authority">
-          <h3 className="display-sm">{hosts.authority.title}</h3>
+          <h3 className="display-sm">{editorial.authority.title}</h3>
+          {editorial.authority.intro.map((line) => (
+            <p key={line} className="authority-intro">
+              {line}
+            </p>
+          ))}
           <dl>
             {hosts.authority.items.map((item) => (
               <div key={item.value}>
                 <dt>{item.value}</dt>
                 <dd>{item.text}</dd>
+                {item.faces && (
+                  <dd className="board-faces">
+                    {item.faces.map((face) =>
+                      face.image ? <Print key={face.name} image={face.image} sizes="44px" className="board-face" /> : null,
+                    )}
+                  </dd>
+                )}
               </div>
             ))}
           </dl>
