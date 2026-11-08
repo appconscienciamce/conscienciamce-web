@@ -72,6 +72,7 @@ export function EdManifesto() {
             </span>
           ))}
         </p>
+        <Shot image={balance.image} name={balance.name} sizes="60vw" className="ed-balance-shot" position="50% 46%" />
         <p className="ed-market ed-r">{market.text}</p>
         {market.contrasts.map(([one, other]) => (
           <p key={one} className="ed-contrast ed-r">
@@ -82,14 +83,13 @@ export function EdManifesto() {
 
         <p className="ed-thesis-pre ed-r">{market.thesisPre}</p>
         <h2 className="ed-thesis ed-r">
-          {market.thesis.before.charAt(0).toUpperCase() + market.thesis.before.slice(1)}
+          {market.thesis.before}
           <mark>{market.thesis.highlight}</mark>
           {market.thesis.after}
         </h2>
         <Shot image={thesis.image} name={thesis.name} sizes="92vw" className="ed-thesis-shot" position="50% 24%" />
         <p className="ed-counter ed-r">{market.counter}</p>
 
-        <Shot image={balance.image} name={balance.name} sizes="92vw" className="ed-balance-shot" position="50% 46%" />
         <p className="ed-market-lead ed-promise ed-r">{market.promise}</p>
         {market.lines.map((line) => (
           <p key={line} className="ed-market ed-r">

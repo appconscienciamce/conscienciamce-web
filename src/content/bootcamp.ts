@@ -564,7 +564,7 @@ export const bootcamp: BootcampContent = {
           ["Quién construye solamente para alimentar su ego…", "y quién está construyendo algo que lo trasciende."],
         ],
         thesisPre: "El problema es que",
-        thesis: { before: "hoy es más fácil ", highlight: "parecer", after: " una autoridad que serlo realmente." },
+        thesis: { before: "Hoy es más fácil ", highlight: "parecer", after: " una autoridad que serlo." },
         counter: "Porque una cosa es llamar la atención. Otra muy distinta es que te respeten por construir algo verdadero y único.",
         promise: "Por eso te vamos a compartir una nueva forma de crear riqueza, impacto y marca personal.",
         lines: ["Una donde no tenés que vender tu alma por los números.", "Una donde no adaptás quién sos a lo que funciona."],

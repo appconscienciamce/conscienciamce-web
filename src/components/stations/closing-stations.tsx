@@ -9,6 +9,12 @@ import type { Variant } from "@/content/types";
 import { EdEnroll, EdHosts } from "./phone-editorial";
 import { REGISTRATION_ANCHOR, checkoutLive, ctaHref, resolveLogistics } from "@/lib/offer";
 
+/** The current page's questions: the first ones of the FAQ and the two added for it. */
+function currentQuestions() {
+  const { faq, editorial } = bootcamp;
+  return [...faq.items.slice(0, editorial.enroll.faqItems), ...editorial.enroll.moreFaq];
+}
+
 export function HostsStation({ variant }: { variant: Variant }) {
   const { hosts, proof, os, editorial } = bootcamp;
   const current = variant === "current";
@@ -19,6 +25,16 @@ export function HostsStation({ variant }: { variant: Variant }) {
   return (
     <Station index={6} titleId="hosts-title" className="st-hosts">
       {variant === "current" && <EdHosts />}
+      {variant === "current" && (
+        <div className="ed ed-dark ed-faq-wrap">
+          <section className="faq">
+            <h3 className="display-sm">{bootcamp.faq.title}</h3>
+            {currentQuestions().map((item) => (
+              <FaqItem key={item.q} question={item.q} answer={item.a} />
+            ))}
+          </section>
+        </div>
+      )}
       <Piece x={36} y={34} w={640}>
         <h2 id="hosts-title" className="display-md">
           {hosts.title}
@@ -135,7 +151,7 @@ export function EnrollStation({ variant }: { variant: Variant }) {
   const current = variant === "current";
   // The first row is the format, already printed on the ticket.
   const logistics = current ? editorial.enroll.rows : resolveLogistics().slice(1);
-  const questions = current ? [...faq.items.slice(0, editorial.enroll.faqItems), ...editorial.enroll.moreFaq] : faq.items;
+  const questions = current ? currentQuestions() : faq.items;
   return (
     <Station index={7} titleId="enroll-title" className="st-enroll">
       {current && <EdEnroll />}

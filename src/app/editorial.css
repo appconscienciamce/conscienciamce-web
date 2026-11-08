@@ -1257,8 +1257,13 @@
 
 /* ---------------- Room between the ticket and the questions ---------------- */
 
+/* On the phone the questions are read last, after Santiago and Oriana. */
 .phone-os:not(.board-on) .v-current .canvas .st-enroll > .faq {
-  margin-top: 76px;
+  display: none;
+}
+
+.phone-os:not(.board-on) .v-current .canvas .ed-faq-wrap {
+  padding: 24px var(--gutter) 72px;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1726,9 +1731,9 @@ html[data-app] .phone-hint {
 /* ---------------- The angels, before the thesis ---------------- */
 
 .phone-os:not(.board-on) .v-current .canvas .ed-balance-shot {
-  width: 100%;
-  margin: 44px 0 40px;
-  rotate: 1deg;
+  width: 62%;
+  margin: 4px 0 30px auto;
+  rotate: 1.6deg;
 }
 
 /* Lying down: the painting is tall, the window shows its middle. */
