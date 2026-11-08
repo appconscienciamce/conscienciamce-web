@@ -113,6 +113,20 @@ export function HostsStation({ variant }: { variant: Variant }) {
                 )}
               </div>
             ))}
+            <div className="board-proof">
+              <dt>{editorial.authority.proof.lead}</dt>
+              <dd>
+                <VideoCard
+                  name={editorial.authority.proof.name}
+                  videoId={editorial.authority.proof.videoId}
+                  start={editorial.authority.proof.start}
+                  closeLabel={os.closeWindow}
+                  caption={false}
+                  windowTitle={editorial.authority.proof.window}
+                  playLabel={editorial.authority.proof.play}
+                />
+              </dd>
+            </div>
           </dl>
         </Piece>
       ) : (

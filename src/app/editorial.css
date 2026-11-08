@@ -2203,3 +2203,36 @@ html[data-app] .phone-hint {
 .phone-os:not(.board-on) .v-current .canvas .ed-proof .video-card {
   margin: 0;
 }
+
+
+/* ---------------- Board: the 500K told by Santiago, beside it ---------------- */
+
+.board-on .authority dl {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.board-on .authority dt {
+  font-size: 48px;
+}
+
+.board-on .authority .board-proof {
+  grid-column: span 2;
+}
+
+.board-on .authority .board-proof dt {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: normal;
+  color: var(--text-2);
+}
+
+.board-on .authority .board-proof dd {
+  max-width: 380px;
+  margin-top: 10px;
+}
+
+.board-on .authority .board-proof .video-card {
+  margin: 0;
+}
