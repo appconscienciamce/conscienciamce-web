@@ -279,7 +279,20 @@ export interface BootcampContent {
     home: { hint: string; pilar: string; lock: string; hostsIcon: string };
     authority: { title: string; intro: string[]; photos: { name: string; image: Img }[] };
     audience: { headline: { before: string; italic: string; after: string } };
-    manifesto: { newWorld: { lead: string; text: string }; thesis: { name: string; image: Img }; balance: { name: string; image: Img } };
+    manifesto: {
+      newWorld: { lead: string; text: string };
+      market: {
+        lead: string;
+        beats: string[];
+        text: string;
+        contrasts: [string, string][];
+        thesisPre: string;
+        thesis: { before: string; highlight: string; after: string };
+        counter: string;
+        promise: string;
+        lines: string[];
+        close: [string, string];
+      }; thesis: { name: string; image: Img }; balance: { name: string; image: Img } };
     days: {
       title: { before: string; italic: string };
       question: string;

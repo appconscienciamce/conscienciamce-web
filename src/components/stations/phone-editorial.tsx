@@ -59,22 +59,47 @@ export function EdAudience() {
 
 export function EdManifesto() {
   const { manifesto, editorial } = bootcamp;
-  const { thesis, balance, newWorld } = editorial.manifesto;
+  const { thesis, balance, market } = editorial.manifesto;
   const words = manifesto.strikes.map((word) => <span key={word}>{word}</span>);
   return (
     <div className="ed ed-manifesto">
       <div className="ed-dark ed-thesis-block">
-        <p className="ed-newworld ed-r">
-          <strong>{newWorld.lead}</strong> {newWorld.text}
+        <p className="ed-market-lead ed-r">{market.lead}</p>
+        <p className="ed-beats">
+          {market.beats.map((beat) => (
+            <span key={beat} className="ed-r">
+              {beat}
+            </span>
+          ))}
         </p>
-        <Shot image={balance.image} name={balance.name} sizes="92vw" className="ed-balance-shot" position="50% 42%" />
+        <p className="ed-market ed-r">{market.text}</p>
+        {market.contrasts.map(([one, other]) => (
+          <p key={one} className="ed-contrast ed-r">
+            {one}
+            <em>{other}</em>
+          </p>
+        ))}
+
+        <p className="ed-thesis-pre ed-r">{market.thesisPre}</p>
         <h2 className="ed-thesis ed-r">
-          {manifesto.thesis.before}
-          <mark>{manifesto.thesis.highlight}</mark>
-          {manifesto.thesis.after}
+          {market.thesis.before.charAt(0).toUpperCase() + market.thesis.before.slice(1)}
+          <mark>{market.thesis.highlight}</mark>
+          {market.thesis.after}
         </h2>
         <Shot image={thesis.image} name={thesis.name} sizes="92vw" className="ed-thesis-shot" position="50% 24%" />
-        <p className="ed-counter ed-r">{manifesto.counter}</p>
+        <p className="ed-counter ed-r">{market.counter}</p>
+
+        <Shot image={balance.image} name={balance.name} sizes="92vw" className="ed-balance-shot" position="50% 46%" />
+        <p className="ed-market-lead ed-promise ed-r">{market.promise}</p>
+        {market.lines.map((line) => (
+          <p key={line} className="ed-market ed-r">
+            {line}
+          </p>
+        ))}
+        <p className="ed-close ed-r">
+          {market.close[0]}
+          <strong>{market.close[1]}</strong>
+        </p>
       </div>
 
       <div aria-hidden className="ed-strikes">

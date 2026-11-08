@@ -553,7 +553,23 @@ export const bootcamp: BootcampContent = {
     },
     manifesto: {
       /** Provisional, from Santiago's audio: his exact copy replaces it. */
-      newWorld: { lead: "Estamos en un nuevo mundo.", text: "Hoy no se trata de estrategias: tu negocio siempre fue un reflejo de tu identidad." },
+      newWorld: { lead: "El mercado está cambiando muy rápido.", text: "Ya no alcanza con tener views, seguidores o la mejor estrategia." },
+      /** Santiago's copy for the opening of the manifesto, in the order it is read. */
+      market: {
+        lead: "El mercado está cambiando muy rápido.",
+        beats: ["La gente siente más.", "Percibe más.", "Cuestiona más."],
+        text: "Ya no alcanza con tener views, seguidores o la mejor estrategia.",
+        contrasts: [
+          ["Cada vez se vuelve más evidente quién habla desde la experiencia…", "y quién desde la teoría."],
+          ["Quién construye solamente para alimentar su ego…", "y quién está construyendo algo que lo trasciende."],
+        ],
+        thesisPre: "El problema es que",
+        thesis: { before: "hoy es más fácil ", highlight: "parecer", after: " una autoridad que serlo realmente." },
+        counter: "Porque una cosa es llamar la atención. Otra muy distinta es que te respeten por construir algo verdadero y único.",
+        promise: "Por eso te vamos a compartir una nueva forma de crear riqueza, impacto y marca personal.",
+        lines: ["Una donde no tenés que vender tu alma por los números.", "Una donde no adaptás quién sos a lo que funciona."],
+        close: ["Porque cuando hay suficiente claridad, identidad y coherencia…", "vos te convertís en la estrategia."],
+      },
       thesis: {
         name: "parecer.jpg",
         image: { src: "/media/items/1.webp", alt: "Collage de una cabeza de mármol partida, con nubes dentro", width: 410, height: 643 },
