@@ -2139,3 +2139,47 @@ html[data-app] .phone-hint {
 .phone-os:not(.board-on) .v-current .canvas .ed-promise-block > .ed-close {
   margin-top: var(--rhythm);
 }
+
+
+/* ---------------- Board: tidy cards, lines that land, results in order ---------------- */
+
+.board-on .board-kit {
+  justify-content: flex-start;
+}
+
+.board-on .board-kit p {
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+/* On the board the share line lives in its own note, by the line out of the station. */
+.board-on .file-doc .file-share {
+  display: none;
+}
+
+.board-share p {
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.board-on .authority dl {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 30px 40px;
+}
+
+.board-on .authority dt {
+  font-size: 54px;
+  white-space: nowrap;
+}
+
+.board-on .authority dd {
+  max-width: 30ch;
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+/* The two of them, lying down, inside the station. */
+.board-on .board-hosts-lead .print {
+  aspect-ratio: 16 / 10;
+  height: auto;
+}

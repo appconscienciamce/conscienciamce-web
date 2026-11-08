@@ -295,12 +295,18 @@ export function PilarStation({ variant }: { variant: Variant }) {
         {current && <p className="file-share">{editorial.pilarFile.share}</p>}
       </Piece>
 
-      <Piece x={1930} y={16} w={170} r={-2.5} movable className="clip-print">
+      <Piece x={current ? 1818 : 1930} y={current ? -46 : 16} w={170} r={current ? 4 : -2.5} movable className="clip-print">
         <svg className="paper-clip" viewBox="0 0 20 54" fill="none" aria-hidden>
           <path d="M14.5 13v28a5.5 5.5 0 0 1-11 0V9a7 7 0 0 1 14 0v31" />
         </svg>
         <Print image={casePilar.image} sizes="170px" className="clip-photo" />
       </Piece>
+
+      {current && (
+        <Piece x={1924} y={262} w={356} className="file-review board-share">
+          <p>{editorial.pilarFile.share}</p>
+        </Piece>
+      )}
 
       {!current && (
         <Piece x={1914} y={236} w={356} className="file-review ph-keep">
@@ -381,7 +387,7 @@ export function TwoDaysStation({ variant }: { variant: Variant }) {
       </Piece>
 
       {current && dateTwo.reveal ? (
-        <Piece x={2150} y={80} w={320} as="aside" className="board-reveal" movable>
+        <Piece x={2180} y={226} w={320} as="aside" className="board-reveal" movable>
           <p>{dateTwo.reveal.before}</p>
           <strong>{dateTwo.reveal.figure}</strong>
           <p>{dateTwo.reveal.after}</p>
@@ -409,11 +415,20 @@ const OUTCOME_POSITIONS: [number, number][] = [
   [940, 158],
 ];
 
+/** The current page's kit: four passes, taller, so the longest text fits. */
+const KIT_CARD = { w: 360, h: 290 };
+const KIT_POSITIONS: [number, number][] = [
+  [20, 132],
+  [250, 474],
+  [480, 132],
+  [710, 474],
+];
+
 /** The line leaves each card and lands on the next one, across the gap between rows. */
-const zigzag = () => {
-  const dock = OUTCOME_POSITIONS.map(([x, y], i) => ({
-    x: x + OUTCOME_CARD.w / 2,
-    y: i % 2 === 0 ? y + OUTCOME_CARD.h : y,
+const zigzag = (positions = OUTCOME_POSITIONS, card = OUTCOME_CARD) => {
+  const dock = positions.map(([x, y], i) => ({
+    x: x + card.w / 2,
+    y: i % 2 === 0 ? y + card.h : y,
   }));
   const bend = 56;
   return dock.reduce((path, to, i) => {
@@ -432,10 +447,21 @@ export function OutcomesStation({ variant }: { variant: Variant }) {
       {variant === "current" && <EdOutcomes />}
       <Piece x={0} y={0} w={1320} h={780} className="outcome-lines">
         <svg viewBox="0 0 1320 780" aria-hidden fill="none">
-          <path d={zigzag()} pathLength={1} />
-          {OUTCOME_POSITIONS.map(([x, y], i) => (
-            <circle key={x} cx={x + OUTCOME_CARD.w / 2} cy={i % 2 === 0 ? y + OUTCOME_CARD.h : y} r="5" />
-          ))}
+          {current ? (
+            <>
+              <path d={zigzag(KIT_POSITIONS, KIT_CARD)} pathLength={1} />
+              {KIT_POSITIONS.map(([x, y], i) => (
+                <circle key={x} cx={x + KIT_CARD.w / 2} cy={i % 2 === 0 ? y + KIT_CARD.h : y} r="5" />
+              ))}
+            </>
+          ) : (
+            <>
+              <path d={zigzag()} pathLength={1} />
+              {OUTCOME_POSITIONS.map(([x, y], i) => (
+                <circle key={x} cx={x + OUTCOME_CARD.w / 2} cy={i % 2 === 0 ? y + OUTCOME_CARD.h : y} r="5" />
+              ))}
+            </>
+          )}
         </svg>
       </Piece>
       <Piece x={36} y={22} w={820}>
@@ -447,10 +473,10 @@ export function OutcomesStation({ variant }: { variant: Variant }) {
       {current ? (
         <ol className="outcome-list">
           {editorial.kit.cards.map((card, i) => {
-            const [x, y] = OUTCOME_POSITIONS[i];
+            const [x, y] = KIT_POSITIONS[i];
             return (
               <li key={card.title}>
-                <Piece x={x} y={y} w={OUTCOME_CARD.w} h={OUTCOME_CARD.h} className="outcome board-kit">
+                <Piece x={x} y={y} w={KIT_CARD.w} h={KIT_CARD.h} className="outcome board-kit">
                   <span className="mono-note">{card.tag}</span>
                   <h3>{card.title}</h3>
                   <p>{card.text}</p>

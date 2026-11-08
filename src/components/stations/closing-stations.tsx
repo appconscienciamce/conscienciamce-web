@@ -67,7 +67,13 @@ export function HostsStation({ variant }: { variant: Variant }) {
         </figcaption>
       </Piece>
       <Piece x={946} y={22} w={216} r={1.2} movable as="figure" className="snap">
-        <Print image={oriana.image} sizes="216px" className="snap-photo-host" />
+        {current ? (
+          <HalftoneImage src={oriana.image.src!}>
+            <Print image={oriana.image} sizes="216px" className="snap-photo-host" />
+          </HalftoneImage>
+        ) : (
+          <Print image={oriana.image} sizes="216px" className="snap-photo-host" />
+        )}
         <figcaption>
           <strong>{oriana.name}</strong>
           <span className="mono-note">{oriana.label}</span>
@@ -75,8 +81,8 @@ export function HostsStation({ variant }: { variant: Variant }) {
       </Piece>
 
       {current ? (
-        <Piece x={700} y={470} w={462} r={-0.8} movable as="figure" className="snap">
-          <Print image={editorial.hosts.lead.image} sizes="462px" className="snap-photo-short" objectPosition="50% 40%" />
+        <Piece x={720} y={478} w={420} r={-0.8} movable as="figure" className="snap board-hosts-lead">
+          <Print image={editorial.hosts.lead.image} sizes="420px" className="snap-photo-short" objectPosition="50% 30%" />
           <figcaption className="mono-note">{editorial.hosts.lead.name}</figcaption>
         </Piece>
       ) : (

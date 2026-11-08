@@ -200,7 +200,7 @@ export const bootcamp: BootcampContent = {
   },
 
   board: {
-    path: ["identidad", "criterio", "posicionamiento", "caso real", "aplicación", "experiencia", "compra"],
+    path: ["identidad", "criterio", "posicionamiento", "caso real", "aplicación", "experiencia", ""],
   },
 
   desktop: {
