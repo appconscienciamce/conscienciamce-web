@@ -14,7 +14,7 @@ interface RoadmapCopy {
   partOne: string;
   partTwo: string;
   hook: string;
-  more: { name: string; label: string; hint?: string; part?: number; rows: number; maxLength: number }[];
+  more: { name: string; label: string; hint?: string; part?: number; type?: string; required?: boolean; rows: number; maxLength: number }[];
   submit: string;
   sending: string;
   sent: string;
@@ -30,9 +30,9 @@ function Extra({ field }: { field: RoadmapCopy["more"][number] }) {
       <span>{field.label}</span>
       {field.hint && <small className="roadmap-hint">{field.hint}</small>}
       {field.rows === 1 ? (
-        <input name={field.name} type="text" maxLength={field.maxLength} />
+        <input name={field.name} type={field.type ?? "text"} maxLength={field.maxLength} required={field.required} />
       ) : (
-        <textarea name={field.name} rows={field.rows} maxLength={field.maxLength} />
+        <textarea name={field.name} rows={field.rows} maxLength={field.maxLength} required={field.required} />
       )}
     </label>
   );
@@ -45,8 +45,23 @@ const TIMEOUT_MS = 15000;
  * four questions and then four more. Sends only to a real endpoint: without one the button
  * stays off, because telling someone their answers arrived when they did not is worse than waiting.
  */
-export function RoadmapFile({ copy }: { copy: RoadmapCopy }) {
-  const [open, setOpen] = useState(false);
+/** The date input gives 1992-03-14: the team reads 14/03/1992. */
+function readable(name: string, value: string) {
+  const date = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+  return name === "birthDate" && date ? `${date[3]}/${date[2]}/${date[1]}` : value;
+}
+
+export function RoadmapFile({
+  copy,
+  prefill,
+  defaultOpen = false,
+}: {
+  copy: RoadmapCopy;
+  /** The buyer's name and email, from the purchase: so the answers land on the right person. */
+  prefill?: { name: string | null; email: string };
+  defaultOpen?: boolean;
+}) {
+  const [open, setOpen] = useState(defaultOpen);
   const [part, setPart] = useState<1 | 2>(1);
   const [status, setStatus] = useState<Status>("idle");
   // Until React is here a submit would be a native one, with the answers in the URL.
@@ -81,7 +96,7 @@ export function RoadmapFile({ copy }: { copy: RoadmapCopy }) {
     const extras = more.flatMap(({ name, label }) => {
       const answer = answers[name]?.trim();
       delete answers[name];
-      return answer ? [`${label}\n${answer}`] : [];
+      return answer ? [`${label}\n${readable(name, answer)}`] : [];
     });
     try {
       const response = await fetch(endpoint, {
@@ -132,11 +147,11 @@ export function RoadmapFile({ copy }: { copy: RoadmapCopy }) {
             <div className="roadmap-fields" data-part="1" hidden={part !== 1}>
               <label>
                 <span>{fields.name}</span>
-                <input name="name" type="text" autoComplete="name" maxLength={200} required />
+                <input name="name" type="text" autoComplete="name" maxLength={200} required defaultValue={prefill?.name ?? undefined} />
               </label>
               <label>
                 <span>{fields.email}</span>
-                <input name="email" type="email" autoComplete="email" maxLength={320} required />
+                <input name="email" type="email" autoComplete="email" maxLength={320} required defaultValue={prefill?.email} />
               </label>
               {more
                 .filter((field) => field.part === 1)
@@ -146,12 +161,12 @@ export function RoadmapFile({ copy }: { copy: RoadmapCopy }) {
               <label className="is-wide">
                 <span>{fields.project}</span>
                 {fields.projectHint && <small className="roadmap-hint">{fields.projectHint}</small>}
-                <textarea name="project" rows={3} maxLength={1500} required />
+                <textarea name="project" rows={3} minLength={10} maxLength={1500} required />
               </label>
               <label className="is-wide">
                 <span>{fields.goal}</span>
                 {fields.goalHint && <small className="roadmap-hint">{fields.goalHint}</small>}
-                <textarea name="goal" rows={2} maxLength={400} required />
+                <textarea name="goal" rows={2} minLength={3} maxLength={400} required />
               </label>
             </div>
 

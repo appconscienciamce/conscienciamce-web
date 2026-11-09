@@ -73,6 +73,33 @@ export const thanks = {
   },
 };
 
+/** What a visitor sees on a thank-you page without a recorded purchase. */
+export const thanksLocked = {
+  missing: {
+    eyebrow: "Bootcamp — Creadores Conscientes",
+    title: "Esta página es para quienes ya compraron.",
+    lead: "Si ya compraste, revisá tu mail: ahí tenés todos los pasos para empezar.",
+    cta: "Ver el bootcamp",
+    href: "/",
+  },
+  pending: {
+    eyebrow: "Bootcamp — Creadores Conscientes",
+    title: "Estamos confirmando tu pago.",
+    lead: "Tarda unos segundos. No cierres esta página.",
+    late: "Tu pago se está confirmando. En unos minutos te llega un mail con todos los pasos. Si no te llega, escribinos.",
+    cta: "Escribir por WhatsApp",
+    href: "https://wa.me/5492284733054?text=" + encodeURIComponent("Hola, compré el bootcamp Creadores Conscientes y todavía no me llegó el mail."),
+  },
+};
+
+/** The roadmap on its own page, to share by WhatsApp with whoever did not complete it. */
+export const roadmapPage = {
+  seo: { title: "Tu roadmap — Creadores Conscientes" },
+  eyebrow: "Bootcamp — Creadores Conscientes",
+  title: "Completá tu roadmap.",
+  lead: "Con tus respuestas creamos tu roadmap estratégico y el mapa de tu alma para que puedas diseñar tus próximos movimientos. Te lo entregamos después del bootcamp.",
+};
+
 /** The page the VIP payment link sends to: no upsell, the VIP already bought. */
 export const thanksVip = {
   seo: { title: "VIP confirmado — Creadores Conscientes" },
@@ -94,7 +121,7 @@ export const thanksVip = {
 
 /** What the current thank-you page does differently from the one kept at `/evento/gracias`. */
 export const thanksCurrent = {
-  file: { name: "mi-roadmap.txt", open: "Abrir", close: "Cerrar", hint: "Dos partes, 9 preguntas" },
+  file: { name: "mi-roadmap.txt", open: "Abrir", close: "Cerrar", hint: "Dos partes · unos 5 minutos" },
   whatsappText: "Entrá primero a la comunidad: ahí compartimos el link de Zoom y toda la información del evento.",
   text: "Al completar esto, te creamos tu roadmap estratégico y el mapa de tu alma para que puedas diseñar tus próximos movimientos. Te lo entregamos después del bootcamp.",
   fields: {
@@ -115,7 +142,9 @@ export const thanksCurrent = {
    * so the limits below keep the whole answer under that.
    */
   more: [
-    { name: "birth", part: 1, label: "Tu fecha de nacimiento, lugar y hora exacta", hint: "Por ejemplo: 14/03/1992, Rosario, Argentina, 07:45.", rows: 1, maxLength: 200 },
+    { name: "birthDate", part: 1, type: "date", label: "Tu fecha de nacimiento", required: true, rows: 1, maxLength: 10 },
+    { name: "birthTime", part: 1, type: "time", label: "Tu hora de nacimiento", hint: "La necesitamos para tu mapa. Si no la sabés exacta, poné la más cercana.", required: true, rows: 1, maxLength: 5 },
+    { name: "birthPlace", part: 1, label: "Tu lugar de nacimiento", hint: "Ciudad y país.", required: true, rows: 1, maxLength: 120 },
     { name: "represent", part: 2, label: "¿Qué querés que tu nombre represente en los próximos años y qué sentís que hoy tu marca todavía no logra transmitir correctamente sobre vos?", rows: 3, maxLength: 500 },
     { name: "bottleneck", part: 2, label: "¿Cuál sentís que es hoy tu mayor cuello de botella para llegar a tu próximo nivel?", hint: "¿Qué es lo que más te está frenando, confundiendo o postergando?", rows: 3, maxLength: 500 },
     { name: "ninety", part: 2, label: "¿Qué querés haber transformado en tu marca o negocio durante los próximos 90 días?", hint: "¿Qué tendría que cambiar para que sintieras que realmente avanzaste?", rows: 3, maxLength: 500 },

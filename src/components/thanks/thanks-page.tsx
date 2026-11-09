@@ -8,7 +8,9 @@ import { VideoCard } from "@/components/video-card";
 import { SystemClock } from "@/components/os/system-clock";
 import { SystemCountdown } from "@/components/os/system-countdown";
 import { bootcamp } from "@/content/bootcamp";
-import { thanks, thanksCurrent, thanksVip } from "@/content/thanks";
+import { roadmapPage, thanks, thanksCurrent, thanksLocked, thanksVip } from "@/content/thanks";
+import type { Buyer } from "@/lib/purchase";
+import { RetryReload } from "@/components/thanks/retry-reload";
 import type { Variant } from "@/content/types";
 
 function StepWindow({
@@ -54,6 +56,66 @@ function StepWindow({
         {children}
       </div>
     </section>
+  );
+}
+
+/** The bar and the frame every thank-you page shares. */
+function Frame({ children }: { children: React.ReactNode }) {
+  const { brand, os, offer } = bootcamp;
+  return (
+    <div className="thanks-shell v-current">
+      <header className="sys-bar">
+        <span className="sys-brand">
+          <Image src={brand.mark.src!} alt="" width={brand.mark.width} height={brand.mark.height} />
+          {bootcamp.hero.programName}
+        </span>
+        <div className="sys-right">
+          <SystemCountdown dates={offer.eventDates} copy={os.countdown} dated />
+        </div>
+      </header>
+      <main className="thanks-page">{children}</main>
+      <SiteFooter />
+    </div>
+  );
+}
+
+/** A thank-you page opened without a recorded purchase: nothing of the content, only the way out. */
+export function ThanksLocked({ state, attempt = 0 }: { state: "missing" | "pending"; attempt?: number }) {
+  const MAX = 6;
+  const copy = state === "missing" ? thanksLocked.missing : thanksLocked.pending;
+  const late = state === "pending" && attempt >= MAX;
+  return (
+    <Frame>
+      <div className="thanks-hero thanks-locked">
+        <p className="eyebrow">{copy.eyebrow}</p>
+        <h1>{copy.title}</h1>
+        <p>{late ? thanksLocked.pending.late : copy.lead}</p>
+        {state === "pending" && !late && <span aria-hidden className="thanks-spinner" />}
+        {(state === "missing" || late) && (
+          <a className="btn btn-solid thanks-locked-cta" href={copy.href}>
+            {copy.cta}
+          </a>
+        )}
+        {state === "pending" && <RetryReload attempt={attempt} max={MAX} delayMs={3000} />}
+      </div>
+    </Frame>
+  );
+}
+
+/** The roadmap alone, open: the link Santiago shares by WhatsApp. */
+export function RoadmapPage() {
+  const { roadmap } = thanks;
+  return (
+    <Frame>
+      <div className="thanks-hero">
+        <p className="eyebrow">{roadmapPage.eyebrow}</p>
+        <h1>{roadmapPage.title}</h1>
+        <p>{roadmapPage.lead}</p>
+      </div>
+      <div className="thanks-roadmap-alone">
+        <RoadmapFile copy={{ ...roadmap, ...thanksCurrent }} defaultOpen />
+      </div>
+    </Frame>
   );
 }
 
@@ -104,7 +166,7 @@ function VipTicket({ confirmed = false }: { confirmed?: boolean }) {
 }
 
 /** The thank-you page: the roadmap as a closed file, one video and no call. `/evento/gracias` keeps the previous one. */
-export function ThanksPage({ variant, vip = false }: { variant: Variant; vip?: boolean }) {
+export function ThanksPage({ variant, vip = false, buyer }: { variant: Variant; vip?: boolean; buyer?: Buyer }) {
   const current = variant === "current";
   const { checklist, roadmap, whatsapp, videos, upsell } = thanks;
   const hero = vip ? thanksVip.hero : thanks.hero;
@@ -127,7 +189,7 @@ export function ThanksPage({ variant, vip = false }: { variant: Variant; vip?: b
       ];
   const roadmapStep = (
     <StepWindow id={roadmap.id} number={current ? 2 : 1} title={roadmap.title} text={current ? thanksCurrent.text : roadmap.text} tone="paper">
-      {current ? <RoadmapFile copy={{ ...roadmap, ...thanksCurrent }} /> : <RoadmapForm copy={roadmap} />}
+      {current ? <RoadmapFile copy={{ ...roadmap, ...thanksCurrent }} prefill={buyer} /> : <RoadmapForm copy={roadmap} />}
     </StepWindow>
   );
   const whatsappStep = (
