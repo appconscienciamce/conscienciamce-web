@@ -1,7 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { Averia_Serif_Libre, DM_Mono, DM_Sans } from "next/font/google";
+import { MetaPixel } from "@/components/meta-pixel";
 import { SierraTracking } from "@/components/sierra-tracking";
 import { bootcamp } from "@/content/bootcamp";
+import { CHECKOUTS } from "@/lib/meta-offer";
 import { BOARD_QUERY, REDUCED_MOTION_QUERY } from "@/lib/board/layout";
 import "./globals.css";
 import "./editorial.css";
@@ -83,6 +85,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {children}
         {/* Visitas y clics al checkout para el panel de synx build. */}
         <SierraTracking />
+        <MetaPixel checkouts={CHECKOUTS} />
       </body>
     </html>
   );

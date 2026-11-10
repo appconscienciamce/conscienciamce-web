@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { ThanksLocked, ThanksPage } from "@/components/thanks/thanks-page";
 import { thanks } from "@/content/thanks";
+import { MetaPurchase } from "@/components/meta-pixel";
+import { trackPurchase } from "@/lib/meta-purchase";
 import { findBuyer } from "@/lib/purchase";
 
 export const metadata: Metadata = {
@@ -21,5 +23,11 @@ export default async function GraciasPage({
   if (!sessionId) return <ThanksLocked state="missing" />;
   const buyer = await findBuyer(sessionId);
   if (!buyer) return <ThanksLocked state="pending" attempt={Number(intento) || 0} />;
-  return <ThanksPage variant="current" buyer={buyer} />;
+  const purchase = await trackPurchase(sessionId, buyer, "/gracias");
+  return (
+    <>
+      <ThanksPage variant="current" buyer={buyer} />
+      <MetaPurchase {...purchase} />
+    </>
+  );
 }
