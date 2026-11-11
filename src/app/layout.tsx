@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Averia_Serif_Libre, DM_Mono, DM_Sans } from "next/font/google";
+import Script from "next/script";
 import { MetaPixel } from "@/components/meta-pixel";
 import { SierraTracking } from "@/components/sierra-tracking";
 import { bootcamp } from "@/content/bootcamp";
@@ -86,6 +87,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Visitas y clics al checkout para el panel de synx build. */}
         <SierraTracking />
         <MetaPixel checkouts={CHECKOUTS} />
+        {/* Microsoft Clarity: heatmaps and session recordings. */}
+        <Script id="clarity" strategy="afterInteractive">
+          {`(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","zc031ci1h2");`}
+        </Script>
       </body>
     </html>
   );
