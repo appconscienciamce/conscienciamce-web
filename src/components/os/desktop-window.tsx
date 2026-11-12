@@ -35,7 +35,7 @@ function useDesktopDrag<T extends HTMLElement>() {
 
   const onPointerDown = (e: React.PointerEvent) => {
     const el = ref.current;
-    if (!el || e.button !== 0 || (e.target as HTMLElement).closest("button")) return;
+    if (!el || e.button !== 0 || (e.target as HTMLElement).closest("button:not([data-drag-through])")) return;
     el.style.zIndex = String(++topLayer);
     dragged.current = false;
     const start = { x: e.clientX, y: e.clientY, ox: offset.current.x, oy: offset.current.y };

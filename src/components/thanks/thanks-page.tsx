@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/safe-image";
 import { ActionLink } from "@/components/thanks/action-link";
 import { Checklist } from "@/components/thanks/checklist";
 import { RoadmapFile } from "@/components/thanks/roadmap-file";

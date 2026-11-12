@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Image from "@/components/safe-image";
 import { useEffect } from "react";
 import { closeApp, isPhoneOs, openApp, startPhoneOs } from "@/lib/phone-os";
 import { startCanvas } from "@/lib/phone-canvas";

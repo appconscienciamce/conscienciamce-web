@@ -58,7 +58,7 @@ export function VideoCard({
   return (
     <figure className="video-card">
       <div className="video-frame">
-        <button ref={posterRef} type="button" onClick={() => setOpen(true)} aria-label={playLabel}>
+        <button ref={posterRef} type="button" data-drag-through onClick={() => setOpen(true)} aria-label={playLabel}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={`https://i.ytimg.com/vi/${videoId}/sddefault.jpg`}

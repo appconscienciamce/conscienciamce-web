@@ -30,15 +30,15 @@ export interface StationDef extends Rect {
 export const STATIONS: StationDef[] = [
   { id: "inicio", x: 0, y: 420, w: 1040, h: 620 },
   { id: "para-quien", x: 1460, y: 60, w: 2320, h: 820 },
-  { id: "manifiesto", x: 4200, y: 600, w: 2560, h: 720 },
-  { id: "caso-pilar", x: 7180, y: 120, w: 2280, h: 700 },
-  { id: "dos-dias", x: 9880, y: 620, w: 2500, h: 720 },
-  { id: "que-te-llevas", x: 12800, y: 100, w: 1320, h: 780 },
-  { id: "quienes", x: 14540, y: 620, w: 2480, h: 740 },
-  { id: "inscripcion", x: 17440, y: 120, w: 2480, h: 720 },
+  { id: "manifiesto", x: 4200, y: 600, w: 4000, h: 720 },
+  { id: "caso-pilar", x: 8620, y: 120, w: 2280, h: 700 },
+  { id: "dos-dias", x: 11320, y: 620, w: 2500, h: 720 },
+  { id: "que-te-llevas", x: 14240, y: 100, w: 2520, h: 780 },
+  { id: "quienes", x: 17180, y: 620, w: 2480, h: 740 },
+  { id: "inscripcion", x: 20080, y: 120, w: 2480, h: 720 },
 ];
 
-export const WORLD: Rect = { x: -240, y: -120, w: 20400, h: 1700 };
+export const WORLD: Rect = { x: -240, y: -120, w: 23040, h: 1700 };
 
 export interface StopDef {
   /** Anchor that targets this stop. Station ids are registered automatically. */
@@ -62,11 +62,13 @@ export const STOPS: StopDef[] = [
   { station: 1, rect: within(1, 1200, 120, 1120, 680) },
   { station: 2, rect: within(2, 0, 0, 1300, 720) },
   { station: 2, rect: within(2, 1380, 0, 1180, 680) },
+  { station: 2, rect: within(2, 2640, 0, 1340, 700) },
   { station: 3, rect: within(3, 0, 0, 1200, 680) },
   { anchor: "expediente", station: 3, rect: within(3, 1280, 0, 1000, 640) },
   { station: 4, rect: within(4, 0, 0, 1200, 700) },
   { anchor: "dia-2", station: 4, rect: within(4, 1280, 0, 1200, 700) },
   { station: 5, rect: within(5, 0, 0, 1320, 780) },
+  { station: 5, rect: within(5, 1400, 0, 1120, 780) },
   { station: 6, rect: within(6, 0, 0, 1200, 680) },
   { anchor: "testimonios", station: 6, rect: within(6, 1280, 0, 1200, 720) },
   { station: 7, rect: within(7, 0, 0, 1200, 700) },

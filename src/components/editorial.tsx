@@ -1,5 +1,5 @@
 import { CtaContent } from "@/components/cta-content";
-import Image from "next/image";
+import Image from "@/components/safe-image";
 import { bootcamp } from "@/content/bootcamp";
 import type { ClaimId, Img, Inline, RichParagraph } from "@/content/types";
 import { ctaHref, resolveClaim, resolvePrice } from "@/lib/offer";

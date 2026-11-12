@@ -165,7 +165,7 @@ export interface BootcampContent {
     daysFolder: string;
     enrollFolder: string;
     boardPhoto: { title: string; image: Img };
-    video: { title: string; label: string; status: string };
+    video: { title: string; label: string; videoId: string; start: number; window: string; play: string };
     note: { title: string; lines: string[]; sign: string };
     secondPhoto: { title: string; image: Img };
     stamp: string;

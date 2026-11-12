@@ -216,7 +216,14 @@ export const bootcamp: BootcampContent = {
         height: 600,
       },
     },
-    video: { title: "ismael_y_pilar.mov", label: "Ismael y Pilar", status: "Video próximamente" },
+    video: {
+      title: "ismael_y_pilar.mov",
+      label: "Ismael y Pilar",
+      videoId: "C5KwvgCK6nE",
+      start: 3455,
+      window: "Ismael y Pilar",
+      play: "Reproducir el video de Ismael y Pilar",
+    },
     note: { title: "criterio.txt", lines: ["Criterio, visión", "y perspectiva."], sign: "Antes de la estrategia, la dirección." },
     secondPhoto: {
       title: "santiago_02.jpg",

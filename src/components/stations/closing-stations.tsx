@@ -5,6 +5,7 @@ import { CtaContent } from "@/components/cta-content";
 import { FaqItem } from "@/components/faq-item";
 import { HalftoneImage } from "@/components/halftone-image";
 import { VideoCard } from "@/components/video-card";
+import { VerifiedBadge } from "@/components/verified-badge";
 import type { Variant } from "@/content/types";
 import { EdEnroll, EdHosts } from "./phone-editorial";
 import { REGISTRATION_ANCHOR, checkoutLive, ctaHref, resolveLogistics } from "@/lib/offer";
@@ -106,9 +107,21 @@ export function HostsStation({ variant }: { variant: Variant }) {
                 <dd>{item.text}</dd>
                 {item.faces && (
                   <dd className="board-faces">
-                    {item.faces.map((face) =>
-                      face.image ? <Print key={face.name} image={face.image} sizes="44px" className="board-face" /> : null,
-                    )}
+                    {item.faces.map((face) => (
+                      <span key={face.name} className="board-face-item">
+                        <span className="board-face-pic">
+                          {face.image ? (
+                            <Print image={face.image} sizes="52px" className="board-face" />
+                          ) : (
+                            <b aria-hidden className="board-face">
+                              {face.name.charAt(0)}
+                            </b>
+                          )}
+                          <VerifiedBadge className="board-verified" />
+                        </span>
+                        <small>{face.name}</small>
+                      </span>
+                    ))}
                   </dd>
                 )}
               </div>

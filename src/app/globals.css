@@ -257,20 +257,43 @@ mark {
   transform: scale(0.95);
 }
 
-/* Primary button: gradient, inner bevel and points that rise through it. */
+/*
+ * Primary button: aged gold. Champagne at the top falling to bronze at the bottom,
+ * with a warm glow and points that rise through it. The ink is dark: the darkest
+ * stop (#a07829) still holds 4.5:1 against it, the lightest holds far more.
+ * Gold lives here only; no other element borrows it.
+ */
 .btn-solid {
-  --btn-glow: rgba(255, 255, 255, 0.24);
-  --btn-glow-end: rgba(255, 255, 255, 0);
-  --btn-base: #0c0c0c;
+  --btn-glow: rgba(255, 238, 190, 0.5);
+  --btn-glow-end: rgba(255, 238, 190, 0);
+  --btn-fill: linear-gradient(180deg, #f1e2b8 0%, #c9a04a 55%, #a07829 100%);
+  --btn-ink: #1a1306;
+  --btn-halo: rgba(201, 160, 74, 0.34);
   border: 0;
-  color: #fff;
-  /* Keeps the edge visible on the dark surfaces of the map. */
+  color: var(--btn-ink);
+  /* A bronze edge reads on black and on paper; the halo is the warm light. */
   box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.16),
-    0 2px 6px rgba(0, 0, 0, 0.3);
+    0 0 0 1px rgba(112, 82, 24, 0.62),
+    0 2px 6px rgba(0, 0, 0, 0.3),
+    0 0 22px var(--btn-halo);
   background:
     radial-gradient(65.28% 65.28% at 50% 100%, var(--btn-glow) 0%, var(--btn-glow-end) 100%),
-    linear-gradient(0deg, var(--btn-base), var(--btn-base));
+    var(--btn-fill);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.3s ease,
+    background 0.2s,
+    color 0.2s;
+}
+
+.btn-solid:hover {
+  --btn-glow: rgba(255, 244, 210, 0.7);
+  --btn-halo: rgba(224, 182, 92, 0.5);
+}
+
+.btn-solid:focus-visible {
+  outline: 2px solid #f1e2b8;
+  outline-offset: 3px;
 }
 
 .btn-solid::before,
@@ -283,7 +306,7 @@ mark {
 
 .btn-solid::before {
   inset: 1px;
-  background: linear-gradient(177.95deg, rgba(255, 255, 255, 0.19) 0%, rgba(255, 255, 255, 0) 100%);
+  background: linear-gradient(177.95deg, rgba(255, 255, 255, 0.34) 0%, rgba(255, 255, 255, 0) 100%);
   border-radius: calc(0.75rem - 1px);
 }
 
@@ -291,7 +314,7 @@ mark {
   inset: 2px;
   background:
     radial-gradient(65.28% 65.28% at 50% 100%, var(--btn-glow) 0%, var(--btn-glow-end) 100%),
-    linear-gradient(0deg, var(--btn-base), var(--btn-base));
+    var(--btn-fill);
   border-radius: calc(0.75rem - 2px);
 }
 
@@ -321,7 +344,8 @@ mark {
   bottom: -10px;
   width: 2px;
   height: 2px;
-  background: #fff;
+  background: #fff6dc;
+  box-shadow: 0 0 3px rgba(255, 246, 220, 0.9);
   border-radius: 50%;
   animation: btn-point infinite ease-in-out;
 }
@@ -360,7 +384,7 @@ mark {
   justify-content: center;
   gap: 6px;
   width: 100%;
-  color: #fff;
+  color: var(--btn-ink, #1a1306);
 }
 
 .btn-label svg {

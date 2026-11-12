@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/safe-image";
 import { bootcamp } from "@/content/bootcamp";
 import { ClaimText, Print, Rich } from "@/components/editorial";
 import type { Img } from "@/content/types";
@@ -7,6 +7,7 @@ import { KitStack } from "./kit-stack";
 import { Flag } from "./flags";
 import { DayMore } from "./phone-touch";
 import { VideoCard } from "@/components/video-card";
+import { VerifiedBadge } from "@/components/verified-badge";
 
 /**
  * The phone reading, section by section. The board keeps its own pieces; these only
@@ -161,10 +162,7 @@ function EdAuthority() {
                       ) : (
                         <b aria-hidden>{face.name.charAt(0)}</b>
                       )}
-                      <svg className="ed-verified" viewBox="0 0 24 24" role="img" aria-label="Verificado">
-                        <polygon fill="#0095f6" points="12.00,0.00 14.69,1.95 18.00,1.61 19.35,4.65 22.39,6.00 22.05,9.31 24.00,12.00 22.05,14.69 22.39,18.00 19.35,19.35 18.00,22.39 14.69,22.05 12.00,24.00 9.31,22.05 6.00,22.39 4.65,19.35 1.61,18.00 1.95,14.69 0.00,12.00 1.95,9.31 1.61,6.00 4.65,4.65 6.00,1.61 9.31,1.95" />
-                        <path d="M7.2 12.3l3.1 3.1 6.5-6.6" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
+                      <VerifiedBadge />
                     </span>
                     <small>{face.name}</small>
                   </span>

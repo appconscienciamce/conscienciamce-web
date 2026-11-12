@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/safe-image";
 import { bootcamp } from "@/content/bootcamp";
 import type { Variant } from "@/content/types";
 import { CtaButton, Print } from "@/components/editorial";
@@ -8,6 +8,7 @@ import { MenuBar, type MenuGroup } from "./menu-bar";
 import { PhoneHome, type PhoneApp } from "./phone-home";
 import { SoundControl } from "./sound-control";
 import { SystemCountdown } from "./system-countdown";
+import { VideoCard } from "@/components/video-card";
 
 export function SystemBar({ variant }: { variant: Variant }) {
   const { os, hero, brand, chapters, offer, editorial } = bootcamp;
@@ -96,15 +97,14 @@ export function DesktopShell() {
         className="dwin-video"
         style={{ bottom: "7%", right: "2.4vw", width: "min(19vw, 300px)" }}
       >
-        <div className="video-empty">
-          <span aria-hidden className="video-empty-play">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
-              <path d="M8 5v14l11-7z" />
-            </svg>
-          </span>
-          <p>{desktop.video.label}</p>
-          <small>{desktop.video.status}</small>
-        </div>
+        <VideoCard
+          name={desktop.video.label}
+          videoId={desktop.video.videoId}
+          start={desktop.video.start}
+          closeLabel={os.closeWindow}
+          windowTitle={desktop.video.window}
+          playLabel={desktop.video.play}
+        />
       </DesktopWindow>
 
       <DesktopWindow

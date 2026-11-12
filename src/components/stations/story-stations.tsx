@@ -8,6 +8,7 @@ import { TechText } from "@/components/tech-text";
 import { resolveClaim } from "@/lib/offer";
 import type { Variant } from "@/content/types";
 import { ManifestoBoard } from "./manifesto-board";
+import { Flag } from "./flags";
 import { EdAudience, EdDays, EdManifesto, EdOutcomes, EdPilar } from "./phone-editorial";
 
 export function HeroStation({ variant }: { variant: Variant }) {
@@ -15,7 +16,7 @@ export function HeroStation({ variant }: { variant: Variant }) {
   const promiseLead = hero.promise.slice(0, hero.promise.lastIndexOf(hero.promiseHighlight));
   return (
     <Station index={0} titleId="hero-title" className="st-hero">
-      <Piece x={44} y={36} w={950}>
+      <Piece x={44} y={36} w={960} className="hero-top">
         <p className="eyebrow">{hero.eyebrow}</p>
         {variant === "current" && (
           <>
@@ -129,6 +130,7 @@ export function AudienceStation({ variant }: { variant: Variant }) {
 
 export function ManifestoStation({ variant }: { variant: Variant }) {
   const { manifesto, editorial } = bootcamp;
+  const { market } = editorial.manifesto;
   const current = variant === "current";
   return (
     <Station index={2} titleId="manifesto-title" className="st-manifesto">
@@ -144,9 +146,16 @@ export function ManifestoStation({ variant }: { variant: Variant }) {
         </h2>
         {current && (
           <p className="board-newworld">
-            <strong>{editorial.manifesto.newWorld.lead}</strong> {editorial.manifesto.newWorld.text}
+            <strong>{editorial.manifesto.newWorld.lead}</strong>{" "}
+            <span className="board-beats">
+              {market.beats.map((beat) => (
+                <span key={beat}>{beat}</span>
+              ))}
+            </span>{" "}
+            {editorial.manifesto.newWorld.text}
           </p>
         )}
+        {current && <p className="board-thesis-pre">{market.thesisPre}</p>}
         <blockquote className="thesis">
           {manifesto.thesis.before}
           <mark>{manifesto.thesis.highlight}</mark>
@@ -172,6 +181,33 @@ export function ManifestoStation({ variant }: { variant: Variant }) {
           <Piece x={2340} y={150} w={200} r={1.6} movable as="figure" className="snap">
             <Print image={editorial.manifesto.balance.image} sizes="200px" className="snap-photo-short" objectPosition="50% 40%" />
             <figcaption className="mono-note">{editorial.manifesto.balance.name}</figcaption>
+          </Piece>
+
+          {/* The rest of the manifesto, on the next sheet of the same station. */}
+          <Piece x={2700} y={60} w={520} className="board-contrasts">
+            {market.contrasts.map(([one, other]) => (
+              <p key={one}>
+                {one}
+                <em>{other}</em>
+              </p>
+            ))}
+          </Piece>
+          <Piece x={2700} y={452} w={500} r={-1} movable className="paper-note note-tape board-market-counter">
+            <p>{market.counter}</p>
+          </Piece>
+          <Piece x={3330} y={40} w={600} className="board-promise">
+            <p>{market.promise}</p>
+          </Piece>
+          <Piece x={3330} y={258} w={560} as="ul" className="board-lines">
+            {market.lines.map((line) => (
+              <li key={line}>{line}</li>
+            ))}
+          </Piece>
+          <Piece x={3330} y={440} w={600} as="article" className="doc-dark board-close">
+            <p>
+              {market.close[0]}
+              <strong>{market.close[1]}</strong>
+            </p>
           </Piece>
         </>
       ) : (
@@ -323,6 +359,8 @@ export function PilarStation({ variant }: { variant: Variant }) {
   );
 }
 
+const ZONES_Y = 412;
+
 export function TwoDaysStation({ variant }: { variant: Variant }) {
   const { twoDays, editorial } = bootcamp;
   const [dayOne, dayTwo] = twoDays.days;
@@ -344,7 +382,18 @@ export function TwoDaysStation({ variant }: { variant: Variant }) {
           <p className="lead">{twoDays.intro}</p>
         )}
       </Piece>
-      <Piece x={60} y={420} w={230} r={-1.5} movable as="figure" className="snap">
+      {current && (
+        <Piece x={36} y={ZONES_Y} w={320} as="ul" className="board-zones">
+          {editorial.days.zones.map((zone) => (
+            <li key={zone.place}>
+              <Flag code={zone.flag} />
+              <strong>{zone.time}</strong>
+              {zone.place}
+            </li>
+          ))}
+        </Piece>
+      )}
+      <Piece x={60} y={494} w={210} r={-1.5} movable as="figure" className="snap">
         <Print image={twoDays.image} sizes="230px" className="snap-photo-short" objectPosition="30% 70%" />
       </Piece>
 
@@ -424,6 +473,14 @@ const KIT_POSITIONS: [number, number][] = [
   [710, 474],
 ];
 
+/** The three outcomes the phone shows, on the second sheet of the station. */
+const GAIN_POSITIONS: [number, number][] = [
+  [1460, 150],
+  [1810, 300],
+  [2160, 150],
+];
+const GAIN_CARD = { w: 300 };
+
 /** The line leaves each card and lands on the next one, across the gap between rows. */
 const zigzag = (positions = OUTCOME_POSITIONS, card = OUTCOME_CARD) => {
   const dock = positions.map(([x, y], i) => ({
@@ -501,6 +558,25 @@ export function OutcomesStation({ variant }: { variant: Variant }) {
           );
         })}
       </ol>
+      )}
+      {current && (
+        <ol className="outcome-list board-gains">
+          {editorial.gainsShown.map((itemIndex, n) => {
+            const [x, y] = GAIN_POSITIONS[n];
+            const item = outcomes.items[itemIndex];
+            return (
+              <li key={item.numeral}>
+                <Piece x={x} y={y} w={GAIN_CARD.w} className="outcome board-gain">
+                  <Print image={editorial.gains[itemIndex]} sizes="300px" className="board-gain-print" objectPosition="50% 40%" />
+                  <span aria-hidden className="outcome-n">
+                    {item.numeral}
+                  </span>
+                  <p>{item.text}</p>
+                </Piece>
+              </li>
+            );
+          })}
+        </ol>
       )}
       <Piece x={1104} y={500} w={196} r={1.4} movable as="figure" className="snap note-tape">
         <Print image={outcomes.photo} sizes="196px" className="snap-photo-short" objectPosition="50% 62%" />
