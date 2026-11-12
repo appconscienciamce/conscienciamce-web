@@ -109,6 +109,13 @@ export const bootcamp: BootcampContent = {
     secondaryCta: "Abrir el mapa",
   },
 
+  ads: {
+    qualifier: "Para quienes ya tienen un negocio funcionando",
+    proof: { figure: "+USD 2,6M generados con creadores conscientes", case: "Caso Pilar: de 5K a 650K" },
+    ctaJoin: " · ",
+    seats: { many: "Quedan {n} lugares", one: "Queda 1 lugar" },
+  },
+
   os: {
     nav: [
       { label: "Inicio", href: "#inicio" },

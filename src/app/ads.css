@@ -1,0 +1,209 @@
+/* ================================================================
+   /v2, the page for paid traffic. Loaded only by that route.
+   Same pieces as `/`, in the order of someone who has five seconds:
+   the sale, the price and the numbers first. On a phone there is no
+   home screen of folders: the window is the page, open from the start.
+================================================================= */
+
+/* ---------------- Lines shared by phone and desktop ---------------- */
+
+.ads-proof {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.3;
+}
+
+.ads-proof strong {
+  font-family: var(--font-display);
+  font-size: 1.32em;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+.ads-qualifier {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.03em;
+  line-height: 1.35;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.ads-seats {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  letter-spacing: 0.02em;
+  color: var(--ink-2);
+}
+
+.ads-seats-dot {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  background: var(--light-green, #3fb950);
+  border-radius: 50%;
+}
+
+/* ---------------- Desktop: the hero window ---------------- */
+
+.board-on .ads-desk-proof .ads-proof {
+  font-size: 15px;
+  color: var(--ink);
+}
+
+.board-on .ads-desk-proof .ads-proof strong {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 27px;
+  line-height: 1.1;
+}
+
+.board-on .ads-desk-qualifier .ads-qualifier {
+  padding-left: 12px;
+  border-left: 2px solid var(--ink);
+  font-size: 12.5px;
+  color: var(--ink);
+}
+
+/* ---------------- Phone: the page is the window ---------------- */
+
+.phone-os.ads:not(.board-on) .v-ads .canvas {
+  position: fixed;
+  inset: var(--sys-h) 0 0;
+  z-index: 38;
+  display: block;
+  overflow: hidden auto;
+  overscroll-behavior: contain;
+  background: var(--bg);
+  border-radius: 0;
+  box-shadow: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Hero first, then the order of the ad: who it is for, the case, the thesis, the days... */
+.phone-os.ads:not(.board-on) .v-ads.v-current .canvas .st#para-quien { order: 1; }
+.phone-os.ads:not(.board-on) .v-ads.v-current .canvas .st#caso-pilar { order: 2; }
+.phone-os.ads:not(.board-on) .v-ads.v-current .canvas .st#manifiesto { order: 3; }
+.phone-os.ads:not(.board-on) .v-ads.v-current .canvas .st#dos-dias { order: 4; }
+.phone-os.ads:not(.board-on) .v-ads.v-current .canvas .st#que-te-llevas { order: 5; }
+.phone-os.ads:not(.board-on) .v-ads.v-current .canvas .st#inscripcion { order: 6; }
+.phone-os.ads:not(.board-on) .v-ads.v-current .canvas .st#quienes { order: 7; }
+
+.phone-os.ads:not(.board-on) .v-ads.v-current .canvas .st.st-hero {
+  order: 0;
+  margin: 0;
+  animation: none;
+  border-radius: 0;
+}
+
+.phone-os.ads:not(.board-on) .v-ads .st-hero .app-bar {
+  display: none;
+}
+
+/* The first screen. It has to fit what an in-app browser leaves on an iPhone: 390 x 660. */
+.ed-hero {
+  padding: 16px var(--gutter) 22px;
+}
+
+.ed-hero-date {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--ink-2);
+}
+
+.ed-hero-title {
+  margin: 8px 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(34px, min(10.2vw, 5.7dvh), 58px);
+  font-weight: 400;
+  line-height: 0.99;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.ed-hero-title em {
+  font-style: italic;
+}
+
+.ed-hero-promise {
+  margin: 10px 0 0;
+  font-size: clamp(14.5px, min(4vw, 2.3dvh), 18px);
+  line-height: 1.33;
+  text-wrap: pretty;
+}
+
+.ed-hero-promise em {
+  font-family: var(--font-display);
+  font-size: 1.08em;
+  line-height: 1.2;
+}
+
+.ed-hero .ads-qualifier {
+  margin-top: 12px;
+}
+
+.ed-hero .ads-proof {
+  margin-top: 12px;
+  padding: 11px 14px 12px;
+  background: var(--ink);
+  border-radius: 10px;
+  color: var(--paper);
+}
+
+.ed-hero .ads-proof strong {
+  display: block;
+  font-size: 21px;
+  line-height: 1.12;
+}
+
+.ed-hero .ads-proof span:last-child {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  color: rgba(245, 245, 243, 0.7);
+}
+
+.ed-hero .ads-proof-sep {
+  display: none;
+}
+
+.ed-hero .ads-hero-cta {
+  width: 100%;
+  min-height: 52px;
+  margin-top: 14px;
+}
+
+.ed-hero .ads-seats {
+  justify-content: center;
+  margin-top: 10px;
+}
+
+/* The sticky button waits while the hero's own is on screen, then stays for the whole reading. */
+.phone-os.ads:not(.board-on) .flow-bar {
+  transform: translateY(105%);
+  transition: transform 0.35s var(--ease-mac);
+}
+
+.phone-os.ads:not(.board-on)[data-sticky] .flow-bar {
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .phone-os.ads:not(.board-on) .flow-bar {
+    transition: none;
+  }
+}
+
+/* The numbers come straight after the intro: the two portraits wait for "Santiago y Oriana". */
+.phone-os:not(.board-on) .v-ads .ed-authority .ed-duo {
+  display: none;
+}

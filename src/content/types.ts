@@ -157,6 +157,17 @@ export interface BootcampContent {
     notBeginners: string;
     secondaryCta: string;
   };
+  /** Only the paid-traffic page (`/v2`) reads this. */
+  ads: {
+    /** Who the page is for, said once near the top. */
+    qualifier: string;
+    /** The proof line under the title, in two halves. */
+    proof: { figure: string; case: string };
+    /** Joins the button label and the price: "Quiero participar · USD 36,90". */
+    ctaJoin: string;
+    /** `{n}` is the real number of seats left. */
+    seats: { many: string; one: string };
+  };
   os: OsCopy;
   /** Labels of the line that joins the stations, one per link. */
   board: { path: string[] };

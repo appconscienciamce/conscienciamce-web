@@ -49,3 +49,22 @@ export const checkoutLive = Boolean(offer.checkoutUrl) && offer.status === "appr
 export const REGISTRATION_ANCHOR = "inscripcion";
 
 export const ctaHref = checkoutLive ? offer.checkoutUrl! : `#${REGISTRATION_ANCHOR}`;
+
+/** The price with its cents, from the amount: "USD 36,90". Null while the price must stay hidden. */
+export function priceExact(): string | null {
+  if (!resolvePrice()) return null;
+  const { currency, amount } = offer.price;
+  return `${currency} ${amount.toFixed(2).replace(".", ",")}`;
+}
+
+/** The buy button of the paid-traffic page: "Quiero participar · USD 36,90". */
+export function adsCtaLabel(): string {
+  const price = priceExact();
+  return price ? `${bootcamp.cta.label}${bootcamp.ads.ctaJoin}${price}` : bootcamp.cta.label;
+}
+
+/** "Quedan 120 lugares", from a real count. */
+export function seatsLine(left: number): string {
+  const { seats } = bootcamp.ads;
+  return left === 1 ? seats.one : seats.many.replace("{n}", String(left));
+}

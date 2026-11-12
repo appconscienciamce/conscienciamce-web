@@ -159,10 +159,10 @@ export function DesktopShell() {
   );
 }
 
-export function FlowBar({ price }: { price: string | null }) {
+export function FlowBar({ price, label }: { price: string | null; label?: string }) {
   return (
     <div className="flow-bar" data-flow-bar>
-      <CtaButton note={price ?? undefined} />
+      <CtaButton label={label} note={price ?? undefined} />
     </div>
   );
 }

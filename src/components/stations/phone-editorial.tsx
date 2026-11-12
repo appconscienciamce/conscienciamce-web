@@ -131,7 +131,7 @@ export function EdManifesto() {
   );
 }
 
-function EdAuthority() {
+export function EdAuthority() {
   const { hosts, editorial } = bootcamp;
   const { title, intro, photos, proof } = editorial.authority;
   return (
@@ -177,6 +177,26 @@ function EdAuthority() {
         <VideoCard name={proof.name} videoId={proof.videoId} start={proof.start} closeLabel={bootcamp.os.closeWindow} caption={false} windowTitle={proof.window} playLabel={proof.play} />
       </div>
     </section>
+  );
+}
+
+/** The paid-traffic page keeps only the core of the manifesto: the thesis and its answer. */
+export function EdThesis() {
+  const { editorial } = bootcamp;
+  const { thesis, market } = editorial.manifesto;
+  return (
+    <div className="ed ed-manifesto">
+      <div className="ed-dark ed-thesis-block">
+        <p className="ed-thesis-pre ed-r">{market.thesisPre}</p>
+        <h2 className="ed-thesis ed-r">
+          {market.thesis.before}
+          <mark>{market.thesis.highlight}</mark>
+          {market.thesis.after}
+        </h2>
+        <Shot image={thesis.image} name={thesis.name} sizes="92vw" className="ed-thesis-shot" position="50% 24%" />
+        <p className="ed-counter ed-r">{market.counter}</p>
+      </div>
+    </div>
   );
 }
 

@@ -122,6 +122,23 @@ function dismiss() {
   }, done);
 }
 
+/**
+ * The paid-traffic page has no home screen: its window is the page, open from the start.
+ * Links inside it just scroll (`openApp` with a window open), and no history entry is ever added.
+ */
+export function holdOpen() {
+  const win = appWindow();
+  if (!win) return () => {};
+  current = win;
+  win.setAttribute("data-app-open", "");
+  root().dataset.app = "inicio";
+  return () => {
+    current = null;
+    win.removeAttribute("data-app-open");
+    delete root().dataset.app;
+  };
+}
+
 /** Goes to `id` on the board, opening the window if it has to. The home screen's own chapter just goes home. */
 export function openApp(
   id: string,
