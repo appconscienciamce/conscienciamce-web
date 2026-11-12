@@ -2,11 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import { CtaContent } from "@/components/cta-content";
+import { PhoneField, type PhoneCopy } from "@/components/thanks/phone-field-lazy";
 import { track } from "@/lib/analytics";
 
 interface RoadmapCopy {
   endpoint: string | null;
-  fields: { name: string; email: string; project: string; goal: string };
+  fields: PhoneCopy & { name: string; email: string; project: string; goal: string };
   submit: string;
   sending: string;
   sent: string;
@@ -78,6 +79,7 @@ export function RoadmapForm({ copy }: { copy: RoadmapCopy }) {
         <span>{fields.email}</span>
         <input name="email" type="email" autoComplete="email" maxLength={320} required />
       </label>
+      <PhoneField copy={fields} />
       <label className="is-wide">
         <span>{fields.project}</span>
         <textarea name="project" rows={3} maxLength={5000} required />

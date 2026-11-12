@@ -2,12 +2,13 @@
 
 import { useEffect, useRef, useState } from "react";
 import { CtaContent } from "@/components/cta-content";
+import { PhoneField, type PhoneCopy } from "@/components/thanks/phone-field-lazy";
 import { track } from "@/lib/analytics";
 
 interface RoadmapCopy {
   id: string;
   endpoint: string | null;
-  fields: { name: string; email: string; project: string; goal: string; projectHint?: string; goalHint?: string };
+  fields: PhoneCopy & { name: string; email: string; project: string; goal: string; projectHint?: string; goalHint?: string };
   file: { name: string; open: string; close: string; hint: string };
   next: string;
   back: string;
@@ -70,7 +71,13 @@ export function RoadmapFile({
   const resultRef = useRef<HTMLParagraphElement>(null);
   // Same id on every retry: an answer stored behind a failed response can be told apart.
   const submissionId = useRef("");
+  // The phone picker loads the first time the file is opened, not with the page.
+  const [everOpen, setEverOpen] = useState(defaultOpen);
   const { endpoint, fields, more } = copy;
+
+  useEffect(() => {
+    if (open) setEverOpen(true);
+  }, [open]);
 
   useEffect(() => {
     setReady(true);
@@ -153,6 +160,7 @@ export function RoadmapFile({
                 <span>{fields.email}</span>
                 <input name="email" type="email" autoComplete="email" maxLength={320} required defaultValue={prefill?.email} />
               </label>
+              {everOpen && <PhoneField copy={fields} />}
               {more
                 .filter((field) => field.part === 1)
                 .map((field) => (

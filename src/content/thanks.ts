@@ -3,6 +3,17 @@
  * yet: its control stays off and says so, so nobody is sent to a dead link and
  * no answer is lost. Open items: PENDIENTES_SANTIAGO.md.
  */
+/** The WhatsApp number field of the roadmap form (picker + validation). */
+const phoneCopy = {
+  phone: "Tu WhatsApp",
+  phoneHint: "Con código de país. Lo usamos solo para escribirte por el bootcamp.",
+  phoneCountry: "País",
+  phoneSearch: "Buscar país o código",
+  phoneEmpty: "No encontramos ese país.",
+  phoneRequired: "Ingresá tu número de WhatsApp.",
+  phoneInvalid: "Revisá el número: no parece válido para el país elegido.",
+};
+
 export const thanks = {
   seo: { title: "Gracias — Creadores Conscientes" },
   windowTitle: "Primeros pasos",
@@ -25,6 +36,7 @@ export const thanks = {
     fields: {
       name: "Nombre y apellido",
       email: "Email",
+      ...phoneCopy,
       project: "¿Qué estás construyendo hoy?",
       goal: "¿Qué querés resolver en estos dos días?",
     },
@@ -127,6 +139,7 @@ export const thanksCurrent = {
   fields: {
     name: "Nombre y apellido",
     email: "Email",
+    ...phoneCopy,
     project: "¿Quién sos, qué hacés actualmente y qué estás construyendo?",
     projectHint: "Contanos brevemente qué vendés, a quién ayudás, cuál es tu rol y en qué etapa está hoy tu marca o negocio.",
     goal: "¿Cuál es hoy tu principal fuente de ingresos y en qué nivel de facturación mensual estás?",

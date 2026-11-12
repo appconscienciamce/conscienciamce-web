@@ -220,7 +220,7 @@ export const bootcamp: BootcampContent = {
       title: "ismael_y_pilar.mov",
       label: "Ismael y Pilar",
       videoId: "C5KwvgCK6nE",
-      start: 3455,
+      start: 0,
       window: "Ismael y Pilar",
       play: "Reproducir el video de Ismael y Pilar",
     },
