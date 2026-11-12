@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { Averia_Serif_Libre, DM_Mono, DM_Sans } from "next/font/google";
-import Script from "next/script";
 import { MetaPixel } from "@/components/meta-pixel";
 import { SierraTracking } from "@/components/sierra-tracking";
 import { bootcamp } from "@/content/bootcamp";
@@ -76,21 +75,21 @@ const bootScript = `(function(){var d=document.documentElement;d.classList.add('
   BOARD_QUERY,
 )}).matches&&!matchMedia(${JSON.stringify(REDUCED_MOTION_QUERY)}).matches)d.classList.add('board-on');else if(l&&(matchMedia('(hover: none)').matches||innerWidth<900))d.classList.add('phone-os')})()`;
 
+const clarityScript = `(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","zc031ci1h2");`;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es" className={`${averia.variable} ${averiaBold.variable} ${dmSans.variable} ${dmMono.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: bootScript }} />
+        {/* Microsoft Clarity (heatmaps and recordings), in the <head> as Clarity asks. The tag loads async, so it does not block the first paint. */}
+        <script dangerouslySetInnerHTML={{ __html: clarityScript }} />
       </head>
       <body>
         {children}
         {/* Visitas y clics al checkout para el panel de synx build. */}
         <SierraTracking />
         <MetaPixel checkouts={CHECKOUTS} />
-        {/* Microsoft Clarity: heatmaps and session recordings. */}
-        <Script id="clarity" strategy="afterInteractive">
-          {`(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","zc031ci1h2");`}
-        </Script>
       </body>
     </html>
   );
