@@ -50,6 +50,10 @@ export const REGISTRATION_ANCHOR = "inscripcion";
 
 export const ctaHref = checkoutLive ? offer.checkoutUrl! : `#${REGISTRATION_ANCHOR}`;
 
+/** On the paid-traffic page only the ticket links to the checkout: every other button scrolls to it. */
+export const ADS_TICKET_ANCHOR = "entrada";
+export const ADS_TICKET_HREF = `#${ADS_TICKET_ANCHOR}`;
+
 /** The price with its cents, from the amount: "USD 36,90". Null while the price must stay hidden. */
 export function priceExact(): string | null {
   if (!resolvePrice()) return null;

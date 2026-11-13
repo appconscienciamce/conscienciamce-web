@@ -111,9 +111,31 @@ export const bootcamp: BootcampContent = {
 
   ads: {
     qualifier: "Para quienes ya tienen un negocio funcionando",
-    proof: { figure: "+USD 2,6M generados con creadores conscientes", case: "Caso Pilar: de 5K a 650K" },
+    proof: { figure: "+USD 2,6M generados con creadores y referentes del mercado", case: "Caso Pilar: de 5K a 650K" },
     ctaJoin: " · ",
     seats: { many: "Quedan {n} lugares", one: "Queda 1 lugar" },
+    promise:
+      "En 2 días te mostramos cómo escalamos 4 negocios a +USD 100K/mes, para que conviertas tu experiencia en una posición que el mercado entienda, valore y quiera comprar.",
+    promiseHighlight: "entienda, valore y quiera comprar.",
+    dateLine: {
+      soon: "Empieza en {n} días · 17 y 18 de noviembre · 15:00 ARG",
+      tomorrow: "Empieza mañana · 15:00 ARG",
+      today: "Es hoy · 15:00 ARG",
+      dayTwo: "Hoy es el día 2 · 15:00 ARG",
+    },
+    authorityIntro: ["Esto es lo que logramos después de más de 3 años detrás de las marcas personales más grandes:"],
+    ticket: {
+      includes: "Qué incluye",
+      notes: [
+        "Trabajo interno el primer día y trabajo en lo externo el segundo.",
+        "Un PDF personalizado con tu diseño único de jugador.",
+        "El proceso completo, de punta a punta: qué funcionó, qué no y qué decisiones se tomaron.",
+        "Los dos días quedan grabados.",
+      ],
+      zonesRow: "Horario",
+      dropRows: ["Lugares"],
+    },
+    dropFaq: ["¿Cuántos lugares hay?"],
   },
 
   os: {

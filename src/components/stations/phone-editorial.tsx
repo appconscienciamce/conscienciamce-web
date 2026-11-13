@@ -131,11 +131,13 @@ export function EdManifesto() {
   );
 }
 
-export function EdAuthority() {
+export function EdAuthority({ ads = false }: { ads?: boolean }) {
   const { hosts, editorial } = bootcamp;
-  const { title, intro, photos, proof } = editorial.authority;
+  const { title, photos, proof } = editorial.authority;
+  // On the paid-traffic page the hosts are introduced here and nowhere else.
+  const intro = ads ? bootcamp.ads.authorityIntro : editorial.authority.intro;
   return (
-    <section className="ed-dark ed-authority" data-phone-anchor="testimonios">
+    <section className="ed-dark ed-authority" data-phone-anchor={ads ? undefined : "testimonios"}>
       <h3 className="ed-title ed-r">{title}</h3>
       {intro.map((line) => (
         <p key={line} className="ed-lead ed-r">
@@ -180,23 +182,23 @@ export function EdAuthority() {
   );
 }
 
-/** The paid-traffic page keeps only the core of the manifesto: the thesis and its answer. */
-export function EdThesis() {
-  const { editorial } = bootcamp;
-  const { thesis, market } = editorial.manifesto;
+/** The testimonial videos, as posters in a plain grid: tap one and it plays in its own window. */
+export function EdTestimonials() {
+  const { proof, os } = bootcamp;
   return (
-    <div className="ed ed-manifesto">
-      <div className="ed-dark ed-thesis-block">
-        <p className="ed-thesis-pre ed-r">{market.thesisPre}</p>
-        <h2 className="ed-thesis ed-r">
-          {market.thesis.before}
-          <mark>{market.thesis.highlight}</mark>
-          {market.thesis.after}
-        </h2>
-        <Shot image={thesis.image} name={thesis.name} sizes="92vw" className="ed-thesis-shot" position="50% 24%" />
-        <p className="ed-counter ed-r">{market.counter}</p>
-      </div>
-    </div>
+    <section id="testimonios" className="ed ed-paper ed-testimonials" aria-labelledby="testimonials-title">
+      <h2 id="testimonials-title" className="ed-title ed-r">
+        {proof.title}
+      </h2>
+      <p className="ed-lead ed-r">{proof.intro}</p>
+      <ul className="ed-videos">
+        {proof.videos.map((video) => (
+          <li key={video.videoId}>
+            <VideoCard name={video.name} videoId={video.videoId} closeLabel={os.closeWindow} />
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }
 
@@ -318,11 +320,13 @@ export function EdHosts() {
   );
 }
 
-export function EdEnroll() {
+export function EdEnroll({ titleId }: { titleId?: string }) {
   const { investment } = bootcamp;
   return (
     <div className="ed ed-dark ed-enroll">
-      <h2 className="ed-title ed-r">{investment.title}</h2>
+      <h2 id={titleId} className="ed-title ed-r">
+        {investment.title}
+      </h2>
     </div>
   );
 }

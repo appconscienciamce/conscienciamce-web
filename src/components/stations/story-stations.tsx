@@ -5,19 +5,30 @@ import { Scribble } from "@/components/os/glyphs";
 import { MapCard } from "@/components/os/mobile-chrome";
 import { CrumpleNote } from "@/components/crumple-note";
 import { TechText } from "@/components/tech-text";
-import { adsCtaLabel, resolveClaim } from "@/lib/offer";
+import { resolveClaim } from "@/lib/offer";
 import type { Variant } from "@/content/types";
 import { ManifestoBoard } from "./manifesto-board";
 import { Flag } from "./flags";
-import { EdAudience, EdAuthority, EdDays, EdManifesto, EdOutcomes, EdPilar, EdThesis } from "./phone-editorial";
-import { AdsProof, AdsQualifier, AdsSeats, EdHero, type AdsContext } from "./ads-hero";
+import { EdAudience, EdAuthority, EdDays, EdManifesto, EdOutcomes, EdPilar, EdTestimonials } from "./phone-editorial";
+import { EdHero, type AdsContext } from "./ads-hero";
 
 export function HeroStation({ variant, ads }: { variant: Variant; ads?: AdsContext }) {
   const { hero, os } = bootcamp;
   const promiseLead = hero.promise.slice(0, hero.promise.lastIndexOf(hero.promiseHighlight));
+  // The paid-traffic page is only ever read in one column: no board pieces, just the first three blocks.
+  if (ads) {
+    return (
+      <Station index={0} titleId="hero-title" className="st-hero">
+        <EdHero ads={ads} />
+        <div className="ed">
+          <EdAuthority ads />
+        </div>
+        <EdTestimonials />
+      </Station>
+    );
+  }
   return (
     <Station index={0} titleId="hero-title" className="st-hero">
-      {ads && <EdHero ads={ads} />}
       <Piece x={44} y={36} w={960} className="hero-top">
         <p className="eyebrow">{hero.eyebrow}</p>
         {variant === "current" && (
@@ -43,7 +54,7 @@ export function HeroStation({ variant, ads }: { variant: Variant; ads?: AdsConte
         <TechText text={hero.promiseHighlight} className="hero-tech" />
       </Piece>
       <Piece x={44} y={528} w={590} className="hero-cta">
-        <CtaButton track="hero_cta_click" label={ads ? adsCtaLabel() : undefined} />
+        <CtaButton track="hero_cta_click" />
         <a href="#mapa" className="btn btn-line" data-track="hero_cta_click">
           {hero.secondaryCta}
         </a>
@@ -59,24 +70,6 @@ export function HeroStation({ variant, ads }: { variant: Variant; ads?: AdsConte
         <p className="hero-filter">{hero.notBeginners}</p>
         <span className="sr-only">{os.liveBadge}</span>
       </Piece>
-      {ads && (
-        <>
-          <Piece x={690} y={292} w={306} as="aside" className="ads-desk-qualifier">
-            <AdsQualifier />
-          </Piece>
-          <Piece x={690} y={192} w={330} className="ads-desk-proof">
-            <AdsProof />
-          </Piece>
-          {ads.seatsLeft !== null && (
-            <Piece x={44} y={592} w={590} className="ads-desk-seats">
-              <AdsSeats left={ads.seatsLeft} />
-            </Piece>
-          )}
-          <div className="ed">
-            <EdAuthority />
-          </div>
-        </>
-      )}
     </Station>
   );
 }
@@ -148,13 +141,13 @@ export function AudienceStation({ variant }: { variant: Variant }) {
   );
 }
 
-export function ManifestoStation({ variant, ads }: { variant: Variant; ads?: AdsContext }) {
+export function ManifestoStation({ variant }: { variant: Variant }) {
   const { manifesto, editorial } = bootcamp;
   const { market } = editorial.manifesto;
   const current = variant === "current";
   return (
     <Station index={2} titleId="manifesto-title" className="st-manifesto">
-      {variant === "current" && (ads ? <EdThesis /> : <EdManifesto />)}
+      {variant === "current" && <EdManifesto />}
       <ManifestoBoard
         strikes={manifesto.strikes}
         sortLabel={manifesto.sortLabel}

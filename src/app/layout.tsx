@@ -71,7 +71,8 @@ export const viewport: Viewport = {
 
 // Picks the layout before first paint so the board never flashes as a document.
 // Without JS the page stays the vertical reading, with all the content.
-const bootScript = `(function(){var d=document.documentElement;d.classList.add('js');var p=location.pathname,l=p==='/'||p==='/evento'||p==='/v2';if(p==='/v2')d.classList.add('ads');if(l&&matchMedia(${JSON.stringify(
+// /v2 (paid traffic) is the one vertical reading at every width: it never gets the board, and always the phone window.
+const bootScript = `(function(){var d=document.documentElement;d.classList.add('js');var p=location.pathname,l=p==='/'||p==='/evento'||p==='/v2';if(p==='/v2'){d.classList.add('ads','phone-os');return}if(l&&matchMedia(${JSON.stringify(
   BOARD_QUERY,
 )}).matches&&!matchMedia(${JSON.stringify(REDUCED_MOTION_QUERY)}).matches)d.classList.add('board-on');else if(l&&(matchMedia('(hover: none)').matches||innerWidth<900))d.classList.add('phone-os')})()`;
 

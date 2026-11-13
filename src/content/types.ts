@@ -167,6 +167,17 @@ export interface BootcampContent {
     ctaJoin: string;
     /** `{n}` is the real number of seats left. */
     seats: { many: string; one: string };
+    /** The headline: what is promised, in one sentence. `promiseHighlight` is the tail set in italics. */
+    promise: string;
+    promiseHighlight: string;
+    /** The hero's date line, by days left. `{n}` is the number of days. */
+    dateLine: { soon: string; tomorrow: string; today: string; dayTwo: string };
+    /** Intro of "who we are" on this page, where the hosts section no longer follows. */
+    authorityIntro: string[];
+    /** The ticket as a full offer. `notes` are the short lines under each kit card title, in the same order. */
+    ticket: { includes: string; notes: string[]; zonesRow: string; dropRows: string[] };
+    /** FAQ questions that state a seat number: this page shows the real one on the ticket instead. */
+    dropFaq: string[];
   };
   os: OsCopy;
   /** Labels of the line that joins the stations, one per link. */

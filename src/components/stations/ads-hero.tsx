@@ -1,6 +1,9 @@
+import Image from "@/components/safe-image";
 import { bootcamp } from "@/content/bootcamp";
 import { CtaButton } from "@/components/editorial";
-import { adsCtaLabel, seatsLine } from "@/lib/offer";
+import { VerifiedBadge } from "@/components/verified-badge";
+import { ADS_TICKET_HREF, adsCtaLabel, seatsLine } from "@/lib/offer";
+import { AdsDateLine } from "./ads-date-line";
 
 /** What the paid-traffic page (`/v2`) knows that `/` does not. */
 export interface AdsContext {
@@ -37,29 +40,56 @@ export function AdsQualifier({ className = "" }: { className?: string }) {
   return <p className={`ads-qualifier ${className}`}>{bootcamp.ads.qualifier}</p>;
 }
 
+/** The people behind the numbers: the same faces the authority section shows, small. */
+function AdsFaces() {
+  const faces = bootcamp.hosts.authority.items.find((item) => item.faces)?.faces;
+  if (!faces) return null;
+  return (
+    <ul className="ads-faces">
+      {faces.map((face) => (
+        <li key={face.name} className="ads-face">
+          <span className="ads-face-pic">
+            {face.image ? (
+              <Image src={face.image.src!} alt="" width={72} height={72} quality={85} />
+            ) : (
+              <b aria-hidden>{face.name.charAt(0)}</b>
+            )}
+            <VerifiedBadge className="ads-face-badge" />
+          </span>
+          <small>{face.name}</small>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 /**
- * The first screen on a phone, for someone who comes from an ad: date, title, promise,
- * who it is for, proof, the buy button with its price and the seats left.
- * It lives inside the hero window and only shows on the phone reading.
+ * The first screen, for someone who comes from an ad: who it is for, what is promised,
+ * the proof, the people, and one button that goes to the ticket (never straight to the checkout).
  */
 export function EdHero({ ads }: { ads: AdsContext }) {
-  const { hero } = bootcamp;
-  const cut = hero.promise.lastIndexOf(hero.promiseHighlight);
+  const { hero, ads: copy } = bootcamp;
+  const cut = copy.promise.lastIndexOf(copy.promiseHighlight);
+  const title = hero.title.before + hero.title.italic + hero.title.after;
   return (
     <div className="ed ed-paper ed-hero">
-      <p className="ed-hero-date">{hero.dateLine}</p>
-      <h1 className="ed-hero-title">
-        {hero.title.before}
-        <em>{hero.title.italic}</em>
-        {hero.title.after}
+      <AdsDateLine className="ed-hero-date" />
+      <p className="ed-hero-kicker">{title}</p>
+      <h1 id="hero-title" className="ed-hero-title">
+        <span className="sr-only">{hero.programName}: </span>
+        {cut === -1 ? (
+          copy.promise
+        ) : (
+          <>
+            {copy.promise.slice(0, cut)}
+            <em>{copy.promiseHighlight}</em>
+          </>
+        )}
       </h1>
-      <p className="ed-hero-promise">
-        {hero.promise.slice(0, cut)}
-        <em>{hero.promiseHighlight}</em>
-      </p>
       <AdsQualifier />
       <AdsProof />
-      <CtaButton label={adsCtaLabel()} track="hero_cta_click" className="ads-hero-cta" />
+      <AdsFaces />
+      <CtaButton label={adsCtaLabel()} track="hero_cta_click" className="ads-hero-cta" href={ADS_TICKET_HREF} />
       <AdsSeats left={ads.seatsLeft} />
     </div>
   );

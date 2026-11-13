@@ -505,8 +505,9 @@ export class BoardEngine {
       this.wake();
       return;
     }
-    const wanted = this.query.matches && !this.reduced.matches;
     const root = document.documentElement;
+    // The paid-traffic page is a single column at every width: it never turns into the board.
+    const wanted = this.query.matches && !this.reduced.matches && !root.classList.contains("ads");
     if (wanted !== this.state.board) {
       root.classList.toggle("board-on", wanted);
       if (!wanted) {

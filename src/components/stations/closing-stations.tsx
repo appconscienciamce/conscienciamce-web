@@ -8,7 +8,7 @@ import { VideoCard } from "@/components/video-card";
 import { VerifiedBadge } from "@/components/verified-badge";
 import type { Variant } from "@/content/types";
 import { EdEnroll, EdHosts } from "./phone-editorial";
-import { REGISTRATION_ANCHOR, adsCtaLabel, checkoutLive, ctaHref, priceExact, resolveLogistics } from "@/lib/offer";
+import { REGISTRATION_ANCHOR, checkoutLive, ctaHref, resolveLogistics } from "@/lib/offer";
 
 /** The current page's questions: the first ones of the FAQ and the two added for it. */
 function currentQuestions() {
@@ -179,7 +179,7 @@ export function HostsStation({ variant }: { variant: Variant }) {
   );
 }
 
-export function EnrollStation({ variant, ads = false }: { variant: Variant; ads?: boolean }) {
+export function EnrollStation({ variant }: { variant: Variant }) {
   const { investment, cta, faq, hero, editorial } = bootcamp;
   const current = variant === "current";
   // The first row is the format, already printed on the ticket.
@@ -220,7 +220,7 @@ export function EnrollStation({ variant, ads = false }: { variant: Variant; ads?
             <p className="ticket-price">
               <span>{investment.ticket.priceLabel}</span>
               <strong>
-                {ads && priceExact() ? priceExact() : <PriceText fallback={investment.ticket.pricePending} />}
+                <PriceText fallback={investment.ticket.pricePending} />
               </strong>
             </p>
             <a
@@ -228,7 +228,7 @@ export function EnrollStation({ variant, ads = false }: { variant: Variant; ads?
               data-track="pricing_cta_click"
               className="btn btn-solid ticket-cta"
             >
-              <CtaContent label={ads ? adsCtaLabel() : cta.label} />
+              <CtaContent label={cta.label} />
             </a>
             {!checkoutLive && <p className="ticket-notice">{cta.pendingNoticeBody}</p>}
             <span aria-hidden className="ticket-barcode" />
