@@ -224,21 +224,6 @@
   }
 }
 
-/* ---------------- Testimonials: the videos, as a plain grid ---------------- */
-
-.ed-testimonials {
-  padding: 56px var(--gutter) 52px;
-}
-
-.ed-videos {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px 12px;
-  margin: 26px 0 0;
-  padding: 0;
-  list-style: none;
-}
-
 /* ---------------- The ticket as a full offer ---------------- */
 
 /* The buttons that scroll here land on the ticket itself, not on the heading above it. */
@@ -375,10 +360,6 @@
 
   .ed-hero .ads-hero-cta {
     margin-top: 16px;
-  }
-
-  .ed-videos {
-    grid-template-columns: repeat(3, 1fr);
   }
 
   .v-ads .ticket-offer {

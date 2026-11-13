@@ -9,7 +9,7 @@ import { resolveClaim } from "@/lib/offer";
 import type { Variant } from "@/content/types";
 import { ManifestoBoard } from "./manifesto-board";
 import { Flag } from "./flags";
-import { EdAudience, EdAuthority, EdDays, EdManifesto, EdOutcomes, EdPilar, EdTestimonials } from "./phone-editorial";
+import { EdAudience, EdAuthority, EdDays, EdManifesto, EdOutcomes, EdPilar } from "./phone-editorial";
 import { EdHero, type AdsContext } from "./ads-hero";
 
 export function HeroStation({ variant, ads }: { variant: Variant; ads?: AdsContext }) {
@@ -23,7 +23,6 @@ export function HeroStation({ variant, ads }: { variant: Variant; ads?: AdsConte
         <div className="ed">
           <EdAuthority ads />
         </div>
-        <EdTestimonials />
       </Station>
     );
   }

@@ -182,26 +182,6 @@ export function EdAuthority({ ads = false }: { ads?: boolean }) {
   );
 }
 
-/** The testimonial videos, as posters in a plain grid: tap one and it plays in its own window. */
-export function EdTestimonials() {
-  const { proof, os } = bootcamp;
-  return (
-    <section id="testimonios" className="ed ed-paper ed-testimonials" aria-labelledby="testimonials-title">
-      <h2 id="testimonials-title" className="ed-title ed-r">
-        {proof.title}
-      </h2>
-      <p className="ed-lead ed-r">{proof.intro}</p>
-      <ul className="ed-videos">
-        {proof.videos.map((video) => (
-          <li key={video.videoId}>
-            <VideoCard name={video.name} videoId={video.videoId} closeLabel={os.closeWindow} />
-          </li>
-        ))}
-      </ul>
-    </section>
-  );
-}
-
 export function EdPilar() {
   const { casePilar, editorial } = bootcamp;
   return (
