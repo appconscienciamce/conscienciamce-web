@@ -10,16 +10,16 @@ import type { Variant } from "@/content/types";
 import { ManifestoBoard } from "./manifesto-board";
 import { Flag } from "./flags";
 import { EdAudience, EdAuthority, EdDays, EdManifesto, EdOutcomes, EdPilar } from "./phone-editorial";
-import { EdHero, type AdsContext } from "./ads-hero";
+import { EdHero } from "./ads-hero";
 
-export function HeroStation({ variant, ads }: { variant: Variant; ads?: AdsContext }) {
+export function HeroStation({ variant, ads }: { variant: Variant; ads?: boolean }) {
   const { hero, os } = bootcamp;
   const promiseLead = hero.promise.slice(0, hero.promise.lastIndexOf(hero.promiseHighlight));
   // The paid-traffic page is only ever read in one column: no board pieces, just the first three blocks.
   if (ads) {
     return (
       <Station index={0} titleId="hero-title" className="st-hero">
-        <EdHero ads={ads} />
+        <EdHero />
         <div className="ed">
           <EdAuthority ads />
         </div>

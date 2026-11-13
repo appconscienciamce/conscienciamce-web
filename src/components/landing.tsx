@@ -15,7 +15,6 @@ import {
   TwoDaysStation,
 } from "@/components/stations/story-stations";
 import { EnrollStation, HostsStation } from "@/components/stations/closing-stations";
-import type { AdsContext } from "@/components/stations/ads-hero";
 import { AdsReading } from "@/components/os/ads-reading";
 import { SiteFooter } from "@/components/site-footer";
 import { AdsEnrollStation } from "@/components/stations/ads-enroll";
@@ -27,7 +26,7 @@ import { ADS_TICKET_HREF, adsCtaLabel, ctaHref, resolvePrice } from "@/lib/offer
  * who it is for, the case, the days, the ticket, the questions), at every width, with no map and no home screen.
  * Every button on it goes to the ticket; only the ticket links to the checkout.
  */
-export function Landing({ variant, ads }: { variant: Variant; ads?: AdsContext }) {
+export function Landing({ variant, ads }: { variant: Variant; ads?: boolean }) {
   const { chapters, cta, os } = bootcamp;
   const price = resolvePrice();
 
@@ -53,14 +52,14 @@ export function Landing({ variant, ads }: { variant: Variant; ads?: AdsContext }
               <div className="canvas">
                 {!ads && <AppBar title={chapters[1].label} back={os.back} />}
                 <div className="canvas-sheet">
-                  {ads && <HeroStation variant={variant} ads={ads} />}
+                  {ads && <HeroStation variant={variant} ads />}
                   <AudienceStation variant={variant} />
                   {!ads && <ManifestoStation variant={variant} />}
                   <PilarStation variant={variant} />
                   <TwoDaysStation variant={variant} />
                   {!ads && <OutcomesStation variant={variant} />}
                   {!ads && <HostsStation variant={variant} />}
-                  {ads ? <AdsEnrollStation ads={ads} /> : <EnrollStation variant={variant} />}
+                  {ads ? <AdsEnrollStation /> : <EnrollStation variant={variant} />}
                 </div>
               </div>
             </main>

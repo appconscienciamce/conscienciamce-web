@@ -61,14 +61,13 @@ export function priceExact(): string | null {
   return `${currency} ${amount.toFixed(2).replace(".", ",")}`;
 }
 
-/** The buy button of the paid-traffic page: "Quiero participar · USD 36,90". */
+/** The hero and sticky buttons of the paid-traffic page carry no price: it lives on the ticket. */
 export function adsCtaLabel(): string {
-  const price = priceExact();
-  return price ? `${bootcamp.cta.label}${bootcamp.ads.ctaJoin}${price}` : bootcamp.cta.label;
+  return bootcamp.cta.label;
 }
 
-/** "Quedan 120 lugares", from a real count. */
-export function seatsLine(left: number): string {
-  const { seats } = bootcamp.ads;
-  return left === 1 ? seats.one : seats.many.replace("{n}", String(left));
+/** The ticket's own button: "Quiero participar · USD 36,90". */
+export function adsTicketCtaLabel(): string {
+  const price = priceExact();
+  return price ? `${bootcamp.cta.label}${bootcamp.ads.ctaJoin}${price}` : bootcamp.cta.label;
 }

@@ -32,25 +32,6 @@
   color: var(--ink-2);
 }
 
-.ads-seats {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 0;
-  font-family: var(--font-mono);
-  font-size: 12.5px;
-  letter-spacing: 0.02em;
-  color: var(--ink-2);
-}
-
-.ads-seats-dot {
-  flex: none;
-  width: 7px;
-  height: 7px;
-  background: var(--light-green, #3fb950);
-  border-radius: 50%;
-}
-
 /* ---------------- Phone: the page is the window ---------------- */
 
 .phone-os.ads:not(.board-on) .v-ads .canvas {
@@ -77,50 +58,104 @@
   display: none;
 }
 
-/* The first screen. It has to fit what an in-app browser leaves on an iPhone: 390 x 660. */
+/* The first screen fills one phone screen: it fits what an in-app browser leaves on an iPhone (390 x 660)
+   and spreads its blocks over the height, so the button is on screen without scrolling. */
+/* `.phone-os .ed` sets display: block; this has to out-rank it. */
+.phone-os:not(.board-on) .ed.ed-hero,
 .ed-hero {
-  padding: 14px var(--gutter) 18px;
+  --hero-gap: clamp(12px, 2.4svh, 24px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--hero-gap);
+  padding: 16px var(--gutter) 20px;
 }
 
-.ed-hero-date {
+/* The sticky bar would cover the bottom 72px of the window: the button has to end above it (BAR_PX in ads-reading). */
+.phone-os.ads:not(.board-on) .ed-hero {
+  min-height: calc(100vh - var(--sys-h) - 72px);
+  min-height: calc(100svh - var(--sys-h) - 72px);
+}
+
+.ads-hero-copy,
+.ads-hero-proof {
+  display: grid;
+  gap: calc(var(--hero-gap) * 0.6);
+}
+
+/* ---------------- When: countdown, dates, hours ---------------- */
+
+.ads-chips {
+  display: grid;
+  gap: 8px;
+}
+
+.ads-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
   margin: 0;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.04em;
-  color: var(--ink-2);
 }
 
-.ed-hero-kicker {
-  margin: 8px 0 0;
+.ads-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 28px;
+  padding: 0 11px;
+  background: rgba(21, 21, 21, 0.07);
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px rgba(21, 21, 21, 0.16);
   font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  line-height: 1.3;
-  text-transform: uppercase;
-  color: var(--ink-2);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--ink);
 }
+
+/* The countdown is the one that moves: it gets the weight. */
+.ads-chip-live {
+  background: var(--ink);
+  box-shadow: none;
+  color: var(--paper);
+}
+
+.ads-chip-zone .flag {
+  width: 18px;
+  height: 12px;
+  border-radius: 2px;
+  box-shadow: 0 0 0 0.5px rgba(21, 21, 21, 0.3);
+}
+
+/* ---------------- Promise ---------------- */
 
 .ed-hero-title {
-  margin: 6px 0 0;
+  margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(22px, min(6.3vw, 3.7dvh), 40px);
+  font-size: clamp(26px, min(7.4vw, 4.4dvh), 44px);
   font-weight: 400;
-  line-height: 1.1;
+  line-height: 1.08;
   letter-spacing: -0.02em;
   text-wrap: balance;
 }
 
-.ed-hero-title em {
+.ed-hero-lead {
+  margin: 0;
+  font-size: clamp(15px, 4vw, 17px);
+  line-height: 1.35;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+
+.ed-hero-lead em {
   font-style: italic;
 }
 
-.ed-hero .ads-qualifier {
-  margin-top: 10px;
-}
+/* ---------------- Proof ---------------- */
 
 .ed-hero .ads-proof {
-  margin-top: 12px;
-  padding: 10px 14px 11px;
+  padding: 11px 14px 12px;
   background: var(--ink);
   border-radius: 10px;
   color: var(--paper);
@@ -145,36 +180,35 @@
   display: none;
 }
 
-/* The people behind the numbers: small, so the first screen still fits 390 x 660. */
+/* The people behind the numbers, stacked: one verified check for the whole group. */
 .ads-faces {
+  position: relative;
   display: flex;
-  justify-content: space-between;
-  gap: 8px;
-  margin: 12px 0 0;
+  align-items: center;
+  gap: 12px;
+}
+
+.ads-face-stack {
+  display: flex;
+  flex: none;
+  margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.ads-face {
-  display: grid;
-  justify-items: center;
-  gap: 3px;
-  min-width: 0;
+.ads-face + .ads-face {
+  margin-left: -11px;
 }
 
-.ads-face-pic {
-  position: relative;
-  display: block;
-}
-
-.ads-face-pic img,
-.ads-face-pic b {
+.ads-face img,
+.ads-face b {
   display: grid;
   place-items: center;
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   object-fit: cover;
   background: #2a2a2a;
+  border: 2px solid var(--paper);
   border-radius: 50%;
   color: var(--paper);
   font-family: var(--font-display);
@@ -182,30 +216,30 @@
   font-weight: 400;
 }
 
+.ads-face {
+  position: relative;
+}
+
 .ads-face-badge {
   position: absolute;
   right: -3px;
-  bottom: -3px;
-  width: 14px;
-  height: 14px;
+  bottom: -2px;
+  width: 16px;
+  height: 16px;
 }
 
-.ads-face small {
+.ads-faces-label {
+  margin: 0;
   font-family: var(--font-mono);
-  font-size: 10.5px;
-  line-height: 1.1;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  line-height: 1.3;
   color: var(--ink-2);
 }
 
 .ed-hero .ads-hero-cta {
   width: 100%;
-  min-height: 52px;
-  margin-top: 12px;
-}
-
-.ed-hero .ads-seats {
-  justify-content: center;
-  margin-top: 8px;
+  min-height: 54px;
 }
 
 /* The sticky button waits while the hero's own is on screen, then stays for the whole reading. */
@@ -309,10 +343,6 @@
   min-width: 84px;
 }
 
-.ticket-stub .ticket-seats {
-  color: var(--ink);
-}
-
 /* ---------------- Wide screens: the same reading, as a centered column ---------------- */
 
 @media (min-width: 900px) {
@@ -327,39 +357,35 @@
   }
 
   .ed-hero {
-    padding: 28px 40px 30px;
+    --hero-gap: 22px;
+    justify-content: flex-start;
+    padding: 30px 40px 34px;
   }
 
-  .ed-hero-date,
-  .ed-hero-kicker {
-    font-size: 12.5px;
+  .phone-os.ads:not(.board-on) .ed-hero {
+    min-height: 0;
   }
 
   .ed-hero-title {
-    font-size: 38px;
+    font-size: 40px;
+  }
+
+  .ed-hero-lead {
+    font-size: 18px;
   }
 
   .ed-hero .ads-proof strong {
     font-size: 24px;
   }
 
-  .ads-face-pic img,
-  .ads-face-pic b {
+  .ads-face img,
+  .ads-face b {
     width: 48px;
     height: 48px;
   }
 
-  .ads-face-badge {
-    width: 18px;
-    height: 18px;
-  }
-
-  .ads-face small {
-    font-size: 12px;
-  }
-
   .ed-hero .ads-hero-cta {
-    margin-top: 16px;
+    margin-top: 6px;
   }
 
   .v-ads .ticket-offer {

@@ -163,20 +163,24 @@ export interface BootcampContent {
     qualifier: string;
     /** The proof line under the title, in two halves. */
     proof: { figure: string; case: string };
-    /** Joins the button label and the price: "Quiero participar · USD 36,90". */
+    /** Label beside the stacked faces of the people the team works with. */
+    facesLabel: string;
+    /** Joins the ticket button label and the price: "Quiero participar · USD 36,90". */
     ctaJoin: string;
-    /** `{n}` is the real number of seats left. */
-    seats: { many: string; one: string };
-    /** The headline: what is promised, in one sentence. `promiseHighlight` is the tail set in italics. */
+    /** The headline: what is promised, in one sentence. */
     promise: string;
-    promiseHighlight: string;
-    /** The hero's date line, by days left. `{n}` is the number of days. */
+    /** The smaller paragraph under the headline. `leadHighlight` is its tail set in italics. */
+    lead: string;
+    leadHighlight: string;
+    /** The date chip: "17 y 18 nov". */
+    dateChip: string;
+    /** The countdown chip, by days left. `{n}` is the number of days. */
     dateLine: { soon: string; tomorrow: string; today: string; dayTwo: string };
     /** Intro of "who we are" on this page, where the hosts section no longer follows. */
     authorityIntro: string[];
     /** The ticket as a full offer. `notes` are the short lines under each kit card title, in the same order. */
     ticket: { includes: string; notes: string[]; zonesRow: string; dropRows: string[] };
-    /** FAQ questions that state a seat number: this page shows the real one on the ticket instead. */
+    /** FAQ questions that state a seat number: this page shows no seats at all. */
     dropFaq: string[];
   };
   os: OsCopy;

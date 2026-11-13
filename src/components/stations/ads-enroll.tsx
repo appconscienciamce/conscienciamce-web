@@ -2,8 +2,7 @@ import { bootcamp } from "@/content/bootcamp";
 import { Piece, Station } from "@/components/board/primitives";
 import { CtaContent } from "@/components/cta-content";
 import { FaqItem } from "@/components/faq-item";
-import { ADS_TICKET_ANCHOR, REGISTRATION_ANCHOR, adsCtaLabel, checkoutLive, ctaHref, priceExact } from "@/lib/offer";
-import { AdsSeats, type AdsContext } from "./ads-hero";
+import { ADS_TICKET_ANCHOR, REGISTRATION_ANCHOR, adsTicketCtaLabel, checkoutLive, ctaHref, priceExact } from "@/lib/offer";
 import { EdEnroll } from "./phone-editorial";
 
 /** The questions of the current page, without the ones that state a seat number: the ticket says the real one. */
@@ -30,7 +29,7 @@ function zonesLine() {
  * The last station of the paid-traffic page: the whole offer on the ticket, then the questions.
  * The ticket's button is the only link to the checkout on the page.
  */
-export function AdsEnrollStation({ ads }: { ads: AdsContext }) {
+export function AdsEnrollStation() {
   const { investment, hero, editorial, ads: copy } = bootcamp;
   const price = priceExact();
   const rows = editorial.enroll.rows
@@ -69,13 +68,12 @@ export function AdsEnrollStation({ ads }: { ads: AdsContext }) {
           </div>
           <div className="ticket-stub">
             <p className="ticket-admit">{investment.ticket.stub}</p>
-            <AdsSeats left={ads.seatsLeft} className="ticket-seats" />
             <p className="ticket-price">
               <span>{investment.ticket.priceLabel}</span>
               <strong>{price ?? investment.ticket.pricePending}</strong>
             </p>
             <a href={checkoutLive ? ctaHref : `#${REGISTRATION_ANCHOR}`} data-track="pricing_cta_click" className="btn btn-solid ticket-cta">
-              <CtaContent label={adsCtaLabel()} />
+              <CtaContent label={adsTicketCtaLabel()} />
             </a>
             {!checkoutLive && <p className="ticket-notice">{bootcamp.cta.pendingNoticeBody}</p>}
             <span aria-hidden className="ticket-barcode" />
